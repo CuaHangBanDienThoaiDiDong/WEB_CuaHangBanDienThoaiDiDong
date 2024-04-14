@@ -1,0 +1,113 @@
+﻿
+
+@model List<WebSite_CuaHangDienThoai.Models.ProductDetailViewModel>
+
+<style>
+    .capacity-list {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        padding: 0;
+        margin: -5px;
+    }
+
+        .capacity-list li {
+            /*flex: 0 0 calc(30% - 10px);*/ /* Sử dụng calc để tính toán chiều rộng với khoảng trống và margin */
+            margin: 5px; /* Tạo khoảng cách giữa các mục */
+            padding: 10px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+            .capacity-list li a {
+                border: solid 1px gray;
+                border-radius: 10px;
+                width: auto;
+                height: auto;
+                padding: 10px;
+                background: #2f3033;
+                color: white
+            }
+</style>
+
+
+<div class="capacity">
+    <span>Dung lượng</span>
+    <ul class="capacity-list">
+
+        @foreach (var item in Model)
+        {
+
+            var uniqueColors = item.Color.Distinct();
+            var DungLuong = "";
+            if (item.DungLuong > 999)
+            {
+                DungLuong = "1Tb";
+            }
+            else if (item.DungLuong > 1999)
+            {
+                DungLuong = "2 Tb";
+            }
+            else
+            {
+                DungLuong = item.DungLuong + " Gb";
+            }
+
+
+            @*<li class="active capacity-item rounded">
+                    <a href="https://www.topzone.vn/iphone/iphone-15-pro-max" class="rounded">
+                        @DungLuong
+                    </a>
+                </li>*@
+            <li class="active capacity-item rounded">
+                <a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductsId&dungLuong=@item.DungLuong" class="rounded">
+                    @DungLuong
+                </a>
+            </li>
+
+
+
+            
+        }
+
+    </ul>
+</div>
+
+
+
+<div class="color-sp">
+    <span>Màu:</span>
+    <ul class="capacity-list">
+
+        @foreach (var item in Model)
+        {
+
+            var uniqueColors = item.Color.Distinct();
+            var DungLuong = "";
+            if (item.DungLuong > 999)
+            {
+                DungLuong = "1Tb";
+            }
+            else if (item.DungLuong > 1999)
+            {
+                DungLuong = "2 Tb";
+            }
+            else
+            {
+                DungLuong = item.DungLuong + " Gb";
+            }
+            foreach (var color in uniqueColors)
+            {
+                <li class="active capacity-item rounded">
+                    <a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductsId&dungLuong=@item.DungLuong" class="rounded">
+                        @color
+                    </a>
+                </li>
+            }
+
+          
+
+        }
+
+    </ul>
+</div>

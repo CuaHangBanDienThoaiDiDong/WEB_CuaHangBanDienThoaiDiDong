@@ -1,0 +1,218 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_ProductDetail
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/products" class="nav-link">Sản phẩm </a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Cập nhật</a>
+        </li>
+    </ul>
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Cập nhật Sản phẩm</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Sản phẩm</a></li>
+                    <li class="breadcrumb-item active">Cập nhật</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Thông tin Sản phẩm</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    @using (Html.BeginForm("Edit", "ProductDetail", FormMethod.Post, new { }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+                        @Html.HiddenFor(x => x.ProductsId)
+
+                        <div class="card">
+                            <div class="card-header p-2">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Hình ảnh</a></li>
+                                </ul>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="active tab-pane" id="activity">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Tên sản phẩm</label>
+                                            @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                            @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Loại sản phẩm</label>
+                                            @Html.DropDownListFor(x => x.ProductsId, ViewBag.Products as SelectList, "-Chọn danh mục sản phẩm-", new { @class = "form-control", @placeholder = "Mã mã phẩm" })
+                                            @Html.ValidationMessageFor(x => x.ProductsId, null, new { @class = "text-danger" })
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="form-group">
+
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- /.tab-pane -->
+                                    <div class="tab-pane" id="timeline">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h3 class="text-center">   Danh sách hình ảnh</h3>
+                                                <div class="col-md-12 text-right">
+                                                    <input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <table class="table table-hover" id="tbAnhSanPham">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">#</th>
+                                                                <th class="text-center">Ảnh</th>
+                                                                <th class="text-center">Ảnh đại diện</th>
+                                                                <th class="text-center">Thao tác</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tbHtml">
+                                                        </tbody>
+                                                    </table>
+                                                    <input type="hidden" id="tCurrentId" value="0" />
+                                                </div>
+                                                @if (Model.tb_ProductDetailImage != null && Model.tb_ProductDetailImage.Any())
+                                                {
+                                                    var i = 0;
+                                                    foreach (var item in Model.tb_ProductDetailImage)
+                                                    {
+
+
+
+
+
+                                                        <div class="row" id="trow_@item.ProductImageId">
+                                                            <div class="col-lg-4 mb-4">
+
+                                                                <div class="card h-100 border-start-lg border-start-primary">
+                                                                    <div class="card-body">
+                                                                        <div class="image-container">
+                                                                            <img src="@item.Image" alt="Hình" class="w-25">
+                                                                            @*<button class="button-overlay" onclick="yourFunction()">Click Me</button>*@
+                                                                            @*<a href="#" class="btn btn-sm btn-danger btnDelete" data-id="@item.ProductImageId">Xóa ảnh</a>*@
+
+
+                                                                            @if (Model.tb_ProductDetailImage.Count > 1)
+                                                                            {
+                                                                                <a href="#" data-id="@item.ProductImageId" class="btn btn-sm btn-danger btnDelete"><i class="fa fa-trash"></i></a>
+                                                                            }
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                    }
+                                                    i++;
+                                                }
+
+                                            </div>
+
+
+
+                                            
+                                        </div>
+                                    </div>
+                                    <!-- /.tab-pane -->
+                                    <!-- /.tab-pane -->
+
+                                </div>
+                                <!-- /.tab-content -->
+                            </div><!-- /.card-body -->
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">Lưu Lại</button>
+                                <a href="/admin/products" class="btn btn-danger">Quay lại</a>
+                            </div>
+                        </div> <!-- /.card -->
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+@section scripts{
+
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '.btnDelete', function () {
+                var id = $(this).data('id');
+                var conf = confirm('ban có muốn xóa ảnh này không?');
+                if (conf === true) {
+                    $.ajax({
+                        url: '/admin/ProductDetailImage/DeleteImg',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (rs) {
+                            if (rs.success) {
+                                $('#trow_' + id).remove();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+
+}
+

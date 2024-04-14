@@ -1,0 +1,54 @@
+﻿
+
+@model List<WebSite_CuaHangDienThoai.Models.ProductDetailViewModel>
+
+
+
+<div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group me-2" role="group" aria-label="First group">
+
+        @foreach (var item in Model)
+        {
+            var uniqueColors = item.Color.Distinct();
+            var DungLuong = "";
+            if (item.DungLuong > 999)
+            {
+                DungLuong = "1 Tb";
+            }
+            else if (item.DungLuong > 1999)
+            {
+                DungLuong = "2 Tb";
+            }
+            else
+            {
+                DungLuong = item.DungLuong + " Gb";
+            }
+            <a href="#" class="text-right btn btn-outline-secondary">
+                <input type="radio" data-dungluong="@DungLuong" placeholder="@DungLuong" />
+                @DungLuong
+            </a>
+
+
+        }
+    </div>
+
+</div>
+
+
+@*<div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group me-2" role="group" aria-label="First group">
+
+        @foreach (var item in Model)
+        {
+            var colors = item.Color.Split(',').Select(c => c.Trim()).Where(c => !string.IsNullOrWhiteSpace(c)).Distinct();
+
+            foreach (var color in colors)
+            {
+                <span class="text-right btn btn-outline-secondary">
+                    @color
+                </span>
+            }
+        }
+    </div>
+
+</div>*@

@@ -1,0 +1,132 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Products
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/category" class="nav-link">@ViewBag.Title</a>
+        </li>
+    </ul>
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quản lý chức năng</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Danh sách @ViewBag.Title</h3>
+
+            <div class="card-tools">
+                <a href="/admin/Product/edit/@Model.ProductsId" class="btn btn-sm btn-primary">Sửa</a>
+                <a href="/admin/Product/AddProductDetail/@Model.ProductsId" class="btn btn-sm btn-primary ">Thêm Size</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    @if (Model.tb_ProductImage != null && Model.tb_ProductImage.Any())
+                    {
+                        <div class="single_product_pics">
+                            <div class="row">
+                                <div class="col-lg-3 thumbnails_col order-lg-1 order-2">
+                                    <div class="single_product_thumbnails">
+
+                                        @foreach (var item in Model.tb_ProductImage)
+                                        {
+
+
+
+
+                                            <div class="@*carousel-inner*@">
+                                                @if (item.IsDefault)
+                                                {
+                                                    <div class="item active">
+                                                        <img src="@item.Image" class="img-responsive w-100" />
+                                                    </div>
+
+                                                }
+                                                else
+                                                {
+                                                    <div class="item">
+                                                        <img src="@item.Image" class="img-responsive w-100" />
+                                                    </div>
+                                                }
+
+                                            </div>
+
+
+
+
+                                        }
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <div class="col-md-8 col-md-offset-1 col-sm-12 col-xs-12">
+                    <h2 class="name">
+                        Tên sản phẩm : @Model.Title
+
+                    </h2>
+                    <hr />
+
+
+
+                    @*@Html.Action("Partail_ProductDetailForDetail", "Product", new { id = Model.ProductId })*@
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+
+        </div>
+
+
+        <!-- /.card-body -->
+        <div class="card-footer">
+            <p>Thuaaj</p>
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+
+
+    <div class="card">
+        @Html.Action("Partial_DetailProduct", "ProductDetail", new {id=Model.ProductsId})
+        @*@Html.Action("test", "ProductDetail", new {id=Model.ProductsId})*@
+    </div>
+</section>

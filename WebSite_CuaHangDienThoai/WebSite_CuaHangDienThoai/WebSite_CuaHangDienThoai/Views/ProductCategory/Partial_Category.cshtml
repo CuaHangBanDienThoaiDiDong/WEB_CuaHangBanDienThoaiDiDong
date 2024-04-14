@@ -1,0 +1,12 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductCategory>
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <li><a href="/ProductCategory/Detail/@item.ProductCategoryId">@item.Title</a></li>
+    }
+}
+else
+{
+    <p class="text-danger">Không có bảng ghi nào !!</p>
+}

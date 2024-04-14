@@ -1,0 +1,427 @@
+﻿
+@model WebSite_CuaHangDienThoai.Models.Admin_TokenProducts
+@using (Ajax.BeginForm("Add", "Products", new AjaxOptions
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "load_data",
+    OnSuccess = "OnSuccessCO",
+    OnFailure = "OnFailure",
+    OnBegin = "OnBeginCO"
+}, new { @Id = "myForm" }))
+{
+    <script>
+
+        function validateForm() {
+            //var sdt = document.getElementById('Name').value.trim();
+            //var tenKhachHang = document.getElementById('SDT').value.trim();
+            //var email = document.getElementById('CCCD').value.trim();
+            var OrigianlPrice = document.getElementById('OrigianlPrice').value.trim();
+            var Price = document.getElementById('Price').value.trim();
+            var confirmPassword = document.getElementById('Title').value.trim();
+
+
+            if (!confirmPassword) {
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi tìm...",
+                    text: "Vui lòng điền đầy đủ thông tin.",
+                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                });
+                return false;
+
+            }
+
+            if (Price < OrigianlPrice) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi giá bán...",
+                    text: "Giá bán không hợp lý.",
+                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                });
+                return false;
+            }
+
+
+            if (password !== confirmPassword) {
+
+                Swal.fire({
+                    icon: "warning",
+                    title: "Lỗi tìm...",
+                    text: "Mật khẩu và xác nhận mật khẩu không khớp.",
+                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                });
+                return false;
+                return false;
+            }
+
+
+
+            return true;
+        }
+
+
+        function OnBeginCO() {
+            $('#btnRegister').attr("disabled", "disabled");
+        }
+
+
+
+        function OnSuccessCO(res) {
+            if (res.Success) {
+                if (res.Code == 1) {
+
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "success",
+                        title: "Thêm sản phẩm  thành công"
+                    });
+                    location.href = "/admin/Products/index";
+
+                } else {
+                }
+            }
+            else {
+                if (res.Code == -2) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Không thể bỏ trống...",
+                        text: "Vui lòng điền đầy đủ thông tin",
+                        footer: '<a href="#">Why do I have this issue?</a>'
+                    });
+
+                }
+                if (res.Code == -3) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Sản phẩm đã tồn tại...",
+                        text: "Cấu hình này đã có dữ liệu",
+                        footer: '<a href="#">Bạn có muốn cập nhật lại số lượng?</a>'
+                    });
+                }
+                if (res.Code == -4) {
+                    Swal.fire({
+                        icon: "question",
+                        title: "Lỗi thêm nhân viên...",
+                        text: "Không thấy chức năng cho nhân viên mới ",
+                        footer: '<a href="#">Why do I have this issue?</a>'
+                    });
+
+                }
+                if (res.Code == -5) {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Lỗi tìm...",
+                        text: "Mã hàng được trả về ",
+                        footer: '<a href="#">Why do I have this issue?</a>'
+                    });
+                }
+                if (res.Code == -6) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi tìm...",
+                        text: "Đơn hàng lập lại 2 lần ",
+                        footer: '<a href="#">Why do I have this issue?</a>'
+                    });
+                }
+            }
+
+        }
+
+
+
+
+
+
+
+    </script>
+
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Thông tin thêm mới Sản phẩm</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 ">
+                    @using (Html.BeginForm("Add", "Products", FormMethod.Post, new { }))
+                    {
+
+                        <div class="card">
+                            <div class="card-header p-2">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="#infor" data-toggle="tab">Thông số kỹ thuật</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Hình ảnh</a></li>
+
+                                    <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">SEO</a></li>
+                                </ul>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="active tab-pane" id="activity">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Tên sản phẩm</label>
+
+                                            <input type="text" name="Title" id="Title" required class="form-control" autocomplete="off" placeholder="Tên sản phẩm" />
+                                            @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                            @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <label for="exampleInputEmail1">Danh mục sản phẩm</label>
+                                                    @Html.DropDownListFor(x => x.ProductCategoryId, ViewBag.ProductCategory as SelectList, "-Chọn danh mục sản phẩm-", new { @class = "form-control", @placeholder = "Mã sản phẩm" })
+                                                    @Html.ValidationMessageFor(x => x.ProductCategoryId, null, new { @class = "text-danger" })
+
+                                                </div>
+                                                <div class="col-6">
+                                                    <label for="exampleInputEmail1">Hãng sản phẩm</label>
+                                                    @Html.DropDownListFor(x => x.ProductCompanyId, ViewBag.ProductCompany as SelectList, "-Hãng sản phẩm-", new { @class = "form-control", @placeholder = "Mã sản phẩm" })
+                                                    @Html.ValidationMessageFor(x => x.ProductCompanyId, null, new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                      
+
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="form-group">
+
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(x => x.IsActive, new { @class = "custom-control-input", @id = "customCheckbox2" })
+                                                        <label for="customCheckbox2" class="custom-control-label">Hiển thị</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(x => x.IsHome, new { @class = "custom-control-input", @id = "customCheckbox2", @checked = "checked" })
+                                                        <label for="customCheckbox2" class="custom-control-label">Trang chủ</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(x => x.IsHot, new { @class = "custom-control-input", @id = "IsHotCheckbox2" })
+                                                        <label for="IsHotCheckbox2" class="custom-control-label">Hot</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(x => x.IsFeature, new { @class = "custom-control-input", @id = "IsFeatureCheckbox" })
+                                                        <label for="IsFeatureCheckbox" class="custom-control-label">Nổi bật</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(x => x.IsSale, new { @class = "custom-control-input", @id = "IsSaleCheckbox" })
+                                                        <label for="IsSaleCheckbox" class="custom-control-label">Khuyến mãi</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.tab-pane -->
+                                    <div class="tab-pane" id="timeline">
+                                        <div class="row">
+                                            <div class="col-md-12 text-right">
+                                                <input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <table class="table table-hover" id="tbAnhSanPham">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">#</th>
+                                                            <th class="text-center">Ảnh</th>
+                                                            <th class="text-center">Ảnh đại diện</th>
+                                                            <th class="text-center">Thao tác</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tbHtml">
+                                                    </tbody>
+                                                </table>
+                                                <input type="hidden" id="tCurrentId" value="0" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.tab-pane infor -->
+
+                                    <div class="tab-pane" id="infor">
+                                        <div class="form-group">
+                                            <div class="bg-gray-light">
+
+                                                <h4 class="m-lg-4 " style="color:blue"><b>Hệ điều hành & CPU</b></h4>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <label for="exampleInputEmail1">Hệ điều hành:</label>
+                                                    <input type="text" name="HeDieuHanh" id="HeDieuHanh" required class="form-control" autocomplete="off" placeholder="- Hệ điều hành -" />
+                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                                    @Html.ValidationMessageFor(x => x.HeDieuHanh, null, new { @class = "text-danger" })
+                                                </div>
+                                                <div class="col-3">
+                                                    <label for="exampleInputEmail1"> CPU:</label>
+                                                    <input type="text" name="CPU" id="CPU" required class="form-control" autocomplete="off" placeholder="- CPU -" />
+                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                                    @Html.ValidationMessageFor(x => x.CPU, null, new { @class = "text-danger" })
+                                                </div>
+                                                <div class="col-3">
+                                                    <label for="exampleInputEmail1">Tốc độ CPU:</label>
+                                                    @*@Html.TextAreaFor(x => x.CPU, new { @class = "form-control", @id = "txtDetail" })
+                                                    @Html.ValidationMessageFor(x => x.TocDoCPU, null, new { @class = "text-danger" })*@
+                                                    <input type="text" name="TocDoCPU" id="TocDoCPU" required class="form-control" autocomplete="off" placeholder="- Tốc độ CPU -" />
+                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                                    @Html.ValidationMessageFor(x => x.TocDoCPU, null, new { @class = "text-danger" })
+                                                </div>
+                                                <div class="col-3">
+                                                    <label for="exampleInputEmail1"> GPU:</label>
+                                                    <input type="text" name="GPU" id="GPU" required class="form-control" autocomplete="off" placeholder="- GPU -" />
+                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                                    @Html.ValidationMessageFor(x => x.GPU, null, new { @class = "text-danger" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="bg-gray-light">
+                                                <h4 class="m-lg-4 " style="color:blue"><b>Kết nối</b></h4>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <label for="exampleInputEmail1">Mạng di động:</label>
+                                                    <input type="text" name="MangDiDong" id="MangDiDong" required class="form-control" autocomplete="off" placeholder="- Mạng di động: -" />
+                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                                    @Html.ValidationMessageFor(x => x.MangDiDong, null, new { @class = "text-danger" })
+                                                </div>
+                                                <div class="col-3">
+                                                    <label for="exampleInputEmail1">SIM:</label>
+                                                    <input type="text" name="SIM" id="SIM" required class="form-control" autocomplete="off" placeholder="- SIM -" />
+                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                                    @Html.ValidationMessageFor(x => x.Sim, null, new { @class = "text-danger" })
+                                                </div>
+                                                <div class="col-3">
+                                                    <label for="exampleInputEmail1">Wifi:</label>
+                                                    <input type="text" name="Wifi" id="Wifi" required class="form-control" autocomplete="off" placeholder="- Wifi -" />
+                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                                    @Html.ValidationMessageFor(x => x.Wifi, null, new { @class = "text-danger" })
+                                                </div>
+                                                <div class="col-3">
+                                                    <label for="exampleInputEmail1">GPS:</label>
+                                                    <input type="text" name="GPS" id="GPS" required class="form-control" autocomplete="off" placeholder="- GPS -" />
+                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                                    @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })
+                                                </div>
+
+
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <label for="exampleInputEmail1">Bluetooth:</label>
+                                                    <input type="text" name="Bluetooth" id="Bluetooth" required class="form-control" autocomplete="off" placeholder="- Bluetooth: -" />
+                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                                    @Html.ValidationMessageFor(x => x.Bluetooth, null, new { @class = "text-danger" })
+                                                </div>
+                                                <div class="col-4">
+                                                    <label for="exampleInputEmail1">Cổng kết nối/sạc:</label>
+                                                    <input type="text" name="CongKetNoi" id="CongKetNoi" required class="form-control" autocomplete="off" placeholder="- Cổng kết nối/sạc -" />
+                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                                    @Html.ValidationMessageFor(x => x.CongKetNoi, null, new { @class = "text-danger" })
+                                                </div>
+                                                <div class="col-4">
+                                                    <label for="exampleInputEmail1">Jack tai nghe:</label>
+                                                    <input type="text" name="JackTaiNghe" id="JackTaiNghe" required class="form-control" autocomplete="off" placeholder="- Jack tai nghe -" />
+                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                                    @Html.ValidationMessageFor(x => x.JackTaiNghe, null, new { @class = "text-danger" })
+                                                </div>
+
+                                            </div>
+
+                                        </div>         
+
+
+                                        <div class="form-group">
+                                            <div class="bg-gray-light">
+                                                <h4 class="m-lg-4 " style="color:blue"><b>Pin & Sạc</b></h4>
+                                            </div>
+                                            <div class="row">
+                                               
+                                                <div class="col-md-4">
+                                                    <label for="exampleInputEmail1">Loại pin:</label>
+                                                    <input type="text" name="LoaiPin" id="LoaiPin" required class="form-control" autocomplete="off" placeholder="- Loại pin -" />
+                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                                    @Html.ValidationMessageFor(x => x.LoaiPin, null, new { @class = "text-danger" })
+                                                </div>
+
+                                        
+                                                <div class="col-md-4">
+                                                    <label for="exampleInputEmail1">Công nghệ pin:</label>
+                                                    <input type="text" name="CongNghePin" id="CongNghePin" required class="form-control" autocomplete="off" placeholder="- Công nghệ pin -" />
+                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                                    @Html.ValidationMessageFor(x => x.CongNghePin, null, new { @class = "text-danger" })
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="exampleInputEmail1">Hỗ trợ sạc:</label>
+                                                    <input type="text" name="HoTroSac" id="HoTroSac" required class="form-control" autocomplete="off" placeholder="- Hỗ trợ sạc -" />
+                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                                    @Html.ValidationMessageFor(x => x.HoTroSac, null, new { @class = "text-danger" })
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                      
+                                    </div>
+                                    <!-- /.tab-pane -->
+                                </div>
+                                <!-- /.tab-content -->
+                            </div><!-- /.card-body -->
+                            <div class="form-group">
+
+
+
+
+
+                                @*<button type="submit" class="btn btn-success" data-id="">Thêm mới</button>*@
+                                <button type="submit" class="btn btn-success">Thêm mới</button>
+                            </div>
+                        </div> <!-- /.card -->
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+
+
+
+
+
+
+}

@@ -1,0 +1,30 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Products
+<div class="col-md-12 ">
+    @if (Model != null)
+    {
+        var strImg = "";
+        var CheckImage = Model.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
+        <div class="single_product_pics">
+            <div class="row">
+                <div class="col-lg-4 thumbnails_col order-lg-1 order-2">
+                    <div class="single_product_thumbnails">
+                        <img class="imgproduct" data-id="@Model.ProductsId" src="@strImg" width="50" />
+
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <p>@Model.Title</p>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    }
+    else
+    {
+        <p class="text-danger">Lỗi sản phẩm</p>
+    }
+
+</div>

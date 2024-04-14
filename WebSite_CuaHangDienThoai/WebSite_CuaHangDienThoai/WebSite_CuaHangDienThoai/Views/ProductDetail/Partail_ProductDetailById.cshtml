@@ -1,0 +1,81 @@
+﻿@model List<WebSite_CuaHangDienThoai.Models.ProductDetailViewModel>
+
+<style>
+    #btnDungLuong {
+     border:solid 2px gray;
+    
+    }
+</style>
+
+
+
+@if (Model != null)
+{
+    
+    <div class="row">
+        <div class="col-1">
+
+        </div>
+        <div class="col-10">
+            <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group me-2" role="group" aria-label="First group">
+                    @{
+                        bool isFirstButton = true; // Biến để kiểm tra xem đã chọn button đầu tiên chưa
+                    }
+                    @{
+                        var firstDungLuong = Model.FirstOrDefault()?.DungLuong; // Lấy giá trị dung lượng đầu tiên
+                    }
+                    @foreach (var item in Model)
+                    {
+                        var uniqueColors = item.Color.Distinct();
+                        var DungLuong = "";
+
+                        if (item.DungLuong > 999)
+                        {
+                            DungLuong = "1 Tb";
+                        }
+                        else if (item.DungLuong > 1999)
+                        {
+                            DungLuong = "2 Tb";
+                        }
+                        else
+                        {
+                            DungLuong = item.DungLuong + " Gb";
+                        }
+
+                        // Tạo nút đầu tiên và thiết lập class active cho nó
+                        if (isFirstButton)
+                        {
+                            <button type="button" class="btn btn-outline-secondary btnViewPrice " data-DungLuong="@firstDungLuong" data-id="@ViewBag.ProductsId"><small> @DungLuong</small></button>
+                            isFirstButton = false; // Đặt biến isFirstButton thành false sau khi đã thêm button đầu tiên
+
+                            @*<div class="loadPrice" id="loadPrice">
+                    @Html.Action("PriceById", "ProductDetail", new { id= ViewBag.ProductsId, DungLuong = firstDungLuong })
+                </div>*@
+
+                        }
+                        else
+                        {
+                            // Tạo các nút còn lại
+                            <button type="button" class="btn btn-outline-secondary btnViewPrice" data-DungLuong="@item.DungLuong" data-id="@ViewBag.ProductsId"><small> @DungLuong</small></button>
+                        }
+               
+
+                    }
+                   
+
+                </div>
+            </div>
+        </div>
+        <div class="col-1">
+
+        </div>
+
+    </div>
+   
+}
+
+else
+{
+    <p class="text-danger">Không tồn tại bảng ghi nào !!</p>
+}

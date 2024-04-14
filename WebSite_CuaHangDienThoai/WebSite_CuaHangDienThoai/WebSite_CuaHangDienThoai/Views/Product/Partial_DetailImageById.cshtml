@@ -1,0 +1,33 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetailImage>
+
+
+@if (Model != null && Model.Any())
+{
+    <div class="single_product_pics">
+        <div class="row">
+            <div class="col-md-12 thumbnails_col order-lg-1 order-2">
+                <div class="single_product_thumbnails">
+                    <ul>
+                        <li class="active">
+                            @foreach (var item in Model)
+                            {
+                               
+                                    
+                                        <img src="@item.Image" alt="" data-image="@item.Image" @*class="w-25"*@ style="width:100px;">
+                                        <p class="text-center">
+                                            @item.tb_ProductDetail.Color
+                                        </p>
+                            }
+                         </li>
+
+                        </ul>
+                </div>
+            </div>
+            <div class="col-lg-9 image_col order-lg-2 order-1">
+                <div class="single_product_image">
+                    @*<div class="single_product_image_background" style="background-image:url(@Model.ProductImage.FirstOrDefault(x=>x.IsDefault).Image)"></div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+}

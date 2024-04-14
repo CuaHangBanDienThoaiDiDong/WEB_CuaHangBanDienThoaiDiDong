@@ -1,0 +1,84 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Products>
+@if (Model.Any() && Model != null)
+{
+    <div class="row">
+        <div class="col">
+            <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
+
+
+
+                @foreach(var items in Model)
+                {
+                    var strImg = "";
+                    var CheckImage = items.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
+                    if (CheckImage != null)
+                    {
+                        strImg = CheckImage.Image;
+                    }
+
+                    if (items.IsActive == true && items.IsHome == true && items.IsFeature == true)
+                    {
+
+
+                        <div class="product-item h-auto " style=" " id="product">
+                            <div class="product discount @*product_filter*@">
+
+                                <br />
+                                <div class="product_image" style=" background-image: url('~/images/banner-for-product.png')">
+                                    <img data-id="@items.ProductsId" src="@strImg" id="imgProducts">
+                                </div>
+                                <div class="favorite favorite_left"></div>
+                                <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                <div class="product_info">
+                                    <h6 class="product_name"><a href="single.html">@items.Title</a></h6>
+                                    <div class="product_price">
+                                        @*@if (items.PriceSale > 0)
+                                        {
+                                            @WSite_CuaHangDienThoai.Common.Common.FormatNumber(items.PriceSale)<span>@WSite_CuaHangDienThoai.Common.Common.FormatNumber(items.Price)</span>
+                                        }
+                                        else
+                                        {
+                                            @WSite_CuaHangDienThoai.Common.Common.FormatNumber(items.Price)
+
+                                        }*@
+
+                                        @*$520.00<span>$590.00</span>*@
+                                    </div>
+                                </div>
+                                <br />
+
+                                <div style="background: #999999;border-radius:10px" class="m-1">
+                                    <ul class="list-inline p-lg-2 text-center">
+                                        <li class="list-inline-item">
+                                            <img src="	https://24hstore.vn/images/products_promotion/original/icon-thu-cu_1667900775.svg " />
+                                        </li>
+                                        <li class="list-inline-item"><img src="	https://24hstore.vn/images/products_promotion/original/icon-vib-logo_1670400516.svg " /></li>
+                                        <li class="list-inline-item"><img src="		https://24hstore.vn/images/products_promotion/original/icon-kredivo_1670394894.svg " /></li>
+                                        <li class="list-inline-item"><img src="			https://24hstore.vn/images/products_promotion/original/icon-apple-pay_1708569696.svg " /></li>
+                                    </ul>
+                                    <small class="m-lg-4">Sản phẩm</small>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
+
+
+                    }
+                }
+                <!-- Product 1 -->
+
+
+
+
+            </div>
+        </div>
+    </div>
+}
+else
+{
+
+}
+
