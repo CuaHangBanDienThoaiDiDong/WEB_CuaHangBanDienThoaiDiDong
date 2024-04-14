@@ -101,12 +101,12 @@
 
         <!-- Main Navigation @*#1e8e03*@ -->
 
-        <div class="main_nav_container text-light" style="background-color:whitesmoke ; color: white; ">
+        <div class="main_nav_container text-light" style="background-color: #101010; color: white; ">
             <div class="container ">
                 <div class="row align-items-center">
                     <div class="col-lg-12 text-right">
                         <div class="logo_container">
-                            <a href="/home/index">LTD<span>MiniStore</span></a>
+                            <a href="/home/index"  style="color:red;">LTD<span  style="color:white;">MiniStore</span></a>
                         </div>
                         <nav class="navbar ">
                             <ul class="navbar_menu">
@@ -187,11 +187,16 @@
                                 <li><a href="contact.html">contact</a></li>
                             </ul>
                             <ul class="navbar_user">
-                                <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                                <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-                                <li class="checkout">
+                                <li><a href="#"><i class="fa fa-search" aria-hidden="true" style="color:white"></i></a></li>
+                                <li><a href="#"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a></li>
+                                <li class="checkout "style="background-color:black">
                                     <a href="#">
-                                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:white" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
+                                            <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
+                                        </svg>
+
+
+                                        @*<i class="fa fa-shopping-cart" aria-hidden="true"></i>*@
                                         <span id="checkout_items" class="checkout_items">2</span>
                                     </a>
                                 </li>
@@ -267,7 +272,8 @@
 
 
 
-    <div style="background-color: #f3f3f3 @*#3e3e3f*@ ">
+    <div style="background-color: #3e3e3f">
+        @*#f3f3f3*@
         @RenderBody()
     </div>
 

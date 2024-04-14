@@ -78,23 +78,9 @@
 
 
         <div class="container single_product_container">
-            <div class="row">
-                <div class="col">
+           
 
-                    <!-- Breadcrumbs -->
-
-                    <div class="breadcrumbs d-flex flex-row align-items-center">
-                        <ul>
-                            <li><a href="/home/index">Sản phẩm</a></li>
-                            <li><a href="categories.html"><i class="fa fa-angle-right" aria-hidden="true"></i>@Model.tb_Products.tb_ProductCategory.Title</a></li>
-                            <li class="active"><a href="/Product/Details/@Model.ProductsId"><i class="fa fa-angle-right" aria-hidden="true"></i>Điện thoại @Model.Title</a></li>
-                        </ul>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="row">
+            @*<div class="row">
                 <div class="col-lg-9">
 
                 </div>
@@ -114,7 +100,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div>*@
             <hr />
             <div class="row">
                 <div class="col-lg-7">
@@ -130,6 +116,15 @@
                 </div>
                 <div class="col-lg-5">
                     <div class="product_details">
+
+                        @*<div class="breadcrumbs align-items-center">
+                            <ul>
+                                <li><a href="/home/index">Sản phẩm</a></li>
+                                <li><a href="categories.html"><i class="fa fa-angle-right" aria-hidden="true"></i>@Model.tb_Products.tb_ProductCategory.Title</a></li>
+                                <li class="active"><a href="/Product/Details/@Model.ProductsId"><i class="fa fa-angle-right" aria-hidden="true"></i>Điện thoại @Model.Title</a></li>
+                            </ul>
+                        </div>*@
+
 
                         <h3> @Model.tb_Products.Title @DungLuong</h3>
 
@@ -147,14 +142,14 @@
                                     </span>
 
                                     @{
-                                    decimal originalPrice = Convert.ToDecimal(check.Price);
-                                    decimal salePrice = Convert.ToDecimal(check.PriceSale);
-                                    decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
+                                        decimal originalPrice = Convert.ToDecimal(check.Price);
+                                        decimal salePrice = Convert.ToDecimal(check.PriceSale);
+                                        decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
                                     }
                                     @if (discountPercentage > 0)
                                     {
-                                        <span class="discount_percentage "style="font-size: larger; padding-left: 5px">
-                                         -@discountPercentage.ToString("0")% <!-- Hiển thị phần trăm giảm giá -->
+                                        <span class="discount_percentage " style="font-size: larger; padding-left: 5px">
+                                            -@discountPercentage.ToString("0")% <!-- Hiển thị phần trăm giảm giá -->
                                         </span>
                                     }
 
@@ -183,19 +178,19 @@
                         </div>
                         @*<div class="row ">
 
-                            <div class="btn-toolbar mb-3 " role="toolbar" aria-label="Toolbar with button groups">
-                                <div class="btn-group me-2" role="group" aria-label="First group">
-                                    <span class="text-right btn btn-outline-secondary">
-                                        <a href="https://www.thegioididong.com/dtdd/iphone-15-pro-256gb?code=0131491003819" data-color="1198" data-code="0131491003819" class="box03__item item act">Titan xanh</a>
-                                    </span>
-                                    <span class="text-right btn btn-outline-secondary">
-                                        <a href="https://www.thegioididong.com/dtdd/iphone-15-pro-256gb?code=0131491003819" data-color="1198" data-code="0131491003819" class="box03__item item act">Titan xanh</a>
-                                    </span>
-                                </div>
-                            </div>
+            <div class="btn-toolbar mb-3 " role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group me-2" role="group" aria-label="First group">
+                    <span class="text-right btn btn-outline-secondary">
+                        <a href="https://www.thegioididong.com/dtdd/iphone-15-pro-256gb?code=0131491003819" data-color="1198" data-code="0131491003819" class="box03__item item act">Titan xanh</a>
+                    </span>
+                    <span class="text-right btn btn-outline-secondary">
+                        <a href="https://www.thegioididong.com/dtdd/iphone-15-pro-256gb?code=0131491003819" data-color="1198" data-code="0131491003819" class="box03__item item act">Titan xanh</a>
+                    </span>
+                </div>
+            </div>
 
 
-                        </div>*@
+        </div>*@
 
 
 

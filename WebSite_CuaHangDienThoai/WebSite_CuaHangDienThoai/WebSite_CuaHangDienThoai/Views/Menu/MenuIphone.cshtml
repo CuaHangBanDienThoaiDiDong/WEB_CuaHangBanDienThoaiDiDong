@@ -1,0 +1,175 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Products>
+
+
+<style>
+
+    /*#product-list {
+        display: flex;
+        flex-wrap: wrap;
+        margin: -10px;
+    }
+        #product-list:hover #product-item {
+           box-shadow-top
+        
+        }
+
+
+        #product #imgProducts {
+            width: 70%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        #product .details {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            box-sizing: border-box;
+            transition: transform 0.3s ease;
+        }
+
+        #product:hover #imgProducts {
+            transform: translateY(-20px);
+        }
+
+        #product:hover h5 {
+            color: red;
+        }
+    #product-list {
+        display: flex;*/ /* Sử dụng flexbox để xác định layout */
+        /*flex-wrap: wrap;*/ /* Cho phép các sản phẩm chuyển hàng nếu không thể fit vào một hàng */
+        /*margin: -10px;*/ /* Đảm bảo không có khoảng trống giữa các sản phẩm */
+    /*}
+    #product {
+        flex: 0 0 calc(33.33% - 20px);
+        margin: 10px;
+        box-sizing: border-box;
+        background: #323232;
+        border-radius:10px;
+
+        padding:20px;
+        margin:10px;
+
+    }*/
+
+
+    #product-list {
+        display: flex;
+        flex-wrap: wrap;
+        margin: -10px; /* Đảm bảo không có khoảng trống giữa các sản phẩm */
+    }
+
+    #product {
+        flex: 0 0 calc(33.33% - 20px); /* 33.33% chiều rộng, trừ đi khoảng cách giữa các sản phẩm */
+        margin: 10px; /* Tạo khoảng cách giữa các sản phẩm */
+        box-sizing: border-box; /* Đảm bảo padding và border không làm thay đổi kích thước ngoài cùng của sản phẩm */
+        background: #323232;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 10px;
+        position: relative; /* Đặt vị trí tương đối để áp dụng box-shadow */
+        transition: box-shadow 0.3s ease; /* Hiệu ứng chuyển đổi box-shadow */
+    }
+
+        #product:hover {
+            box-shadow: -5px -5px 10px rgba(255, 255, 255, 0.5), 5px 5px 10px rgba(0, 0, 0, 0.5); /* Sử dụng box-shadow để tạo hiệu ứng ánh sáng ở top và left, và bóng đen ở bottom và right khi hover */
+        }
+
+        #product img {
+            width: 70%;
+            height: auto;
+            transition: transform 0.3s ease; /* Hiệu ứng chuyển đổi ảnh khi hover */
+        }
+
+        #product:hover img {
+            transform: translateY(-20px); /* Hiệu ứng dịch chuyển ảnh lên trên khi hover */
+        }
+
+        #product h5 {
+            color: #fff; /* Màu văn bản */
+            transition: color 0.3s ease; /* Hiệu ứng chuyển đổi màu văn bản */
+        }
+
+        #product:hover h5 {
+            color: red; /* Thay đổi màu văn bản khi hover */
+        }
+
+
+</style>
+
+
+
+
+
+<div class="row">
+    <div class="col">
+        <div id="product-list">
+            @if (Model.Any() && Model != null)
+            {
+                foreach (var items in Model)
+                {
+                    var strImg = "";
+                    var CheckImage = items.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
+                    if (CheckImage != null)
+                    {
+                        strImg = CheckImage.Image;
+                    }
+                    if (items.IsActive == true && items.IsHome == true && items.ProductCategoryId == 2)
+                    {
+                        
+                            <div class="product-item  " id="product " style="padding: 10px; margin: 3px; background: #323232; border: none; border-radius: 10px; ">
+
+                                <div class="product discount">
+                                    <br />
+                                    <br />
+                                    <div class="product_image" >
+                                        <img data-id="@items.ProductsId" src="@strImg" id="imgProducts" >
+                                    </div>
+                                 
+                                    <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                    <div class="product_info">
+                                        @*<h6 class="product_name"><a href="single.html">@items.Title</a></h6>
+                                    <div class="product_price">$520.00<span>$590.00</span></div>*@
+                                        <a class="d-inline-block pt-1 " href="/Product/Details/@items.ProductsId" >
+                                            <h5 style="color:white;"> @items.Title</h5>
+                                        </a>
+                                    </div>
+                                    @*<div style="background: #999999;border-radius:10px">
+                                        <ul class="list-inline  text-center">
+                                            <li class="list-inline-item">
+                                                <img src="	https://24hstore.vn/images/products_promotion/original/icon-thu-cu_1667900775.svg " />
+                                            </li>
+                                            <li class="list-inline-item"><img src="	https://24hstore.vn/images/products_promotion/original/icon-vib-logo_1670400516.svg " /></li>
+                                            <li class="list-inline-item"><img src="		https://24hstore.vn/images/products_promotion/original/icon-kredivo_1670394894.svg " /></li>
+                                            <li class="list-inline-item"><img src="			https://24hstore.vn/images/products_promotion/original/icon-apple-pay_1708569696.svg " /></li>
+                                        </ul>
+                                        <small class="m-lg-4">Sản phẩm</small>
+                                    </div>*@
+                                </div>
+                                @*<div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>*@
+
+
+                            </div>
+                      
+
+
+
+
+
+                    }
+
+                }
+
+            }
+            else
+            {
+                <p>@ViewBag.txt</p>
+            }
+        </div>
+        
+    </div>
+</div>
+
+

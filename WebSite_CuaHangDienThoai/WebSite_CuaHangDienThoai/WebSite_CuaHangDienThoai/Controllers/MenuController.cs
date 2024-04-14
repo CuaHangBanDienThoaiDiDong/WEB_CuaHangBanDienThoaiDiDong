@@ -171,6 +171,18 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
+        public ActionResult MenuIphone() 
+        {
+            var checkPhone = db.tb_Products.SingleOrDefault(r => r.ProductCompanyId == 1 && r.ProductCategoryId == 1);
+            if (checkPhone != null) 
+            {
+                var item = db.tb_Products.OrderByDescending(x => x.ProductsId == checkPhone.ProductsId).Take(15).ToList();
+                return PartialView(item);
+            } 
+            return PartialView();
+        }
+
+
 
 
 
