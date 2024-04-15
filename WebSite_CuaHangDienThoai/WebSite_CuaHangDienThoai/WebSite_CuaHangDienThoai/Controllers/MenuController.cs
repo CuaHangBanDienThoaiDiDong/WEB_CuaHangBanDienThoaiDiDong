@@ -28,10 +28,24 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
         public ActionResult MenuProductDetail()
         {
+            var checkProducts = db.tb_Products.FirstOrDefault(x => x.IsActive == true && x.IsHome == true);
+          
+            if (checkProducts != null)
+            {
+                var items = db.tb_ProductDetail.Where(x => x.ProductsId == checkProducts.ProductsId).Take(15).ToList();
+                if (items != null)
+                {
+                    ViewBag.txt = "abc";
+                    return PartialView("_MenuProductDetail", items);
 
-            var items = db.tb_Products.OrderByDescending(x => x.ProductsId).ToList();
-
-            return PartialView("_MenuProductDetail", items);
+                }
+                else 
+                {
+                    return PartialView("_MenuProductDetail");
+                }
+               
+            }
+            return PartialView("_MenuProductDetail");
 
         }
         public ActionResult MenuProductCompany()
