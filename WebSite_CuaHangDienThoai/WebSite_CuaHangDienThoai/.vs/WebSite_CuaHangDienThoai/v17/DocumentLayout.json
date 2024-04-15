@@ -11,12 +11,12 @@
       "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\website_cuahangdienthoai\\views\\menu\\_menudeal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\views\\menu\\_menudeal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\website_cuahangdienthoai\\controllers\\menucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\controllers\\menucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\website_cuahangdienthoai\\views\\menu\\_menudeal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\views\\menu\\_menudeal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\website_cuahangdienthoai\\views\\menu\\_menuflashsalephone.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -56,26 +56,27 @@
               "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Views\\Menu\\MenuIphone.cshtml",
               "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Menu\\MenuIphone.cshtml",
               "RelativeToolTip": "WebSite_CuaHangDienThoai\\Views\\Menu\\MenuIphone.cshtml",
-              "ViewState": "AQIAABsAAAAAAAAAAAAAADEAAAAbAAAA",
+              "ViewState": "AQIAAIYAAAAAAAAAAAAAADkAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-04-15T10:41:33.889Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "MenuController.cs",
               "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Controllers\\MenuController.cs",
               "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Controllers\\MenuController.cs",
               "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Controllers\\MenuController.cs",
               "RelativeToolTip": "WebSite_CuaHangDienThoai\\Controllers\\MenuController.cs",
-              "ViewState": "AQIAAJcAAAAAAAAAAAAYwK0AAAAhAAAA",
+              "ViewState": "AQIAAKgAAAAAAAAAAAAkwK0AAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-15T10:39:24.403Z"
+              "WhenOpened": "2024-04-15T10:39:24.403Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "_MenuDeal.cshtml",
               "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Menu\\_MenuDeal.cshtml",
               "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Views\\Menu\\_MenuDeal.cshtml",
@@ -83,7 +84,8 @@
               "RelativeToolTip": "WebSite_CuaHangDienThoai\\Views\\Menu\\_MenuDeal.cshtml",
               "ViewState": "AQIAAHgAAAAAAAAAAAAgwKYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-15T10:38:13.188Z"
+              "WhenOpened": "2024-04-15T10:38:13.188Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
