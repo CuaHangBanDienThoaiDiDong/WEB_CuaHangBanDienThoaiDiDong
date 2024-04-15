@@ -11,8 +11,6 @@
         }
 
         #product #imgProducts {
-            width: 100%;
-            height: auto;
             transition: transform 0.3s ease;
         }
 
@@ -36,76 +34,88 @@
 </style>
 
 
+@if (ViewBag.txt != null)
+{
+    <div class="product_slider_container  " style="border: none; height:100%">
 
+        @if (Model.Any() && Model != null)
+        {
 
-
-<div class="row">
-    <div class="col">
-        <div class="">
-
-            <div class="row">
-                @if (Model.Any() && Model != null)
+            <div class="owl-carousel owl-theme product_slider" style="border:none;">
+                @foreach (var items in Model)
                 {
-                    foreach (var items in Model)
+                    var strImg = "";
+                    var CheckImage = items.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
+                    if (CheckImage != null)
                     {
-                        var strImg = "";
-                        var CheckImage = items.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
-                        if (CheckImage != null)
-                        {
-                            strImg = CheckImage.Image;
-                        }
-                        if (items.IsActive == true && items.IsHome == true && items.ProductCategoryId == 2)
-                        {
+                        strImg = CheckImage.Image;
+                    }
+                    if (items.IsActive == true && items.IsHome == true && items.ProductCategoryId == 2)
+                    {
 
-                            <div class="product-item  " id="product">
 
-                                <div class="product discount">
-                                    <br />
-                                    <br />
-                                    <div class="product_image" style=" background-image: url('~/images/banner-for-product.png')">
-                                        <img data-id="@items.ProductsId" src="@strImg" id="imgProducts">
-                                    </div>
-                                    <div class="favorite favorite_left"></div>
-                                    <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                                    <div class="product_info">
-                                        @*<h6 class="product_name"><a href="single.html">@items.Title</a></h6>
-                                            <div class="product_price">$520.00<span>$590.00</span></div>*@
-                                        <a class="d-inline-block text-truncate" href="/Product/Details/@items.ProductsId">
-                                            <h5> @items.Title</h5>
-                                        </a>
-                                    </div>
-                                    <div style="background: #999999;border-radius:10px">
-                                        <ul class="list-inline  text-center">
-                                            <li class="list-inline-item">
-                                                <img src="	https://24hstore.vn/images/products_promotion/original/icon-thu-cu_1667900775.svg " />
-                                            </li>
-                                            <li class="list-inline-item"><img src="	https://24hstore.vn/images/products_promotion/original/icon-vib-logo_1670400516.svg " /></li>
-                                            <li class="list-inline-item"><img src="		https://24hstore.vn/images/products_promotion/original/icon-kredivo_1670394894.svg " /></li>
-                                            <li class="list-inline-item"><img src="			https://24hstore.vn/images/products_promotion/original/icon-apple-pay_1708569696.svg " /></li>
-                                        </ul>
-                                        <small class="m-lg-4">Sản phẩm</small>
-                                    </div>
+                        <div class="owl-item  rounded " style="background: #323232; width: auto; height: 450px; display: flex; flex-direction: column; overflow: hidden; margin-left: 10px; padding: 0;">
+
+                            <div class=" pb-5 ">
+                                <br />
+                                <br />
+                                <div class="product_image" style=" background-image: url('~/images/banner-for-product.png')">
+                                    <img data-id="@items.ProductsId" src="@strImg" id="imgProducts" style="width: 250px; height: 250px; ">
                                 </div>
-                                @*<div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>*@
+                                <div class="favorite favorite_left"></div>
+                                <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                <div class="product_info">
+                                    @*<h6 class="product_name"><a href="single.html">@items.Title</a></h6>
+                                        <div class="product_price">$520.00<span>$590.00</span></div>*@
+                                    <a class="d-inline-block text-truncate" href="/Product/Details/@items.ProductsId">
+                                        <h5 style="color:white"> @items.Title</h5>
+                                    </a>
+                                    <div class="product_price">$520.00<span>$590.00</span></div>
 
 
+                                </div>
+                                <div style="">
+                                    <ul class="list-inline  text-center">
+                                        <li class="list-inline-item">
+                                            <img src="	https://24hstore.vn/images/products_promotion/original/icon-thu-cu_1667900775.svg " />
+                                        </li>
+                                        <li class="list-inline-item"><img src="	https://24hstore.vn/images/products_promotion/original/icon-vib-logo_1670400516.svg " /></li>
+                                        <li class="list-inline-item"><img src="		https://24hstore.vn/images/products_promotion/original/icon-kredivo_1670394894.svg " /></li>
+                                        <li class="list-inline-item"><img src="			https://24hstore.vn/images/products_promotion/original/icon-apple-pay_1708569696.svg " /></li>
+                                    </ul>
+                                    <small class="m-lg-4">Sản phẩm</small>
+                                </div>
                             </div>
+                        </div>
+
+                        @*<div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>*@
 
 
 
 
-                        }
+
 
                     }
 
                 }
-                else
-                {
-                    <p>@ViewBag.txt</p>
-                }
             </div>
 
-        </div>
+
+        }
+        else
+        {
+            <p>@ViewBag.txt</p>
+        }
+
     </div>
-</div>
+
+
+}
+else
+{
+    <p>Không có bảng ghi nào</p>
+}
+
+
+
 

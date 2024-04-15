@@ -160,7 +160,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
             var item = db.tb_Products.Where(x => x.IsActive == true ).Take(40).ToList();
             if (item != null)
             {
-
+                ViewBag.txt = "abc";
                 return PartialView(item);
             }
             else 
@@ -173,10 +173,11 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         public ActionResult MenuIphone() 
         {
-            var checkPhone = db.tb_Products.SingleOrDefault(r => r.ProductCompanyId == 1 && r.ProductCategoryId == 1);
+            var checkPhone = db.tb_Products.SingleOrDefault(r => r.ProductCompanyId == 1 );
             if (checkPhone != null) 
             {
                 var item = db.tb_Products.OrderByDescending(x => x.ProductsId == checkPhone.ProductsId).Take(15).ToList();
+                ViewBag.txt = "abc";
                 return PartialView(item);
             } 
             return PartialView();
