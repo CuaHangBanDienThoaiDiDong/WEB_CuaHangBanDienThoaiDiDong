@@ -1,21 +1,34 @@
-﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Products>
-
-
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
 <style>
-
-    /*#product-list {
-        display: flex;
-        flex-wrap: wrap;
-        margin: -10px;
+    .border-danger {
+        border: 10px solid red; /* Đặt kích thước của border */
+        box-sizing: border-box; /* Đảm bảo rằng border không làm thay đổi kích thước của phần tử */
     }
-        #product-list:hover #product-item {
-           box-shadow-top
-        
+
+    #image-container {
+        width: 100%; /* Kích thước của hình ảnh bằng kích thước của phần tử cha */
+        height: auto; /* Đảm bảo tỷ lệ khung hình bị giữ nguyên */
+    }
+
+
+
+
+
+    .border-danger p {
+        color: red;
+    }
+
+
+
+    #product {
+        position: relative;
+    }
+
+        #product img {
         }
 
-
         #product #imgProducts {
-            width: 70%;
+            width: 100%;
             height: auto;
             transition: transform 0.3s ease;
         }
@@ -31,145 +44,114 @@
         }
 
         #product:hover #imgProducts {
-            transform: translateY(-20px);
+            transform: translateY(-100px);
         }
 
         #product:hover h5 {
             color: red;
         }
-    #product-list {
-        display: flex;*/ /* Sử dụng flexbox để xác định layout */
-        /*flex-wrap: wrap;*/ /* Cho phép các sản phẩm chuyển hàng nếu không thể fit vào một hàng */
-        /*margin: -10px;*/ /* Đảm bảo không có khoảng trống giữa các sản phẩm */
-    /*}
-    #product {
-        flex: 0 0 calc(33.33% - 20px);
-        margin: 10px;
-        box-sizing: border-box;
-        background: #323232;
-        border-radius:10px;
-
-        padding:20px;
-        margin:10px;
-
-    }*/
-
-
-    #product-list {
-        display: flex;
-        flex-wrap: wrap;
-        margin: -10px; /* Đảm bảo không có khoảng trống giữa các sản phẩm */
-    }
-
-    #product {
-        flex: 0 0 calc(33.33% - 20px); /* 33.33% chiều rộng, trừ đi khoảng cách giữa các sản phẩm */
-        margin: 10px; /* Tạo khoảng cách giữa các sản phẩm */
-        box-sizing: border-box; /* Đảm bảo padding và border không làm thay đổi kích thước ngoài cùng của sản phẩm */
-        background: #323232;
-        border-radius: 10px;
-        padding: 20px;
-        margin: 10px;
-        position: relative; /* Đặt vị trí tương đối để áp dụng box-shadow */
-        transition: box-shadow 0.3s ease; /* Hiệu ứng chuyển đổi box-shadow */
-    }
-
-        #product:hover {
-            box-shadow: -5px -5px 10px rgba(255, 255, 255, 0.5), 5px 5px 10px rgba(0, 0, 0, 0.5); /* Sử dụng box-shadow để tạo hiệu ứng ánh sáng ở top và left, và bóng đen ở bottom và right khi hover */
-        }
-
-        #product img {
-            width: 70%;
-            height: auto;
-            transition: transform 0.3s ease; /* Hiệu ứng chuyển đổi ảnh khi hover */
-        }
-
-        #product:hover img {
-            transform: translateY(-20px); /* Hiệu ứng dịch chuyển ảnh lên trên khi hover */
-        }
-
-        #product h5 {
-            color: #fff; /* Màu văn bản */
-            transition: color 0.3s ease; /* Hiệu ứng chuyển đổi màu văn bản */
-        }
-
-        #product:hover h5 {
-            color: red; /* Thay đổi màu văn bản khi hover */
-        }
-
-
 </style>
 
 
+@if (ViewBag.txt != null)
+{
+    if (Model != null)
+    {
+
+        <div class="border border-danger  nen" style="background-color: #FCB601; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px ">
+            <div class="best_sellers ">
+                <img src="~/images/gif/dmx-hotsale-desk-1200x120-_1_.jpg" class="w-100 rounded-top" />
+
+                <div class="container">
+                    <div class="row">
+                        @*<div class="col-1 "></div>*@
+                        <div class="col-12 pl-1 pr-1 pb-3">
+                            <div class="product_slider_container  ">
+                                <div class="owl-carousel owl-theme product_slider">
+                                    @foreach (var item in Model)
+                                    {
+                                        var img = "";
+                                        var checkImg = item.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
+                                        if (checkImg != null)
+                                        {
+                                            img = checkImg.Image;
+                                        }
 
 
 
-<div class="row">
-    <div class="col">
-        <div id="product-list">
-            @if (Model.Any() && Model != null)
-            {
-                foreach (var items in Model)
-                {
-                    var strImg = "";
-                    var CheckImage = items.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
-                    if (CheckImage != null)
-                    {
-                        strImg = CheckImage.Image;
-                    }
-                    if (items.IsActive == true && items.IsHome == true && items.ProductCategoryId == 2)
-                    {
-                        
-                            <div class="product-item  " id="product " style="padding: 10px; margin: 3px; background: #323232; border: none; border-radius: 10px; ">
+                                        @*<img src="~/images/background/Frame-knockout-desktop-226x500.jpg" class="h-100"/>*@
 
-                                <div class="product discount">
-                                    <br />
-                                    <br />
-                                    <div class="product_image" >
-                                        <img data-id="@items.ProductsId" src="@strImg" id="imgProducts" >
-                                    </div>
-                                 
-                                    <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                                    <div class="product_info">
-                                        @*<h6 class="product_name"><a href="single.html">@items.Title</a></h6>
-                                    <div class="product_price">$520.00<span>$590.00</span></div>*@
-                                        <a class="d-inline-block pt-1 " href="/Product/Details/@items.ProductsId" >
-                                            <h5 style="color:white;"> @items.Title</h5>
-                                        </a>
-                                    </div>
-                                    @*<div style="background: #999999;border-radius:10px">
-                                        <ul class="list-inline  text-center">
-                                            <li class="list-inline-item">
-                                                <img src="	https://24hstore.vn/images/products_promotion/original/icon-thu-cu_1667900775.svg " />
-                                            </li>
-                                            <li class="list-inline-item"><img src="	https://24hstore.vn/images/products_promotion/original/icon-vib-logo_1670400516.svg " /></li>
-                                            <li class="list-inline-item"><img src="		https://24hstore.vn/images/products_promotion/original/icon-kredivo_1670394894.svg " /></li>
-                                            <li class="list-inline-item"><img src="			https://24hstore.vn/images/products_promotion/original/icon-apple-pay_1708569696.svg " /></li>
-                                        </ul>
-                                        <small class="m-lg-4">Sản phẩm</small>
-                                    </div>*@
+                                        <div class="owl-item product_slider_item bg-white ml-1 mr-1" style="background-image: url('~/images/background/Frame-knockout-desktop-226x500.jpg'); ">
+                                            <div class="product-item" id="product">
+                                                <div class="product discount">
+                                                    <div class="product_image mb-1">
+                                                        <img src="@img" alt="@item.tb_Products.Title" id="imgProducts" class="pt-2">
+                                                    </div>
+                                                    <div class="favorite favorite_left"></div>
+                                                    <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                                    <div class="product_info">
+                                                        <h6 class="product_name"><a href="single.html">@item.tb_Products.Title</a></h6>
+                                                        <div class="product_price text-danger">
+                                                            <h5 class="text-danger">
+                                                                @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.PriceSale)₫<span>@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price)₫</span>
+                                                            </h5>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    }
+
                                 </div>
-                                @*<div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>*@
 
+                                <!-- Slider Navigation -->
 
+                                <div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
+                                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                                </div>
+                                <div class="product_slider_nav_right product_slider_nav d-flex align-items-center justify-content-center flex-column">
+                                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                </div>
                             </div>
-                      
+                        </div>
+                        @*<div class="col-1"></div>*@
 
+                    </div>
 
+                    <div class="row pb-2">
+                        <div class="col-4"></div>
+                        <div class="col-4">
+                            <a href="/ProductCategory/Detail/@ViewBag.ProductCatgory" class="btn btn-light w-100 h-100 text-center ">
+                                <small>
+                                    Xem thêm Điện Thoại
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="ml-1 mb-1 bi bi-caret-right align-items-center" viewBox="0 0 16 16">
+                                        <path d="M6 12.796V3.204L11.481 8zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753" />
+                                    </svg>
 
+                                </small>
+                            </a>
+                        </div>
+                        <div class="col-4"></div>
+                    </div>
 
+                </div>
+            </div>
 
-                    }
-
-                }
-
-            }
-            else
-            {
-                <p>@ViewBag.txt</p>
-            }
         </div>
-        
-    </div>
-</div>
+    }
+    else
+    {
+        <p>Không có bảng ghi nào</p>
+    }
+}
+else
+{
+    <p>Không có bảng ghi nào</p>
+}
+
 
 
