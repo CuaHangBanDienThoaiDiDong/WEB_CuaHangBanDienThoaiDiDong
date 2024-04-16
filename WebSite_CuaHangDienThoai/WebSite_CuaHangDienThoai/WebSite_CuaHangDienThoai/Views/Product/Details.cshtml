@@ -1,4 +1,4 @@
-﻿@model WebSite_CuaHangDienThoai.Models.tb_Products
+﻿@model WebSite_CuaHangDienThoai.Models.tb_ProductDetail
 @{
     ViewBag.Title = ViewBag.Title;
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
@@ -26,9 +26,9 @@
 @if (Model != null)
 {
     var strImg = "";
-    var check = Model.tb_ProductDetail.FirstOrDefault(r => r.ProductsId == Model.ProductsId);
+    //var check = Model.tb_ProductDetail.FirstOrDefault(r => r.ProductsId == Model.ProductsId);
     //var checkImg = check.tb_ProductDetailImage.Where(r => r.ProductDetailId == check.ProductDetailId);
-    var ImgDefault = Model.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
+    var ImgDefault = Model.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
     if (ImgDefault != null)
     {
         strImg = ImgDefault.Image;
@@ -64,29 +64,29 @@
 
 
         <div class="container single_product_container">
-           
+
 
             @*<div class="row">
-                <div class="col-lg-9">
+                    <div class="col-lg-9">
 
-                </div>
-                <div class="col-md-3">
-
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            Địa chỉ còn hàng
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li>
-                                <a class="dropdown-item" href="#">Action</a>
-                                <input type="text" placeholder="Chọn quận huyện" />
-                            </li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
                     </div>
-                </div>
-            </div>*@
+                    <div class="col-md-3">
+
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Địa chỉ còn hàng
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li>
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <input type="text" placeholder="Chọn quận huyện" />
+                                </li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>*@
             <hr />
             <div class="row">
                 <div class="col-lg-7">
@@ -103,24 +103,24 @@
                 <div class="col-lg-5">
                     <div class="product_details">
 
-                        <h3>@Model.Title</h3>
+                        <h3 style="color:white  ;">@Model.tb_Products.Title @Model.Title @Model.DungLuong</h3>
 
 
                         <div class="row" id="PriceProductDetail">
-                            @if (check.PriceSale > 0)
+                            @if (Model.PriceSale > 0)
                             {
                                 <div>
                                     <span class="product_price ">
-                                        @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(check.PriceSale)đ
+                                        @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.PriceSale)đ
                                     </span>
                                     <span class=" pl-2 original_price" style="padding-left:5px">
-                                        @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(check.Price)đ
+                                        @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.Price)đ
 
                                     </span>
 
                                     @{
-                                        decimal originalPrice = Convert.ToDecimal(check.Price);
-                                        decimal salePrice = Convert.ToDecimal(check.PriceSale);
+                                        decimal originalPrice = Convert.ToDecimal(Model.Price);
+                                        decimal salePrice = Convert.ToDecimal(Model.PriceSale);
                                         decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
                                     }
                                     @if (discountPercentage > 0)
@@ -136,7 +136,7 @@
                             {
                                 <span class="product_price">
 
-                                    @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(check.Price)đ
+                                    @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.Price)đ
                                 </span>
 
                             }
@@ -149,7 +149,7 @@
 
 
                             @*DungLuongDienTHoai*@
-                            @Html.Action("DungLuong", "Product", new { id = Model.ProductsId })
+                            @Html.Action("DungLuong", "Product", new { id = Model.ProductsId, DungLuong = Model.DungLuong })
 
 
                         </div>

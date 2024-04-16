@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Products>
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
 
 
 <style>
@@ -44,13 +44,44 @@
             <div class="owl-carousel owl-theme product_slider" style="border:none;">
                 @foreach (var items in Model)
                 {
+
+
+                    var DungLuong = "";
+                    if (items.DungLuong > 999)
+                    {
+                        DungLuong = "1Tb";
+                    }
+                    else if (items.DungLuong > 1999)
+                    {
+                        DungLuong = "2 Tb";
+                    }
+                    else
+                    {
+                        DungLuong = items.DungLuong + "Gb";
+                    }
+                    @functions {
+
+                        public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
+                        {
+                            if (originalPrice == 0 || salePrice >= originalPrice)
+                            {
+                                return 0; // Trả về 0 nếu giá gốc bằng 0 hoặc giá bán lớn hơn hoặc bằng giá gốc
+                            }
+
+                            decimal discount = 1 - (salePrice / originalPrice);
+                            return discount * 100;
+                        }
+                    }
+
+
+
                     var strImg = "";
-                    var CheckImage = items.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
+                    var CheckImage = items.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
                     if (CheckImage != null)
                     {
                         strImg = CheckImage.Image;
                     }
-                    if (items.IsActive == true && items.IsHome == true && items.ProductCategoryId == 2)
+                    if (items.tb_Products.IsActive == true && items.tb_Products.IsHome == true && items.tb_Products.ProductCategoryId == 2)
                     {
 
 
@@ -63,16 +94,42 @@
                                     <img data-id="@items.ProductsId" src="@strImg" id="imgProducts" style="width: 250px; height: 250px; ">
                                 </div>
                                 <div class="favorite favorite_left"></div>
-                                <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                                    @if (items.PriceSale > 0)
+                                    {
+                                        <div>
+                                            @{
+                                                decimal originalPrice = Convert.ToDecimal(items.Price);
+                                                decimal salePrice = Convert.ToDecimal(items.PriceSale);
+                                                decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
+                                            }
+                                            @if (discountPercentage > 0)
+                                            {
+                                                <span> -@discountPercentage.ToString("0")% </span>
+                                            }
+
+                                        </div>
+                                    }
+                                </div>
                                 <div class="product_info">
-                                    @*<h6 class="product_name"><a href="single.html">@items.Title</a></h6>
-                                        <div class="product_price">$520.00<span>$590.00</span></div>*@
-                                    <a class="d-inline-block text-truncate" href="/Product/Details/@items.ProductsId">
-                                        <h5 style="color:white"> @items.Title</h5>
+                               
+
+
+                                    <a class="d-inline-block text-truncate" href="/Product/Details?id=@items.ProductsId&ProductDetailId=@items.ProductDetailId">
+                                        <h5 style="color:white;padding-top:10px;">@items.tb_Products.Title @items.Title @DungLuong</h5>
                                     </a>
-                                    <div class="product_price">$520.00<span>$590.00</span></div>
-
-
+                                    @if (items.PriceSale > 0)
+                                    {
+                                        <div>
+                                            <div class="product_price">  @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(items.PriceSale)đ<span>  @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(items.Price)đ</span></div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="product_price" style="padding-left:5px;color:white">
+                                            @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(items.Price)đ
+                                        </span>
+                                    }
                                 </div>
                                 <div style="">
                                     <ul class="list-inline  text-center">
@@ -89,17 +146,16 @@
                         </div>
 
                         @*<div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>*@
-
-
-
-
-
-
                     }
 
                 }
             </div>
-
+            <div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
+                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            </div>
+            <div class="product_slider_nav_right product_slider_nav d-flex align-items-center justify-content-center flex-column">
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </div>
 
         }
         else

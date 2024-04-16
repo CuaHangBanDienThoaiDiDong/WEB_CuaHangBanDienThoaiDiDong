@@ -32,7 +32,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
           
             if (checkProducts != null)
             {
-                var items = db.tb_ProductDetail.Where(x => x.ProductsId == checkProducts.ProductsId).Take(15).ToList();
+                var items = db.tb_ProductDetail.OrderByDescending(x => x.ProductsId == checkProducts.ProductsId).Take(15).ToList();
                 if (items != null)
                 {
                     ViewBag.txt = "abc";
@@ -48,6 +48,25 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return PartialView("_MenuProductDetail");
 
         }
+
+
+
+
+        public ActionResult MenuIphone()
+        {
+            var checkPhone = db.tb_Products.SingleOrDefault(x => x.IsActive == true && x.IsHome == true&&x.ProductCompanyId == 1);
+            if (checkPhone != null)
+            {
+                var item = db.tb_ProductDetail.OrderByDescending(x => x.ProductsId == checkPhone.ProductsId).Take(15).ToList();
+                ViewBag.txt = "abc";
+                return PartialView(item);
+            }
+            return PartialView();
+        }
+
+
+
+
         public ActionResult MenuProductCompany()
         {
 
@@ -79,6 +98,34 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return PartialView("_MenuDanhMucNoiBat", items);
 
         }
+
+        //public ActionResult MenuFlashSaleAll()
+        //{
+        //    List<tb_ProductDetail> productDetails = new List<tb_ProductDetail>();
+        //    var checkSale = db.tb_Products.Where(x => x.IsSale == true && x.ProductCategoryId == 2 && x.IsActive == true).ToList();
+        //    if (checkSale.Any())
+        //    {
+
+        //        foreach (var item in checkSale)
+        //        {
+
+        //            ViewBag.ProductCatgory = item.ProductCategoryId;
+        //            var CheckProductDetail = db.tb_ProductDetail.Where(x => x.ProductsId == item.ProductsId && x.PriceSale > 0).ToList();
+
+        //            var items = CheckProductDetail.OrderByDescending(x => x.ProductDetailId).ToList();
+        //            productDetails.AddRange(items);
+
+        //        }
+        //        ViewBag.txt = "abc";
+
+        //        return PartialView("_MenuFlashSaleAll", productDetails.ToList());
+        //    }
+        //    else
+        //    {
+        //        return PartialView("_MenuFlashSaleAll");
+        //    }
+
+        //}
 
         public ActionResult MenuFlashSaleAll()
         {
@@ -185,18 +232,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
-        public ActionResult MenuIphone() 
-        {
-            var checkPhone = db.tb_Products.SingleOrDefault(r => r.ProductCompanyId == 1 );
-            if (checkPhone != null) 
-            {
-                var item = db.tb_Products.OrderByDescending(x => x.ProductsId == checkPhone.ProductsId).Take(15).ToList();
-                ViewBag.txt = "abc";
-                return PartialView(item);
-            } 
-            return PartialView();
-        }
-
+      
 
 
 

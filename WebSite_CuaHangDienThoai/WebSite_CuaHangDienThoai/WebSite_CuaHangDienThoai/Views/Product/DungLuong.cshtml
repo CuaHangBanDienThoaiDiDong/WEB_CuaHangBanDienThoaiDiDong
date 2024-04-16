@@ -59,11 +59,23 @@
                         @DungLuong
                     </a>
                 </li>*@
-            <li class="active capacity-item rounded">
-                <a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductsId&dungLuong=@item.DungLuong" class="rounded">
+        <li class="active capacity-item rounded">
+            @if (ViewBag.DungLuong==item.DungLuong )
+            {
+                <a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductsId&dungLuong=@item.DungLuong" class="rounded bg-white text-danger">
+                    @DungLuong 
+                </a> 
+            }
+            else
+            { <a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductsId&dungLuong=@item.DungLuong" class="rounded">
                     @DungLuong
                 </a>
-            </li>
+
+            }
+
+
+
+        </li>
 
 
 

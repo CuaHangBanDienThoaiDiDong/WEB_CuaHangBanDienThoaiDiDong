@@ -35,16 +35,53 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 return View();
             }
         }
-        public ActionResult Details(int? id)
-        {
-            var item = db.tb_Products.Find(id);
-            if (item != null) {
-                ViewBag.Title=item.Title;
+        //public ActionResult Details(int? id)
+        //{
+        //    var item = db.tb_Products.Find(id);
+        //    if (item != null) {
+        //        ViewBag.Title=item.Title;
 
-                ViewBag.ProductCompany = item.tb_ProductCompany.Title;
+        //        ViewBag.ProductCompany = item.tb_ProductCompany.Title;
+        //    }
+        //    return View(item);
+        //}
+
+
+
+        public ActionResult Details(int? id, int? ProductDetailId)
+        {
+            if (ProductDetailId > 0)
+            {
+                var item = db.tb_Products.Find(id);
+                if (item != null)
+                {
+                    ViewBag.Title = item.Title;
+
+                    ViewBag.ProductCompany = item.tb_ProductCompany.Title;
+
+                    var itemProductDetail = db.tb_ProductDetail.FirstOrDefault(r=>r.ProductDetailId== ProductDetailId &&r.ProductsId==id);
+                    if (itemProductDetail != null)
+                    {
+                        ViewBag.DungLuong=itemProductDetail.DungLuong;  
+                        return View(itemProductDetail);
+                    }
+                }
+                return View(item);
             }
-            return View(item);
+            else 
+            {
+                var item = db.tb_Products.Find(id);
+                if (item != null)
+                {
+                    return View(item);
+                }
+                return View();
+            }
+            
+           
         }
+
+
         public ActionResult Test123()
         {
           
@@ -52,9 +89,9 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
-        public ActionResult DungLuong(int id)
+        public ActionResult DungLuong(int id , int DungLuong  )
         {
-
+         
             if (id > 0)
             {
                 var query = from pd in db.tb_ProductDetail
@@ -90,6 +127,11 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     Color = string.Join(", ", colors),
                     DungLuong = dl
                 }).ToList();
+
+                if (DungLuong > 0)
+                {
+                    ViewBag.DungLuong=DungLuong;
+                }
                 ViewBag.ProductsId = id;
                 return PartialView(result);
             }
