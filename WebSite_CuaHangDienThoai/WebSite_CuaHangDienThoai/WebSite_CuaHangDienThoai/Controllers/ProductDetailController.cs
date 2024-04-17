@@ -76,7 +76,6 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 {
                     return PartialView();
                 }
-
             }
             else
             {
@@ -84,6 +83,32 @@ namespace WebSite_CuaHangDienThoai.Controllers
             }
 
         }
+
+
+        public ActionResult Partial_PhanTramGiaGiam(int id, string DungLuong)
+        {
+            if (DungLuong != null)
+            {
+                int dungluong = int.Parse(DungLuong);
+                ViewBag.txt = "abc";
+                var checkPrice = db.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == id && x.DungLuong == dungluong);
+                if (checkPrice != null)
+                {
+                    ViewBag.txt = "abc";
+                    return PartialView(checkPrice);
+                }
+                else
+                {
+                    return PartialView();
+                }
+            }
+            else
+            {
+                return PartialView();
+            }
+
+        }
+
 
 
         public ActionResult ProductDetailByCapacity(int? Productsid,int DungLuong) 

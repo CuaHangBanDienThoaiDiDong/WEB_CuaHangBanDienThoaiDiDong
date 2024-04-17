@@ -54,7 +54,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         public ActionResult MenuIphone()
         {
-            var checkPhone = db.tb_Products.SingleOrDefault(x => x.IsActive == true && x.IsHome == true&&x.ProductCompanyId == 1);
+            var checkPhone = db.tb_Products.FirstOrDefault(x => x.IsActive == true && x.IsHome == true&&x.ProductCompanyId == 1);
             if (checkPhone != null)
             {
                 var item = db.tb_ProductDetail.OrderByDescending(x => x.ProductsId == checkPhone.ProductsId).Take(15).ToList();

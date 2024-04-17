@@ -125,7 +125,7 @@
 
 
                                         <div class="product_info">
-                                            <a class="d-inline-block text-truncate" href="/Product/Details/@items.ProductsId">
+                                            <a class="d-inline-block text-truncate" href="/Product/Details?id=@items.ProductsId&ProductDetailId=@items.ProductDetailId">
                                                 <h5 style="color:white;padding-top:10px;">@items.tb_Products.Title @items.Title @DungLuong</h5>
                                             </a>
                                             @if (items.PriceSale > 0)
@@ -134,11 +134,11 @@
 
 
                                                     <div class="product_price">  @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(items.PriceSale)đ<span>  @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(items.Price)đ</span></div>
-                                                 </div>
+                                                </div>
                                             }
                                             else
                                             {
-                                                <span class="product_price"  style="padding-left:5px;color:white">
+                                                <span class="product_price" style="padding-left:5px;color:white">
 
                                                     @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(items.Price)đ
                                                 </span>

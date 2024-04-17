@@ -26,6 +26,20 @@
 @if (Model != null)
 {
     var strImg = "";
+    var DungLuong = "";
+    if (Model.DungLuong > 999)
+    {
+        DungLuong = "1Tb";
+    }
+    else if (Model.DungLuong > 1999)
+    {
+        DungLuong = "2 Tb";
+    }
+    else
+    {
+        DungLuong = Model.DungLuong + " Gb";
+    }
+
     //var check = Model.tb_ProductDetail.FirstOrDefault(r => r.ProductsId == Model.ProductsId);
     //var checkImg = check.tb_ProductDetailImage.Where(r => r.ProductDetailId == check.ProductDetailId);
     var ImgDefault = Model.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
@@ -103,7 +117,7 @@
                 <div class="col-lg-5">
                     <div class="product_details">
 
-                        <h3 style="color:white  ;">@Model.tb_Products.Title @Model.Title @Model.DungLuong</h3>
+                        <h3 style="color:white  ;">@Model.tb_Products.Title @Model.Title @DungLuong</h3>
 
 
                         <div class="row" id="PriceProductDetail">

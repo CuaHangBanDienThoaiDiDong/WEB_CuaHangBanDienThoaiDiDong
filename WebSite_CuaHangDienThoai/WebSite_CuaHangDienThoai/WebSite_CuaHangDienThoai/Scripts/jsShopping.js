@@ -49,6 +49,8 @@
         var productId = $(this).data('id');
         var dungLuong = $(this).data('dungluong');
         loadPrice(productId, dungLuong);
+        loadPhanTramSale(productId, dungLuong);
+
         $('.btnViewPrice').removeClass('active');
         $(this).addClass('active');
     });
@@ -66,19 +68,56 @@ function loadPrice(productId, dungLuong) {
     });
 }
 
-function CheckPrice(id, dungLuong) {
+
+
+
+
+//function loadPhanTramSale(productId, dungLuong) {
+//    $.ajax({
+//        url: '/ProductDetail/Partial_PhanTramGiaGiam',
+//        type: 'GET',
+//        data: { id: productId, DungLuong: dungLuong },
+//        success: function (response) {
+//            var targetloadPhanTramSale = $('.loadPhanTramSale[data-id="' + productId + '"]');
+//            targetloadPhanTramSale.html(response);
+//        }
+//    });
+//}
+
+
+
+function loadPhanTramSale(productId, dungLuong) {
     $.ajax({
-        url: '/ProductDetail/PriceById',
+        url: '/ProductDetail/Partial_PhanTramGiaGiam',
         type: 'GET',
-        data: { id: id, dungLuong: dungLuong },
-        success: function (rs) {
-            if (rs.trim() !== '') {
-                $('#loadPrice').html(rs);
+        data: { id: productId, DungLuong: dungLuong },
+        success: function (response) {
+            var targetloadPhanTramSale = $('.loadPhanTramSale[data-id="' + productId + '"]');
+            if (response.trim() !== "") { // Kiểm tra xem có dữ liệu được trả về không
+                targetloadPhanTramSale.html(response).css('visibility', 'visible'); // Thiết lập visibility thành visible
             }
-           
+        },
+        error: function () {
+            console.log("Có lỗi xảy ra trong quá trình gọi Ajax.");
         }
     });
 }
+
+
+
+//function CheckPrice(id, dungLuong) {
+//    $.ajax({
+//        url: '/ProductDetail/PriceById',
+//        type: 'GET',
+//        data: { id: id, dungLuong: dungLuong },
+//        success: function (rs) {
+//            if (rs.trim() !== '') {
+//                $('#loadPrice').html(rs);
+//            }
+           
+//        }
+//    });
+//}
 
 
 

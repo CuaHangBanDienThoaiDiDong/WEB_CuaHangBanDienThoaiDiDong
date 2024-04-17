@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Products>
 @{
-    ViewBag.Title = "Sản phẩm ";
+    ViewBag.Title = "Cửa hàng";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
 <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_styles.css">
@@ -196,7 +196,7 @@
                                 </div>
 
                             </div>
-                            <div class="product-grid">
+                            <div class="product-grid rounded" >
 
                                 <!-- Product 1 -->
                                 @if (Model != null && Model.Any())
@@ -210,18 +210,22 @@
                                         {
                                             strImg = img.Image;
 
-                                            <div class="product-item @item.tb_ProductCategory.Alias bg-white">
-                                                <div class="product discount product_filter">
-                                                    <div class="product_image pt-3">
-                                                        <img src="@strImg" alt="@item.Title">
+                                            <div class="product-item @item.tb_ProductCategory.Alias rounded-3" style="background: #323232 ">
+                                                <div class=" discount product_filter">
+
+                                                    <div class="product_image pt-3 d-flex justify-content-center">
+                                                        <img src="@strImg" alt="@item.Title" class="w-75 h-75">
                                                     </div>
                                                     <div class="favorite favorite_left"></div>
 
+                                                    <div class="product_bubble_right product_bubble product_bubble_red d-flex flex-column align-items-center loadPhanTramSale " id="loadPhanTramSale_@item.ProductsId" data-id="@item.ProductsId"   style="visibility: hidden;">
 
+                                                    </div>
+                                                    
 
-                                                    <div class="product_info">
+                                                    <div class="product_info" style="margin-top:-20px">
                                                         @*<h6 class="product_name"><a href="/chi-tiet/@item.Alias-p">@item.Title</a></h6>*@
-                                                        <h6 class="product_name"><a href="/Product/Details/@item.ProductsId">@item.Title</a></h6>
+                                                        <h6 class="product_name"><a href="/Product/Details/@item.ProductsId" style="color:white ">@item.Title</a></h6>
 
                                                         @Html.Action("Partail_ProductDetailById", "ProductDetail", new { id = item.ProductsId })
 
@@ -231,7 +235,7 @@
 
                                                     </div>
                                                 </div>
-                                                <div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" data-id="@*@item.Id*@">Thêm vào giỏ hàng</a></div>
+                                                <!--<div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" data-id="-->@*@item.Id*@<!--">Thêm vào giỏ hàng</a></div>-->
                                             </div>
 
                                         }

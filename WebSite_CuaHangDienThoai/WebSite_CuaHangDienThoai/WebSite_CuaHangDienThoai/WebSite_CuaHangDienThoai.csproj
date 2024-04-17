@@ -4027,6 +4027,7 @@
     <Content Include="Views\ProductDetail\ProductDetailByCapacity.cshtml" />
     <Content Include="Views\Menu\MenuIphone.cshtml" />
     <Content Include="Views\Product\DetailsTest.cshtml" />
+    <Content Include="Views\ProductDetail\Partial_PhanTramGiaGiam.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

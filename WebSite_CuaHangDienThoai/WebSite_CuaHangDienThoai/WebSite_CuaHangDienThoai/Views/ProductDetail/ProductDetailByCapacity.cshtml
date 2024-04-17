@@ -26,6 +26,7 @@
 @if (Model != null)
 {
     var strImg = "";
+  
     var check = Model.tb_Products.tb_ProductDetail.FirstOrDefault(r => r.ProductsId == Model.ProductsId);
     //var checkImg = check.tb_ProductDetailImage.Where(r => r.ProductDetailId == check.ProductDetailId);
     var ImgDefault = Model.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
@@ -118,15 +119,15 @@
                     <div class="product_details">
 
                         @*<div class="breadcrumbs align-items-center">
-                            <ul>
-                                <li><a href="/home/index">Sản phẩm</a></li>
-                                <li><a href="categories.html"><i class="fa fa-angle-right" aria-hidden="true"></i>@Model.tb_Products.tb_ProductCategory.Title</a></li>
-                                <li class="active"><a href="/Product/Details/@Model.ProductsId"><i class="fa fa-angle-right" aria-hidden="true"></i>Điện thoại @Model.Title</a></li>
-                            </ul>
-                        </div>*@
+            <ul>
+                <li><a href="/home/index">Sản phẩm</a></li>
+                <li><a href="categories.html"><i class="fa fa-angle-right" aria-hidden="true"></i>@Model.tb_Products.tb_ProductCategory.Title</a></li>
+                <li class="active"><a href="/Product/Details/@Model.ProductsId"><i class="fa fa-angle-right" aria-hidden="true"></i>Điện thoại @Model.Title</a></li>
+            </ul>
+        </div>*@
 
 
-                        <h3> @Model.tb_Products.Title @DungLuong</h3>
+                        <h3 style="color:white  ;">@Model.tb_Products.Title @Model.Title @DungLuong</h3>
 
 
                         <div class="row" id="PriceProductDetail">
