@@ -8,18 +8,10 @@
 
 
 <style>
-
-
-
-
-
     .product_image:hover img {
         transform: translateY(-10px);
         transition: transform 0.3s ease;
     }
-
-
-
 
 
     .swiper {
@@ -104,7 +96,7 @@
 
 
 
-   
+
 
 
     <div class="row">
@@ -121,10 +113,10 @@
 
             <!-- Sidebar -->
 
-            <div class="sidebar">
-                <div class="sidebar_section">
+            <div class="sidebar" >
+                <div class="sidebar_section"  >
                     <div class="sidebar_title">
-                        <h5>Loại sản phẩm</h5>
+                        <h5 style="color:white">Loại sản phẩm</h5>
                     </div>
                     @Html.Action("MenuLeft", "Menu")
                 </div>
@@ -132,13 +124,13 @@
                 <!-- Price Range Filtering -->
                 <div class="sidebar_section">
                     <div class="sidebar_title">
-                        <h5>Filter by Price</h5>
+                        <h5 style="color:white">Lọc theo giá</h5>
                     </div>
                     <p>
                         <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
                     </p>
                     <div id="slider-range"></div>
-                    <div class="filter_button"><span>filter</span></div>
+                    <div class="filter_button"><span>Lọc</span></div>
 
                     <hr />
                     @*@Html.Action("Refresh", "Home")*@
@@ -162,17 +154,17 @@
 
                             <div class="product_sorting_container product_sorting_container_top">
                                 <ul class="product_sorting">
-                                    <li>
-                                        <span class="type_sorting_text">Default Sorting</span>
+                                    <li style="color: white; background: #323232;" >
+                                        <span class="type_sorting_text">Phân loại</span>
                                         <i class="fa fa-angle-down"></i>
-                                        <ul class="sorting_type">
-                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Default Sorting</span></li>
-                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Price</span></li>
-                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Product Name</span></li>
+                                        <ul class="sorting_type text-center">
+                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Mặc định</span></li>
+                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Giá tiền</span></li>
+                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Tên sản phẩm</span></li>
                                         </ul>
                                     </li>
-                                    <li>
-                                        <span>Show</span>
+                                    <li style="color: white; background: #323232;" >
+                                        <span>Hiển thị</span>
                                         <span class="num_sorting_text">6</span>
                                         <i class="fa fa-angle-down"></i>
                                         <ul class="sorting_num">
@@ -196,7 +188,7 @@
                                 </div>
 
                             </div>
-                            <div class="product-grid rounded" >
+                            <div class="product-grid rounded">
 
                                 <!-- Product 1 -->
                                 @if (Model != null && Model.Any())
@@ -210,31 +202,55 @@
                                         {
                                             strImg = img.Image;
 
-                                            <div class="product-item @item.tb_ProductCategory.Alias rounded-3" style="background: #323232 ">
-                                                <div class=" discount product_filter">
+                                            <div class="product-item @item.tb_ProductCategory.Alias rounded-3 d-flex flex-column justify-content-between" style="background: #323232; margin-left: 5px; margin-right: 5px; height: auto">
+                                                <div class=" discount ">
 
                                                     <div class="product_image pt-3 d-flex justify-content-center">
                                                         <img src="@strImg" alt="@item.Title" class="w-75 h-75">
                                                     </div>
                                                     <div class="favorite favorite_left"></div>
 
-                                                    <div class="product_bubble_right product_bubble product_bubble_red d-flex flex-column align-items-center loadPhanTramSale " id="loadPhanTramSale_@item.ProductsId" data-id="@item.ProductsId"   style="visibility: hidden;">
+                                                    <div class="product_bubble_right product_bubble product_bubble_red d-flex flex-column align-items-center loadPhanTramSale " id="loadPhanTramSale_@item.ProductsId" data-id="@item.ProductsId" style="visibility: hidden;">
 
                                                     </div>
-                                                    
+
 
                                                     <div class="product_info" style="margin-top:-20px">
                                                         @*<h6 class="product_name"><a href="/chi-tiet/@item.Alias-p">@item.Title</a></h6>*@
-                                                        <h6 class="product_name"><a href="/Product/Details/@item.ProductsId" style="color:white ">@item.Title</a></h6>
+                                                        <h6 class="product_name">
+                                                            @*<a href="/Product/Details/@item.ProductsId" style="color:white ">@item.Title</a>*@
+                                                            <a class="d-inline-block text-truncate" href="/Product/Details?id=@item.ProductsId&ProductDetailId=1" style="color:white ">
+                                                                @item.Title
+                                                            </a>
+                                                        </h6>
 
                                                         @Html.Action("Partail_ProductDetailById", "ProductDetail", new { id = item.ProductsId })
 
                                                         @*Hiển thị giá tiền theo cấu hình*@
                                                         <div class="loadPrice" id="loadPrice_@item.ProductsId" data-id="@item.ProductsId"></div>
-
-
                                                     </div>
+                                                    <div class="card-footer">
+                                                        <ul class="list-inline text-center">
+                                                            <li class="list-inline-item">
+                                                                <img src="https://24hstore.vn/images/products_promotion/original/icon-thu-cu_1667900775.svg" />
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <img src="https://24hstore.vn/images/products_promotion/original/icon-vib-logo_1670400516.svg" />
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <img src="https://24hstore.vn/images/products_promotion/original/icon-kredivo_1670394894.svg" />
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <img src="https://24hstore.vn/images/products_promotion/original/icon-apple-pay_1708569696.svg" />
+                                                            </li>
+                                                        </ul>
+                                                        <small class="m-lg-4">Sản phẩm</small>
+                                                    </div>
+
                                                 </div>
+
+
+                                                
                                                 <!--<div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" data-id="-->@*@item.Id*@<!--">Thêm vào giỏ hàng</a></div>-->
                                             </div>
 
@@ -305,7 +321,7 @@
 
 
 @section scripts{
- 
+
 
     <script src="~/Content/assets/js/categories_custom.js"></script>
     <script>

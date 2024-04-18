@@ -47,7 +47,20 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
+        public ActionResult Partial_LapTop(string Category)
+        {
+       
 
+            var checkProduct = db.tb_Products.FirstOrDefault(x => x.IsActive == true && x.Alias == WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(Category));
+            if (checkProduct !=null)
+            {
+                var items = db.tb_ProductDetail.OrderByDescending(x => x.ProductsId == checkProduct.ProductsId).Take(15).ToList();
+                
+                return PartialView(items);      
+            }
+            ViewBag.txt = "Không tìm thấy bảng ghi nào !!!";
+            return PartialView();
+        }
 
 
 

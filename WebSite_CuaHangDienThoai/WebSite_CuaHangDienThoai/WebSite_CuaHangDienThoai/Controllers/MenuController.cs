@@ -79,8 +79,18 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         public ActionResult MenuArrivals()
         {
-            var items = db.tb_Products.OrderByDescending(x => x.ProductsId).ToList();
-            return PartialView("_MenuArrivals", items);
+            var CheckAcive = db.tb_ProductCategory.FirstOrDefault(x => x.IsActive == true);
+            if (CheckAcive != null) 
+            {
+                var items = db.tb_ProductCategory.OrderByDescending(x => x.ProductCategoryId == CheckAcive.ProductCategoryId).Take(4).ToList();
+                return PartialView("_MenuArrivals", items);
+            }
+            ViewBag.Txt = "Không tìm thấy bảng ghi !!!";
+            return PartialView("_MenuArrivals");
+
+
+
+
         }
 
 
@@ -160,7 +170,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
         public ActionResult MenuDeal()
         {
             List<tb_ProductDetail> productDetails = new List<tb_ProductDetail>();
-            var checkSale = db.tb_Products.Where(x => x.IsSale == true && x.ProductCategoryId == 2 && x.IsActive == true).ToList();
+            var checkSale = db.tb_Products.Where(x => x.IsSale == true && x.IsActive == true).ToList();
             if (checkSale.Any())
             {
 

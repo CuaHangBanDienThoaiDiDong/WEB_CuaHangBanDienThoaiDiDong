@@ -46,12 +46,10 @@
                         // Tạo nút đầu tiên và thiết lập class active cho nó
                         if (isFirstButton)
                         {
-                            <button type="button" class="btn btn-outline-secondary btnViewPrice " data-DungLuong="@firstDungLuong" data-id="@ViewBag.ProductsId"><small style="color:white"> @DungLuong</small></button>
+                            <button type="button" class="btn btn-outline-secondary btnViewPrice " data-DungLuong="@firstDungLuong" data-id="@ViewBag.ProductsId" ><small > @DungLuong</small></button>
                             isFirstButton = false; // Đặt biến isFirstButton thành false sau khi đã thêm button đầu tiên
 
-                            @*<div class="loadPrice" id="loadPrice">
-                    @Html.Action("PriceById", "ProductDetail", new { id= ViewBag.ProductsId, DungLuong = firstDungLuong })
-                </div>*@
+                           
 
                         }
                         else

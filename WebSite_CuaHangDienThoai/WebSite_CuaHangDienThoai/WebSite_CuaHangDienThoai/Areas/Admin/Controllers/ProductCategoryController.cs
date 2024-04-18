@@ -62,7 +62,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                 model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
                                 db.tb_ProductCategory.Add(model);
                                 db.SaveChanges();
-                                return RedirectToAction("Index");
+                                code = new { Success = true, Code = 1, Url = "" };
                             }
                             else
                             {

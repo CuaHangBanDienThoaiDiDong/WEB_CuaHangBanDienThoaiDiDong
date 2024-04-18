@@ -3,52 +3,20 @@
   "WorkspaceRootPath": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\views\\product\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\views\\product\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\app_start\\routeconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\app_start\\routeconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\views\\productdetail\\partail_productdetailbyid.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\views\\productdetail\\partail_productdetailbyid.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\views\\error\\servererror.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\views\\error\\servererror.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\controllers\\productdetailcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\controllers\\productdetailcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\controllers\\errorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\controllers\\errorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\views\\productdetail\\partial_phantramgiagiam.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\views\\productdetail\\partial_phantramgiagiam.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\views\\productdetail\\pricebyid.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\views\\productdetail\\pricebyid.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\views\\menu\\_menuflashsaleall.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\views\\menu\\_menuflashsaleall.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\views\\productcategory\\partial_category.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\views\\productcategory\\partial_category.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\views\\shared\\_layoutpage.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\views\\shared\\_layoutpage.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\views\\productdetail\\productdetailbycapacity.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\views\\productdetail\\productdetailbycapacity.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\views\\product\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\views\\product\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\views\\product\\dungluong.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\views\\product\\dungluong.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|e:\\cuahangdienthoaididong\\web\\website_cuahangdienthoai\\website_cuahangdienthoai\\website_cuahangdienthoai\\views\\product\\partial_itemsbycateid.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8E7D3B9F-20E7-499B-827E-91758A8A7697}|WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai.csproj|solutionrelative:website_cuahangdienthoai\\views\\product\\partial_itemsbycateid.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -58,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -66,160 +34,54 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Product\\Index.cshtml",
-              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Views\\Product\\Index.cshtml",
-              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Product\\Index.cshtml",
-              "RelativeToolTip": "WebSite_CuaHangDienThoai\\Views\\Product\\Index.cshtml",
-              "ViewState": "AQIAAMwAAAAAAAAAAAAAAOUAAACQAAAA",
+              "DocumentIndex": 1,
+              "Title": "ServerError.cshtml",
+              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Error\\ServerError.cshtml",
+              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Views\\Error\\ServerError.cshtml",
+              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Error\\ServerError.cshtml",
+              "RelativeToolTip": "WebSite_CuaHangDienThoai\\Views\\Error\\ServerError.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAA/AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-17T16:09:03.994Z",
-              "IsPinned": true,
+              "WhenOpened": "2024-04-18T10:39:03.726Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "ProductDetailController.cs",
-              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Controllers\\ProductDetailController.cs",
-              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Controllers\\ProductDetailController.cs",
-              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Controllers\\ProductDetailController.cs",
-              "RelativeToolTip": "WebSite_CuaHangDienThoai\\Controllers\\ProductDetailController.cs",
-              "ViewState": "AQIAAEUAAAAAAAAAAAAIwFgAAAAIAAAA",
+              "Title": "ErrorController.cs",
+              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Controllers\\ErrorController.cs",
+              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Controllers\\ErrorController.cs",
+              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Controllers\\ErrorController.cs",
+              "RelativeToolTip": "WebSite_CuaHangDienThoai\\Controllers\\ErrorController.cs",
+              "ViewState": "AQIAAAsAAAAAAAAAAAAQwBkAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-17T16:29:45.411Z",
-              "IsPinned": true,
+              "WhenOpened": "2024-04-18T10:38:43.229Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "RouteConfig.cs",
+              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\App_Start\\RouteConfig.cs",
+              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\App_Start\\RouteConfig.cs",
+              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\App_Start\\RouteConfig.cs",
+              "RelativeToolTip": "WebSite_CuaHangDienThoai\\App_Start\\RouteConfig.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-18T10:38:22.44Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Partial_PhanTramGiaGiam.cshtml",
-              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\ProductDetail\\Partial_PhanTramGiaGiam.cshtml",
-              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Views\\ProductDetail\\Partial_PhanTramGiaGiam.cshtml",
-              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\ProductDetail\\Partial_PhanTramGiaGiam.cshtml",
-              "RelativeToolTip": "WebSite_CuaHangDienThoai\\Views\\ProductDetail\\Partial_PhanTramGiaGiam.cshtml",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAACEAAAANAAAA",
+              "Title": "Partial_ItemsByCateId.cshtml",
+              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Product\\Partial_ItemsByCateId.cshtml",
+              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Views\\Product\\Partial_ItemsByCateId.cshtml",
+              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Product\\Partial_ItemsByCateId.cshtml",
+              "RelativeToolTip": "WebSite_CuaHangDienThoai\\Views\\Product\\Partial_ItemsByCateId.cshtml",
+              "ViewState": "AQIAAEUAAAAAAAAAAAAAAE4AAAAyAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-17T16:32:26.561Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "PriceById.cshtml",
-              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\ProductDetail\\PriceById.cshtml",
-              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Views\\ProductDetail\\PriceById.cshtml",
-              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\ProductDetail\\PriceById.cshtml",
-              "RelativeToolTip": "WebSite_CuaHangDienThoai\\Views\\ProductDetail\\PriceById.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-17T16:29:18.558Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Partail_ProductDetailById.cshtml",
-              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\ProductDetail\\Partail_ProductDetailById.cshtml",
-              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Views\\ProductDetail\\Partail_ProductDetailById.cshtml",
-              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\ProductDetail\\Partail_ProductDetailById.cshtml",
-              "RelativeToolTip": "WebSite_CuaHangDienThoai\\Views\\ProductDetail\\Partail_ProductDetailById.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAATAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-17T16:21:31.98Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ProductController.cs",
-              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Controllers\\ProductController.cs",
-              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Controllers\\ProductController.cs",
-              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Controllers\\ProductController.cs",
-              "RelativeToolTip": "WebSite_CuaHangDienThoai\\Controllers\\ProductController.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAAxwA8AAAAeAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-17T15:22:17.394Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "_MenuFlashSaleAll.cshtml",
-              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Menu\\_MenuFlashSaleAll.cshtml",
-              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Views\\Menu\\_MenuFlashSaleAll.cshtml",
-              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Menu\\_MenuFlashSaleAll.cshtml",
-              "RelativeToolTip": "WebSite_CuaHangDienThoai\\Views\\Menu\\_MenuFlashSaleAll.cshtml",
-              "ViewState": "AQIAAHsAAAAAAAAAAAAAAJEAAAA6AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-17T16:00:00.704Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Partial_Category.cshtml",
-              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\ProductCategory\\Partial_Category.cshtml",
-              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Views\\ProductCategory\\Partial_Category.cshtml",
-              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\ProductCategory\\Partial_Category.cshtml",
-              "RelativeToolTip": "WebSite_CuaHangDienThoai\\Views\\ProductCategory\\Partial_Category.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAABbAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-17T15:38:41.413Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "_LayoutPage.cshtml",
-              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Shared\\_LayoutPage.cshtml",
-              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Views\\Shared\\_LayoutPage.cshtml",
-              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Shared\\_LayoutPage.cshtml",
-              "RelativeToolTip": "WebSite_CuaHangDienThoai\\Views\\Shared\\_LayoutPage.cshtml",
-              "ViewState": "AQIAAGAAAAAAAAAAAAAAAHIAAABTAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-17T15:37:41.879Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "DungLuong.cshtml",
-              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Product\\DungLuong.cshtml",
-              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Views\\Product\\DungLuong.cshtml",
-              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Product\\DungLuong.cshtml",
-              "RelativeToolTip": "WebSite_CuaHangDienThoai\\Views\\Product\\DungLuong.cshtml",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAAACkAAAAKAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-17T15:26:18.473Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Details.cshtml",
-              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Product\\Details.cshtml",
-              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Views\\Product\\Details.cshtml",
-              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\Product\\Details.cshtml",
-              "RelativeToolTip": "WebSite_CuaHangDienThoai\\Views\\Product\\Details.cshtml",
-              "ViewState": "AQIAABIAAAAAAAAAAAAAABIAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-17T15:24:08.549Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "ProductDetailByCapacity.cshtml",
-              "DocumentMoniker": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\ProductDetail\\ProductDetailByCapacity.cshtml",
-              "RelativeDocumentMoniker": "WebSite_CuaHangDienThoai\\Views\\ProductDetail\\ProductDetailByCapacity.cshtml",
-              "ToolTip": "E:\\CuaHangDienThoaiDiDong\\Web\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\WebSite_CuaHangDienThoai\\Views\\ProductDetail\\ProductDetailByCapacity.cshtml",
-              "RelativeToolTip": "WebSite_CuaHangDienThoai\\Views\\ProductDetail\\ProductDetailByCapacity.cshtml",
-              "ViewState": "AQIAABgAAAAAAAAAAAAAABwAAAACAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-17T15:23:43.014Z",
+              "WhenOpened": "2024-04-18T10:28:02.212Z",
               "EditorCaption": ""
             }
           ]

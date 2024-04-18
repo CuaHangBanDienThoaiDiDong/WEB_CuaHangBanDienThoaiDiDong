@@ -45,7 +45,7 @@
 
 
 
-    .arrivals_grid_sorting li {
+    /*.arrivals_grid_sorting li {
         margin-right: 15px;
     }
 
@@ -56,42 +56,42 @@
 
 
     .arrivals_grid_sorting {
-        list-style: none; /* Xóa các bullet points */
-        padding: 0; /* Xóa padding mặc định */
-    }
+        list-style: none;*/ /* Xóa các bullet points */
+    /*padding: 0;*/ /* Xóa padding mặc định */
+    /*}
 
         .arrivals_grid_sorting li {
-            margin-right: 20px; /* Thêm khoảng cách bên phải */
-            margin-bottom: 10px; /* Thêm khoảng cách phía dưới */
-            display: inline-flex; /* Sử dụng inline-flex để cải thiện bố trí */
-            align-items: center; /* Căn giữa các mục theo chiều dọc */
-            justify-content: center; /* Căn giữa nội dung theo chiều ngang */
-            vertical-align: top; /* Đảm bảo các mục li align ở phía trên */
-            text-align: center; /* Căn giữa nội dung trong mỗi mục li */
-            border: 1px solid #ccc; /* Thêm viền cho khung */
-            border-radius: 8px; /* Bo tròn góc của khung */
-            padding: 10px; /* Thêm padding để tạo không gian bên trong khung */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Thêm bóng cho khung */
-            background-color: #fff; /* Màu nền cho khung */
-            flex-wrap: wrap; /* Cho phép nội dung bao bọc nếu cần */
-            height: auto;
+            margin-right: 20px;*/ /* Thêm khoảng cách bên phải */
+    /*margin-bottom: 10px;*/ /* Thêm khoảng cách phía dưới */
+    /*display: inline-flex;*/ /* Sử dụng inline-flex để cải thiện bố trí */
+    /*align-items: center;*/ /* Căn giữa các mục theo chiều dọc */
+    /*justify-content: center;*/ /* Căn giữa nội dung theo chiều ngang */
+    /*vertical-align: top;*/ /* Đảm bảo các mục li align ở phía trên */
+    /*text-align: center;*/ /* Căn giữa nội dung trong mỗi mục li */
+    /*border: 1px solid #ccc;*/ /* Thêm viền cho khung */
+    /*border-radius: 8px;*/ /* Bo tròn góc của khung */
+    /*padding: 10px;*/ /* Thêm padding để tạo không gian bên trong khung */
+    /*box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/ /* Thêm bóng cho khung */
+    /*background-color: #fff;*/ /* Màu nền cho khung */
+    /*flex-wrap: wrap;*/ /* Cho phép nội dung bao bọc nếu cần */
+    /*height: auto;
             width: 300px;
-        }
+        }*/
 
-            /* Định kiểu cho ảnh trong mỗi li */
-            .arrivals_grid_sorting li img {
-                width: 50px; /* Chiều rộng của ảnh phù hợp với khung */
-                height: 50px; /* Chiều cao tự động để giữ tỷ lệ */
-                margin-bottom: 5px; /* Khoảng cách giữa ảnh và văn bản phía dưới */
-            }
+    /* Định kiểu cho ảnh trong mỗi li */
+    .arrivals_grid_sorting li img {
+        width: 20%;
+        height: 20%;
+        margin-bottom: 5px;
+    }
 
-            /* Nếu cần, thêm định kiểu cho văn bản để nó không quá dài và vượt quá khung */
-            .arrivals_grid_sorting li span {
-                display: block; /* Văn bản hiển thị trên một dòng riêng */
-                overflow: hidden; /* Cắt bớt nội dung nếu quá dài */
-                text-overflow: ellipsis; /* Thêm dấu ba chấm nếu văn bản bị cắt */
-                white-space: nowrap; /* Giữ cho văn bản không xuống dòng */
-            }
+    /* Nếu cần, thêm định kiểu cho văn bản để nó không quá dài và vượt quá khung */
+    /*.arrivals_grid_sorting li span {
+                display: block;*/ /* Văn bản hiển thị trên một dòng riêng */
+    /*overflow: hidden;*/ /* Cắt bớt nội dung nếu quá dài */
+    /*text-overflow: ellipsis;*/ /* Thêm dấu ba chấm nếu văn bản bị cắt */
+    /*white-space: nowrap;*/ /* Giữ cho văn bản không xuống dòng */
+    /*}*/
 
     .span-with-image {
         display: flex; /* Sử dụng flexbox để sắp xếp các phần tử con */
@@ -103,17 +103,19 @@
             width: 50px; /* Đặt chiều rộng cố định cho ảnh */
             height: 50px; /* Đặt chiều cao cố định cho ảnh */
         }
+
     #Iphone {
         display: flex; /* Sử dụng flexbox */
         align-items: center; /* Căn giữa các mục theo chiều dọc */
         color: white; /* Màu chữ trắng */
         justify-content: center; /* Căn giữa theo chiều ngang */
         align-items: center;
-        /
+        
     }
-    #Iphone h2 {
-        margin: 0 0 -5px 0px; /* Thêm một chút khoảng cách giữa SVG và h2 */
-    }
+
+        #Iphone h2 {
+            margin: 0 0 -5px 0px; /* Thêm một chút khoảng cách giữa SVG và h2 */
+        }
 </style>
 
 
@@ -134,7 +136,7 @@
                 </div>
                 <div class="col-md-5">
                     <div class="image-holder">
-                        <img src="~/images/banner-image.png" />
+                        <img src="~/images/banner-image.png" class="w-100" />
 
                     </div>
                 </div>
@@ -150,7 +152,7 @@
                 </div>
                 <div class="col-md-5">
                     <div class="image-holder">
-                        <img src="~/images/banner-image.png" />
+                        <img src="~/images/banner-image.png"  class="w-100"/>
 
                     </div>
                 </div>
@@ -166,7 +168,7 @@
                 </div>
                 <div class="col-md-5">
                     <div class="image-holder">
-                        <img src="~/images/banner-image.png" />
+                        <img src="~/images/banner-image.png" class="w-100"/>
 
                     </div>
                 </div>
@@ -176,48 +178,49 @@
     <div class="swiper-pagination"></div>
 </div>
 
-<div class="banner">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 banner_category bg-white rounded ">
-                <div class="row p-2">
-                    <div class="col-4">
-                        <img src="~/images/banner/Frame427320037--1--min-120x120.gif" class="w-100" />
+
+@*<div class="banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 banner_category bg-white rounded ">
+                    <div class="row p-2">
+                        <div class="col-4">
+                            <img src="~/images/banner/Frame427320037--1--min-120x120.gif" class="w-100" />
+                        </div>
+                        <div class="col-8">
+                            <div class="">
+                                <a href="categories.html">women's</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-8">
-                        <div class="">
-                            <a href="categories.html">women's</a>
+
+                </div>
+                <div class="col-md-3">
+                    <div class="banner_item align-items-center" style="background-image: url(~/images/banner_2.jpg)">
+                        <div class="banner_category">
+                            <a href="categories.html">accessories's</a>
                         </div>
                     </div>
                 </div>
-
-            </div>
-            <div class="col-md-3">
-                <div class="banner_item align-items-center" style="background-image: url(~/images/banner_2.jpg)">
-                    <div class="banner_category">
-                        <a href="categories.html">accessories's</a>
+                <div class="col-md-3">
+                    <div class="banner_item align-items-center" style="background-image: url(~/images/banner_3.jpg)">
+                        <div class="banner_category">
+                            <a href="categories.html">men's</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="banner_item align-items-center" style="background-image: url(~/images/banner_3.jpg)">
-                    <div class="banner_category">
-                        <a href="categories.html">men's</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="banner_item align-items-center" style="background-image: url(~/images/banner_3.jpg)">
-                    <div class="banner_category">
-                        <a href="categories.html">men's</a>
+                <div class="col-md-3">
+                    <div class="banner_item align-items-center" style="background-image: url(~/images/banner_3.jpg)">
+                        <div class="banner_category">
+                            <a href="categories.html">men's</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </div>*@
 <!--Menu ProductDetail -->
-<div class="container ">
+<div class="container pt-5">
 
     <div class="row" id="banner">
         <div class="col-md-12">
@@ -251,11 +254,11 @@
 
                     <h2 style="color:white">iPhone</h2>
                 </div>
-                    
+
             </div>
             <div class="col-4"></div>
         </div>
-        <div class="col-md-12 "style="margin-top:-60px">
+        <div class="col-md-12 " style="margin-top:-60px">
             <div class="">
                 @Html.Action("MenuIphone", "Menu")
             </div>
@@ -264,13 +267,13 @@
 
 
 
-    <div class="row pt-4" id="Deal">
-        <div class="col-md-12">
-            <div class="">
-                @Html.Action("MenuDeal", "Menu")
+    @*<div class="row pt-4" id="Deal">
+            <div class="col-md-12">
+                <div class="">
+                    @Html.Action("MenuDeal", "Menu")
+                </div>
             </div>
-        </div>
-    </div>
+        </div>*@
 
 
 
@@ -306,8 +309,8 @@
     <div class="row pt-4" style="border: none; height:100%">
         <div class="col-md-12">
             <div class="">
-                <div class="card"  >
-                    <div class="card-body" >
+                <div class="card">
+                    <div class="card-body">
                         <div class="row">
                             <ul class="nav">
                                 <li class="nav-item">
@@ -335,188 +338,20 @@
 
 
 
+@*=----------------------------------------------------------MenuArrivals*@
 
-
-
-
-
-
-
-
-<div class="new_arrivals pt-3">
+<div class="new_arrivals">
     <div class="container">
-        <div class="row">
-            <div class="col ">
-                <div class="section_title new_arrivals_title">
-                    <b style="font-size:x-large;color:white;">GỢI Ý HÔM NAY </b>
-                </div>
-            </div>
-        </div>
-      
-
-        <div class="row align-items-center">
-            <div class="col-md-12 text-center">
-                <div class="new_arrivals_sorting">
-                    <ul class="arrivals_grid_sorting clearfix">
-                        <li class="grid_sorting_button pr-5 d-flex flex-column justify-content-center align-items-center active is-checked" data-filter="*">
-                            <span class="span-with-image">
-                                <img src="~/images/goiy-1.png" /> Cho bạn
-                            </span>
-                        </li>
-                        <li class="ml-5 grid_sorting_button  d-flex flex-column justify-content-center align-items-center" data-filter=".LapTopGaming">
-                            <span class="span-with-image">
-                                <img src="~/images/icon-laptop-gaming-desk-50x50-50x50-50x50-1.png" />    LapTop Gaming
-                            </span>
-                        </li>
-                        <li class="grid_sorting_button  d-flex flex-column justify-content-center align-items-center" data-filter=".PhuKien">
-                            <span class="span-with-image">
-                              
-                                <img src="~/images/pk-50-50x50-50x50-2.png" />  Phụ Kiện
-                            </span>
-                        </li>
-                        <li class="grid_sorting_button  d-flex flex-column justify-content-center align-items-center" data-filter=".Tablet">
-                            <span class="span-with-image">
-                                <img src="~/images/desk11-50x50-1-50x50-1-50x50.png" />   Tablet giá rẻ
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-
-        @*@Html.Action("MenuArrivals", "Menu")*@
-        <div class="row">
-            <div class="col">
-                <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
-
-                    <div class="product-item men">
-                        <div class="product discount product_filter">
-                            <div class="product_image">
-                                <img src="~/images/product_1.png" alt="">
-                            </div>
-                            <div class="favorite favorite_left"></div>
-                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                            <div class="product_info">
-                                <h6 class="product_name"><a href="single.html">Fujifilm X100T 16 MP Digital Camera (Silver)</a></h6>
-                                <div class="product_price">$520.00<span>$590.00</span></div>
-                            </div>
-                        </div>
-                        <div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
-                    </div>
-
-
-
-
-
-                    <!-- Product 2 -->
-
-                    <div class="product-item LapTopGaming">
-                        <div class="product product_filter">
-                            <div class="product_image">
-                                <img src="images/product_2.png" alt="">
-                            </div>
-                            <div class="favorite"></div>
-                            <div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center"><span>new</span></div>
-                            <div class="product_info">
-                                <h6 class="product_name"><a href="single.html">Samsung CF591 Series Curved 27-Inch LapTopGaming</a></h6>
-                                <div class="product_price">$610.00</div>
-                            </div>
-                        </div>
-                        <div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
-                    </div>
-
-                    <!-- Product 2 -->
-
-                    <div class="product-item PhuKien">
-                        <div class="product product_filter">
-                            <div class="product_image">
-                                <img src="images/product_2.png" alt="">
-                            </div>
-                            <div class="favorite"></div>
-                            <div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center"><span>new</span></div>
-                            <div class="product_info">
-                                <h6 class="product_name"><a href="single.html">Samsung CF591 Series Phụ kiện</a></h6>
-                                <div class="product_price">$610.00</div>
-                            </div>
-                        </div>
-                        <div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
-                    </div>
-
-                    <!-- Product 2 -->
-
-                    <div class="Tablet">
-                        <div class="product product_filter">
-                           
-                        </div>
-                       
-
-
-                     
-                     
-                    </div>
-
-                </div>
-            </div>
-        </div>
+        @Html.Action("MenuArrivals", "Menu")
     </div>
 </div>
 
 
 
 
-
-
-
-
-
-
-
-@*<div class="container pt-3" id="GoiYHomNay">
-    <b style="font-size:x-large">GỢI Ý HÔM NAY </b>
-    <div class="row">
-        <div class="col-md-3">
-
-        </div>
-        <div class="col-md-3"></div>
-        <div class="col-md-3"></div>
-        <div class="col-md-3"></div>
-    </div>
-
-    <div class="row pt-1">
-
-        @Html.Action("MenuGoiYHomNay", "Menu")
-        <br />
-
-    </div>
-    <div class="row pt-2">
-        <div class="col-4"></div>
-        <div class="col-4 bg-light" style="border:solid 1px black; background-color:whitesmoke">
-            <a href="/product/index" class="btn  w-100 h-100 text-center ">
-                <small>
-                    Xem thêm sản phẩm
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="ml-1 mb-1 bi bi-caret-right align-items-center" viewBox="0 0 16 16">
-                        <path d="M6 12.796V3.204L11.481 8zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753" />
-                    </svg>
-
-                </small>
-            </a>
-        </div>
-        <div class="col-4"></div>
-    </div>
-</div>*@
-
-
-
-
-
-
-
-
-
 <!-- Deal of the week -->
 
-<div class="deal_ofthe_week">
+<div class="deal_ofthe_week " style="margin-top:60px">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
@@ -621,15 +456,15 @@
 @section scripts{
     <script src="~/Content/assets/js/categories_custom.js"></script>
     @*<script>
-        $(document).ready(function () {
-            $('.arrivals_grid_sorting li').click(function () {
-                // Đặt lại màu nền cho tất cả các hình ảnh trong các mục li
-                $('.arrivals_grid_sorting li img').css('background-color', '');
+            $(document).ready(function () {
+                $('.arrivals_grid_sorting li').click(function () {
+                    // Đặt lại màu nền cho tất cả các hình ảnh trong các mục li
+                    $('.arrivals_grid_sorting li img').css('background-color', '');
 
-                // Thay đổi màu nền của hình ảnh trong mục li được nhấp
-                $(this).find('img').css('background-color', '#fe4c50');
+                    // Thay đổi màu nền của hình ảnh trong mục li được nhấp
+                    $(this).find('img').css('background-color', '#fe4c50');
+                });
             });
-        });
-    </script>*@
+        </script>*@
 }
 

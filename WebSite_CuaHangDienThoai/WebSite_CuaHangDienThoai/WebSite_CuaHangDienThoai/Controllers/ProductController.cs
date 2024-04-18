@@ -45,7 +45,11 @@ namespace WebSite_CuaHangDienThoai.Controllers
         //    }
         //    return View(item);
         //}
-
+        public ActionResult Partial_ItemsByCateId() 
+        {
+            var items = db.tb_Products.Where(x => x.IsHome==true && x.IsActive == true).Take(12).ToList();
+            return PartialView(items);
+        }
 
 
         public ActionResult Details(int? id, int? ProductDetailId)
@@ -80,6 +84,12 @@ namespace WebSite_CuaHangDienThoai.Controllers
             
            
         }
+
+
+
+
+
+
 
 
         public ActionResult Test123()

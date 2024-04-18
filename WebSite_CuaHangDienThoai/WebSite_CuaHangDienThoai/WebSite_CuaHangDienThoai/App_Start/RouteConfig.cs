@@ -27,6 +27,20 @@ namespace WebSite_CuaHangDienThoai
                   defaults: new { controller = "ProductCategory", action = "Detail", id = UrlParameter.Optional },
                   namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
               );
+
+
+            routes.MapRoute(
+          name: "404-PageNotFound",
+          url: "error/notfound",
+          defaults: new { controller = "Error", action = "NotFound" }
+      );
+
+            routes.MapRoute(
+                name: "500-InternalServerError",
+                url: "error/servererror",
+                defaults: new { controller = "Error", action = "ServerError" }
+            );
+
         }
     }
 }

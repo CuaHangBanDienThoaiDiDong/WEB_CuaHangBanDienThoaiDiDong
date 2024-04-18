@@ -3297,6 +3297,7 @@
     <Content Include="images\Logo\OPPO42-b_5.jpg" />
     <Content Include="images\Logo\samsungnew-220x48-1.png" />
     <Content Include="images\Logo\vivo-logo-220-220x48-3.png" />
+    <Content Include="images\Logo\vnpay-logo-inkythuatso-01-13-16-29-51.jpg" />
     <Content Include="images\Macdinh-1-1200x120-1.gif" />
     <Content Include="images\map_marker.png" />
     <Content Include="images\pk-50-50x50-50x50-2.png" />
@@ -3867,6 +3868,7 @@
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
     <Compile Include="Common\Common.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\ProductCategoryController.cs" />
@@ -4028,6 +4030,10 @@
     <Content Include="Views\Menu\MenuIphone.cshtml" />
     <Content Include="Views\Product\DetailsTest.cshtml" />
     <Content Include="Views\ProductDetail\Partial_PhanTramGiaGiam.cshtml" />
+    <Content Include="Views\ProductCategory\Partial_LapTop.cshtml" />
+    <Content Include="Views\Product\Partial_ItemsByCateId.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Error\ServerError.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

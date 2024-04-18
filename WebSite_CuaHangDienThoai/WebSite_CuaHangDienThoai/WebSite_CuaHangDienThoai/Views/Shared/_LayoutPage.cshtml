@@ -52,7 +52,7 @@
                         <div class="top_nav_right">
                             <ul class="top_nav_menu">
 
-                                <!-- Currency / Language / My Account -->
+                                 Currency / Language / My Account 
 
                                 <li class="currency">
                                     <a href="#">
@@ -116,92 +116,48 @@
 
                                 @Html.Action("Partial_Category", "ProductCategory")
 
-                                <li>
-
-                                    <!--<div class="dropdown">
-                                    <a class="nav-link me-4 dropdown-toggle" href="#company-services">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tablet-landscape-fill" viewBox="0 0 16 16">
-                                            <path d="M2 14a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2zm11-7a1 1 0 1 0 0 2 1 1 0 0 0 0-2" />
-                                        </svg>
-                                        Máy tính bảng
-                                    </a>
-
-                                    <ul class="dropdown-menu" style="width:1000px;">
-                                        <li>
-                                            <div class="container">
-                                                <div class="row">
-                                                    <div class="col-2 mx-auto">
-                                                        <a href="#DongMay" class="pt-2 m-lg-2">
-                                                            <b>Dòng máy</b>
-                                                        </a>
-                                                        <a href="#Iphone">
-                                                            <span class="">
-                                                                iPad (Apple)
-                                                            </span>
-                                                        </a>-->
-                                    <!-- Thêm các thẻ con khác ở đây -->
-                                    <!--</div>
-                                <div class="col-3 mx-auto">
-                                    <a href="#DongMay" class="pt-2 m-lg-2">
-                                        <b>Mức giá điện thoại</b>
-                                    </a>
-                                    <a href="#Iphone">
-                                        <span class="SanPham">
-                                            Trên 25 triệu
-                                        </span>
-                                    </a>-->
-                                    <!-- Thêm các thẻ con khác ở đây -->
-                                    <!--</div>
-                                <div class="col-lg-7 mx-auto">
-                                    <a href="#ĐiệnthoạiHOT" class="pt-3">
-                                        <b>Sản phẩm HOT</b>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16" style="color:red">
-                                            <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15" />
-                                        </svg>
-                                    </a>
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <a href="#Iphone">
-                                                <span class="SanPham">
-                                                    iPad Gen 10
-                                                </span>
-                                            </a>-->
-                                    <!-- Thêm các thẻ con khác ở đây -->
-                                    <!--</div>
-                                                            <div class="col-lg-8">
-                                                                <img src="https://24hstore.vn/images/menus/original/8-3-mainmenu-ipad-gen-10-9190_1710474057.webp" class="w-100" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>-->
-
-
-
-
-                                </li>
-                                <li><a href="#">promotion</a></li>
+                               
+                                @*<li><a href="#">promotion</a></li>
                                 <li><a href="#">pages</a></li>
-                                <li><a href="#">blog</a></li>
-                                <li><a href="contact.html">contact</a></li>
+                                <li><a href="#">blog</a></li>*@
+                                <li><a href="contact.html" style="color:white;">contact</a></li>
                             </ul>
                             <ul class="navbar_user">
                                 <li><a href="#"><i class="fa fa-search" aria-hidden="true" style="color:white"></i></a></li>
-                                <li><a href="#"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a></li>
-                                <li class="checkout "style="background-color:black">
-                                    <a href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:white" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
-                                            <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
-                                        </svg>
+                                @if (Session["Client"] != null)
+                                {
+                                    <p>
+                                        @Session["TenKhachHang"]
+                                    </p>
+                                    <a href="~/Account/LogOut" class="text-black"><i class="far fa-sign-out-alt"></i></a>
+                                    <li class="checkout ">
+                                        <a href="#" style="background-color: #101010;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:white" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
+                                                <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
+                                            </svg>
+                                            <span id="checkout_items" class="checkout_items">2</span>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li><a href="/Account/Login"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a></li>
+                                    <li class="checkout ">
+                                        <a href="/Account/Login" style="background-color: #101010;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:white" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
+                                                <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
+                                            </svg>
+                                            
+                                            @*<span id="checkout_items" class="checkout_items">2</span>*@
+                                        </a>
+                                    </li>
+                                }
 
 
-                                        @*<i class="fa fa-shopping-cart" aria-hidden="true"></i>*@
-                                        <span id="checkout_items" class="checkout_items">2</span>
-                                    </a>
-                                </li>
+
+                                @*<li><a href="#"><i class="fa fa-search" aria-hidden="true" style="color:white"></i></a></li>
+        <li><a href="#"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a></li>*@
+
                             </ul>
                             <div class="hamburger_container">
                                 <i class="fa fa-bars" aria-hidden="true"></i>
@@ -220,6 +176,10 @@
         </div>
 
     </header>
+
+
+
+
     <div class="fs_menu_overlay"></div>
     <div class="hamburger_menu">
         <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
@@ -279,13 +239,9 @@
         @RenderBody()
     </div>
 
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
+   
 
-    <footer class="footer ">
+    <footer class="footer pt-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
