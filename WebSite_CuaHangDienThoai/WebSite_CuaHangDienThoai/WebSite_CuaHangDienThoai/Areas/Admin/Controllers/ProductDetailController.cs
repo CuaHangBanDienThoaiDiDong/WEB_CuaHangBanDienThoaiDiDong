@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
 using WebSite_CuaHangDienThoai.Models;
@@ -41,7 +42,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         public ActionResult Detail(int? id)
         {
             var item = db.tb_ProductDetail.Find(id);
-            if (item != null) 
+            if (item != null)
             {
                 ViewBag.Title = item.Title;
                 return View(item);
@@ -79,8 +80,57 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
 
 
+        //public ActionResult Partial_CapacityByProductsId(int id)
+        //{
+        //    var item = db.tb_ProductDetail.Find(id);
+        //    if (item !=null)
+        //    {
+
+        //        return PartialView(item);
+        //    }
+        //    ViewBag.txt = "Không tồn tại bảng ghi !!!";
+        //    return PartialView();
+        //}
 
 
+        public ActionResult Partial_CapacityByProductsId(int id)
+        {
+            var query = from pd in db.tb_ProductDetail
+                        join p in db.tb_Products on pd.ProductsId equals p.ProductsId
+                        where pd.ProductsId == id
+                        select new
+                        {
+                            
+                            Color = pd.Color,
+                            DungLuong = pd.DungLuong
+                        };
+
+            // Tạo một danh sách để lưu trữ các màu và dung lượng mà không bị lặp lại
+            List<string> colors = new List<string>();
+            List<int> dungLuongs = new List<int>();
+
+            foreach (var item in query)
+            {
+                if (!colors.Contains(item.Color))
+                {
+                    colors.Add(item.Color);
+                }
+
+                if (!dungLuongs.Contains((int)item.DungLuong))
+                {
+                    dungLuongs.Add((int)item.DungLuong);
+                }
+            }
+
+            // Chuyển đổi danh sách dung lượng sang một danh sách các đối tượng ProductDetailViewModel
+            List<ProductDetailViewModel> result = dungLuongs.Select(dl => new ProductDetailViewModel
+            {
+                Color = string.Join(", ", colors),
+                DungLuong = dl
+            }).ToList();
+            ViewBag.ProductsId = id;
+            return PartialView(result);
+        }
 
 
 

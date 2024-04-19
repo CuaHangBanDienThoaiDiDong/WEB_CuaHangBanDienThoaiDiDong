@@ -24,33 +24,7 @@
                                     <h4 class="mt-1 mb-5 pb-1">LTD MiniStore</h4>
                                 </div>
 
-                                <form>
-                                    @*<p>Please login to your account</p>*@
-
-                                    <div data-mdb-input-init class="form-outline mb-4">
-                                        <input type="email" id="form2Example11" class="form-control"
-                                               placeholder="Số điện thoại hoặc mail" />
-                                        <label class="form-label" for="form2Example11">Tài khoản</label>
-                                    </div>
-
-                                    <div data-mdb-input-init class="form-outline mb-4">
-                                        <input type="password" id="form2Example22" class="form-control" />
-                                        <label class="form-label" for="form2Example22">Mật khẩu</label>
-                                    </div>
-
-                                    <div class="text-center pt-1 mb-5 pb-1">
-                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button">
-                                           Đăng Nhập
-                                        </button>
-                                        <a class="text-muted" href="#!">Quên mật khẩu ?</a>
-                                    </div>
-
-                                    <div class="d-flex align-items-center justify-content-center pb-4">
-                                        <p class="mb-0 me-2">Bạn chưa có tài khoản ?</p>
-                                        <a href="/Account/Register" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-danger">Tạo mới</a>
-                                    </div>
-
-                                </form>
+                           @Html.Action("Partial_Login","Account")
 
                             </div>
                         </div>

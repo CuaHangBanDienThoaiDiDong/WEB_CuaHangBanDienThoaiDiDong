@@ -3266,6 +3266,9 @@
     <Content Include="Content\LayOut\StyleSheet3.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\templates\send1.html" />
+    <Content Include="Content\templates\send2.html" />
+    <Content Include="Content\templates\SendForgotPass.html" />
     <Content Include="Global.asax" />
     <Content Include="images\background\Frame-knockout-desktop-226x500.jpg" />
     <Content Include="images\background\Redmi-Note-13-1200-300-1200x300.png" />
@@ -3615,6 +3618,7 @@
     <Content Include="Areas\Admin\Views\ProductDetail\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ProductDetail\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\ProductDetail\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductDetail\Partial_CapacityByProductsId.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -3975,6 +3979,8 @@
     </Compile>
     <Compile Include="Models\Token\Admin\Admin_TokenProductCategory.cs" />
     <Compile Include="Models\Token\Admin\Admin_TokenProductDetail.cs" />
+    <Compile Include="Models\Token\Client\Client_ForgetPassClient.cs" />
+    <Compile Include="Models\Token\Client\Client_TokenAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -4034,6 +4040,10 @@
     <Content Include="Views\Product\Partial_ItemsByCateId.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Error\ServerError.cshtml" />
+    <Content Include="Views\Account\Partial_Login.cshtml" />
+    <Content Include="Views\Account\Forgotpassword.cshtml" />
+    <Content Include="Views\Account\Partail_UpdatePass.cshtml" />
+    <Content Include="Views\Account\UpdatePass.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -62,7 +62,7 @@
                         <th>Dòng sản phẩm</th>
                         <th>Loại sản phẩm</th>
                         <th>Hãng</th>
-                        <th>Ram/Dung Lượng  </th>
+                        <th>Dung Lượng  </th>
                         <th>Màu</th>
                         <th>Hiển thị</th>
                         <th>Trang chủ</th>
@@ -163,7 +163,7 @@
                             }
                             else
                             {
-                                <span>
+                                @*<span>
                                     @checkProductDetail.Ram GB /
                                     @if (checkProductDetail.DungLuong >= 999)
                                     {
@@ -178,8 +178,10 @@
                                         <span>@checkProductDetail.DungLuong</span>
                                     }
 
-                                </span>
-                                <p>Thêm </p>
+                                </span>*@
+                                @Html.Action("Partial_CapacityByProductsId", "ProductDetail", new {id= item.ProductsId })
+                              
+                                <a href="/admin/ProductDetail/add/@item.ProductsId" style="margin-top:-20px">Thêm</a>
 
                             }
 
@@ -189,7 +191,7 @@
 
                         @if (checkProductDetail != null)
                         {
-                         
+
 
 
 
@@ -209,9 +211,24 @@
                                 <a href='#' data-id="@item.ProductsId" class="btnIsSale">@Html.Raw(strCheckSale)</a>
                             </td>
                         }
-else
+                        else
                         {
-                            <template class="text-danger">Chưa có bản ghi !!!</template>
+                            <td class="text-center">
+                                <i class='fas fa-times text-danger'></i>
+                            </td>
+                            <td class="text-center">
+                                <i class='fas fa-times text-danger'></i>
+                            </td>
+                            <td class="text-center">
+                                <i class='fas fa-times text-danger'></i>
+                            </td>
+                            <td class="text-center">
+                                <i class='fas fa-times text-danger'></i>
+                            </td>
+                            <td class="text-center">
+                                <i class='fas fa-times text-danger'></i>
+                            </td>
+                            
                         }
 
                         <td>
