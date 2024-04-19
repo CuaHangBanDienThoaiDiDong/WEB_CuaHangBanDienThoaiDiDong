@@ -52,7 +52,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
-        public ActionResult Details(int? id, int? ProductDetailId)
+        public ActionResult Details(int? id, int ProductDetailId)
         {
             if (ProductDetailId > 0)
             {

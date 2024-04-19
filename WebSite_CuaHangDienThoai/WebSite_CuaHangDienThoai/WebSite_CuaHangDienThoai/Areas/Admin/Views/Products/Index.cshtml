@@ -141,65 +141,79 @@
                                 }
                                 else
                                 {
-                                      <tr class="text-center" id="trow_@item.ProductsId">
-                                        <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
-                                        <td>@i</td>
-                                        <td><img class="imgproduct" data-id="@item.ProductsId" src="@strImg" width="50" /></td>
-                                        <td> <a href="/admin/Products/Detail/@item.ProductsId"> @item.Title</a>  </td>
-                                        <td>@item.tb_ProductCategory.Title</td>
-                                        <td>
-                                            @item.tb_ProductCompany.Title
-                                            @*@Html.Action("Partail_ProductDetail", "Product", new { id = item.ProductId })*@
-                                        </td>
-                                        <td>
-                                            @if (checkProductDetail == null)
-                                            {
-                                                <a href="/admin/ProductDetail/add/@item.ProductsId" class="btn btn-warning">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cone-striped" viewBox="0 0 16 16">
-                                                        <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9s-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12m-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4s1.2-.036 1.725-.098m4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257z" />
-                                                    </svg>
-                                                </a>
+                    <tr class="text-center" id="trow_@item.ProductsId">
+                        <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
+                        <td>@i</td>
+                        <td><img class="imgproduct" data-id="@item.ProductsId" src="@strImg" width="50" /></td>
+                        <td> <a href="/admin/Products/Detail/@item.ProductsId"> @item.Title</a>  </td>
+                        <td>@item.tb_ProductCategory.Title</td>
+                        <td>
+                            @item.tb_ProductCompany.Title
+                            @*@Html.Action("Partail_ProductDetail", "Product", new { id = item.ProductId })*@
+                        </td>
+                        <td>
+                            @if (checkProductDetail == null)
+                            {
+                                <a href="/admin/ProductDetail/add/@item.ProductsId" class="btn btn-warning">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cone-striped" viewBox="0 0 16 16">
+                                        <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9s-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12m-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4s1.2-.036 1.725-.098m4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257z" />
+                                    </svg>
+                                </a>
 
-                                            }
-                                            else
-                                            {
-                                                <span>
-                                                    @checkProductDetail.Ram GB /
-                                                    @if (checkProductDetail.DungLuong >= 999)
-                                                    {
-                                                        <span>1Tb</span>
-                                                    }
-                                                    else if (checkProductDetail.DungLuong == 2999)
-                                                    {
-                                                        <span>2Tb</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span>@checkProductDetail.DungLuong</span>
-                                                    }
+                            }
+                            else
+                            {
+                                <span>
+                                    @checkProductDetail.Ram GB /
+                                    @if (checkProductDetail.DungLuong >= 999)
+                                    {
+                                        <span>1Tb</span>
+                                    }
+                                    else if (checkProductDetail.DungLuong == 2999)
+                                    {
+                                        <span>2Tb</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@checkProductDetail.DungLuong</span>
+                                    }
 
-                                                </span>
-                                                <p>Thêm </p>
+                                </span>
+                                <p>Thêm </p>
 
-                                             }
+                            }
 
                         </td>
                         <td>@*@item.CreatedBy.ToString("dd/MM/yyyy")*@</td>
-                        <td class="text-center">
-                            <a href='#' data-id="@item.ProductsId" class="btnIsActive">@Html.Raw(strCheckIsActive)</a>
-                        </td>
-                        <td class="text-center">
-                            <a href='#' data-id="@item.ProductsId" class="btnIsHome">@Html.Raw(strCheckHome)</a>
-                        </td>
-                        <td class="text-center">
-                            <a href='#' data-id="@item.ProductsId" class="btnIsHot">@Html.Raw(strCheckHot)</a>
-                        </td>
-                        <td class="text-center">
-                            <a href='#' data-id="@item.ProductsId" class="btnIsFeature">@Html.Raw(strCheckIsFeature)</a>
-                        </td>
-                        <td class="text-center">
-                            <a href='#' data-id="@item.ProductsId" class="btnIsSale">@Html.Raw(strCheckSale)</a>
-                        </td>
+
+
+                        @if (checkProductDetail != null)
+                        {
+                         
+
+
+
+                            <td class="text-center">
+                                <a href='#' data-id="@item.ProductsId" class="btnIsActive">@Html.Raw(strCheckIsActive)</a>
+                            </td>
+                            <td class="text-center">
+                                <a href='#' data-id="@item.ProductsId" class="btnIsHome">@Html.Raw(strCheckHome)</a>
+                            </td>
+                            <td class="text-center">
+                                <a href='#' data-id="@item.ProductsId" class="btnIsHot">@Html.Raw(strCheckHot)</a>
+                            </td>
+                            <td class="text-center">
+                                <a href='#' data-id="@item.ProductsId" class="btnIsFeature">@Html.Raw(strCheckIsFeature)</a>
+                            </td>
+                            <td class="text-center">
+                                <a href='#' data-id="@item.ProductsId" class="btnIsSale">@Html.Raw(strCheckSale)</a>
+                            </td>
+                        }
+else
+                        {
+                            <template class="text-danger">Chưa có bản ghi !!!</template>
+                        }
+
                         <td>
                             @*<a href="/admin/Product/edit/@item.ProductId" class="btn btn-sm btn-primary">Sửa</a>
             <a href="#" data-id="@item.ProductId" class="btn btn-sm btn-danger btnDelete">Xóa</a>*@
