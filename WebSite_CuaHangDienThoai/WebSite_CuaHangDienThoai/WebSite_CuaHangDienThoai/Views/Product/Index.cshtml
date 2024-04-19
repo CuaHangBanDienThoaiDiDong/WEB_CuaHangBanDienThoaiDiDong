@@ -222,8 +222,11 @@
                                                             <h6 class="product_name">
                                                                 @*<a href="/Product/Details/@item.ProductsId" style="color:white ">@item.Title</a>*@
                                                                 <a class="d-inline-block text-truncate" href="/Product/Details?id=@item.ProductsId&ProductDetailId=1" style="color:white ">
+            @item.Title
+        </a>
+                                                                @*<a class="d-inline-block text-truncate" href="/Product/Details/id=@item.ProductsId" style="color:white ">
                                                                     @item.Title
-                                                                </a>
+                                                                </a>*@
                                                             </h6>
 
                                                             @Html.Action("Partail_ProductDetailById", "ProductDetail", new { id = item.ProductsId })

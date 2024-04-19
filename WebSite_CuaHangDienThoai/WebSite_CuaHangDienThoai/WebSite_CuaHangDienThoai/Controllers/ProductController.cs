@@ -38,8 +38,9 @@ namespace WebSite_CuaHangDienThoai.Controllers
         //public ActionResult Details(int? id)
         //{
         //    var item = db.tb_Products.Find(id);
-        //    if (item != null) {
-        //        ViewBag.Title=item.Title;
+        //    if (item != null)
+        //    {
+        //        ViewBag.Title = item.Title;
 
         //        ViewBag.ProductCompany = item.tb_ProductCompany.Title;
         //    }
@@ -63,16 +64,16 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
                     ViewBag.ProductCompany = item.tb_ProductCompany.Title;
 
-                    var itemProductDetail = db.tb_ProductDetail.FirstOrDefault(r=>r.ProductDetailId== ProductDetailId &&r.ProductsId==id);
+                    var itemProductDetail = db.tb_ProductDetail.FirstOrDefault(r => r.ProductDetailId == ProductDetailId && r.ProductsId == id);
                     if (itemProductDetail != null)
                     {
-                        ViewBag.DungLuong=itemProductDetail.DungLuong;  
+                        ViewBag.DungLuong = itemProductDetail.DungLuong;
                         return View(itemProductDetail);
                     }
                 }
                 return View(item);
             }
-            else 
+            else
             {
                 var item = db.tb_Products.Find(id);
                 if (item != null)
@@ -81,8 +82,8 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 }
                 return View();
             }
-            
-           
+
+
         }
 
 
