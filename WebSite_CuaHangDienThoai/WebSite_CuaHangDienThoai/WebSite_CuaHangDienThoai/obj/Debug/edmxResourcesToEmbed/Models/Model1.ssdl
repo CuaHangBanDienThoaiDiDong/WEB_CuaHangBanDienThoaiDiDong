@@ -1,15 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
-  </EntityType>
   <EntityType Name="tb_Cart">
     <Key>
       <PropertyRef Name="CartId" />
@@ -303,15 +293,6 @@
     <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
     <Property Name="Clock" Type="bit" />
     <Property Name="IdChucNang" Type="int" />
-  </EntityType>
-  <EntityType Name="tb_StaffImage">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Image" Type="nvarchar(max)" />
-    <Property Name="IsDefault" Type="bit" Nullable="false" />
-    <Property Name="NhanVienId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="tb_Store">
     <Key>
@@ -680,18 +661,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="StafftoImage">
-    <End Role="tb_StaffImage" Type="Self.tb_StaffImage" Multiplicity="1" />
-    <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="tb_StaffImage">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="tb_Staff">
-        <PropertyRef Name="NhanVienId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="VouchertoOrder">
     <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="0..1" />
     <End Role="tb_Voucher" Type="Self.tb_Voucher" Multiplicity="*" />
@@ -717,7 +686,6 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Cart" EntityType="Self.tb_Cart" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_CartItem" EntityType="Self.tb_CartItem" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_ExportWareHouse" EntityType="Self.tb_ExportWareHouse" Schema="dbo" store:Type="Tables" />
@@ -738,7 +706,6 @@
     <EntitySet Name="tb_ReviewDetail" EntityType="Self.tb_ReviewDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Role" EntityType="Self.tb_Role" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Staff" EntityType="Self.tb_Staff" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="tb_StaffImage" EntityType="Self.tb_StaffImage" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Store" EntityType="Self.tb_Store" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Voucher" EntityType="Self.tb_Voucher" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Warehouse" EntityType="Self.tb_Warehouse" Schema="dbo" store:Type="Tables" />
@@ -848,10 +815,6 @@
     </AssociationSet>
     <AssociationSet Name="StafftoFunction" Association="Self.StafftoFunction">
       <End Role="tb_Function" EntitySet="tb_Function" />
-      <End Role="tb_Staff" EntitySet="tb_Staff" />
-    </AssociationSet>
-    <AssociationSet Name="StafftoImage" Association="Self.StafftoImage">
-      <End Role="tb_StaffImage" EntitySet="tb_StaffImage" />
       <End Role="tb_Staff" EntitySet="tb_Staff" />
     </AssociationSet>
     <AssociationSet Name="VouchertoOrder" Association="Self.VouchertoOrder">

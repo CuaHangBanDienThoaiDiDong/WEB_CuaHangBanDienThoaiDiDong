@@ -11,9 +11,7 @@ namespace WebSite_CuaHangDienThoai.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
+    
     public partial class tb_Staff
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,8 +21,7 @@ namespace WebSite_CuaHangDienThoai.Models
             this.tb_ImportWarehouse = new HashSet<tb_ImportWarehouse>();
             this.tb_Role = new HashSet<tb_Role>();
         }
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    
         public int NhanVienId { get; set; }
         public string MSNV { get; set; }
         public string SDT { get; set; }
@@ -52,6 +49,5 @@ namespace WebSite_CuaHangDienThoai.Models
         public virtual ICollection<tb_ImportWarehouse> tb_ImportWarehouse { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_Role> tb_Role { get; set; }
-        public virtual tb_StaffImage tb_StaffImage { get; set; }
     }
 }

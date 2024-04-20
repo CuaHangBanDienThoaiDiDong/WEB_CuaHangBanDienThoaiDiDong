@@ -114,19 +114,19 @@
                 if (res.Code == -5) {
                     Swal.fire({
                         icon: "info",
-                        title: "Lỗi tìm...",
-                        text: "Mã hàng được trả về ",
+                        title: "Không để trống...",
+                        text: "Vui lòng nhậ đầy đủ thông tin nhân viên ",
                         /*footer: '<a href="#">Why do I have this issue?</a>'*/
                     });
                 }
-                if (res.Code == -6) {
-                    Swal.fire({
-                        icon: "warning",
-                        title: "Lỗi tìm...",
-                        text: "Đơn hàng lập lại 2 lần ",
-                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
-                    });
-                }
+                //if (res.Code == -6) {
+                //    Swal.fire({
+                //        icon: "warning",
+                //        title: "Lỗi tìm...",
+                //        text: "Đơn hàng lập lại 2 lần ",
+                //        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                //    });
+                //}
             }
 
         }
@@ -141,15 +141,18 @@
 
 
     @Html.AntiForgeryToken()
-    <div class="container">
+    @Html.ValidationSummary(true)
 
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title text-center">THÔNG TIN NHÂN VIÊN MỚI </h3>
+        </div>
 
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="job-detail mt-2 p-4">
-
-
-                    <div class="custom-form">
+        <div class=" card-body">
+            <div class="row">
+                <div class="col-md-12 ">
+                    @using (Html.BeginForm("Add", "ProductDetail", FormMethod.Post))
+                    {
                         <form>
                             <div class="row">
                                 <div class="col-md-12">
@@ -267,12 +270,172 @@
                                         <div class="col-lg-12">
                                             <div class="form-group app-label">
 
+                                                <label>Giới tính</label>
+                                                <select class="form-control" id="drTypePayment" name="GioiTinh">
+                                                    <option value="0" selected>Giới tính</option>
+                                                    <option value="1" id="chuyenkhoan">Nam</option>
+                                                    <option value="2" id="chuyenkhoan">Nữ</option>
+                                                   
+                                                </select>
+
+                                                @*@Html.EditorFor(model => model.GioiTinh, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.GioiTinh, "", new { @class = "text-danger" })*@
+
+                                                @*<textarea id="address" rows="4" class="form-control resume" placeholder=""></textarea>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row">
+                    <div class="col-1"></div>
+
+                    <div class="col-10 d-grid gap-2 col-10 mx-auto"><button type="submit" class="btn btn-success btnRegister  ">Đăng ký nhân viên mới</button></div>
+
+                    <div class="col-1"></div>
+                </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    @*<div class="container">
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="job-detail mt-2 p-4">
+
+
+                    <div class="custom-form">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="form-group app-label">
+                                        <label for="frist-name" class="text-muted">Họ Tên</label>
+
+                                        @Html.EditorFor(model => model.Name, id = "Code", new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập tên nhân viên" } })
+                                        <input type="text" name="Name" id="Name" required class="form-control" autocomplete="off" placeholder="Nhập tên nhân viên " />
+                                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group app-label">
+                                        <label for="middle-name" class="text-muted">Số điện thoại</label>
+                                        <div class="form-group">
+
+                                            <input type="text" name="SDT" id="SDT" required class="form-control" autocomplete="off" placeholder="Số điện thoại" />
+                                            @Html.ValidationMessageFor(model => model.SDT, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group app-label">
+                                        <label for="surname-name" class="text-muted">Căn cước công dân</label>
+                                        <div class="form-group">
+
+                                            <input type="text" name="CCCD" id="CCCD" required class="form-control" autocomplete="off" placeholder="Căn cước công dân" />
+                                            @Html.ValidationMessageFor(model => model.CCCD, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group app-label">
+                                        <label for="date-of-birth" class="text-muted">Ngày sinh</label>
+
+                                        @Html.EditorFor(model => model.Birthday, new { htmlAttributes = new { @class = "form-control", @placeholder = "13-02-1999" } })
+                                        @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <div class="form-group app-label">
+                                        <label for="date-of-birth" class="text-muted">Email</label>
+                                        <div class="form-group">
+                                            <input type="email" name="Email" id="Email" required class="form-control" autocomplete="off" placeholder="Email" />
+                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email" } })
+                                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-md-4">
+                                    <div class="form-group app-label">
+                                        <label for="General" class="text-muted">Chức vụ</label>
+                                        @Html.Action("Partival_IdChucNang", "Staff")
+
+                                        @Html.ValidationMessageFor(x => x.ProductCategoryId, null, new { @class = "text-danger" })
+                                        @Html.DropDownListFor(x => x.FunctionId, ViewBag.ChucNang as SelectList, "-Chọn danh mục chức năng-", new { @class = "form-control", @placeholder = "Chức Năng Nhân Viên" })
+                                        @Html.ValidationMessageFor(x => x.FunctionId, null, new { @class = "text-danger" })
+
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group app-label">
+                                        <div class="col-lg-12">
+                                            <div class="form-group app-label">
+                                                <label for="General" class="text-muted">Lương</label>
+
+                                                <input type="text" name="demoPrice" value="0" id="demoPrice" class="form-control auto" data-a-dec="," data-a-sep=".">
+
+                                                @Html.HiddenFor(model => model.Luong, new { @class = "form-control", @placeholder = "Lương" })
+                                                @Html.ValidationMessageFor(model => model.Luong, "", new { @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-md-10">
+                                    <div class="form-group app-label">
+                                        <div class="col-lg-12">
+                                            <div class="form-group app-label">
+
+                                                <label for="General" class="text-muted">Địa Chỉ</label>
+                                                <input type="text" name="DiaChi" id="DiaChi" required class="form-control" autocomplete="off" placeholder="Địa Chỉ" />
+                                                @Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
+
+
+                                                <textarea id="address" rows="4" class="form-control resume" placeholder=""></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-md-2">
+                                    <div class="form-group app-label">
+                                        <div class="col-lg-12">
+                                            <div class="form-group app-label">
+
                                                 <label for="General" class="text-muted">Giới tính</label>
 
                                                 @Html.EditorFor(model => model.GioiTinh, new { htmlAttributes = new { @class = "form-control" } })
                                                 @Html.ValidationMessageFor(model => model.GioiTinh, "", new { @class = "text-danger" })
 
-                                                @*<textarea id="address" rows="4" class="form-control resume" placeholder=""></textarea>*@
+                                                <textarea id="address" rows="4" class="form-control resume" placeholder=""></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -297,7 +460,7 @@
 
             <div class="col-1"></div>
         </div>
-    </div>
+    </div>*@
 }
 
 

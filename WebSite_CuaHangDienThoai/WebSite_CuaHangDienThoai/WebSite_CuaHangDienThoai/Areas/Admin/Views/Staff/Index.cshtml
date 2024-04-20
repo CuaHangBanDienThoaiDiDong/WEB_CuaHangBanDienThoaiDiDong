@@ -81,7 +81,7 @@
                                     @*@Html.Action("Partial_RoleInId", "Staff", new { id = item.MSNV })*@
                                 </td>
                                 <td>
-                                    <a href='#' class="btnClockStaff" data-id="@item.MSNV">@Html.Raw(strClock)</a>
+                                    <a href='#' class="btnClockStaff" data-id="@item.NhanVienId">@Html.Raw(strClock)</a>
                                 </td>
                                 <td>
                                     <a href="/admin/Staff/Details/@item.MSNV.Trim()" class="btn btn-sm btn-success">Xem</a>
@@ -136,74 +136,16 @@
                 });
             });
 
-            //$('body').on('click', '.btnClockStaff', function () {
-            //    var id = $(this).data("id");
-            //    alert(id);
-            //    var conf = confirm('Bạn có muốn khóa tài khoản nhân viên này');
-            //    if (conf === true) {
-            //        $.ajax({
-            //            url: '/Admin/Staff/IsLock',
-            //            type: 'POST',
-            //            data: { id: id },
-            //            success: function (rs) {
-            //                if (rs.success) {
-            //                    if (rs.Clock) {
-
-            //                        location.reload(true);
-            //                        btn.html("<i class=\"fas fa-lock\"></i>");
-            //                    }
-            //                    else {
-            //                        location.reload(true);
-            //                        btn.html("<i class=\"fas fa-lock-open\"></i>");
-
-            //                    }
-            //                }
-            //            }
-            //        });
-            //    }
-            //});
-
-
-
-
-            //$('body').on('click', '.btnClockStaff', function () {
-            //    var id = $(this).data("id");
-
-            //    var conf = confirm('Bạn có muốn khóa tài khoản nhân viên này');
-            //    if (conf === true) {
-            //        $.ajax({
-            //            url: '/admin/Staff/IsLock',
-            //            type: 'POST',
-            //            data: { id: id },
-            //            success: function (rs) {
-            //                if (rs.success) {
-            //                    if (rs.Clock) {
-
-            //                        location.reload(true);
-            //                        btn.html("<i class=\"fas fa-lock\"></i>");
-            //                    }
-            //                    else {
-            //                        location.reload(true);
-            //                        btn.html("<i class=\"fas fa-lock-open\"></i>");
-
-            //                    }
-            //                }
-            //            }
-            //        });
-            //    }
-            //});
-
-
             $('body').on('click', '.btnClockStaff', function () {
                 var id = $(this).data("id");
-                var btn = $(this);
+             
 
                 var conf = confirm('Bạn có muốn khóa tài khoản nhân viên này');
                 if (conf === true) {
                     $.ajax({
                         url: '/admin/Staff/IsLock',
                         type: 'POST',
-                        data: JSON.stringify({ Msnv: id }), // Sử dụng JSON.stringify
+                        data: JSON.stringify({ NhanVienId: id }), // Sử dụng JSON.stringify
                         contentType: 'application/json', // Thiết lập kiểu dữ liệu là JSON
                         success: function (rs) {
                             if (rs.success) {

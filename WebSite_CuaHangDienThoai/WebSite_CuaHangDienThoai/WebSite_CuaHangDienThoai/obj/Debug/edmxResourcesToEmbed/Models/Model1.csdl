@@ -1,15 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="CUAHANGDIENTHOAIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-  </EntityType>
   <EntityType Name="tb_Cart">
     <Key>
       <PropertyRef Name="CartId" />
@@ -356,17 +346,6 @@
     <NavigationProperty Name="tb_Function" Relationship="Self.StafftoFunction" FromRole="tb_Staff" ToRole="tb_Function" />
     <NavigationProperty Name="tb_ImportWarehouse" Relationship="Self.ImportWarehouseToStaff" FromRole="tb_Staff" ToRole="tb_ImportWarehouse" />
     <NavigationProperty Name="tb_Role" Relationship="Self.RoletoStaff" FromRole="tb_Staff" ToRole="tb_Role" />
-    <NavigationProperty Name="tb_StaffImage" Relationship="Self.StafftoImage" FromRole="tb_Staff" ToRole="tb_StaffImage" />
-  </EntityType>
-  <EntityType Name="tb_StaffImage">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="IsDefault" Type="Boolean" Nullable="false" />
-    <Property Name="NhanVienId" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="tb_Staff" Relationship="Self.StafftoImage" FromRole="tb_StaffImage" ToRole="tb_Staff" />
   </EntityType>
   <EntityType Name="tb_Store">
     <Key>
@@ -752,18 +731,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="StafftoImage">
-    <End Role="tb_StaffImage" Type="Self.tb_StaffImage" Multiplicity="1" />
-    <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="tb_StaffImage">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="tb_Staff">
-        <PropertyRef Name="NhanVienId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="WarehousetoStore">
     <End Role="tb_Store" Type="Self.tb_Store" Multiplicity="0..1" />
     <End Role="tb_Warehouse" Type="Self.tb_Warehouse" Multiplicity="*" />
@@ -777,7 +744,6 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="CUAHANGDIENTHOAIEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
     <EntitySet Name="tb_Cart" EntityType="Self.tb_Cart" />
     <EntitySet Name="tb_CartItem" EntityType="Self.tb_CartItem" />
     <EntitySet Name="tb_ExportWareHouse" EntityType="Self.tb_ExportWareHouse" />
@@ -798,7 +764,6 @@
     <EntitySet Name="tb_ReviewDetail" EntityType="Self.tb_ReviewDetail" />
     <EntitySet Name="tb_Role" EntityType="Self.tb_Role" />
     <EntitySet Name="tb_Staff" EntityType="Self.tb_Staff" />
-    <EntitySet Name="tb_StaffImage" EntityType="Self.tb_StaffImage" />
     <EntitySet Name="tb_Store" EntityType="Self.tb_Store" />
     <EntitySet Name="tb_Voucher" EntityType="Self.tb_Voucher" />
     <EntitySet Name="tb_Warehouse" EntityType="Self.tb_Warehouse" />
@@ -913,10 +878,6 @@
     <AssociationSet Name="RoletoStaff" Association="Self.RoletoStaff">
       <End Role="tb_Staff" EntitySet="tb_Staff" />
       <End Role="tb_Role" EntitySet="tb_Role" />
-    </AssociationSet>
-    <AssociationSet Name="StafftoImage" Association="Self.StafftoImage">
-      <End Role="tb_StaffImage" EntitySet="tb_StaffImage" />
-      <End Role="tb_Staff" EntitySet="tb_Staff" />
     </AssociationSet>
     <AssociationSet Name="WarehousetoStore" Association="Self.WarehousetoStore">
       <End Role="tb_Store" EntitySet="tb_Store" />

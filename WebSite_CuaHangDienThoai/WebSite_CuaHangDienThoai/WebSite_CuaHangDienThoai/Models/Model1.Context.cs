@@ -25,7 +25,6 @@ namespace WebSite_CuaHangDienThoai.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<tb_Cart> tb_Cart { get; set; }
         public virtual DbSet<tb_CartItem> tb_CartItem { get; set; }
         public virtual DbSet<tb_ExportWareHouse> tb_ExportWareHouse { get; set; }
@@ -46,7 +45,6 @@ namespace WebSite_CuaHangDienThoai.Models
         public virtual DbSet<tb_ReviewDetail> tb_ReviewDetail { get; set; }
         public virtual DbSet<tb_Role> tb_Role { get; set; }
         public virtual DbSet<tb_Staff> tb_Staff { get; set; }
-        public virtual DbSet<tb_StaffImage> tb_StaffImage { get; set; }
         public virtual DbSet<tb_Store> tb_Store { get; set; }
         public virtual DbSet<tb_Voucher> tb_Voucher { get; set; }
         public virtual DbSet<tb_Warehouse> tb_Warehouse { get; set; }
