@@ -3607,6 +3607,16 @@
     <Content Include="Content\bootstrap\bootstrap-utilities.scss" />
     <Content Include="Content\bootstrap\bootstrap-reboot.scss" />
     <Content Include="Content\bootstrap\bootstrap-grid.scss" />
+    <Content Include="Areas\Admin\Views\ProductCategory\Partial_AddProductCategory.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductDetail\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductDetail\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductDetail\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductDetail\Partial_CapacityByProductsId.cshtml" />
+    <Content Include="Areas\Admin\Views\Function\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Function\Partail_AddFunction.cshtml" />
+    <Content Include="Areas\Admin\Views\Staff\Partial_AddStaff.cshtml" />
+    <Content Include="Areas\Admin\Views\Staff\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Staff\Index.cshtml" />
     <EntityDeploy Include="Models\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
@@ -3614,11 +3624,7 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
-    <Content Include="Areas\Admin\Views\ProductCategory\Partial_AddProductCategory.cshtml" />
-    <Content Include="Areas\Admin\Views\ProductDetail\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\ProductDetail\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\ProductDetail\Detail.cshtml" />
-    <Content Include="Areas\Admin\Views\ProductDetail\Partial_CapacityByProductsId.cshtml" />
+    <Content Include="Areas\Admin\Views\Staff\AddTEst.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -3864,12 +3870,15 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AccountClientController.cs" />
+    <Compile Include="Areas\Admin\Controllers\FunctionController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomePageController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCompanyController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductDetailController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductDetailImageController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\StaffController.cs" />
     <Compile Include="Common\Common.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -3977,6 +3986,8 @@
     <Compile Include="Models\tb_Warehouse.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Token\Admin\Admin_Add_Staff_ToKen.cs" />
+    <Compile Include="Models\Token\Admin\Admin_TokenFunction.cs" />
     <Compile Include="Models\Token\Admin\Admin_TokenProductCategory.cs" />
     <Compile Include="Models\Token\Admin\Admin_TokenProductDetail.cs" />
     <Compile Include="Models\Token\Client\Client_ForgetPassClient.cs" />
@@ -4054,6 +4065,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Views\AccountClient\" />
     <Folder Include="Areas\Admin\Views\HomePaeg\" />
     <Folder Include="Areas\Admin\Views\ProductDetailImage\" />
     <Folder Include="Uploads\flash\" />

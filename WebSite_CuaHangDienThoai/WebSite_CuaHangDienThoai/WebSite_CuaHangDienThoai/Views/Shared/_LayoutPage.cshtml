@@ -202,7 +202,7 @@
                 </li>
                 <li class="  has-children">
                     <a href="#">
-                        English
+                        English132
                         <i class="fa fa-angle-down"></i>
                     </a>
                     <ul class="menu_selection">
@@ -213,14 +213,30 @@
                     </ul>
                 </li>
                 <li class="menu_item has-children">
-                    <a href="#">
-                        Tài khoản
-                        <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="menu_selection">
-                        <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Tài Khoản</a></li>
-                        <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng Ký</a></li>
-                    </ul>
+                    @if (Session["Client"] != null)
+                    {
+
+                        <a href="#">
+                            @Session["TenKhachHang"]
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="menu_selection">
+                            <li><a href="/Account/LogOut"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng xuất</a></li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <a href="#">
+                            Tài khoản
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="menu_selection">
+                            <li><a href="/Account/Login"><i class="fa fa-sign-in" aria-hidden="true"></i>Tài Khoản</a></li>
+                            <li><a href="/Account/LogOut"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng Ký</a></li>
+                        </ul>
+                    }
+
+
                 </li>
                 <li class="menu_item"><a href="#">Trang chủ</a></li>
                 <li class="menu_item">

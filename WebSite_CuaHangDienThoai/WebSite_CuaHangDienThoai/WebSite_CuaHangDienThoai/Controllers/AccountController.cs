@@ -45,6 +45,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     var checkClock = db.tb_KhachHang.FirstOrDefault(s => s.SDT == sdt && s.Clock == false);
                     if (checkClock != null)
                     {
+                        Session["Client"] = data;
                         Session["TenKhachHang"] = checkClock.TenKhachHang;
                         Session["IdKhachHang"] = checkClock.IdKhachHang;
                         Session["Email"] = checkClock.Email;
@@ -68,7 +69,13 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return View();
         }
 
+    
+        public ActionResult LogOut()
+        {
+            Session.Clear();
+            return RedirectToAction("Index", "Home");
 
+        }
 
         public ActionResult Forgotpassword()
         {

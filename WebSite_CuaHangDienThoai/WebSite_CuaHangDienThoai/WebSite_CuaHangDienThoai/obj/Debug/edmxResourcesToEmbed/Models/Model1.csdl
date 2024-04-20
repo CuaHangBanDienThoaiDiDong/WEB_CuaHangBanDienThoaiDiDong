@@ -158,8 +158,8 @@
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Alias" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-    <NavigationProperty Name="tb_Products" Relationship="Self.ProductDetaitoProductCategory" FromRole="tb_ProductCategory" ToRole="tb_Products" />
     <Property Name="IsActive" Type="Boolean" />
+    <NavigationProperty Name="tb_Products" Relationship="Self.ProductDetaitoProductCategory" FromRole="tb_ProductCategory" ToRole="tb_Products" />
   </EntityType>
   <EntityType Name="tb_ProductCompany">
     <Key>

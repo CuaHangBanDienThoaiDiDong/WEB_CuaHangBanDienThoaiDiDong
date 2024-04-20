@@ -135,7 +135,6 @@
     <EntitySetMapping Name="tb_ProductCategory">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_ProductCategory">
         <MappingFragment StoreEntitySet="tb_ProductCategory">
-          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
           <ScalarProperty Name="ProductCategoryId" ColumnName="ProductCategoryId" />
           <ScalarProperty Name="Title" ColumnName="Title" />
           <ScalarProperty Name="Description" ColumnName="Description" />
@@ -145,6 +144,7 @@
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
           <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
           <ScalarProperty Name="Alias" ColumnName="Alias" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
