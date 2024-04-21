@@ -11,6 +11,17 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         // GET: Admin/HomePage
         public ActionResult Index()
         {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                return View();
+            }
+        }
+        public ActionResult NonRole()
+        {
             return View();
         }
     }

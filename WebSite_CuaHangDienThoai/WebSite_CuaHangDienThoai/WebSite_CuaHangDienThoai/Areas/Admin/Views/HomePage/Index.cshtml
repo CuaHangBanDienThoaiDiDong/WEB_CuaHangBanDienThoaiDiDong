@@ -4,5 +4,12 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+
+@{
+    var user = (WebSite_CuaHangDienThoai.Models.tb_Staff)HttpContext.Current.Session["user"];
+
+
+    <h2 class="text-center">Hệ thống quản lý cửa hàng bán điện thoại di động</h2>
+    <h2 class="text-center">Chào mừng   @user.TenNhanVien - @user.tb_Function.TenChucNang đã trở lại </h2>
+}
 

@@ -59,167 +59,95 @@
     }
 
 </script>
-<div class="" style="background-color: #eee;padding-top:100px">
-    <div class="container h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-lg-12 col-xl-11">
-                <div class="card text-black" style="border-radius: 25px;">
-                    <div class="card-body p-md-5">
-                        <div class="row justify-content-center">
-                            <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-                                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Đăng ký tài khoản</p>
-                                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { onsubmit = "return validateForm();" }))
-                                {
-                                    @Html.AntiForgeryToken()
-                            <form class="mx-1 mx-md-4">
+<style>
+    .img-register {
+        border-radius: 30px;
+        -webkit-border-radius: 30px;
+    }
+</style>
 
-                                <div class="">
-                                    <label class="form-label" for="form3Example1c" style="font-family: Poppins-Regular; font-size: 22px;">Họ Tên</label>
-                                    <div class="d-flex flex-row align-items-center mb-4">
-                                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                            <div class="col-md-12">
-                                                @Html.EditorFor(model => model.TenKhachHang, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Họ Tên" } })
+<div class="p-5 border bg-light khang" style="border-radius:30px">
+    <div class="container p-4 bg-white">
+        <h4 class="text-center">Đăng ký</h4>
+        <hr />
+        <div class="row">
+            <div class="col-5">
+                <img src="~/hinh/img.jpg" class="img-register" width="100%" height="450px" />
+            </div>
+            <div class="col">
+                <div style="border:2px solid #ffffff; border-radius:30px">
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { onsubmit = "return validateForm();" }))
+                    {
+                        @Html.AntiForgeryToken()
 
-                                            </div>
-                                            @*<input type="text" id="form3Example1c" class="form-control" />*@
-
-                                        </div>
-                                    </div>
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <span>Số Điện Thoại *</span>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.SDT, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Số Điện Thoại" } })
+                                    @Html.ValidationMessageFor(model => model.SDT, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="">
-                                    <label class="form-label" for="form3Example3c" style="font-family: Poppins-Regular; font-size: 22px;"> Số điện thoại</label>
-
-                                    <div class="d-flex flex-row align-items-center mb-4">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" style="color:black" class="bi bi-telephone " viewBox="0 0 16 16">
-                                            <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
-                                        </svg>
-                                        <div data-mdb-input-init class="form-outline flex-fill mb-0 pl-2">
-                                            <div class="col-md-12 pl-2">
-
-                                                @*<input type="email" id="form3Example3c" class="form-control" />*@
-                                                @Html.EditorFor(model => model.SDT, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập số điện thoại" } })
-
-                                            </div>
-
-                                        </div>
-
-
-
-
-
-                                    </div>
-
-                                </div>
-                                <div class="">
-                                    <label class="form-label" for="form3Example3c" style="font-family: Poppins-Regular; font-size: 22px;"> Email</label>
-                                    <div class="d-flex flex-row align-items-center mb-4">
-                                        <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                            <div class="col-md-12">
-                                                @*<input type="email" id="form3Example3c" class="form-control" />*@
-                                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Email" } })
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="">
-                                    <label class="form-label" for="form3Example4c" style="font-family: Poppins-Regular; font-size: 22px;">Mật khẩu</label>
-                                    <div class="d-flex flex-row align-items-center mb-4">
-                                        <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                            @*<input type="password" id="form3Example4c" class="form-control" />*@
-                                            <div class="row border border-1 rounded" style="width:auto">
-                                                <div class="col-md-10">
-                                                    <input type="password" id="Password" name="Password" class="form-control" style="border:none" autocomplete="new-password" placeholder="Nhập Mật Khẩu" />
-
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <button type="button" class="btn " onclick="togglePasswordVisibility('Password', 'togglePasswordBtn')"><i class="far fa-eye"></i></button>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="">
-                                    <label class="form-label" for="form3Example4c" style="font-family: Poppins-Regular; font-size: 22px;">Nhập lại mật khẩu </label>
-                                    <div class="d-flex flex-row align-items-center mb-4">
-                                        <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                            @*<input type="password" id="form3Example4c" class="form-control" />*@
-                                            <div class="row border border-1 rounded" style="width:auto">
-                                                <div class="col-md-10">
-                                                    <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" style="border:none" autocomplete="new-password" placeholder="Nhập Lại Mật Khẩu" />
-
-                                                </div>
-                                                <div class="col-md-1">
-
-                                                    <button type="button" class="btn " onclick="togglePasswordVisibility('ConfirmPassword', 'toggleConfirmPasswordBtn')"><i class="far fa-eye"></i></button>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!--<div class="d-flex flex-row align-items-center mb-4">
-        <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-        <div data-mdb-input-init class="form-outline flex-fill mb-0">
-            <div class="col-md-12">
-                <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Nhập Lại Mật Khẩu" />
-                <button type="button" class="btn btn-success" onclick="togglePasswordVisibility('ConfirmPassword', 'toggleConfirmPasswordBtn')"><i class="far fa-eye"></i></button>
-                <label class="form-label" for="form3Example4cd">Nhập lại mật kẩu </label>
-            </div>-->
-                                @*<input type="password" id="form3Example4cd" class="form-control" />*@
-
-                                <!--</div>
-    </div>-->
-                                <div class="d-flex flex-row align-items-center mb-4">
-                                    <div class="row">
-                                        <span>Giới tính</span>
-                                        <div class="col-6">
-                                            <input type="checkbox" placeholder="Name" />
-                                        </div>
-                                        <div class="col-6">
-                                            <input type="checkbox" placeholder="Nữ" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-check d-flex justify-content-center mb-5">
-                                    <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
-                                    <label class="form-check-label" for="form2Example3">
-                                        Bạn có đồng ý với   <a href="#!">chính sách</a>
-                                    </label>
-                                </div>
-
-                                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                    <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn  btn-lg" style="background: #57b846;color:white">Đăng ký tài khoản</button>
-                                </div>
-                                <a href="/Account/Login" class="text-center d-flex justify-content-center">Bạn đã có tài khoản ? </a>
-                                
-                            </form>
-                                    }
-
-
                             </div>
-                            <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
 
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                                     class="img-fluid" alt="Sample image">
-
+                            <div class="form-group">
+                                <spanp>Họ Tên *</spanp>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.TenKhachHang, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Tên Của Bạn " } })
+                                    @Html.ValidationMessageFor(model => model.TenKhachHang, "", new { @class = "text-danger" })
+                                </div>
                             </div>
+
+                            <div class="form-group">
+                                <span>Địa Chỉ Email *</span>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Email" } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <span> Mật Khẩu *</span>
+                                <div class="col-md-10 d-flex">
+                                    <input type="password" id="Password" name="Password" class="form-control" autocomplete="new-password" placeholder="Nhập Mật Khẩu" />
+                                    <button type="button" class="btn btn-success" onclick="togglePasswordVisibility('Password', 'togglePasswordBtn')"><i class="far fa-eye"></i></button>
+                                    @*@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })*@
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span> Nhập lại mật khẩu * </span>
+                                <div class="col-md-10 d-flex">
+                                    <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Nhập Lại Mật Khẩu" />
+                                    <button type="button" class="btn btn-success" onclick="togglePasswordVisibility('ConfirmPassword', 'toggleConfirmPasswordBtn')"><i class="far fa-eye"></i></button>
+                                    @Html.ValidationMessage("ConfirmPassword", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="form-group">
+                                <span>Địa Chỉ *</span>
+
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Địa Chỉ Của Bạn" } })
+                                    @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" name="submit" class="btn btn-danger rounded-5 fw-bold" style="width: 200px;" value="ĐĂNG KÝ">
+                                    <p class="text-center">
+                                        Bạn đã có tài khoản?<span>
+                                            <a class="nav-link text-danger" href="/Account/Login">Đăng nhập ngay</a>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>

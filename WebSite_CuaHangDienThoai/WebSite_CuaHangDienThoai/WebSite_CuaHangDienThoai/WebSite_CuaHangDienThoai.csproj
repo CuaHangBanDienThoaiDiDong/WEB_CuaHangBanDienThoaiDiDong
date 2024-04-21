@@ -3259,6 +3259,7 @@
     <Content Include="Content\clients\plugins\uplot\uPlot.iife.js" />
     <Content Include="Content\clients\plugins\uplot\uPlot.iife.min.js" />
     <Content Include="Content\clients\plugins\uplot\uPlot.min.css" />
+    <Content Include="Content\Css\Addmin\Login.css" />
     <Content Include="Content\Css\Client\LoginClient.css" />
     <Content Include="Content\Css\Client\RegisterClient.css" />
     <Content Include="Content\LayOut\LayOut.css" />
@@ -3333,6 +3334,10 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\Admin\Login\js\bootstrap.min.js" />
+    <Content Include="Scripts\Admin\Login\js\jquery.min.js" />
+    <Content Include="Scripts\Admin\Login\js\main.js" />
+    <Content Include="Scripts\Admin\Login\js\popper.js" />
     <Content Include="Scripts\autoNumeric-1.9.45.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -3654,6 +3659,11 @@
     <Content Include="Scripts\Client\vendor\bootstrap\css\bootstrap-reboot.min.css.map" />
     <Content Include="Scripts\Client\vendor\bootstrap\css\bootstrap.css.map" />
     <Content Include="Scripts\Client\vendor\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="Areas\Admin\Views\Account\DangNhap.cshtml" />
+    <Content Include="Scripts\Admin\Login\js\.DS_Store" />
+    <Content Include="Areas\Admin\Views\HomePage\NonRole.cshtml" />
+    <Content Include="Areas\Admin\Views\Function\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Function\Edit.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -3903,6 +3913,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountClientController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\FunctionController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomePageController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCategoryController.cs" />
@@ -4065,7 +4076,6 @@
     <Content Include="Views\Menu\_MenuDeal.cshtml" />
     <Content Include="Views\Menu\_MenuDanhMucNoiBat.cshtml" />
     <Content Include="Views\Account\LogIn.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Menu\MenuGoiYHomNay.cshtml" />
     <Content Include="Views\Product\Test123.cshtml" />
     <Content Include="Views\Product\DungLuong.cshtml" />
@@ -4081,6 +4091,8 @@
     <Content Include="Views\Account\Forgotpassword.cshtml" />
     <Content Include="Views\Account\Partail_UpdatePass.cshtml" />
     <Content Include="Views\Account\UpdatePass.cshtml" />
+    <Content Include="Views\Account\Partial_Register.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

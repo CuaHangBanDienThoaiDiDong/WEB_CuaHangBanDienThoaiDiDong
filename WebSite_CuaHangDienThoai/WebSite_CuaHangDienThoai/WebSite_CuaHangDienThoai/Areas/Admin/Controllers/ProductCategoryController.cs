@@ -16,13 +16,32 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         public ActionResult Index()
         {
 
-            var items = db.tb_ProductCategory.ToList().OrderByDescending(x => x.ProductCategoryId);
-            if (items == null)
+            if (Session["user"] == null)
             {
-                ViewBag.txt = "Không Có Loại Sản Phẩm ";
+                return RedirectToAction("DangNhap","Account");
+            }
+            else
+            {
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var item = db.tb_Role.SingleOrDefault(row => row.NhanVienId == nvSession.NhanVienId && (row.IdChucNang == 1 || row.IdChucNang == 2));
+                if (item == null)
+                {
+                    return RedirectToAction("NonRole", "HomePage");
+                }
+                else
+                {
+
+                    var items = db.tb_ProductCategory.ToList().OrderByDescending(x => x.ProductCategoryId);
+                    if (items == null)
+                    {
+                        ViewBag.txt = "Không Có Loại Sản Phẩm ";
+                    }
+
+                    return View(items);
+                }
             }
 
-            return View(items);
+
         }
 
 
@@ -39,7 +58,25 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
         public ActionResult Add()
         {
-            return View();
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var item = db.tb_Role.SingleOrDefault(row => row.NhanVienId == nvSession.NhanVienId && (row.IdChucNang == 1 || row.IdChucNang == 2));
+                if (item == null)
+                {
+                    return RedirectToAction("NonRole", "HomePage");
+                }
+                else
+                {
+
+                    return View();
+                }
+            }
+            
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -97,8 +134,27 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
         public ActionResult Edit(int id)
         {
-            var item = db.tb_ProductCategory.Find(id);
-            return View(item);
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var CheckRole = db.tb_Role.SingleOrDefault(row => row.NhanVienId == nvSession.NhanVienId && (row.IdChucNang == 1 || row.IdChucNang == 2));
+                if (CheckRole == null)
+                {
+                    return RedirectToAction("NonRole", "HomePage");
+                }
+                else
+                {
+
+                    var item = db.tb_ProductCategory.Find(id);
+                    return View(item);
+                }
+            }
+
+           
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -106,8 +162,11 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.MSNV == nvSession.MSNV);
                 model.ModifiedDate = DateTime.Now;
                 model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
+                model.Modifiedby = checkStaff.TenNhanVien+"-"+ checkStaff.MSNV;
                 db.tb_ProductCategory.Attach(model);
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();

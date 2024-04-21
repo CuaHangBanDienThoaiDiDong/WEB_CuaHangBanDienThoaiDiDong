@@ -187,14 +187,20 @@
                     <div class="info">
                         @*<a href="#" class="d-block">Alexander Pierce</a>*@
 
-                        <!--@{
-                        //var user = (WSite_ShowRoom_CtyThoiTrang.Models.tb_NhanVien)HttpContext.Current.Session["user"];
-                                                    <apan>
-                                                        user.TenNhanVien
-                                                    </apan>
-                                                }-->
 
-
+                        @if (Session["user"] != null)
+                        {
+                            {
+                                var user = (WebSite_CuaHangDienThoai.Models.tb_Staff)HttpContext.Current.Session["user"];
+                                <apan style="color:white">
+                                    @user.TenNhanVien - @user.tb_Function.TenChucNang
+                                </apan>
+                            }
+                        }
+                        else
+                        {
+                           @Html.ActionLink( "DangNhap", "Account")
+                        }
 
                     </div>
                 </div>

@@ -16,26 +16,33 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         public ActionResult Index(int? page)
         {
 
-
-            IEnumerable<tb_Products> items = db.tb_Products.OrderByDescending(x => x.ProductsId);
-            if (items != null)
+            if (Session["user"] == null)
             {
-                var pageSize = 10;
-                if (page == null)
-                {
-                    page = 1;
-                }
-                var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-                items = items.ToPagedList(pageIndex, pageSize);
-                ViewBag.PageSize = pageSize;
-                ViewBag.Page = page;
-                return View(items);
+                return RedirectToAction("DangNhap", "Account");
             }
             else
             {
-                ViewBag.txt = "Không tồn tại sản phẩm";
-                return View();
+                IEnumerable<tb_Products> items = db.tb_Products.OrderByDescending(x => x.ProductsId);
+                if (items != null)
+                {
+                    var pageSize = 10;
+                    if (page == null)
+                    {
+                        page = 1;
+                    }
+                    var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+                    items = items.ToPagedList(pageIndex, pageSize);
+                    ViewBag.PageSize = pageSize;
+                    ViewBag.Page = page;
+                    return View(items);
+                }
+                else
+                {
+                    ViewBag.txt = "Không tồn tại sản phẩm";
+                    return View();
+                }
             }
+               
         }
 
         public ActionResult Partial_AddProduct()

@@ -131,6 +131,13 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
+        public ActionResult Logout()
+        {
+            Session.Clear();
+
+            return RedirectToAction("DangNhap", "Account");
+        }
+
 
 
 

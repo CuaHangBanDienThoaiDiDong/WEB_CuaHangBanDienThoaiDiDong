@@ -127,6 +127,14 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
+
+        public ActionResult Partial_Register()
+        {
+            return PartialView();   
+        }
+
+
+
         public ActionResult Register()
         {
             return View();
@@ -134,7 +142,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(tb_KhachHang _khachhang)
+        public ActionResult Register(tb_KhachHang _khachhang    )
         {
             if (ModelState.IsValid)
             {
