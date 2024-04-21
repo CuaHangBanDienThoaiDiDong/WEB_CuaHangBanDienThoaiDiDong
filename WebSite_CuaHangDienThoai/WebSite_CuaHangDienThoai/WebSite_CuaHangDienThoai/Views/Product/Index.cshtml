@@ -5,7 +5,7 @@
 }
 <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_styles.css">
 <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_responsive.css">
-
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
 <style>
     .product_image:hover img {
@@ -78,7 +78,7 @@
         <div class="col-4 ">
             <div class="row ">
                 <div class="col-md-12 bg-blue">
-                    <img src="~/images/background/sticky-a58-390x97.png" />
+                    <img src="~/images/background/sticky-a58-390x97.png" class="w-100" style="width:auto"/>
                 </div>
 
             </div>
@@ -113,10 +113,10 @@
 
             <!-- Sidebar -->
 
-            <div class="sidebar" >
-                <div class="sidebar_section"  >
-                    <div class="sidebar_title">
-                        <h5 style="color:white">Loại sản phẩm</h5>
+            <div class="sidebar">
+                <div class="sidebar_section">
+                    <div class="sidebar_title pb-4">
+                        <h6 style="color:white;width:auto;margin:0px">Danh mục sản phẩm</h6>
                     </div>
                     @Html.Action("MenuLeft", "Menu")
                 </div>
@@ -154,7 +154,7 @@
 
                             <div class="product_sorting_container product_sorting_container_top">
                                 <ul class="product_sorting">
-                                    <li style="color: white; background: #323232;" >
+                                    <li style="color: white; background: #323232;">
                                         <span class="type_sorting_text">Phân loại</span>
                                         <i class="fa fa-angle-down"></i>
                                         <ul class="sorting_type text-center">
@@ -163,7 +163,7 @@
                                             <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Tên sản phẩm</span></li>
                                         </ul>
                                     </li>
-                                    <li style="color: white; background: #323232;" >
+                                    <li style="color: white; background: #323232;">
                                         <span>Hiển thị</span>
                                         <span class="num_sorting_text">6</span>
                                         <i class="fa fa-angle-down"></i>
@@ -222,11 +222,11 @@
                                                             <h6 class="product_name">
                                                                 @*<a href="/Product/Details/@item.ProductsId" style="color:white ">@item.Title</a>*@
                                                                 <a class="d-inline-block text-truncate" href="/Product/Details?id=@item.ProductsId&ProductDetailId=1" style="color:white ">
-            @item.Title
-        </a>
-                                                                @*<a class="d-inline-block text-truncate" href="/Product/Details/id=@item.ProductsId" style="color:white ">
                                                                     @item.Title
-                                                                </a>*@
+                                                                </a>
+                                                                @*<a class="d-inline-block text-truncate" href="/Product/Details/id=@item.ProductsId" style="color:white ">
+                                                                        @item.Title
+                                                                    </a>*@
                                                             </h6>
 
                                                             @Html.Action("Partail_ProductDetailById", "ProductDetail", new { id = item.ProductsId })
@@ -333,6 +333,23 @@
 
     <script src="~/Content/assets/js/categories_custom.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var swiper = new Swiper('.mySwiper', {
+                spaceBetween: 30,
+                centeredSlides: true,
+                autoplay: {
+                    delay: 1000, // Thời gian chờ là 1000 ms = 1 giây
+                    disableOnInteraction: false, // Tiếp tục autoplay khi tương tác với slider
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+            });
+        });
+    </script>
+
+    <script>
         document.addEventListener("DOMContentLoaded", function () {
             var productImages = document.querySelectorAll(".product_image");
             productImages.forEach(function (productImage) {
@@ -349,3 +366,6 @@
         });
     </script>
 }
+
+
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>

@@ -110,7 +110,6 @@
         color: white; /* Màu chữ trắng */
         justify-content: center; /* Căn giữa theo chiều ngang */
         align-items: center;
-        
     }
 
         #Iphone h2 {
@@ -123,20 +122,37 @@
 
 <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_styles.css">
 <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_responsive.css">
-
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <div class="swiper mySwiper">
     <div class="swiper-wrapper">
         <div class="swiper-slide">
             <div class="row d-flex align-items-center">
                 <div class="col-md-6">
                     <div class="banner-content">
-                        <h1 class="display-2 text-uppercase text-dark pb-5">Your Products Are Great.</h1>
-                        <a href="shop.html" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Xem sản phẩm</a>
+                        <h1 class="display-2 text-uppercase text-dark pb-5">Sản phẩm của bạn thật tuyệt vời.</h1>
+                        <a href="/Product/index" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Xem sản phẩm</a>
                     </div>
                 </div>
                 <div class="col-md-5">
                     <div class="image-holder">
-                        <img src="~/images/banner-image.png" class="w-100" />
+                        @*<img src="~/images/banner-image.png" class="w-100" />*@
+                        <img src="~/Uploads/images/SanPham/iphone-15-1-4.jpg" @*class="w-100"*@ style="width:auto;height:auto" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="row d-flex align-items-center">
+                <div class="col-md-6">
+                    <div class="banner-content">
+                        <h1 class="display-2 text-uppercase text-dark pb-5">Sản phẩm của bạn thật tuyệt vời.</h1>
+                        <a href="/Product/index" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Xem sản phẩm</a>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="image-holder">
+                        @*<img src="~/images/banner-image.png" class="w-100" />*@
+                        <img src="~/Uploads/images/SanPham/iphone-15-128gb-hong-3-1.jpg" style="width:auto;height:auto" />
 
                     </div>
                 </div>
@@ -146,29 +162,15 @@
             <div class="row d-flex align-items-center">
                 <div class="col-md-6">
                     <div class="banner-content">
-                        <h1 class="display-2 text-uppercase text-dark pb-5">Your Products Are Great.</h1>
-                        <a href="shop.html" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Xem sản phẩm</a>
+                        <h1 class="display-2 text-uppercase text-dark pb-5">Sản phẩm của bạn thật tuyệt vời.</h1>
+                        <a href="/Product/index" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Xem sản phẩm</a>
                     </div>
                 </div>
                 <div class="col-md-5">
                     <div class="image-holder">
-                        <img src="~/images/banner-image.png"  class="w-100"/>
+                        @*<img src="~/images/banner-image.png" class="w-100" />*@
+                        <img src="~/Uploads/images/SanPham/iphone-15-pro-max-tu-nhien-2.jpg" style="width:auto;height:auto" />
 
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="swiper-slide">
-            <div class="row d-flex align-items-center">
-                <div class="col-md-6">
-                    <div class="banner-content">
-                        <h1 class="display-2 text-uppercase text-dark pb-5">Your Products Are Great.</h1>
-                        <a href="shop.html" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Xem sản phẩm</a>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="image-holder">
-                        <img src="~/images/banner-image.png" class="w-100"/>
 
                     </div>
                 </div>
@@ -455,6 +457,22 @@
 
 @section scripts{
     <script src="~/Content/assets/js/categories_custom.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var swiper = new Swiper('.mySwiper', {
+                spaceBetween: 30,
+                centeredSlides: true,
+                autoplay: {
+                    delay: 1000, // Thời gian chờ là 1000 ms = 1 giây
+                    disableOnInteraction: false, // Tiếp tục autoplay khi tương tác với slider
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+            });
+        });
+    </script>
     @*<script>
             $(document).ready(function () {
                 $('.arrivals_grid_sorting li').click(function () {

@@ -49,10 +49,84 @@
         }
 
     .product_slider_item {
-            border: 1px solid #ddd; /* Thêm đường viền mảnh */
-            border-radius: 10px; /* Góc bo tròn */
-            /* padding-left: 50px;*/ /* Tạo khoảng cách giữa các sản phẩm */
-            overflow: hidden; /* Tránh việc hiển thị nội dung vượt ra ngoài khung */
+        border: 1px solid #ddd; /* Thêm đường viền mảnh */
+        border-radius: 10px; /* Góc bo tròn */
+        /* padding-left: 50px;*/ /* Tạo khoảng cách giữa các sản phẩm */
+        overflow: hidden; /* Tránh việc hiển thị nội dung vượt ra ngoài khung */
+    }
+
+    .product_slider_container {
+        border: none;
+    }
+
+
+
+
+    .product-item {
+        border: 1px solid rgb(219, 219, 219);
+    }
+
+    .product-img {
+        position: relative;
+        overflow: hidden;
+        /*width: 80%;
+        height: 80%;*/
+    }
+
+    .btns {
+        position: absolute;
+        left: 0;
+        bottom: -100%;
+        font-size: 15px;
+        font-weight: 300;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .btns button {
+            border: none;
+            background-color: rgb(39, 39, 39);
+            color: #fff;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .btns button:hover {
+                color: #fcb941;
+            }
+
+    .product-img:hover .btns {
+        bottom: 0;
+    }
+
+    .heart-icon {
+        position: absolute;
+        top: 16px;
+        right: 15px;
+        font-size: 18px;
+    }
+
+    .product-type {
+        font-size: 13px;
+        opacity: 0.8;
+    }
+
+    .product-name {
+        transition: all 0.3s ease-in-out;
+    }
+
+        .product-name:hover {
+            color: #fcb941 !important;
+        }
+
+    .product-price {
+        color: #fcb941;
+    }
+
+    .rating {
+        font-size: 13px;
+    }
+
+    .product-item {
+        width: 300px;
     }
 </style>
 
@@ -62,176 +136,175 @@
     if (Model != null)
     {
 
-        <div class="border border-danger  nen" style="background-color: #D0021C; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px ">
-            <div class="best_sellers ">
-                <img src="~/images/gif/Macdinh-1.gif" class="w-100 rounded-top" />
-                <div class="container" style="margin-top:-60px">
-                    <div class="row">
-                        @*<div class="col-1 "></div>*@
-                        <div class="col-12 pl-1 pr-1 pb-3">
-
-                            <div class="product_slider_container  " style="border: none; height:100%">
-                                <div class="owl-carousel owl-theme product_slider">
-
-                                    <!-- Slide 1 -->
-
-                                    @foreach (var items in Model)
-                                    {
-
-
-                                        var DungLuong = "";
-                                        if (items.DungLuong > 999)
-                                        {
-                                            DungLuong = "1Tb";
-                                        }
-                                        else if (items.DungLuong > 1999)
-                                        {
-                                            DungLuong = "2 Tb";
-                                        }
-                                        else
-                                        {
-                                            DungLuong = items.DungLuong + "Gb";
-                                        }
-                                        @functions {
-
-                                            public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
-                                            {
-                                                if (originalPrice == 0 || salePrice >= originalPrice)
-                                                {
-                                                    return 0; // Trả về 0 nếu giá gốc bằng 0 hoặc giá bán lớn hơn hoặc bằng giá gốc
-                                                }
-
-                                                decimal discount = 1 - (salePrice / originalPrice);
-                                                return discount * 100;
-                                            }
-                                        }
-
-
-
-                                        var strImg = "";
-                                        var CheckImage = items.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
-                                        if (CheckImage != null)
-                                        {
-                                            strImg = CheckImage.Image;
-                                        }
-                                        if (items.tb_Products.IsActive == true && items.tb_Products.IsHome == true && items.tb_Products.IsSale==true     && items.PriceSale>0)
-                                        {
-
-
-                                            <div class="owl-item  rounded " style="background: #323232; width: auto; height: 450px; display: flex; flex-direction: column; overflow: hidden; margin-left: 10px; padding: 0;">
-
-                                                <div class=" pb-5 ">
-                                                    <br />
-                                                    <br />
-                                                    <div class="product_image" style=" background-image: url('~/images/banner-for-product.png')">
-                                                        @*<img data-id="@items.ProductsId" src="@strImg" id="imgProducts" style="width: 250px; height: 250px; ">*@
-                                                        <img src="@strImg" alt="@items.tb_Products.Title" class="w-75 h-75">
-                                                    </div>
-                                                    <div class="favorite favorite_left"></div>
-                                                    <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
-                                                        @if (items.PriceSale > 0)
-                                                        {
-                                                            <div>
-                                                                @{
-                                                                    decimal originalPrice = Convert.ToDecimal(items.Price);
-                                                                    decimal salePrice = Convert.ToDecimal(items.PriceSale);
-                                                                    decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
-                                                                }
-                                                                @if (discountPercentage > 0)
-                                                                {
-                                                                    <span> -@discountPercentage.ToString("0")% </span>
-                                                                }
-
-                                                            </div>
-                                                        }
-                                                    </div>
-                                                    <div class="product_info">
-                                                        <a class="d-inline-block text-truncate" href="/Product/Details?id=@items.ProductsId&ProductDetailId=@items.ProductDetailId">
-                                                            <h5 style="color:white;padding-top:10px;">@items.tb_Products.Title @items.Title @DungLuong</h5>
-                                                        </a>
-                                                        @if (items.PriceSale > 0)
-                                                        {
-                                                            <div>
-                                                                <div class="product_price">  @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(items.PriceSale)đ<span>  @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(items.Price)đ</span></div>
-                                                            </div>
-                                                        }
-                                                        else
-                                                        {
-                                                            <span class="product_price" style="padding-left:5px;color:white">
-                                                                @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(items.Price)đ
-                                                            </span>
-                                                        }
-                                                    </div>
-                                                    <div style="">
-                                                        <ul class="list-inline  text-center">
-                                                            <li class="list-inline-item">
-                                                                <img src="	https://24hstore.vn/images/products_promotion/original/icon-thu-cu_1667900775.svg " />
-                                                            </li>
-                                                            <li class="list-inline-item"><img src="	https://24hstore.vn/images/products_promotion/original/icon-vib-logo_1670400516.svg " /></li>
-                                                            <li class="list-inline-item"><img src="		https://24hstore.vn/images/products_promotion/original/icon-kredivo_1670394894.svg " /></li>
-                                                            <li class="list-inline-item"><img src="			https://24hstore.vn/images/products_promotion/original/icon-apple-pay_1708569696.svg " /></li>
-                                                        </ul>
-                                                        <small class="m-lg-4">Sản phẩm</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            @*<div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>*@
-                                        }
-
-                                    }
-
-                                </div>
-
-                                <!-- Slider Navigation -->
-
-                                <div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
-                                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                </div>
-                                <div class="product_slider_nav_right product_slider_nav d-flex align-items-center justify-content-center flex-column">
-                                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="row pb-2">
-                            <div class="col-4"></div>
-                            <div class="col-4">
-                                <a href="/ProductCategory/Detail/@ViewBag.ProductCatgory" class="btn btn-light w-100 h-100 text-center ">
-                                    <small>
-                                        Xem thêm Điện Thoại
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="ml-1 mb-1 bi bi-caret-right align-items-center" viewBox="0 0 16 16">
-                                            <path d="M6 12.796V3.204L11.481 8zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753" />
-                                        </svg>
-
-                                    </small>
-                                </a>
-                            </div>
-                            <div class="col-4"></div>
-                        </div>
-
-
-
-
+        <div class="container">
+            <div class="border border-danger  nen" style="background-color: #D0021C; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px ">
+                <div class="row">
+                    <div class="col-md-12">
+                        <img src="~/images/gif/Macdinh-1.gif" class="w-100 rounded-top" />
                     </div>
+                  <div class="col-md-12">
+                      <div class=" g-4 my-5 mx-auto owl-carousel owl-theme">
+                          @foreach (var items in Model)
+                          {
+                              var DungLuong = "";
+                              if (items.DungLuong > 999)
+                              {
+                                  DungLuong = "1Tb";
+                              }
+                              else if (items.DungLuong > 1999)
+                              {
+                                  DungLuong = "2 Tb";
+                              }
+                              else
+                              {
+                                  DungLuong = items.DungLuong + "Gb";
+                              }
+                              @functions {
+
+                                  public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
+                                  {
+                                      if (originalPrice == 0 || salePrice >= originalPrice)
+                                      {
+                                          return 0; // Trả về 0 nếu giá gốc bằng 0 hoặc giá bán lớn hơn hoặc bằng giá gốc
+                                      }
+
+                                      decimal discount = 1 - (salePrice / originalPrice);
+                                      return discount * 100;
+                                  }
+                              }
+                              var strImg = "";
+                              var CheckImage = items.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
+                              if (CheckImage != null)
+                              {
+                                  strImg = CheckImage.Image;
+                              }
+                              if (items.tb_Products.IsActive == true && items.tb_Products.IsHome == true && items.tb_Products.IsSale == true && items.PriceSale > 0)
+                              {
+                          <div class="col product-item mx-auto rounded " style=" background :#323232 " id="product-item">
+                        
+                              <div class="product-img">
+                                  <div class="product_image pt-3 d-flex justify-content-center">
+                                      <img src="@strImg" alt="@items.Title" class="w-75 h-75">
+                                  </div>
+                                 
+                                  <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                                      @if (items.PriceSale > 0)
+                                      {
+                                          <div>
+                                              @{
+                                                  decimal originalPrice = Convert.ToDecimal(items.Price);
+                                                  decimal salePrice = Convert.ToDecimal(items.PriceSale);
+                                                  decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
+                                              }
+                                              @if (discountPercentage > 0)
+                                              {
+                                                  <span> -@discountPercentage.ToString("0")% </span>
+                                              }
+
+                                          </div>
+                                      }
+                                  </div>
+                                  @*<span class="heart-icon">
+                                      <i class="far fa-heart"></i>
+                                  </span>*@
+                                  <div class="row btns w-100 mx-auto text-center">
+                                      <button type="button" class="col-md-12 py-2">
+                                          <i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng
+                                      </button>
+                                      @*<button type="button" class="col-6 py-2">
+                                          <i class="fa fa-binoculars"></i> View
+                                      </button>*@
+                                  </div>
+                              </div>
+
+                              <div class="product-info p-3">
+                                  <a class="d-inline-block text-truncate" href="/Product/Details?id=@items.ProductsId&ProductDetailId=@items.ProductDetailId">
+                                      <h5 style="color:white;padding-top:10px;" class="text-center">@items.tb_Products.Title @items.Title @DungLuong</h5>
+                                  </a>
+                                  @if (items.PriceSale > 0)
+                                  {
+                                      <div class="text-center">
+                                          <div class="product_price">  @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(items.PriceSale)đ<span>  @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(items.Price)đ</span></div>
+                                      </div>
+                                  }
+                                  else
+                                  {
+                                      <span class="product_price" style="padding-left:5px;color:white">
+                                          @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(items.Price)đ
+                                      </span>
+                                  }
+                                  <div class="rating d-flex mt-1">
+                                      <span>
+                                          <i class="fa fa-star"></i>
+                                      </span>
+                                      <span>
+                                          <i class="fa fa-star"></i>
+                                      </span>
+                                      <span>
+                                          <i class="fa fa-star"></i>
+                                      </span>
+                                      <span>
+                                          <i class="fa fa-star"></i>
+                                      </span>
+                                      <span>
+                                          <i class="fa fa-star"></i>
+                                      </span>
+                                      <span>(25 reviews)</span>
+                                  </div>
+                              </div>
+                          </div>
+                             }
+                           }
+
+
+
+
+                       
+
+
+                      </div>
+                              </div>
                 </div>
-
-
-
-
+              
             </div>
 
 
-        </div>
+               
+            </div>
+
+        }
+        else
+        {
+            <p>Không có bảng ghi nào</p>
+        }
+
     }
     else
     {
         <p>Không có bảng ghi nào</p>
     }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="~/Scripts/owl_carousel/owl.carousel.js"></script>
+<script>
 
-}
-else
-{
-    <p>Không có bảng ghi nào</p>
-}
+    $('.owl-carousel').owlCarousel({
+        loop: true,
+        margin: 0,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1,
+            },
+            768: {
+                items: 2,
+            },
+            1100: {
+                items: 3,
+            },
+            1400: {
+                items: 4,
+                loop: false,
+            }
+        }
+    });
+</script>

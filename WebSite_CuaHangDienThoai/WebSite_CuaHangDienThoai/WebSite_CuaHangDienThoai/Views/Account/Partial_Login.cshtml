@@ -165,38 +165,93 @@
 <form>
     @using (Html.BeginForm("LogIn", "Account", FormMethod.Post, new { }))
     {
+        <form class="login100-form validate-form">
+            <span class="login100-form-title">
+                Đăng nhập
+            </span>
 
-       
-          
-
-            <div data-mdb-input-init class="form-outline mb-4">
-                @*<input type="email" id="form2Example11" class="form-control"
-                       placeholder="Số điện thoại hoặc mail" />*@
-                @Html.TextBoxFor(m => m.SDT, "", new { @class = "form-control", @placeholder = "Nhập Số Điện Thoại Của Bạn" })
-                <label class="form-label" for="form2Example11">Tài khoản</label>
+            <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                @*<input class="input100" type="text" name="email" placeholder="Email">*@
+                @Html.TextBoxFor(m => m.SDT, "", new { @class = "form-control input100", @placeholder = "Nhập Số Điện Thoại Của Bạn" })
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                </span>
             </div>
 
-            <div data-mdb-input-init class="form-outline mb-4">
-                @*<input type="password" id="form2Example22" class="form-control" />*@
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Mật khẩu" }) 
-                <button type="button" class="btn btn-success" onclick="togglePasswordVisibility('Password', 'togglePasswordBtn')"><i class="far fa-eye"></i></button>
-
-                <label class="form-label" for="form2Example22">Mật khẩu</label>
+            <div class="wrap-input100 validate-input" data-validate="Password is required">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control input100", @placeholder = "Mật khẩu" })
+                @*<input class="input100" type="password" name="pass" placeholder="Password" id="password-field">*@
+                <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                    <i class="fa fa-lock" aria-hidden="true"></i>
+                </span>
             </div>
 
-            <div class="text-center pt-1 mb-5 pb-1">
-                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">
-                    Đăng Nhập
+            <div class="container-login100-form-btn">
+                <button class="login100-form-btn">
+                    Đăng nhập
                 </button>
-                <a class="text-muted" href="/Account/Forgotpassword">Quên mật khẩu ?</a>
             </div>
 
-            <div class="d-flex align-items-center justify-content-center pb-4">
-                <p class="mb-0 me-2">Bạn chưa có tài khoản ?</p>
-                <a href="/Account/Register" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-danger">Tạo mới</a>
+            <div class="text-center p-t-12">
+                <span class="txt1">
+                    Bạn quên mật khẩu ?
+                </span>
+                <a class="txt2" href="/Account/Forgotpassword">
+                    Khôi phục
+                </a>
             </div>
 
-        
+            <div class="text-center p-t-136">
+                <a class="txt2" href="/Account/Register">
+                    Tạo tài khoản
+                    <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                </a>
+            </div>
+        </form>
+
+
+        <!--<div data-mdb-input-init class="form-outline mb-4">-->
+        @*<input type="email" id="form2Example11" class="form-control"
+            placeholder="Số điện thoại hoặc mail" />*@
+        <!--@Html.TextBoxFor(m => m.SDT, "", new { @class = "form-control", @placeholder = "Nhập Số Điện Thoại Của Bạn" })
+            <label class="form-label" for="form2Example11">Tài khoản</label>
+        </div>
+
+        <div data-mdb-input-init class="form-outline mb-4">-->
+        @*<input type="password" id="form2Example22" class="form-control" />*@
+        <!--<label class="form-label" for="form2Example22"><h5>Mật khẩu</h5></label>
+            <div class="row">
+
+
+                <div class="col-md-11">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Mật khẩu" })
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-success" onclick="togglePasswordVisibility('Password', 'togglePasswordBtn')"><i class="far fa-eye"></i></button>
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div class="text-center pt-1 mb-5 pb-1">
+            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">
+                Đăng Nhập
+            </button>
+            <a class="text-muted" href="/Account/Forgotpassword">Quên mật khẩu ?</a>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-center pb-4">
+            <p class="mb-0 me-2">Bạn chưa có tài khoản ?</p>
+            <a href="/Account/Register" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-danger">Tạo mới</a>
+        </div>-->
+
+
     }
 
 </form>

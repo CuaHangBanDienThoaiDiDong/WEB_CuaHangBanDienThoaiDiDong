@@ -30,8 +30,9 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
+    @*====================Font chữ====================*@
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-   
 
 
 </head>
@@ -78,14 +79,14 @@
                                         <li><a href="#">Spanish</a></li>
                                     </ul>
                                 </li>
-                                <li class="account">
+                                <li class="account" style="width:auto">
                                     <a href="#">
-                                        Tài Khoản
+                                        Tài Khoản 
                                         <i class="fa fa-angle-down"></i>
                                     </a>
-                                    <ul class="account_selection">
-                                        <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng nhập</a></li>
-                                        <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng ký</a></li>
+                                    <ul class="account_selection" style="width:auto">
+                                        <li style="margin-left:-20px"><a href="/account/login"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng nhập</a></li>
+                                        <li style="margin:0px"><a href="/account/register"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng ký</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -106,49 +107,41 @@
                 <div class="row align-items-center">
                     <div class="col-lg-12 text-right">
                         <div class="logo_container">
-                            <a href="/home/index"  style="color:red;">LTD<span  style="color:white;">MiniStore</span></a>
+                            <a href="/home/index"  style="color: red; font-family: Poppins-Regular; ">LTD<span  style="color: white; font-family: Poppins-Regular; ">MiniStore</span></a>
                         </div>
                         <nav class="navbar ">
                             <ul class="navbar_menu">
                                 @*<li><a href="#">Điện thoại</a></li>
                                 <li><a href="#">shop</a></li>*@
-                                 <li><a href="/Product/index"  style="color:white;"> Cửa hàng</a></li>
+                                 <li><a href="/Product/index"  style="color: white; font-family: Poppins-Regular; font-size:18px; "> Sản phẩm</a></li>
 
                                 @Html.Action("Partial_Category", "ProductCategory")
 
                                
+                               
                                 @*<li><a href="#">promotion</a></li>
                                 <li><a href="#">pages</a></li>
                                 <li><a href="#">blog</a></li>*@
-                                <li><a href="contact.html" style="color:white;">contact</a></li>
+                                <li><a href="contact.html" style="color: white; font-family: Poppins-Regular; font-size: 18px;">contact</a></li>
                             </ul>
                             <ul class="navbar_user">
                                 <li><a href="#"><i class="fa fa-search" aria-hidden="true" style="color:white"></i></a></li>
-                                <li>
-                                    @if (Session["Client"] != null)
-                                    {
-                                        <p style="color:white">
+
+                                @if (Session["Client"] != null)
+                                {
+                                    <li class="account" style="background-color: #101010; margin-right: 20px; width: auto">
+
+                                        <a href="#" style="color:white ;width:auto; background-color: #101010;">
                                             @Session["TenKhachHang"]
-                                        </p>
-                                        <a href="~/Account/LogOut" class="text-black"><i class="far fa-sign-out-alt"></i></a>
 
-                                    }
-                                    else
-                                    {
-                                    <li><a href="/Account/Login"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a></li>
-                                    <li class="checkout ">
-                                        <a href="/Account/Login" style="background-color: #101010;">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:white" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
-                                                <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
-                                            </svg>
-
-                                            @*<span id="checkout_items" class="checkout_items">2</span>*@
                                         </a>
-                                    </li>
-                                }
-                                    </li>
+                                        <ul class="account_selection" style="width: auto">
+                                            <li style="width: 100% ;"><a href="~/Account/LogOut" style="width: auto"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng xuất</a></li>
 
+                                        </ul>
+                                    </li>
                                     <li class="checkout ">
+
                                         <a href="#" style="background-color: #101010;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:white" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
                                                 <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
@@ -158,10 +151,38 @@
                                     </li>
 
 
-                                    @*<li><a href="#"><i class="fa fa-search" aria-hidden="true" style="color:white"></i></a></li>
-            <li><a href="#"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a></li>*@
 
-                                </ul>
+                                    @*<a href="~/Account/LogOut" class=""style="color:white ;"><i class="far fa-sign-out-alt"></i></a>*@
+
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a href="/Account/Login"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a>
+                                    </li>
+
+                                    <li class="checkout ">
+
+                                        <a href="#" style="background-color: #101010;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:white" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
+                                                <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
+                                            </svg>
+                                            <span id="checkout_items" class="checkout_items">2</span>
+                                        </a>
+                                    </li>
+
+
+
+                                }
+
+
+
+
+
+                                @*<li><a href="#"><i class="fa fa-search" aria-hidden="true" style="color:white"></i></a></li>
+        <li><a href="#"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a></li>*@
+
+                            </ul>
                             <div class="hamburger_container">
                                 <i class="fa fa-bars" aria-hidden="true"></i>
                             </div>
@@ -238,15 +259,15 @@
 
 
                 </li>
-                <li class="menu_item"><a href="#">Trang chủ</a></li>
+                <li class="menu_item"><a href="/home/index">Trang chủ</a></li>
                 <li class="menu_item">
-                <a href="#">Sản phẩm</a>
+                <a href="/Product/index">Sản phẩm</a>
                 
                 </li>
-                <li class="menu_item"><a href="#">promotion</a></li>
+                @*<li class="menu_item"><a href="#">promotion</a></li>
                 <li class="menu_item"><a href="#">pages</a></li>
-                <li class="menu_item"><a href="#">blog</a></li>
-                <li class="menu_item"><a href="#">contact</a></li>
+                <li class="menu_item"><a href="#">blog</a></li>*@
+                <li class="menu_item"><a href="#">Liên hệ</a></li>
             </ul>
         </div>
     </div>

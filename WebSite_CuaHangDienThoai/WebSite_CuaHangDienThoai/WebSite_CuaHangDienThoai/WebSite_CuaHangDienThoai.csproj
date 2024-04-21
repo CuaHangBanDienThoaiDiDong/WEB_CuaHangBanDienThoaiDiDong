@@ -3259,6 +3259,8 @@
     <Content Include="Content\clients\plugins\uplot\uPlot.iife.js" />
     <Content Include="Content\clients\plugins\uplot\uPlot.iife.min.js" />
     <Content Include="Content\clients\plugins\uplot\uPlot.min.css" />
+    <Content Include="Content\Css\Client\LoginClient.css" />
+    <Content Include="Content\Css\Client\RegisterClient.css" />
     <Content Include="Content\LayOut\LayOut.css" />
     <Content Include="Content\LayOut\MenuGoiYHomNay.css" />
     <Content Include="Content\LayOut\MenuGoiYHomNay2.css" />
@@ -3473,6 +3475,27 @@
     <Content Include="Content\clients\plugins\summernote\summernote.js.map" />
     <Content Include="Content\clients\plugins\summernote\summernote.min.js.map" />
     <Content Include="Content\clients\plugins\toastr\toastr.js.map" />
+    <Content Include="Scripts\Client\js\main.js" />
+    <Content Include="Scripts\Client\vendor\animate\animate.css" />
+    <Content Include="Scripts\Client\vendor\bootstrap\css\bootstrap-grid.css" />
+    <Content Include="Scripts\Client\vendor\bootstrap\css\bootstrap-grid.min.css" />
+    <Content Include="Scripts\Client\vendor\bootstrap\css\bootstrap-reboot.css" />
+    <Content Include="Scripts\Client\vendor\bootstrap\css\bootstrap-reboot.min.css" />
+    <Content Include="Scripts\Client\vendor\bootstrap\css\bootstrap.css" />
+    <Content Include="Scripts\Client\vendor\bootstrap\css\bootstrap.min.css" />
+    <Content Include="Scripts\Client\vendor\bootstrap\js\bootstrap.js" />
+    <Content Include="Scripts\Client\vendor\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Scripts\Client\vendor\bootstrap\js\popper.js" />
+    <Content Include="Scripts\Client\vendor\bootstrap\js\popper.min.js" />
+    <Content Include="Scripts\Client\vendor\bootstrap\js\tooltip.js" />
+    <Content Include="Scripts\Client\vendor\css-hamburgers\hamburgers.css" />
+    <Content Include="Scripts\Client\vendor\css-hamburgers\hamburgers.min.css" />
+    <Content Include="Scripts\Client\vendor\jquery\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\Client\vendor\select2\select2.css" />
+    <Content Include="Scripts\Client\vendor\select2\select2.js" />
+    <Content Include="Scripts\Client\vendor\select2\select2.min.css" />
+    <Content Include="Scripts\Client\vendor\select2\select2.min.js" />
+    <Content Include="Scripts\Client\vendor\tilt\tilt.jquery.min.js" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Areas\Admin\Views\web.config" />
@@ -3625,6 +3648,12 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Scripts\Client\vendor\bootstrap\css\bootstrap-grid.css.map" />
+    <Content Include="Scripts\Client\vendor\bootstrap\css\bootstrap-grid.min.css.map" />
+    <Content Include="Scripts\Client\vendor\bootstrap\css\bootstrap-reboot.css.map" />
+    <Content Include="Scripts\Client\vendor\bootstrap\css\bootstrap-reboot.min.css.map" />
+    <Content Include="Scripts\Client\vendor\bootstrap\css\bootstrap.css.map" />
+    <Content Include="Scripts\Client\vendor\bootstrap\css\bootstrap.min.css.map" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -3638,6 +3667,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\jsShopping.js" />
+    <Content Include="Scripts\owl_carousel\owl.carousel.css" />
+    <Content Include="Scripts\owl_carousel\owl.carousel.js" />
+    <Content Include="Scripts\owl_carousel\owl.theme.default.css" />
     <Content Include="Uploads\files\password.png" />
     <Content Include="Uploads\images\244994762_2380031152133544_4984166604951804110_n.jpg" />
     <Content Include="Uploads\images\avatar.png" />
