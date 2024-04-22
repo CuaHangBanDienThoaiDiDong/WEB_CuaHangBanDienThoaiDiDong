@@ -99,7 +99,9 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                 }
                             }
                         }
-                        //tb_NhanVien nvSession = (tb_NhanVien)Session["user"];
+                        tb_Staff nvSession = (tb_Staff)Session["user"];
+                        var checkStaff = db.tb_Staff.SingleOrDefault(row => row.MSNV == nvSession.MSNV);
+                        model.CreatedBy = checkStaff.TenNhanVien + "-" + checkStaff.MSNV;
                         model.CreatedDate = DateTime.Now;
                         model.ModifiedDate = DateTime.Now;
                         model.IsActive = req.IsActive;
@@ -177,6 +179,10 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.MSNV == nvSession.MSNV);
+                model.Modifeby = checkStaff.TenNhanVien + "-" + checkStaff.MSNV;
                 model.IsActive = false;
                 model.IsHome = false;
                 model.IsFeature = false;

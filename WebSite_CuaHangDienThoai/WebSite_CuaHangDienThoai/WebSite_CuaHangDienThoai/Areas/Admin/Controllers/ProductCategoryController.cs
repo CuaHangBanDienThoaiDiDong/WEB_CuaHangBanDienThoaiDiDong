@@ -93,6 +93,9 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                         {
                             if (model.Title != null)
                             {
+                                tb_Staff nvSession = (tb_Staff)Session["user"];
+                                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.MSNV == nvSession.MSNV);
+                                model.CreatedBy = checkStaff.TenNhanVien + "-" + checkStaff.MSNV;
                                 model.Icon = req.Image;
                                 model.CreatedDate = DateTime.Now;
                                 model.ModifiedDate = DateTime.Now;
@@ -167,6 +170,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 model.ModifiedDate = DateTime.Now;
                 model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
                 model.Modifiedby = checkStaff.TenNhanVien+"-"+ checkStaff.MSNV;
+                model.IsActive = false;
                 db.tb_ProductCategory.Attach(model);
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();

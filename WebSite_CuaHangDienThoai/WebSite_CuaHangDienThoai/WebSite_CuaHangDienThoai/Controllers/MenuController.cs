@@ -54,7 +54,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         public ActionResult MenuIphone()
         {
-            var checkPhone = db.tb_Products.FirstOrDefault(x => x.IsActive == true && x.IsHome == true&&x.ProductCompanyId == 1);
+            var checkPhone = db.tb_Products.FirstOrDefault(x => x.IsActive == true && x.IsHome == true&&x.ProductCompanyId == 1 && x.ProductCategoryId == 1);
             if (checkPhone != null)
             {
                 var item = db.tb_ProductDetail.OrderByDescending(x => x.ProductsId == checkPhone.ProductsId).Take(15).ToList();
@@ -104,7 +104,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
             {
                 ViewBag.CateId = id;
             }
-            var items = db.tb_ProductCategory.OrderByDescending(x => x.ProductCategoryId).ToList();
+            var items = db.tb_ProductCategory.ToList();
             return PartialView("_MenuDanhMucNoiBat", items);
 
         }

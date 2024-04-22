@@ -137,7 +137,7 @@
     {
 
         <div class="container">
-            <div class="border border-danger  nen" style="background-color: #D0021C; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px ">
+            <div class="border border-danger  nen" style="background-color: #D0021C; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px ;width:auto ">
                 <div class="row">
                     <div class="col-md-12">
                         <img src="~/images/gif/Macdinh-1.gif" class="w-100 rounded-top" />
@@ -219,7 +219,8 @@
 
                               <div class="product-info p-3">
                                   <a class="d-inline-block text-truncate" href="/Product/Details?id=@items.ProductsId&ProductDetailId=@items.ProductDetailId">
-                                      <h5 style="color:white;padding-top:10px;" class="text-center">@items.tb_Products.Title @items.Title @DungLuong</h5>
+                                      <h5 style="color:white;padding-top:10px;" class="text-center">@items.tb_Products.Title @items.Title</h5>
+                                      <p> @DungLuong </p>
                                   </a>
                                   @if (items.PriceSale > 0)
                                   {

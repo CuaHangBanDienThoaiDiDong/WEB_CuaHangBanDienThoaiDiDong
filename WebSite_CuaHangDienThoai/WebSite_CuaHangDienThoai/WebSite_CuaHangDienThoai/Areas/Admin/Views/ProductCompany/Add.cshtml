@@ -92,7 +92,7 @@
                         <div class="form-group">
 
                             <button type="submit" class="btn btn-primary">Lưu</button>
-                            <a href="/Admin/ProductCategory/index" class="btn btn-danger">Quay lại</a>
+                            <a href="/Admin/ProductCompany/index" class="btn btn-danger">Quay lại</a>
                         </div>
                     </div>
 
@@ -110,9 +110,23 @@
 </section>
 
 
+@section  scripts{
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('txtDetail', {
+                customConfig: '/content/ckeditor/config.js',
+                extraAllowedContent: 'span',
+            });
+        });
+        function BrowseServer(field) {
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (fileUrl) {
+                document.getElementById(field).value = fileUrl;
+            };
+            finder.popup();
+        }
 
-
-
-
+    </script>
+}
 
 
