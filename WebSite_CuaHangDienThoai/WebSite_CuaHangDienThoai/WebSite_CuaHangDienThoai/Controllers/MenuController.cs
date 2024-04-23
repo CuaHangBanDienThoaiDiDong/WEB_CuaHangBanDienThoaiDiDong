@@ -104,7 +104,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
             {
                 ViewBag.CateId = id;
             }
-            var items = db.tb_ProductCategory.ToList();
+            var items = db.tb_ProductCategory.Where(x=>x.IsActive==true).ToList();
             return PartialView("_MenuDanhMucNoiBat", items);
 
         }
