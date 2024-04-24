@@ -140,7 +140,7 @@
         {
             <div class="row pt-5">
                 <div class="col-md-12">
-                    <div class=" g-4 my-5 mx-auto owl-carousel owl-theme align-items-center">
+                    <div class=" g-4 my-5 mx-auto owl-carousel owl-theme align-items-center pl-3 pr-3 ">
                         @foreach (var items in Model)
                         {
                             var DungLuong = "";
@@ -177,7 +177,7 @@
                             }
                             if (items.tb_Products.IsActive == true && items.tb_Products.IsHome == true && items.tb_Products.tb_ProductCompany.ProductCompanyId==1&& items.tb_Products.tb_ProductCategory.ProductCategoryId==1)
                             {
-                                <div class="col product-item mx-auto rounded " style=" background :#323232 " id="product-item">
+                                <div class="col product-item  align-items-center   rounded-4 " style=" background: #323232; border: none; margin-left:20px" id="product-item">
 
                                     <div class="product-img">
                                         <div class="product_image pt-3 d-flex justify-content-center">

@@ -7,10 +7,10 @@
         transform: translateY(-10px);
         transition: transform 0.3s ease;
     }
-    .product-item {
+    /*.product-item {
         float: left;
-        clear: both; /* This ensures that each product item starts on a new line */
-    }
+        clear: both;*/ /* This ensures that each product item starts on a new line */
+    /*}*/
 
     .swiper {
         width: 100%;
@@ -28,10 +28,31 @@
 
     .img {
         display: block;
-        width: 60%;
-        height: 60%;
+       
         object-fit: cover;
+        display: flex;
+        justify-content: center; /* Căn ngang ảnh ở giữa */
+        align-items: center;
+       
+        margin: auto;
     }
+    .product-item {
+        border: none;
+        margin: 2px;
+        background: #323232;
+        border: none;
+        margin-top: 20px;
+        padding: 10px; /* Thêm padding để đảm bảo có không gian xung quanh nội dung */
+        box-sizing: border-box; /* Đảm bảo padding và border được tính trong wi*/
+    }
+    .product_image {
+        display: flex;
+        justify-content: center; /* Căn giữa ngang */
+        align-items: center; /* Căn giữa dọc */
+        width: 100%; /* Đảm bảo container mở rộng chiều ngang */
+        height: auto; /* Cho phép container tự điều chỉnh theo chiều cao nội dung */
+    }
+
 </style>
 
 
@@ -46,15 +67,19 @@
         {
             strImg = img.Image;
 
-           <div class="product-item men">
-               <div class="product discount product_filter align-items-center">
-                   <div class="product_image pt-3 d-flex justify-content-center  img">
-                       <img src="@strImg" alt="@item.Title" >
-                   </div>           
+           <div class="product-item rounded-4 @item.tb_ProductCategory.Alias " style="margin:2px; background: #323232; border: none; margin-top: 20px">
+               <div class="  discount  w-100 align-items-center" @*style=" margin-top: -20px"*@>
+                   @*<div class="product_image pt-3 d-flex justify-content-center  ">
+            <img class="img h-50 w-50" src="@strImg" alt="@item.Title" style="width: 30%; height: 30%; " >
+        </div>*@
+
+                   <div class="product_image  d-flex justify-content-center">
+                       <img src="@strImg" alt="@item.Title" class="w-75 h-75">
+                   </div>
                    <div class="favorite favorite_left"></div>
-                  
+
                    <div class="product_info">
-                       <h6 class="product_name"><a href="single.html">Fujifilm X100T 16 MP Digital Camera (Silver)</a></h6>
+                       <h6 class="product_name"><a href="single.html" style="color:white">@item.Title</a></h6>
                        @*<div class="product_price">$520.00<span>$590.00</span></div>*@
 
                        @Html.Action("Partail_ProductDetailById", "ProductDetail", new { id = item.ProductsId })
