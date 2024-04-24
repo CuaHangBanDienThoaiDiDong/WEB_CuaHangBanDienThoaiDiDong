@@ -219,8 +219,8 @@
 
                               <div class="product-info p-3">
                                   <a class="d-inline-block text-truncate" href="/Product/Details?id=@items.ProductsId&ProductDetailId=@items.ProductDetailId">
-                                      <h5 style="color:white;padding-top:10px;" class="text-center  justify-content-center align-items-center">@items.tb_Products.Title @items.Title</h5>
-                                      <p> @DungLuong </p>
+                                      <h5 style="color:white;padding-top:10px;" class="text-center  justify-content-center align-items-center">@items.tb_Products.Title</h5>
+                                      <p class="text-center"> @DungLuong </p>
                                   </a>
                                   @if (items.PriceSale > 0)
                                   {
@@ -234,7 +234,7 @@
                                           @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(items.Price)đ
                                       </span>
                                   }
-                                  <div class="rating d-flex mt-1">
+                                  @*<div class="rating d-flex mt-1">
                                       <span>
                                           <i class="fa fa-star"></i>
                                       </span>
@@ -251,7 +251,7 @@
                                           <i class="fa fa-star"></i>
                                       </span>
                                       <span>(25 reviews)</span>
-                                  </div>
+                                  </div>*@
                               </div>
                           </div>
                              }

@@ -113,6 +113,14 @@
                 }
                 if (res.Code == -4) {
                     Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi máy chủ...",
+                        text: "Không tìm thấy dữ liệu nhân viên",
+                        footer: '<a href="#">Bạn có muốn cập nhật lại số lượng?</a>'
+                    });
+                }
+                if (res.Code == -4) {
+                    Swal.fire({
                         icon: "question",
                         title: "Lỗi thêm nhân viên...",
                         text: "Không thấy chức năng cho nhân viên mới ",

@@ -64,93 +64,102 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         public ActionResult Add(tb_Products model, List<string> Images, List<int> rDefault, Admin_TokenProducts req)
         {
             var code = new { Success = false, Code = -1, Url = "" };
-            if (req.TocDoCPU != null && req.MangDiDong != null && req.Sim != null && req.Wifi != null)
+            tb_Staff nvSession = (tb_Staff)Session["user"];
+            if (nvSession.MSNV != null)
             {
-               
-               
-
-                var checkTitle = db.tb_Products.FirstOrDefault(r => r.Title == req.Title &&r.ProductCategoryId==req.ProductCategoryId&&r.ProductCompanyId==req.ProductCompanyId);
-                if (checkTitle == null)
+                if (req.TocDoCPU != null && req.MangDiDong != null && req.Sim != null && req.Wifi != null)
                 {
-                    if (ModelState.IsValid)
+
+
+
+                    var checkTitle = db.tb_Products.FirstOrDefault(r => r.Title == req.Title && r.ProductCategoryId == req.ProductCategoryId && r.ProductCompanyId == req.ProductCompanyId);
+                    if (checkTitle == null)
                     {
-                        if (Images != null && Images.Count > 0)
+                        if (ModelState.IsValid)
                         {
-                            for (int i = 0; i < Images.Count; i++)
+                            if (Images != null && Images.Count > 0)
                             {
-                                if (i + 1 == rDefault[0])
+                                for (int i = 0; i < Images.Count; i++)
                                 {
-                                    model.Image = Images[i];
-                                    db.tb_ProductImage.Add(new tb_ProductImage
+                                    if (i + 1 == rDefault[0])
                                     {
-                                        ProductsId = model.ProductsId,
-                                        Image = Images[i],
-                                        IsDefault = true
-                                    });
-                                }
-                                else
-                                {
-                                    db.tb_ProductImage.Add(new tb_ProductImage
+                                        model.Image = Images[i];
+                                        db.tb_ProductImage.Add(new tb_ProductImage
+                                        {
+                                            ProductsId = model.ProductsId,
+                                            Image = Images[i],
+                                            IsDefault = true
+                                        });
+                                    }
+                                    else
                                     {
-                                        ProductsId = model.ProductsId,
-                                        Image = Images[i],
-                                        IsDefault = true
-                                    });
+                                        db.tb_ProductImage.Add(new tb_ProductImage
+                                        {
+                                            ProductsId = model.ProductsId,
+                                            Image = Images[i],
+                                            IsDefault = true
+                                        });
+                                    }
                                 }
                             }
-                        }
-                        tb_Staff nvSession = (tb_Staff)Session["user"];
-                        var checkStaff = db.tb_Staff.SingleOrDefault(row => row.MSNV == nvSession.MSNV);
-                        model.CreatedBy = checkStaff.TenNhanVien + "-" + checkStaff.MSNV;
-                        model.CreatedDate = DateTime.Now;
-                        model.ModifiedDate = DateTime.Now;
-                        model.IsActive = req.IsActive;
-                        model.IsHot = req.IsHot;
-                        model.IsFeature = req.IsFeature;
-                        model.IsSale = req.IsSale;
-                        model.IsHome = req.IsHome;
 
-                        model.CPU=req.CPU;
-                        model.GPU=req.GPU;
-                        model.TocDoCPU = req.TocDoCPU;
+                            var checkStaff = db.tb_Staff.SingleOrDefault(row => row.MSNV == nvSession.MSNV);
+                            model.CreatedBy = checkStaff.TenNhanVien + "-" + checkStaff.MSNV;
+                            model.CreatedDate = DateTime.Now;
+                            model.ModifiedDate = DateTime.Now;
+                            model.IsActive = req.IsActive;
+                            model.IsHot = req.IsHot;
+                            model.IsFeature = req.IsFeature;
+                            model.IsSale = req.IsSale;
+                            model.IsHome = req.IsHome;
 
-                        model.HeDieuHanh = req.HeDieuHanh;
-                        model.MangDiDong = req.MangDiDong;
-                        model.Sim = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Sim);
-                        model.Wifi = req.Wifi;
-                        model.GPS = req.GPS;
-                        model.Bluetooth = req.Bluetooth;
-                        model.Bluetooth = req.Bluetooth;
-                        model.CongKetNoi = req.CongKetNoi;
-                        model.JackTaiNghe = req.JackTaiNghe;
-                        model.LoaiPin = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.LoaiPin);
-                        model.HoTroSac = req.HoTroSac;
-                        model.CongNghePin = req.CongNghePin;
-                        if (string.IsNullOrEmpty(model.Title))
-                        {
-                            model.SeoTitle = model.Title;
-                        }
-                        if (string.IsNullOrEmpty(model.Alias))
-                        {
-                            model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
-                        }
-                        db.tb_Products.Add(model);
-                        db.SaveChanges();
-                        code = new { Success = true, Code = 1, Url = "" };
+                            model.CPU = req.CPU;
+                            model.GPU = req.GPU;
+                            model.TocDoCPU = req.TocDoCPU;
 
+                            model.HeDieuHanh = req.HeDieuHanh;
+                            model.MangDiDong = req.MangDiDong;
+                            model.Sim = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Sim);
+                            model.Wifi = req.Wifi;
+                            model.GPS = req.GPS;
+                            model.Bluetooth = req.Bluetooth;
+                            model.Bluetooth = req.Bluetooth;
+                            model.CongKetNoi = req.CongKetNoi;
+                            model.JackTaiNghe = req.JackTaiNghe;
+                            model.LoaiPin = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.LoaiPin);
+                            model.HoTroSac = req.HoTroSac;
+                            model.CongNghePin = req.CongNghePin;
+                            if (string.IsNullOrEmpty(model.Title))
+                            {
+                                model.SeoTitle = model.Title;
+                            }
+                            if (string.IsNullOrEmpty(model.Alias))
+                            {
+                                model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
+                            }
+                            db.tb_Products.Add(model);
+                            db.SaveChanges();
+                            code = new { Success = true, Code = 1, Url = "" };
+
+
+                        }
+                    }
+                    else
+                    {//san pham da ton tai
+                        code = new { Success = false, Code = -3, Url = "" };
 
                     }
                 }
-                else
-                {//san pham da ton tai
-                    code = new { Success = false, Code = -3, Url = "" };
-
+                else //Dien ko day du thong tin
+                {
+                    code = new { Success = false, Code = -2, Url = "" };
                 }
             }
-            else //Dien ko day du thong tin
-            {
-                code = new { Success = false, Code = -2, Url = "" };
+            else 
+            {//Không tìm thấy sesstion
+                code = new { Success = false, Code = -4, Url = "" };
             }
+          
             //ViewBag.ProductCategory = new SelectList(db.tb_ProductCategory.ToList(), "ProductCategoryId", "Title");
             //ViewBag.ProductCompany = new SelectList(db.tb_ProductCompany.ToList(), "ProductCompanyId", "Title");
             return Json(code);
