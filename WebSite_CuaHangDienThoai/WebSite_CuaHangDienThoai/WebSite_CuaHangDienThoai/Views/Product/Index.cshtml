@@ -204,64 +204,33 @@
                                             {
                                                 strImg = img.Image;
 
-                                                <div class="product-item @item.tb_ProductCategory.Alias rounded-3 d-flex flex-column justify-content-between" data-id="@item.ProductsId" style="background: #323232; margin-left: 5px; margin-right: 5px; height: auto">
+                                                <div class="product-item men  rounded-3 m-1 @item.tb_ProductCategory " data-id="@item.ProductsId" style="background: #323232; padding-left:-20px  ">
                                                     <div class=" discount ">
-
                                                         <div class="product_image pt-3 d-flex justify-content-center">
                                                             <img src="@strImg" alt="@item.Title" class="w-75 h-75">
                                                         </div>
                                                         <div class="favorite favorite_left"></div>
-
                                                         <div class="product_bubble_right product_bubble product_bubble_red d-flex flex-column align-items-center loadPhanTramSale " id="loadPhanTramSale_@item.ProductsId" data-id="@item.ProductsId" style="visibility: hidden;">
 
                                                         </div>
 
-
-                                                        <div class="product_info" style="margin-top:-20px">
-                                                            @*<h6 class="product_name"><a href="/chi-tiet/@item.Alias-p">@item.Title</a></h6>*@
+                                                        <div class="product_info">
                                                             <h6 class="product_name">
-                                                                @*<a href="/Product/Details/@item.ProductsId" style="color:white ">@item.Title</a>*@
+
                                                                 <a class="d-inline-block text-truncate" href="/Product/Details?id=@item.ProductsId&ProductDetailId=1" style="color:white ">
                                                                     @item.Title
                                                                 </a>
-                                                                @*<a class="d-inline-block text-truncate" href="/Product/Details/id=@item.ProductsId" style="color:white ">
-                                                                        @item.Title
-                                                                    </a>*@
-                                                            </h6>
 
+                                                            </h6>
                                                             @Html.Action("Partail_ProductDetailById", "ProductDetail", new { id = item.ProductsId })
 
                                                             @*Hiển thị giá tiền theo cấu hình*@
                                                             <div class="loadPrice" id="loadPrice_@item.ProductsId" data-id="@item.ProductsId"></div>
                                                         </div>
-                                                        <div class="card-footer">
-                                                            <ul class="list-inline text-center">
-                                                                <li class="list-inline-item">
-                                                                    <img src="https://24hstore.vn/images/products_promotion/original/icon-thu-cu_1667900775.svg" />
-                                                                </li>
-                                                                <li class="list-inline-item">
-                                                                    <img src="https://24hstore.vn/images/products_promotion/original/icon-vib-logo_1670400516.svg" />
-                                                                </li>
-                                                                <li class="list-inline-item">
-                                                                    <img src="https://24hstore.vn/images/products_promotion/original/icon-kredivo_1670394894.svg" />
-                                                                </li>
-                                                                <li class="list-inline-item">
-                                                                    <img src="https://24hstore.vn/images/products_promotion/original/icon-apple-pay_1708569696.svg" />
-                                                                </li>
-                                                            </ul>
-                                                            <small class="m-lg-4">Sản phẩm</small>
-                                                        </div>
-
                                                     </div>
-
-
-
-                                                    <!--<div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" data-id="-->@*@item.Id*@<!--">Thêm vào giỏ hàng</a></div>-->
+                                                
                                                 </div>
-
                                             }
-
-
                                         }
 
 

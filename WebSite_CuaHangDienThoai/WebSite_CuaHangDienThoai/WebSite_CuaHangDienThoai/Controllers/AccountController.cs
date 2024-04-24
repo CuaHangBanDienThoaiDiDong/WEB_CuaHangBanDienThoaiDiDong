@@ -50,6 +50,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                         Session["IdKhachHang"] = checkClock.IdKhachHang;
                         Session["Email"] = checkClock.Email;
                         Session["SDT"] = checkClock.SDT;
+                        Session["img"] = checkClock.Image;
                         return RedirectToAction("Index", "Home");
                     }
                     else
