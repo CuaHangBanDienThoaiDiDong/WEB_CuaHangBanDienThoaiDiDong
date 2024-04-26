@@ -28,16 +28,28 @@ namespace WebSite_CuaHangDienThoai
                   namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
               );
 
+            routes.MapRoute(
+                name: "ProductsIndex",
+                url: "san-pham",
+                defaults: new { controller = "Product", action = "Index" },
+                namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+            );
 
+                        routes.MapRoute(
+                name: "SanPham",
+                url: "san-pham",
+                defaults: new { controller = "Product", action = "Index" },
+                     namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+            );
             routes.MapRoute(
           name: "404-PageNotFound",
-          url: "error/notfound",
+          url: "Loi-he-thong-may-chu",
           defaults: new { controller = "Error", action = "NotFound" }
       );
 
             routes.MapRoute(
                 name: "500-InternalServerError",
-                url: "error/servererror",
+                url: "Loi-he-thong-may-chu-500-server",
                 defaults: new { controller = "Error", action = "ServerError" }
             );
 

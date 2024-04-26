@@ -4093,6 +4093,7 @@
     <Content Include="Views\Account\UpdatePass.cshtml" />
     <Content Include="Views\Account\Partial_Register.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Menu\_MenuBrand.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

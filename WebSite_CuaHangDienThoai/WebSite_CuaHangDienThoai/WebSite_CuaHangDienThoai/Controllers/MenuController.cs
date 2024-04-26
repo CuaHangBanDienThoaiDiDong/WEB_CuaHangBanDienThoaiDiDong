@@ -26,6 +26,16 @@ namespace WebSite_CuaHangDienThoai.Controllers
             var item = db.tb_ProductCategory.ToList();
             return PartialView("_MenuLeft", item);
         }
+        public ActionResult MenuBrand(int? id)
+        {
+            if (id != null)
+            {
+                ViewBag.CateId = id;
+            }
+            var item = db.tb_ProductCompany.ToList();
+            return PartialView("_MenuBrand", item);
+        
+        }
         public ActionResult MenuProductDetail()
         {
             var checkProducts = db.tb_Products.FirstOrDefault(x => x.IsActive == true && x.IsHome == true);
@@ -54,12 +64,26 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         public ActionResult MenuIphone()
         {
-            var checkPhone = db.tb_Products.FirstOrDefault(x => x.IsActive == true && x.IsHome == true&&x.ProductCompanyId == 1 && x.ProductCategoryId == 1);
+            //var checkPhone = db.tb_Products.SingleOrDefault(x => x.IsActive == true && x.IsHome == true&&x.ProductCompanyId == 1 && x.ProductCategoryId == 1);
+
+            var checkPhone = db.tb_Products
+                     .Where(x => x.IsActive == true && x.IsHome == true && x.ProductCompanyId == 1 && x.ProductCategoryId == 1)
+                     .Select(x => x.ProductsId)  // Chỉ lấy ID sản phẩm
+                     .ToList();
+
             if (checkPhone != null)
             {
-                var item = db.tb_ProductDetail.OrderByDescending(x => x.ProductsId == checkPhone.ProductsId).Take(15).ToList();
+
+                //var productIds = checkPhone.Select(p => p.ProductsId);
+                //var items = db.tb_ProductDetail.OrderByDescending(x => x.ProductsId == checkPhone.ProductsId).Take(15).ToList();
+                var items = db.tb_ProductDetail
+                .Where(pd => pd.ProductsId.HasValue && checkPhone.Contains(pd.ProductsId.Value))
+                .OrderByDescending(pd => pd.ProductsId)
+                .Take(15)
+                .ToList();
+
                 ViewBag.txt = "abc";
-                return PartialView(item);
+                return PartialView(items);
             }
             return PartialView();
         }
