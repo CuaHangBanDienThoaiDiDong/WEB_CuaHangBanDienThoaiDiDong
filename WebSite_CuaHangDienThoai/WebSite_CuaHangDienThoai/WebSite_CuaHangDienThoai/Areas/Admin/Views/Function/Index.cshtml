@@ -72,11 +72,11 @@
                         foreach(var item in Model)
                         {
                             
-                            <tr id="trow_@item.IdChucNang">
-                                <td><input type="checkbox" class="cbkItem" value="@item.IdChucNang" /></td>
+                            <tr id="trow_@item.FunctionId">
+                                <td><input type="checkbox" class="cbkItem" value="@item.FunctionId" /></td>
                                 <td>@i</td>
                                 <td>
-                                    <p>@item.TenChucNang</p>
+                                    <p>@item.TitLe</p>
 
                                 </td>
                                 <td> @item.CreatedBy</td>
@@ -98,7 +98,7 @@
                                     @*@item.ModifiedDate.ToString("dd/MM/yyyy")*@
                                 </td>
                                 <td>
-                                    <a href="/admin/function/edit/@item.IdChucNang" class="btn btn-sm btn-primary">Sửa</a>
+                                    <a href="/admin/function/edit/@item.FunctionId" class="btn btn-sm btn-primary">Sửa</a>
                                     @*<a href="#" data-id="@item.ProductCategoryId" class="btn btn-sm btn-danger btnDelete">Xóa</a>*@
                                 </td>
                             </tr>

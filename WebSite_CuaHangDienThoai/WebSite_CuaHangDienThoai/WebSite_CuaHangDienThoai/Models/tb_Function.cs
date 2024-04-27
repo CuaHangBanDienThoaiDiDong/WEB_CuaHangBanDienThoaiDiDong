@@ -21,9 +21,9 @@ namespace WebSite_CuaHangDienThoai.Models
             this.tb_Staff = new HashSet<tb_Staff>();
         }
     
-        public int IdChucNang { get; set; }
-        public string TenChucNang { get; set; }
-        public string MaChucNang { get; set; }
+        public int FunctionId { get; set; }
+        public string TitLe { get; set; }
+        public string Alias { get; set; }
         public string CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }

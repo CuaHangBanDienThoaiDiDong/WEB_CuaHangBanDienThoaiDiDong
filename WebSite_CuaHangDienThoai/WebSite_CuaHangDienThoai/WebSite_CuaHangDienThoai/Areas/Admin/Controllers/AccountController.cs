@@ -27,35 +27,35 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DangNhap(string msnv, string password, string user)
+        public ActionResult DangNhap(string Code, string password, string user)
         {
 
             if (ModelState.IsValid)
             {
                 var f_password = MaHoaPass(password);
 
-                //var data = db.tb_NhanVien.Count(s => s.MSNV.Equals(msnv) && s.Password.Equals(f_password));
-                var data = db.tb_Staff.SingleOrDefault(s => s.MSNV.Equals(msnv) && s.Password.Equals(f_password));
+                //var data = db.tb_NhanVien.Count(s => s.Code.Equals(Code) && s.Password.Equals(f_password));
+                var data = db.tb_Staff.SingleOrDefault(s => s.Code.Equals(Code) && s.Password.Equals(f_password));
 
                 if (data != null)
                 {
-                    var checklock = db.tb_Staff.FirstOrDefault(s => s.MSNV.Equals(msnv) && s.Clock == false);
+                    var checklock = db.tb_Staff.FirstOrDefault(s => s.Code.Equals(Code) && s.Clock == false);
                     if (checklock != null)
                     {
-                        var checkRole = db.tb_Staff.SingleOrDefault(s => s.MSNV == msnv);
+                        var checkRole = db.tb_Staff.SingleOrDefault(s => s.Code == Code);
                         if (checkRole != null)
                         {
-                            if (checkRole.IdChucNang == 1 || checkRole.IdChucNang == 2)
+                            if (checkRole.FunctionId == 1 || checkRole.FunctionId == 2)
                             {
                                 Session["user"] = data;
                                 return RedirectToAction("Index", "HomePage");
                             }
-                            else if (checkRole.IdChucNang == 3)
+                            else if (checkRole.FunctionId == 3)
                             {
                                 Session["user"] = data;
                                 return RedirectToAction("Index", "Warehouse");
                             }
-                            else if (checkRole.IdChucNang == 4)
+                            else if (checkRole.FunctionId == 4)
                             {
                                 Session["user"] = data;
                                 return RedirectToAction("Index", "Seller");

@@ -102,7 +102,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                         {
                             
                             Color = pd.Color,
-                            DungLuong = pd.DungLuong
+                            DungLuong = pd.Capacity
                         };
 
             // Tạo một danh sách để lưu trữ các màu và dung lượng mà không bị lặp lại
@@ -182,14 +182,14 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                 }
                             }
                             model.Color = req.Color;
-                            model.Title = req.Title;
+                            model.Title = req.Title.Trim();
                             model.ProductsId = req.ProductsId;
                             model.Price = req.Price;
                             model.OrigianlPrice = req.OrigianlPrice;
                             model.PriceSale = req.PriceSale;
                             model.TypeProduct = req.TypeProduct;
-                            model.DungLuongPin = req.DungLuongPin;
-                            model.DungLuong = req.DungLuong;
+                            model.BatteryCapacity = req.DungLuongPin;
+                            model.Capacity = req.DungLuong;
                             model.Ram = req.Ram;
                             db.tb_ProductDetail.Add(model);
                             db.SaveChanges();
@@ -254,19 +254,19 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             {
                 var query = (from pd in context.tb_ProductDetail
                              where pd.ProductsId == id
-                             group pd by new { pd.Ram, pd.DungLuong } into g
+                             group pd by new { pd.Ram, pd.Capacity } into g
                              where g.Count() == 1 // Lọc bỏ các bản ghi trùng lặp
                              select new
                              {
                                  Ram = g.Key.Ram,
-                                 DungLuong = g.Key.DungLuong
+                                 DungLuong = g.Key.Capacity
                              }).ToList();
 
                 // Xóa các bản ghi trùng lặp
                 foreach (var item in query)
                 {
                     var duplicates = context.tb_ProductDetail
-                        .Where(pd => pd.ProductsId == id && pd.Ram == item.Ram && pd.DungLuong == item.DungLuong)
+                        .Where(pd => pd.ProductsId == id && pd.Ram == item.Ram && pd.Capacity == item.DungLuong)
                         .OrderBy(pd => pd.ProductDetailId) // Sắp xếp dữ liệu theo một trường nào đó, ví dụ: Id
                         .Skip(1) // Bỏ qua bản ghi đầu tiên để chỉ lấy các bản ghi trùng lặp
                         .ToList();
@@ -289,7 +289,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                              select new ProductDetailViewModel
                              {
                                  Ram = (int)pd.Ram,
-                                 DungLuong = (int)pd.DungLuong,
+                                 DungLuong = (int)pd.Capacity,
                                  Color = pd.Color
                              }).ToList();
 
@@ -318,45 +318,45 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
-        public ActionResult test(int id)
-        {
-            var query = from pd in db.tb_ProductDetail
-                        join p in db.tb_Products on pd.ProductsId equals p.ProductsId
-                        where pd.ProductsId == id
-                        group new { pd, p } by new { pd.ProductsId, p.Title, p.Image, pd.Ram, pd.DungLuong } into grouped
-                        select new
-                        {
-                            ProductsId = grouped.Key.ProductsId,
-                            ProductTitle = grouped.Key.Title,
-                            ProductImage = grouped.Key.Image,
-                            Ram = grouped.Key.Ram,
-                            DungLuong = grouped.Key.DungLuong,
-                            Colors = grouped.Select(x => x.pd.Color).ToList(),
-                            Prices = grouped.Select(x => new { Price = x.pd.Price, PriceSale = x.pd.PriceSale, OrigianlPrice = x.pd.OrigianlPrice }).ToList()
-                        };
+        //public ActionResult test(int id)
+        //{
+        //    var query = from pd in db.tb_ProductDetail
+        //                join p in db.tb_Products on pd.ProductsId equals p.ProductsId
+        //                where pd.ProductsId == id
+        //                group new { pd, p } by new { pd.ProductsId, p.Title, p.Image, pd.Ram, pd.DungLuong } into grouped
+        //                select new
+        //                {
+        //                    ProductsId = grouped.Key.ProductsId,
+        //                    ProductTitle = grouped.Key.Title,
+        //                    ProductImage = grouped.Key.Image,
+        //                    Ram = grouped.Key.Ram,
+        //                    DungLuong = grouped.Key.DungLuong,
+        //                    Colors = grouped.Select(x => x.pd.Color).ToList(),
+        //                    Prices = grouped.Select(x => new { Price = x.pd.Price, PriceSale = x.pd.PriceSale, OrigianlPrice = x.pd.OrigianlPrice }).ToList()
+        //                };
 
-            List<ProductDetailViewModel> products = new List<ProductDetailViewModel>();
+        //    List<ProductDetailViewModel> products = new List<ProductDetailViewModel>();
 
-            foreach (var item in query)
-            {
-                List<ProductDetailViewModel> prices = item.Prices != null
-                                                ? item.Prices.Select(x => new ProductDetailViewModel { Price = (decimal)x.Price, PriceSale = (decimal)x.PriceSale, OrigianlPrice = (decimal)x.OrigianlPrice }).ToList()
-                                                : new List<ProductDetailViewModel>();
+        //    foreach (var item in query)
+        //    {
+        //        List<ProductDetailViewModel> prices = item.Prices != null
+        //                                        ? item.Prices.Select(x => new ProductDetailViewModel { Price = (decimal)x.Price, PriceSale = (decimal)x.PriceSale, OrigianlPrice = (decimal)x.OrigianlPrice }).ToList()
+        //                                        : new List<ProductDetailViewModel>();
 
-                products.Add(new ProductDetailViewModel
-                {
-                    //ProductsId = item.ProductsId,
-                    //ProductTitle = item.ProductTitle,
-                    //ProductImage = item.ProductImage,
-                    Ram = (int)item.Ram,
-                    DungLuong = (int)item.DungLuong,
-                    Color = string.Join(", ", item.Colors),
-                    Price = prices.FirstOrDefault()?.Price ?? 0m
-                });
-            }
+        //        products.Add(new ProductDetailViewModel
+        //        {
+        //            //ProductsId = item.ProductsId,
+        //            //ProductTitle = item.ProductTitle,
+        //            //ProductImage = item.ProductImage,
+        //            Ram = (int)item.Ram,
+        //            DungLuong = (int)item.DungLuong,
+        //            Color = string.Join(", ", item.Colors),
+        //            Price = prices.FirstOrDefault()?.Price ?? 0m
+        //        });
+        //    }
 
-            return PartialView(products);
-        }
+        //    return PartialView(products);
+        //}
 
 
     }

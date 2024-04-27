@@ -21,14 +21,14 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             else
             {
                 tb_Staff nvSession = (tb_Staff)Session["user"];
-                var item = db.tb_Role.SingleOrDefault(row => row.NhanVienId == nvSession.NhanVienId && (row.IdChucNang == 1 || row.IdChucNang == 2));
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
                 if (item == null)
                 {
                     return RedirectToAction("NonRole", "HomePage");
                 }
                 else
                 {
-                    var items = db.tb_Function.ToList().OrderByDescending(x => x.IdChucNang);
+                    var items = db.tb_Function.ToList().OrderByDescending(x => x.FunctionId);
                     if (items == null)
                     {
                         ViewBag.txt = "Không tồn tại chức năng";
@@ -52,7 +52,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             else
             {
                 tb_Staff nvSession = (tb_Staff)Session["user"];
-                var CheckRole = db.tb_Role.SingleOrDefault(row => row.NhanVienId == nvSession.NhanVienId && (row.IdChucNang == 1 || row.IdChucNang == 2));
+                var CheckRole = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
                 if (CheckRole == null)
                 {
                     return RedirectToAction("NonRole", "HomePage");
@@ -74,10 +74,10 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 tb_Staff nvSession = (tb_Staff)Session["user"];
-                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.MSNV == nvSession.MSNV);
-                model.MaChucNang = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.TenChucNang);
+                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
+                model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.TitLe);
                 model.ModifiedDate = DateTime.Now;
-                model.Modifeby = checkStaff.TenNhanVien + "-" + checkStaff.MSNV;
+                model.Modifeby = checkStaff.NameStaff + "-" + checkStaff.Code;
                 db.tb_Function.Attach(model);
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
@@ -104,11 +104,11 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             {
                 if (ModelState.Any())
                 {
-                    var checkFunction = db.tb_Function.Where(x => x.TenChucNang == req.Title).ToList();
+                    var checkFunction = db.tb_Function.Where(x => x.TitLe == req.Title).ToList();
                     if (checkFunction.Count < 0)
                     {
-                        model.TenChucNang = req.Title;
-                        model.MaChucNang = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Title);
+                        model.TitLe = req.Title;
+                        model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Title);
                         model.CreatedDate = DateTime.Now;
                         db.tb_Function.Add(model);
                         db.SaveChanges();

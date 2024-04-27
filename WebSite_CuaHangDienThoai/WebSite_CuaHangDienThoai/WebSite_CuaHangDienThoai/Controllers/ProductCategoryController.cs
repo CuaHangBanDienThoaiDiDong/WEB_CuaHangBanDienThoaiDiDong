@@ -30,7 +30,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
-        public ActionResult Detail(int id)
+        public ActionResult Detail(string alias,int id)
         {
             var item = db.tb_Products.ToList();
             if(id>0 ) 

@@ -146,18 +146,18 @@
                         <div class=" g-4 my-5 mx-auto owl-carousel owl-theme m-0">
                             @foreach (var items in Model)
                             {
-                                var DungLuong = "";
-                                if (items.DungLuong > 999)
+                                var Capacity = "";
+                                if (items.Capacity > 999)
                                 {
-                                    DungLuong = "1Tb";
+                                    Capacity = "1Tb";
                                 }
-                                else if (items.DungLuong > 1999)
+                                else if (items.Capacity > 1999)
                                 {
-                                    DungLuong = "2 Tb";
+                                    Capacity = "2 Tb";
                                 }
                                 else
                                 {
-                                    DungLuong = items.DungLuong + "Gb";
+                                    Capacity = items.Capacity + "Gb";
                                 }
                                 @functions {
 
@@ -225,7 +225,7 @@
                                         <div class="product-info p-3">
                                             <a class="d-inline-block text-truncate" href="/Product/Details?id=@items.ProductsId&ProductDetailId=@items.ProductDetailId">
                                                 <h5 style="color:white;padding-top:10px;" class="text-center  justify-content-center align-items-center">@items.tb_Products.Title</h5>
-                                                <p class="text-center"> @DungLuong </p>
+                                                <p class="text-center"> @Capacity </p>
                                             </a>
                                             @if (items.PriceSale > 0)
                                             {

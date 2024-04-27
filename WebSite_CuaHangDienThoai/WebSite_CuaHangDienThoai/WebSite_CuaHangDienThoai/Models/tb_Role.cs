@@ -14,9 +14,9 @@ namespace WebSite_CuaHangDienThoai.Models
     
     public partial class tb_Role
     {
-        public int NhanVienId { get; set; }
-        public int IdChucNang { get; set; }
-        public string GhiChu { get; set; }
+        public int StaffId { get; set; }
+        public int FunctionId { get; set; }
+        public string Note { get; set; }
     
         public virtual tb_Function tb_Function { get; set; }
         public virtual tb_Staff tb_Staff { get; set; }

@@ -21,10 +21,10 @@ namespace WebSite_CuaHangDienThoai.Models
         }
     
         public int CartId { get; set; }
-        public Nullable<int> IdKhachHang { get; set; }
+        public Nullable<int> CustomerId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_CartItem> tb_CartItem { get; set; }
-        public virtual tb_KhachHang tb_KhachHang { get; set; }
+        public virtual tb_Customer tb_Customer { get; set; }
     }
 }

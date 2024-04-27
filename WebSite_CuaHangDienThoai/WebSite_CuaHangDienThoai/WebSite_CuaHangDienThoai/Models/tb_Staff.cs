@@ -22,25 +22,25 @@ namespace WebSite_CuaHangDienThoai.Models
             this.tb_Role = new HashSet<tb_Role>();
         }
     
-        public int NhanVienId { get; set; }
-        public string MSNV { get; set; }
-        public string SDT { get; set; }
-        public string TenNhanVien { get; set; }
-        public string CCCD { get; set; }
+        public int StaffId { get; set; }
+        public string Code { get; set; }
+        public string PhoneNumber { get; set; }
+        public string NameStaff { get; set; }
+        public string CitizenIdentificationCard { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string Image { get; set; }
         public System.DateTime Birthday { get; set; }
-        public string DiaChi { get; set; }
-        public Nullable<System.DateTime> NgayVaoLam { get; set; }
-        public decimal Luong { get; set; }
-        public string GioiTinh { get; set; }
+        public string Location { get; set; }
+        public Nullable<System.DateTime> DayofWork { get; set; }
+        public decimal Wage { get; set; }
+        public string Sex { get; set; }
         public string CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public System.DateTime ModifiedDate { get; set; }
         public Nullable<bool> Clock { get; set; }
-        public Nullable<int> IdChucNang { get; set; }
+        public Nullable<int> FunctionId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_ExportWareHouse> tb_ExportWareHouse { get; set; }

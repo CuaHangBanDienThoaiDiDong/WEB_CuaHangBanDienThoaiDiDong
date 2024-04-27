@@ -37,24 +37,24 @@ namespace WebSite_CuaHangDienThoai.Models
         public string SeoTitle { get; set; }
         public string SeoDescription { get; set; }
         public string ProductCode { get; set; }
-        public Nullable<int> KichCo { get; set; }
-        public string TocDoCPU { get; set; }
-        public string HeDieuHanh { get; set; }
-        public string TocDoGPU { get; set; }
-        public string MangDiDong { get; set; }
+        public Nullable<int> Screensize { get; set; }
+        public string CPUspeed { get; set; }
+        public string OperatingSystem { get; set; }
+        public string GPUspeed { get; set; }
+        public string MobileNetwork { get; set; }
         public string Sim { get; set; }
         public string Wifi { get; set; }
         public string GPS { get; set; }
         public string Bluetooth { get; set; }
-        public string CongKetNoi { get; set; }
-        public string JackTaiNghe { get; set; }
-        public string LoaiPin { get; set; }
-        public string HoTroSac { get; set; }
-        public string CongNghePin { get; set; }
+        public string Connector { get; set; }
+        public string Headphonejack { get; set; }
+        public string BatteryType { get; set; }
+        public string ChargingSupport { get; set; }
+        public string BatteryTechnology { get; set; }
         public string Image { get; set; }
         public string CPU { get; set; }
         public string GPU { get; set; }
-        public string ManHinh { get; set; }
+        public string Screen { get; set; }
         public Nullable<int> ProductCategoryId { get; set; }
         public Nullable<int> ProductCompanyId { get; set; }
     

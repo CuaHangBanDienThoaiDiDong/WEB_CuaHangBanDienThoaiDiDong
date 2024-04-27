@@ -22,7 +22,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             else
             {
                 tb_Staff nvSession = (tb_Staff)Session["user"];
-                var item = db.tb_Role.SingleOrDefault(row => row.NhanVienId == nvSession.NhanVienId && (row.IdChucNang == 1 || row.IdChucNang == 2));
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
                 if (item == null)
                 {
                     return RedirectToAction("NonRole", "HomePage");
@@ -62,7 +62,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             else
             {
                 tb_Staff nvSession = (tb_Staff)Session["user"];
-                var item = db.tb_Role.SingleOrDefault(row => row.NhanVienId == nvSession.NhanVienId && (row.IdChucNang == 1 || row.IdChucNang == 2));
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
                 if (item == null)
                 {
                     return RedirectToAction("NonRole", "HomePage");
@@ -86,10 +86,10 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 if (model.Title != null)
                 {
                     tb_Staff nvSession = (tb_Staff)Session["user"];
-                    var checkStaff = db.tb_Staff.SingleOrDefault(row => row.MSNV == nvSession.MSNV);
+                    var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
                     model.CreatedDate = DateTime.Now;
                     model.ModifiedDate = DateTime.Now;
-                    model.CreatedBy = checkStaff.TenNhanVien + "-" + checkStaff.MSNV;
+                    model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
                     model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
                     db.tb_ProductCompany.Add(model);
                     db.SaveChanges();
@@ -118,7 +118,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             else
             {
                 tb_Staff nvSession = (tb_Staff)Session["user"];
-                var checkRole = db.tb_Role.SingleOrDefault(row => row.NhanVienId == nvSession.NhanVienId && (row.IdChucNang == 1 || row.IdChucNang == 2));
+                var checkRole = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
                 if (checkRole == null)
                 {
                     return RedirectToAction("NonRole", "HomePage");

@@ -5,7 +5,7 @@
       <PropertyRef Name="CartId" />
     </Key>
     <Property Name="CartId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="IdKhachHang" Type="int" />
+    <Property Name="CustomerId" Type="int" />
   </EntityType>
   <EntityType Name="tb_CartItem">
     <Key>
@@ -19,6 +19,22 @@
     <Property Name="TemPrice" Type="decimal" Precision="18" Scale="0" Nullable="false" />
     <Property Name="ProductDetailId" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="tb_Customer">
+    <Key>
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PhoneNumber" Type="varchar" MaxLength="15" />
+    <Property Name="CustomerName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="100" />
+    <Property Name="Password" Type="varchar" MaxLength="100" />
+    <Property Name="Image" Type="nvarchar" MaxLength="250" />
+    <Property Name="Birthday" Type="date" />
+    <Property Name="Loaction" Type="nvarchar(max)" />
+    <Property Name="NumberofPurchases" Type="int" />
+    <Property Name="Code" Type="char" MaxLength="10" />
+    <Property Name="Clock" Type="bit" />
+  </EntityType>
   <EntityType Name="tb_ExportWareHouse">
     <Key>
       <PropertyRef Name="ExportWareHouseId" />
@@ -28,17 +44,17 @@
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="Modifeby" Type="nvarchar(max)" />
-    <Property Name="NhanVienId" Type="int" />
+    <Property Name="StaffId" Type="int" />
     <Property Name="OrderId" Type="int" />
     <Property Name="WarehouseId" Type="int" />
   </EntityType>
   <EntityType Name="tb_Function">
     <Key>
-      <PropertyRef Name="IdChucNang" />
+      <PropertyRef Name="FunctionId" />
     </Key>
-    <Property Name="IdChucNang" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="TenChucNang" Type="nvarchar(max)" />
-    <Property Name="MaChucNang" Type="nvarchar(max)" />
+    <Property Name="FunctionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TitLe" Type="nvarchar(max)" />
+    <Property Name="Alias" Type="nvarchar(max)" />
     <Property Name="CreatedBy" Type="nvarchar(max)" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime" />
@@ -53,26 +69,10 @@
     <Property Name="CreateDate" Type="datetime" />
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="Modifeby" Type="nvarchar(max)" />
-    <Property Name="NhanVienId" Type="int" />
+    <Property Name="StaffId" Type="int" />
     <Property Name="ProductDetailId" Type="int" />
     <Property Name="QuanTity" Type="int" />
     <Property Name="WarehouseId" Type="int" />
-  </EntityType>
-  <EntityType Name="tb_KhachHang">
-    <Key>
-      <PropertyRef Name="IdKhachHang" />
-    </Key>
-    <Property Name="IdKhachHang" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="SDT" Type="varchar" MaxLength="15" />
-    <Property Name="TenKhachHang" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Email" Type="varchar" MaxLength="100" />
-    <Property Name="Password" Type="varchar" MaxLength="100" />
-    <Property Name="Image" Type="nvarchar" MaxLength="250" />
-    <Property Name="Birthday" Type="date" />
-    <Property Name="DiaChi" Type="nvarchar(max)" />
-    <Property Name="SoLanMua" Type="int" />
-    <Property Name="Code" Type="char" MaxLength="10" />
-    <Property Name="Clock" Type="bit" />
   </EntityType>
   <EntityType Name="tb_Order">
     <Key>
@@ -97,7 +97,7 @@
     <Property Name="typeReturn" Type="bit" />
     <Property Name="Success" Type="bit" />
     <Property Name="SuccessDate" Type="datetime" />
-    <Property Name="IdKhachHang" Type="int" />
+    <Property Name="CustomerId" Type="int" />
   </EntityType>
   <EntityType Name="tb_OrderDetail">
     <Key>
@@ -109,7 +109,7 @@
     <Property Name="CartItem" Type="int" />
     <Property Name="DamagedProduct" Type="bit" />
     <Property Name="OrderId" Type="int" />
-    <Property Name="IdKhachHang" Type="int" />
+    <Property Name="CustomerId" Type="int" />
     <Property Name="ProductDetailId" Type="int" />
   </EntityType>
   <EntityType Name="tb_ProductCategory">
@@ -152,9 +152,9 @@
     <Property Name="OrigianlPrice" Type="decimal" Precision="18" Scale="2" />
     <Property Name="TypeProduct" Type="bit" />
     <Property Name="Image" Type="nvarchar" MaxLength="900" />
-    <Property Name="DungLuongPin" Type="int" />
+    <Property Name="BatteryCapacity" Type="int" />
     <Property Name="Ram" Type="int" />
-    <Property Name="DungLuong" Type="int" />
+    <Property Name="Capacity" Type="int" />
     <Property Name="ProductsId" Type="int" />
   </EntityType>
   <EntityType Name="tb_ProductDetailImage">
@@ -194,24 +194,24 @@
     <Property Name="SeoTitle" Type="nvarchar" MaxLength="250" />
     <Property Name="SeoDescription" Type="nvarchar" MaxLength="250" />
     <Property Name="ProductCode" Type="nvarchar" MaxLength="50" />
-    <Property Name="KichCo" Type="int" />
-    <Property Name="TocDoCPU" Type="nvarchar" MaxLength="900" />
-    <Property Name="HeDieuHanh" Type="nvarchar" MaxLength="900" />
-    <Property Name="TocDoGPU" Type="nvarchar" MaxLength="900" />
-    <Property Name="MangDiDong" Type="nvarchar" MaxLength="900" />
+    <Property Name="Screensize" Type="int" />
+    <Property Name="CPUspeed" Type="nvarchar" MaxLength="900" />
+    <Property Name="OperatingSystem" Type="nvarchar" MaxLength="900" />
+    <Property Name="GPUspeed" Type="nvarchar" MaxLength="900" />
+    <Property Name="MobileNetwork" Type="nvarchar" MaxLength="900" />
     <Property Name="Sim" Type="char" MaxLength="900" />
     <Property Name="Wifi" Type="nvarchar(max)" />
     <Property Name="GPS" Type="nvarchar" MaxLength="900" />
     <Property Name="Bluetooth" Type="char" MaxLength="900" />
-    <Property Name="CongKetNoi" Type="nvarchar" MaxLength="900" />
-    <Property Name="JackTaiNghe" Type="nvarchar" MaxLength="900" />
-    <Property Name="LoaiPin" Type="char" MaxLength="900" />
-    <Property Name="HoTroSac" Type="nvarchar" MaxLength="900" />
-    <Property Name="CongNghePin" Type="nvarchar" MaxLength="900" />
+    <Property Name="Connector" Type="nvarchar" MaxLength="900" />
+    <Property Name="Headphonejack" Type="nvarchar" MaxLength="900" />
+    <Property Name="BatteryType" Type="char" MaxLength="900" />
+    <Property Name="ChargingSupport" Type="nvarchar" MaxLength="900" />
+    <Property Name="BatteryTechnology" Type="nvarchar" MaxLength="900" />
     <Property Name="Image" Type="nvarchar" MaxLength="900" />
     <Property Name="CPU" Type="nvarchar" MaxLength="100" />
     <Property Name="GPU" Type="nvarchar" MaxLength="100" />
-    <Property Name="ManHinh" Type="char" MaxLength="1" />
+    <Property Name="Screen" Type="char" MaxLength="1" />
     <Property Name="ProductCategoryId" Type="int" />
     <Property Name="ProductCompanyId" Type="int" />
   </EntityType>
@@ -224,7 +224,7 @@
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="Confirm" Type="bit" />
     <Property Name="OrderId" Type="int" />
-    <Property Name="IdKhachHang" Type="int" />
+    <Property Name="CustomerId" Type="int" />
     <Property Name="Satus" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="tb_ReturnDetail">
@@ -259,40 +259,40 @@
     <Property Name="Modifeby" Type="nvarchar(max)" />
     <Property Name="Content" Type="nvarchar" MaxLength="350" />
     <Property Name="ReviewId" Type="int" />
-    <Property Name="IdKhachHang" Type="int" />
+    <Property Name="CustomerId" Type="int" />
   </EntityType>
   <EntityType Name="tb_Role">
     <Key>
-      <PropertyRef Name="NhanVienId" />
-      <PropertyRef Name="IdChucNang" />
+      <PropertyRef Name="StaffId" />
+      <PropertyRef Name="FunctionId" />
     </Key>
-    <Property Name="NhanVienId" Type="int" Nullable="false" />
-    <Property Name="IdChucNang" Type="int" Nullable="false" />
-    <Property Name="GhiChu" Type="nvarchar(max)" />
+    <Property Name="StaffId" Type="int" Nullable="false" />
+    <Property Name="FunctionId" Type="int" Nullable="false" />
+    <Property Name="Note" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="tb_Staff">
     <Key>
-      <PropertyRef Name="NhanVienId" />
+      <PropertyRef Name="StaffId" />
     </Key>
-    <Property Name="NhanVienId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="MSNV" Type="varchar" MaxLength="10" Nullable="false" />
-    <Property Name="SDT" Type="varchar" MaxLength="15" Nullable="false" />
-    <Property Name="TenNhanVien" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="CCCD" Type="char" MaxLength="12" Nullable="false" />
+    <Property Name="StaffId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="PhoneNumber" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="NameStaff" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CitizenIdentificationCard" Type="char" MaxLength="12" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="Image" Type="nvarchar" MaxLength="250" />
     <Property Name="Birthday" Type="date" Nullable="false" />
-    <Property Name="DiaChi" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="NgayVaoLam" Type="date" />
-    <Property Name="Luong" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-    <Property Name="GioiTinh" Type="nvarchar" MaxLength="7" />
+    <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DayofWork" Type="date" />
+    <Property Name="Wage" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Sex" Type="nvarchar" MaxLength="7" />
     <Property Name="CreatedBy" Type="nvarchar(max)" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="ModifiedBy" Type="nvarchar(max)" />
     <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
     <Property Name="Clock" Type="bit" />
-    <Property Name="IdChucNang" Type="int" />
+    <Property Name="FunctionId" Type="int" />
   </EntityType>
   <EntityType Name="tb_Store">
     <Key>
@@ -304,7 +304,7 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="Modifiedby" Type="nvarchar(max)" />
     <Property Name="Alias" Type="nvarchar" MaxLength="250" />
-    <Property Name="DiChi" Type="nvarchar" MaxLength="300" />
+    <Property Name="Location" Type="nvarchar" MaxLength="300" />
     <Property Name="City" Type="nvarchar" MaxLength="60" />
     <Property Name="District" Type="nvarchar" MaxLength="60" />
     <Property Name="IsStatus" Type="bit" />
@@ -315,7 +315,7 @@
     </Key>
     <Property Name="VoucherId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Code" Type="char" MaxLength="30" />
-    <Property Name="PhanTramGiam" Type="int" />
+    <Property Name="PercentPriceReduction" Type="int" />
     <Property Name="Title" Type="nvarchar" MaxLength="250" />
     <Property Name="CreatedBy" Type="nvarchar(max)" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
@@ -378,10 +378,10 @@
     <End Role="tb_ExportWareHouse" Type="Self.tb_ExportWareHouse" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="tb_Staff">
-        <PropertyRef Name="NhanVienId" />
+        <PropertyRef Name="StaffId" />
       </Principal>
       <Dependent Role="tb_ExportWareHouse">
-        <PropertyRef Name="NhanVienId" />
+        <PropertyRef Name="StaffId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -398,14 +398,14 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="GioHangtoKhachHang">
-    <End Role="tb_KhachHang" Type="Self.tb_KhachHang" Multiplicity="0..1" />
+    <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="0..1" />
     <End Role="tb_Cart" Type="Self.tb_Cart" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="tb_KhachHang">
-        <PropertyRef Name="IdKhachHang" />
+      <Principal Role="tb_Customer">
+        <PropertyRef Name="CustomerId" />
       </Principal>
       <Dependent Role="tb_Cart">
-        <PropertyRef Name="IdKhachHang" />
+        <PropertyRef Name="CustomerId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -426,10 +426,10 @@
     <End Role="tb_ImportWarehouse" Type="Self.tb_ImportWarehouse" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="tb_Staff">
-        <PropertyRef Name="NhanVienId" />
+        <PropertyRef Name="StaffId" />
       </Principal>
       <Dependent Role="tb_ImportWarehouse">
-        <PropertyRef Name="NhanVienId" />
+        <PropertyRef Name="StaffId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -446,14 +446,14 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="OrderDetailtKhachHang">
-    <End Role="tb_KhachHang" Type="Self.tb_KhachHang" Multiplicity="0..1" />
+    <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="0..1" />
     <End Role="tb_OrderDetail" Type="Self.tb_OrderDetail" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="tb_KhachHang">
-        <PropertyRef Name="IdKhachHang" />
+      <Principal Role="tb_Customer">
+        <PropertyRef Name="CustomerId" />
       </Principal>
       <Dependent Role="tb_OrderDetail">
-        <PropertyRef Name="IdKhachHang" />
+        <PropertyRef Name="CustomerId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -566,14 +566,14 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="ReturntoKhachHang">
-    <End Role="tb_KhachHang" Type="Self.tb_KhachHang" Multiplicity="0..1" />
+    <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="0..1" />
     <End Role="tb_Return" Type="Self.tb_Return" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="tb_KhachHang">
-        <PropertyRef Name="IdKhachHang" />
+      <Principal Role="tb_Customer">
+        <PropertyRef Name="CustomerId" />
       </Principal>
       <Dependent Role="tb_Return">
-        <PropertyRef Name="IdKhachHang" />
+        <PropertyRef Name="CustomerId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -590,14 +590,14 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="ReviewDetailtoKhachHang">
-    <End Role="tb_KhachHang" Type="Self.tb_KhachHang" Multiplicity="0..1" />
+    <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="0..1" />
     <End Role="tb_ReviewDetail" Type="Self.tb_ReviewDetail" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="tb_KhachHang">
-        <PropertyRef Name="IdKhachHang" />
+      <Principal Role="tb_Customer">
+        <PropertyRef Name="CustomerId" />
       </Principal>
       <Dependent Role="tb_ReviewDetail">
-        <PropertyRef Name="IdKhachHang" />
+        <PropertyRef Name="CustomerId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -630,10 +630,10 @@
     <End Role="tb_Role" Type="Self.tb_Role" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="tb_Function">
-        <PropertyRef Name="IdChucNang" />
+        <PropertyRef Name="FunctionId" />
       </Principal>
       <Dependent Role="tb_Role">
-        <PropertyRef Name="IdChucNang" />
+        <PropertyRef Name="FunctionId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -642,10 +642,10 @@
     <End Role="tb_Role" Type="Self.tb_Role" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="tb_Staff">
-        <PropertyRef Name="NhanVienId" />
+        <PropertyRef Name="StaffId" />
       </Principal>
       <Dependent Role="tb_Role">
-        <PropertyRef Name="NhanVienId" />
+        <PropertyRef Name="StaffId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -654,10 +654,10 @@
     <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="tb_Function">
-        <PropertyRef Name="IdChucNang" />
+        <PropertyRef Name="FunctionId" />
       </Principal>
       <Dependent Role="tb_Staff">
-        <PropertyRef Name="IdChucNang" />
+        <PropertyRef Name="FunctionId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -688,10 +688,10 @@
   <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
     <EntitySet Name="tb_Cart" EntityType="Self.tb_Cart" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_CartItem" EntityType="Self.tb_CartItem" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_Customer" EntityType="Self.tb_Customer" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_ExportWareHouse" EntityType="Self.tb_ExportWareHouse" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Function" EntityType="Self.tb_Function" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_ImportWarehouse" EntityType="Self.tb_ImportWarehouse" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="tb_KhachHang" EntityType="Self.tb_KhachHang" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Order" EntityType="Self.tb_Order" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_OrderDetail" EntityType="Self.tb_OrderDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_ProductCategory" EntityType="Self.tb_ProductCategory" Schema="dbo" store:Type="Tables" />
@@ -730,7 +730,7 @@
       <End Role="tb_ExportWareHouse" EntitySet="tb_ExportWareHouse" />
     </AssociationSet>
     <AssociationSet Name="GioHangtoKhachHang" Association="Self.GioHangtoKhachHang">
-      <End Role="tb_KhachHang" EntitySet="tb_KhachHang" />
+      <End Role="tb_Customer" EntitySet="tb_Customer" />
       <End Role="tb_Cart" EntitySet="tb_Cart" />
     </AssociationSet>
     <AssociationSet Name="ImportWarehouseToProductDetail" Association="Self.ImportWarehouseToProductDetail">
@@ -746,7 +746,7 @@
       <End Role="tb_ImportWarehouse" EntitySet="tb_ImportWarehouse" />
     </AssociationSet>
     <AssociationSet Name="OrderDetailtKhachHang" Association="Self.OrderDetailtKhachHang">
-      <End Role="tb_KhachHang" EntitySet="tb_KhachHang" />
+      <End Role="tb_Customer" EntitySet="tb_Customer" />
       <End Role="tb_OrderDetail" EntitySet="tb_OrderDetail" />
     </AssociationSet>
     <AssociationSet Name="OrderDetailtoOrder" Association="Self.OrderDetailtoOrder">
@@ -786,7 +786,7 @@
       <End Role="tb_ReturnDetail" EntitySet="tb_ReturnDetail" />
     </AssociationSet>
     <AssociationSet Name="ReturntoKhachHang" Association="Self.ReturntoKhachHang">
-      <End Role="tb_KhachHang" EntitySet="tb_KhachHang" />
+      <End Role="tb_Customer" EntitySet="tb_Customer" />
       <End Role="tb_Return" EntitySet="tb_Return" />
     </AssociationSet>
     <AssociationSet Name="ReturntoOrder" Association="Self.ReturntoOrder">
@@ -794,7 +794,7 @@
       <End Role="tb_Return" EntitySet="tb_Return" />
     </AssociationSet>
     <AssociationSet Name="ReviewDetailtoKhachHang" Association="Self.ReviewDetailtoKhachHang">
-      <End Role="tb_KhachHang" EntitySet="tb_KhachHang" />
+      <End Role="tb_Customer" EntitySet="tb_Customer" />
       <End Role="tb_ReviewDetail" EntitySet="tb_ReviewDetail" />
     </AssociationSet>
     <AssociationSet Name="ReviewDetailtoProductDetai" Association="Self.ReviewDetailtoProductDetai">

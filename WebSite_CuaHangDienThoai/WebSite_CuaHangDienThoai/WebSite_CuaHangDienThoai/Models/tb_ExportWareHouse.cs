@@ -19,7 +19,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string Modifeby { get; set; }
-        public Nullable<int> NhanVienId { get; set; }
+        public Nullable<int> StaffId { get; set; }
         public Nullable<int> OrderId { get; set; }
         public Nullable<int> WarehouseId { get; set; }
     

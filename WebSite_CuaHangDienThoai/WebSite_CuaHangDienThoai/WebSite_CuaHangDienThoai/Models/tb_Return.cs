@@ -25,10 +25,10 @@ namespace WebSite_CuaHangDienThoai.Models
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<bool> Confirm { get; set; }
         public Nullable<int> OrderId { get; set; }
-        public Nullable<int> IdKhachHang { get; set; }
+        public Nullable<int> CustomerId { get; set; }
         public string Satus { get; set; }
     
-        public virtual tb_KhachHang tb_KhachHang { get; set; }
+        public virtual tb_Customer tb_Customer { get; set; }
         public virtual tb_Order tb_Order { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_ReturnDetail> tb_ReturnDetail { get; set; }

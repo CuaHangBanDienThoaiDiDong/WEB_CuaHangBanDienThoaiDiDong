@@ -30,12 +30,12 @@ namespace WebSite_CuaHangDienThoai.Controllers
                         select new
                         {
                             Color = pd.Color,
-                            DungLuong = pd.DungLuong
+                            Capacity = pd.Capacity
                         };
 
             // Tạo một danh sách để lưu trữ các màu và dung lượng mà không bị lặp lại
             List<string> colors = new List<string>();
-            List<int> dungLuongs = new List<int>();
+            List<int> Capacitys = new List<int>();
 
             foreach (var item in query)
             {
@@ -44,14 +44,14 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     colors.Add(item.Color);
                 }
 
-                if (!dungLuongs.Contains((int)item.DungLuong))
+                if (!Capacitys.Contains((int)item.Capacity))
                 {
-                    dungLuongs.Add((int)item.DungLuong);
+                    Capacitys.Add((int)item.Capacity);
                 }
             }
 
             // Chuyển đổi danh sách dung lượng sang một danh sách các đối tượng ProductDetailViewModel
-            List<ProductDetailViewModel> result = dungLuongs.Select(dl => new ProductDetailViewModel
+            List<ProductDetailViewModel> result = Capacitys.Select(dl => new ProductDetailViewModel
             {
                 Color = string.Join(", ", colors),
                 DungLuong = dl
@@ -65,9 +65,9 @@ namespace WebSite_CuaHangDienThoai.Controllers
         {
             if (DungLuong != null)
             {
-                int dungluong = int.Parse(DungLuong);
+                int Capacity = int.Parse(DungLuong);
                 ViewBag.txt = "abc";
-                var checkPrice = db.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == id && x.DungLuong == dungluong);
+                var checkPrice = db.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == id && x.Capacity == Capacity);
                 if (checkPrice != null)
                 {
                     ViewBag.txt = "abc";
@@ -90,9 +90,9 @@ namespace WebSite_CuaHangDienThoai.Controllers
         {
             if (DungLuong != null)
             {
-                int dungluong = int.Parse(DungLuong);
+                int Capacity = int.Parse(DungLuong);
                 ViewBag.txt = "abc";
-                var checkPrice = db.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == id && x.DungLuong == dungluong);
+                var checkPrice = db.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == id && x.Capacity == Capacity);
                 if (checkPrice != null)
                 {
                     ViewBag.txt = "abc";
@@ -112,13 +112,13 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
-        public ActionResult ProductDetailByCapacity(int? Productsid,int DungLuong) 
+        public ActionResult ProductDetailByCapacity(int? Productsid,int Capacity) 
         {
-            var item = db.tb_ProductDetail.FirstOrDefault(r=>r.ProductsId== Productsid&& r.DungLuong== DungLuong);
+            var item = db.tb_ProductDetail.FirstOrDefault(r=>r.ProductsId== Productsid&& r.Capacity== Capacity);
             if (item != null)
             {
                 ViewBag.Title = item.tb_Products.Title;
-                ViewBag.Capacity = item.DungLuong;
+                ViewBag.Capacity = item.Capacity;
 
                 return View(item);  
             }

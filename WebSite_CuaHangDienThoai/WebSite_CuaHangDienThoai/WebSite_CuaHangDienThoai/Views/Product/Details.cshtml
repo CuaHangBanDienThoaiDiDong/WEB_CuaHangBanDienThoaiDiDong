@@ -26,18 +26,18 @@
 @if (Model != null)
 {
     var strImg = "";
-    var DungLuong = "";
-    if (Model.DungLuong > 999)
+    var Capacity = "";
+    if (Model.Capacity > 999)
     {
-        DungLuong = "1Tb";
+        Capacity = "1Tb";
     }
-    else if (Model.DungLuong > 1999)
+    else if (Model.Capacity > 1999)
     {
-        DungLuong = "2 Tb";
+        Capacity = "2 Tb";
     }
     else
     {
-        DungLuong = Model.DungLuong + " Gb";
+        Capacity = Model.Capacity + " Gb";
     }
 
     //var check = Model.tb_ProductDetail.FirstOrDefault(r => r.ProductsId == Model.ProductsId);
@@ -117,7 +117,7 @@
                 <div class="col-lg-5">
                     <div class="product_details">
 
-                        <h3 style="color:white  ;">@Model.tb_Products.Title @Model.Title @DungLuong</h3>
+                        <h3 style="color:white  ;">@Model.tb_Products.Title @Model.Title @Capacity</h3>
 
 
                         <div class="row" id="PriceProductDetail">
@@ -162,8 +162,8 @@
                             @*<h2>Điện thoại @Model.Title</h2>*@
 
 
-                            @*DungLuongDienTHoai*@
-                            @Html.Action("DungLuong", "Product", new { id = Model.ProductsId, DungLuong = Model.DungLuong })
+                            @*CapacityDienTHoai*@
+                            @Html.Action("DungLuong", "Product", new { id = Model.ProductsId, DungLuong = Model.Capacity })
 
 
                         </div>

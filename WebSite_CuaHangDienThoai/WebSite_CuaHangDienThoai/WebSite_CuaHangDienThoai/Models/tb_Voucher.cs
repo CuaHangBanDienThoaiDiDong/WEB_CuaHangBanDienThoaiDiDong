@@ -16,7 +16,7 @@ namespace WebSite_CuaHangDienThoai.Models
     {
         public int VoucherId { get; set; }
         public string Code { get; set; }
-        public Nullable<int> PhanTramGiam { get; set; }
+        public Nullable<int> PercentPriceReduction { get; set; }
         public string Title { get; set; }
         public string CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }

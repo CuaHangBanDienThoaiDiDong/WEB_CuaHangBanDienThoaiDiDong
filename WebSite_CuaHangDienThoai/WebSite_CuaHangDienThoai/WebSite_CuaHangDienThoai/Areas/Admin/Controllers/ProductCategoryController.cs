@@ -23,7 +23,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             else
             {
                 tb_Staff nvSession = (tb_Staff)Session["user"];
-                var item = db.tb_Role.SingleOrDefault(row => row.NhanVienId == nvSession.NhanVienId && (row.IdChucNang == 1 || row.IdChucNang == 2));
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
                 if (item == null)
                 {
                     return RedirectToAction("NonRole", "HomePage");
@@ -65,7 +65,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             else
             {
                 tb_Staff nvSession = (tb_Staff)Session["user"];
-                var item = db.tb_Role.SingleOrDefault(row => row.NhanVienId == nvSession.NhanVienId && (row.IdChucNang == 1 || row.IdChucNang == 2));
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
                 if (item == null)
                 {
                     return RedirectToAction("NonRole", "HomePage");
@@ -94,8 +94,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                             if (model.Title != null)
                             {
                                 tb_Staff nvSession = (tb_Staff)Session["user"];
-                                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.MSNV == nvSession.MSNV);
-                                model.CreatedBy = checkStaff.TenNhanVien + "-" + checkStaff.MSNV;
+                                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
+                                model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
                                 model.Icon = req.Image;
                                 model.CreatedDate = DateTime.Now;
                                 model.ModifiedDate = DateTime.Now;
@@ -144,7 +144,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             else
             {
                 tb_Staff nvSession = (tb_Staff)Session["user"];
-                var CheckRole = db.tb_Role.SingleOrDefault(row => row.NhanVienId == nvSession.NhanVienId && (row.IdChucNang == 1 || row.IdChucNang == 2));
+                var CheckRole = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
                 if (CheckRole == null)
                 {
                     return RedirectToAction("NonRole", "HomePage");
@@ -166,10 +166,10 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 tb_Staff nvSession = (tb_Staff)Session["user"];
-                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.MSNV == nvSession.MSNV);
+                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
                 model.ModifiedDate = DateTime.Now;
                 model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
-                model.Modifiedby = checkStaff.TenNhanVien+"-"+ checkStaff.MSNV;
+                model.Modifiedby = checkStaff.NameStaff+"-"+ checkStaff.Code;
                 model.IsActive = false;
                 db.tb_ProductCategory.Attach(model);
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;

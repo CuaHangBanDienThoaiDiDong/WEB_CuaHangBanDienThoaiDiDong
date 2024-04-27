@@ -35,8 +35,29 @@
 
 
 
+    @*@Icon@*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    @*====================Start CSS LayouSearch====================*@
+    <link href="~/Content/Css/Client/LayOutSearch.css" rel="stylesheet" />
+
+    @*====================End CSS LayouSearch====================*@
+
+
+    <!---SweetAlter-->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+        .search-suggestions {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            z-index: 999;
+            display: none; /* Ẩn khung gợi ý ban đầu */
+            width: 100%; /* Chiều rộng tương ứng với khung tìm kiếm */
+        }
+    </style>
 </head>
 <body>
+
 
 
     <header class="header trans_300">
@@ -53,35 +74,35 @@
                         <div class="top_nav_right">
                             <ul class="top_nav_menu">
 
-                                 Currency / Language / My Account 
+                                Currency / Language / My Account
 
                                 @*<li class="currency">
-                                    <a href="#">
-                                        usd
-                                        <i class="fa fa-angle-down"></i>
-                                    </a>
-                                    <ul class="currency_selection">
-                                        <li><a href="#">cad</a></li>
-                                        <li><a href="#">aud</a></li>
-                                        <li><a href="#">eur</a></li>
-                                        <li><a href="#">gbp</a></li>
-                                    </ul>
-                                </li>*@
+                                        <a href="#">
+                                            usd
+                                            <i class="fa fa-angle-down"></i>
+                                        </a>
+                                        <ul class="currency_selection">
+                                            <li><a href="#">cad</a></li>
+                                            <li><a href="#">aud</a></li>
+                                            <li><a href="#">eur</a></li>
+                                            <li><a href="#">gbp</a></li>
+                                        </ul>
+                                    </li>*@
                                 @*<li class="language">
-                                    <a href="#">
-                                        English
-                                        <i class="fa fa-angle-down"></i>
-                                    </a>
-                                    <ul class="language_selection">
-                                        <li><a href="#">French</a></li>
-                                        <li><a href="#">Italian</a></li>
-                                        <li><a href="#">German</a></li>
-                                        <li><a href="#">Spanish</a></li>
-                                    </ul>
-                                </li>*@
+                                        <a href="#">
+                                            English
+                                            <i class="fa fa-angle-down"></i>
+                                        </a>
+                                        <ul class="language_selection">
+                                            <li><a href="#">French</a></li>
+                                            <li><a href="#">Italian</a></li>
+                                            <li><a href="#">German</a></li>
+                                            <li><a href="#">Spanish</a></li>
+                                        </ul>
+                                    </li>*@
                                 <li class="account" style="width:auto">
                                     <a href="#">
-                                        Tài Khoản 
+                                        Tài Khoản
                                         <i class="fa fa-angle-down"></i>
                                     </a>
                                     <ul class="account_selection" style="width:auto">
@@ -101,42 +122,67 @@
         </div>
 
         <!-- Main Navigation @*#1e8e03*@ -->
+        <!-- Main Navigation @*#1e8e03*@ -->
 
         <div class="main_nav_container text-light" style="background-color: #101010; color: white; ">
             <div class="container ">
                 <div class="row align-items-center">
                     <div class="col-lg-12 text-right">
                         <div class="logo_container">
-                            <a href="/home/index"  style="color: red; font-family: Poppins-Regular; ">LTD<span  style="color: white; font-family: Poppins-Regular; ">MiniStore</span></a>
+                            <a href="/home/index" style="color: red; font-family: Poppins-Regular; ">LTD<span style="color: white; font-family: Poppins-Regular; ">MiniStore</span></a>
                         </div>
                         <nav class="navbar ">
+
                             <ul class="navbar_menu">
-                                @*<li><a href="#">Điện thoại</a></li>
-                                <li><a href="#">shop</a></li>*@
-                                 @*<li><a href="/Product/index"  style="color: white; font-family: Poppins-Regular; font-size:18px; "> Sản phẩm</a></li>*@
-                                 @*<li><a href="/san-pham"  style="color: white; font-family: Poppins-Regular; font-size:18px; "> Sản phẩm</a></li>*@
-                                 <li><a href="@Url.RouteUrl("SanPham")"  style="color: white; font-family: Poppins-Regular; font-size:18px; "> Sản phẩm</a></li>
+
+                                <li><a href="/san-pham" style="color: white; font-family: Poppins-Regular; font-size:18px; "> Sản phẩm</a></li>
 
                                 @Html.Action("Partial_Category", "ProductCategory")
 
-                               
-                               
-                                @*<li><a href="#">promotion</a></li>
-                                <li><a href="#">pages</a></li>
-                                <li><a href="#">blog</a></li>*@
+
+
                                 <li><a href="contact.html" style="color: white; font-family: Poppins-Regular; font-size: 18px;">Liên hệ</a></li>
                             </ul>
                             <ul class="navbar_user">
-                                <li><a href="#"><i class="fa fa-search" aria-hidden="true" style="color:white"></i></a></li>
+                                <li class="  ">
+                                    <div class="search-form">
+                                        <form id="search-form">
+
+                                            <div class="row">
+                                                <div class="col-12 ">
+                                                    <div class="row no-gutters">
+
+                                                        <div class="col-lg-8 col-md-6 col-sm-12 p-0">
+                                                            <input type="text" placeholder="Tìm kiếm sản phẩm..." class="form-control" id="search" name="search">
+                                                        </div>
+                                                        <div class="col-lg-1 col-md-3 col-sm-12 p-0 ">
+                                                            <button type="submit" class="btn btn-base">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- Khung hiển thị gợi ý -->
+                                    <div class="search-suggestions">
+                                      <p>Có phải bạn muốn tìm</p>
+                                    </div>
+
+                                </li>
 
                                 @if (Session["Client"] != null)
                                 {
-                                    <li class="account" style="background-color: #101010; margin-right: 20px; width: auto">
+                                    <li class="account" style="color: white; background-color: #101010; margin-right: 20px; width: auto">
 
                                         <a href="#" style="color:white ;width:auto; background-color: #101010;">
-                                         
-                                            @*<img src="~/Content/clients/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">*@
-                                            @Session["TenKhachHang"]
+                                            @*<img src="~/Content/clients/dist/img/user2-160x160.jpg" class="img-circle elevation-2 w-25 rounded-5" alt="User Image">*@
+                                            @*<img src="@Session["CustomerName"]" class="img-circle elevation-2 w-25 rounded-5" alt="User Image">*@
+                                            @Session["CustomerName"]
+
+
 
                                         </a>
                                         <ul class="account_selection" style="width: auto">
@@ -184,7 +230,7 @@
 
 
                                 @*<li><a href="#"><i class="fa fa-search" aria-hidden="true" style="color:white"></i></a></li>
-        <li><a href="#"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a></li>*@
+                                    <li><a href="#"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a></li>*@
 
                             </ul>
                             <div class="hamburger_container">
@@ -204,6 +250,8 @@
         </div>
 
     </header>
+
+
 
 
 
@@ -265,12 +313,12 @@
                 </li>
                 <li class="menu_item"><a href="/home/index">Trang chủ</a></li>
                 <li class="menu_item">
-                <a href="/Product/index">Sản phẩm</a>
-                
+                    <a href="/Product/index">Sản phẩm</a>
+
                 </li>
                 @*<li class="menu_item"><a href="#">promotion</a></li>
-                <li class="menu_item"><a href="#">pages</a></li>
-                <li class="menu_item"><a href="#">blog</a></li>*@
+                    <li class="menu_item"><a href="#">pages</a></li>
+                    <li class="menu_item"><a href="#">blog</a></li>*@
                 <li class="menu_item"><a href="#">Liên hệ</a></li>
             </ul>
         </div>
@@ -283,7 +331,7 @@
         @RenderBody()
     </div>
 
-   
+
 
     <footer class="footer pt-5">
         <div class="container">
@@ -319,7 +367,14 @@
         </div>
     </footer>
 
-
+    <script>
+        // Lắng nghe sự kiện focus vào input tìm kiếm
+        document.getElementById("search").addEventListener("focus", function () {
+            // Hiển thị khung gợi ý
+            var suggestions = document.querySelector(".search-suggestions");
+            suggestions.style.display = "block";
+        });
+    </script>
 
 
 
@@ -333,6 +388,23 @@
     <script src="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
     <script src="~/Content/assets/plugins/easing/easing.js"></script>
     <script src="~/Content/assets/js/custom.js"></script>
+    <!---SweetAlter-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
+
+
+
+
+
+    @*====================Start JS Temp Tesst====================*@
+
+
+
+
+
+
+    @*====================End JS Temp Tesst====================*@
+
+
 
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

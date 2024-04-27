@@ -27,10 +27,10 @@ namespace WebSite_CuaHangDienThoai.Models
     
         public virtual DbSet<tb_Cart> tb_Cart { get; set; }
         public virtual DbSet<tb_CartItem> tb_CartItem { get; set; }
+        public virtual DbSet<tb_Customer> tb_Customer { get; set; }
         public virtual DbSet<tb_ExportWareHouse> tb_ExportWareHouse { get; set; }
         public virtual DbSet<tb_Function> tb_Function { get; set; }
         public virtual DbSet<tb_ImportWarehouse> tb_ImportWarehouse { get; set; }
-        public virtual DbSet<tb_KhachHang> tb_KhachHang { get; set; }
         public virtual DbSet<tb_Order> tb_Order { get; set; }
         public virtual DbSet<tb_OrderDetail> tb_OrderDetail { get; set; }
         public virtual DbSet<tb_ProductCategory> tb_ProductCategory { get; set; }

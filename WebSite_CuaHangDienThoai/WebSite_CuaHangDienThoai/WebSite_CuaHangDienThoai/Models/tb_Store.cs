@@ -26,7 +26,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string Modifiedby { get; set; }
         public string Alias { get; set; }
-        public string DiChi { get; set; }
+        public string Location { get; set; }
         public string City { get; set; }
         public string District { get; set; }
         public Nullable<bool> IsStatus { get; set; }

@@ -21,9 +21,9 @@ namespace WebSite_CuaHangDienThoai.Models
         public string Modifeby { get; set; }
         public string Content { get; set; }
         public Nullable<int> ReviewId { get; set; }
-        public Nullable<int> IdKhachHang { get; set; }
+        public Nullable<int> CustomerId { get; set; }
     
-        public virtual tb_KhachHang tb_KhachHang { get; set; }
+        public virtual tb_Customer tb_Customer { get; set; }
         public virtual tb_Review tb_Review { get; set; }
     }
 }

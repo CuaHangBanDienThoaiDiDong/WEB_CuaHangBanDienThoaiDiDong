@@ -42,7 +42,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public Nullable<bool> typeReturn { get; set; }
         public Nullable<bool> Success { get; set; }
         public Nullable<System.DateTime> SuccessDate { get; set; }
-        public Nullable<int> IdKhachHang { get; set; }
+        public Nullable<int> CustomerId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_ExportWareHouse> tb_ExportWareHouse { get; set; }

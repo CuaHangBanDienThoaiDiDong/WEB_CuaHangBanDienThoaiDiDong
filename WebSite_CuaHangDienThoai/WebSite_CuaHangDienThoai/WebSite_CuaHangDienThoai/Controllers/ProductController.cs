@@ -46,6 +46,23 @@ namespace WebSite_CuaHangDienThoai.Controllers
         //    }
         //    return View(item);
         //}
+
+
+        [HttpPost]
+        public ActionResult Find(string Search = "")
+        {
+            if (!string.IsNullOrEmpty(Search))
+            {
+                var FindProduc = db.tb_Products.Where(x => x.Title.ToUpper().Contains(Search.ToUpper()));
+                ViewBag.Find = Search;
+                return View(FindProduc.ToList());
+            }
+            return View();
+        }
+
+
+
+
         public ActionResult Partial_ItemsByCateId() 
         {
             var items = db.tb_Products.Where(x => x.IsHome==true && x.IsActive == true).Take(12).ToList();
@@ -67,7 +84,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     var itemProductDetail = db.tb_ProductDetail.FirstOrDefault(r => r.ProductDetailId == ProductDetailId && r.ProductsId == id);
                     if (itemProductDetail != null)
                     {
-                        ViewBag.DungLuong = itemProductDetail.DungLuong;
+                        ViewBag.DungLuong = itemProductDetail.Capacity;
                         return View(itemProductDetail);
                     }
                 }
@@ -112,7 +129,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                             {
                                 ProductDetailId = pd.ProductDetailId,
                                 Color = pd.Color,
-                                DungLuong = pd.DungLuong
+                                DungLuong = pd.Capacity
                             };
 
                 // Tạo một danh sách để lưu trữ các màu và dung lượng mà không bị lặp lại
@@ -166,7 +183,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                         select new
                         {
                             Color = pd.Color,
-                            DungLuong = pd.DungLuong
+                            DungLuong = pd.Capacity
                         };
 
             // Tạo một danh sách để lưu trữ các màu và dung lượng mà không bị lặp lại

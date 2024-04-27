@@ -238,8 +238,8 @@
                                             <div class="row">
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1">Hệ điều hành:</label>
-                                                    @Html.TextBoxFor(x => x.HeDieuHanh, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
-                                                    @Html.ValidationMessageFor(x => x.HeDieuHanh, null, new { @class = "text-danger" })
+                                                    @Html.TextBoxFor(x => x.OperatingSystem, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.ValidationMessageFor(x => x.OperatingSystem, null, new { @class = "text-danger" })
 
                                                 </div>
                                                 <div class="col-3">
@@ -251,8 +251,8 @@
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1">Tốc độ CPU:</label>
                                                   
-                                                    @Html.TextBoxFor(x => x.TocDoCPU, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
-                                                    @Html.ValidationMessageFor(x => x.TocDoCPU, null, new { @class = "text-danger" })
+                                                    @Html.TextBoxFor(x => x.CPUspeed, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.ValidationMessageFor(x => x.CPUspeed, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1"> GPU:</label>
@@ -269,8 +269,8 @@
                                             <div class="row">
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1">Mạng di động:</label>
-                                                    @Html.TextBoxFor(x => x.MangDiDong, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
-                                                    @Html.ValidationMessageFor(x => x.MangDiDong, null, new { @class = "text-danger" })
+                                                    @Html.TextBoxFor(x => x.MobileNetwork, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.ValidationMessageFor(x => x.MobileNetwork, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1">SIM:</label>
@@ -304,13 +304,13 @@
                                                 </div>
                                                 <div class="col-4">
                                                     <label for="exampleInputEmail1">Cổng kết nối/sạc:</label>
-                                                  @Html.TextBoxFor(x => x.CongKetNoi, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
-                                                    @Html.ValidationMessageFor(x => x.CongKetNoi, null, new { @class = "text-danger" })
+                                                  @Html.TextBoxFor(x => x.Connector, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.ValidationMessageFor(x => x.Connector, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-4">
                                                     <label for="exampleInputEmail1">Jack tai nghe:</label>
-                                                    @Html.TextBoxFor(x => x.JackTaiNghe, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
-                                                    @Html.ValidationMessageFor(x => x.JackTaiNghe, null, new { @class = "text-danger" })
+                                                    @Html.TextBoxFor(x => x.Headphonejack, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.ValidationMessageFor(x => x.Headphonejack, null, new { @class = "text-danger" })
                                                 </div>
 
                                             </div>
@@ -326,8 +326,8 @@
                                                
                                                 <div class="col-6">
                                                     <label for="exampleInputEmail1">Loại pin:</label>
-                                                    @Html.TextBoxFor(x => x.LoaiPin, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
-                                                    @Html.ValidationMessageFor(x => x.LoaiPin, null, new { @class = "text-danger" })
+                                                    @Html.TextBoxFor(x => x.BatteryType, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.ValidationMessageFor(x => x.BatteryType, null, new { @class = "text-danger" })
                                                 </div>
 
                                             </div>
@@ -336,13 +336,13 @@
                                                     <label for="exampleInputEmail1">Công nghệ pin:</label>
                                                     @*@Html.TextAreaFor(x => x.CongNghePin, new { @class = "form-control", @id = "txtDetail" })
                                                     @Html.ValidationMessageFor(x => x.CongNghePin, null, new { @class = "text-danger" })*@
-                                                    @Html.TextBoxFor(x => x.CongNghePin, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
-                                                    @Html.ValidationMessageFor(x => x.CongNghePin, null, new { @class = "text-danger" })
+                                                    @Html.TextBoxFor(x => x.BatteryTechnology, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.ValidationMessageFor(x => x.BatteryTechnology, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-6">
                                                     <label for="exampleInputEmail1">Hỗ trợ sạc:</label>
-                                                    @Html.TextBoxFor(x => x.HoTroSac, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
-                                                    @Html.ValidationMessageFor(x => x.HoTroSac, null, new { @class = "text-danger" })
+                                                    @Html.TextBoxFor(x => x.ChargingSupport, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.ValidationMessageFor(x => x.ChargingSupport, null, new { @class = "text-danger" })
 
                                                 </div>
                                             </div>

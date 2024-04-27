@@ -65,7 +65,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         {
             var code = new { Success = false, Code = -1, Url = "" };
             tb_Staff nvSession = (tb_Staff)Session["user"];
-            if (nvSession.MSNV != null)
+            if (nvSession.Code != null)
             {
                 if (req.TocDoCPU != null && req.MangDiDong != null && req.Sim != null && req.Wifi != null)
                 {
@@ -103,8 +103,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                 }
                             }
 
-                            var checkStaff = db.tb_Staff.SingleOrDefault(row => row.MSNV == nvSession.MSNV);
-                            model.CreatedBy = checkStaff.TenNhanVien + "-" + checkStaff.MSNV;
+                            var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
+                            model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
                             model.CreatedDate = DateTime.Now;
                             model.ModifiedDate = DateTime.Now;
                             model.IsActive = req.IsActive;
@@ -113,29 +113,29 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                             model.IsSale = req.IsSale;
                             model.IsHome = req.IsHome;
 
-                            model.CPU = req.CPU;
-                            model.GPU = req.GPU;
-                            model.TocDoCPU = req.TocDoCPU;
+                            model.CPU = req.CPU.Trim();
+                            model.GPU = req.GPU.Trim();
+                            model.CPUspeed = req.TocDoCPU.Trim();
 
-                            model.HeDieuHanh = req.HeDieuHanh;
-                            model.MangDiDong = req.MangDiDong;
-                            model.Sim = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Sim);
-                            model.Wifi = req.Wifi;
-                            model.GPS = req.GPS;
-                            model.Bluetooth = req.Bluetooth;
-                            model.Bluetooth = req.Bluetooth;
-                            model.CongKetNoi = req.CongKetNoi;
-                            model.JackTaiNghe = req.JackTaiNghe;
-                            model.LoaiPin = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.LoaiPin);
-                            model.HoTroSac = req.HoTroSac;
-                            model.CongNghePin = req.CongNghePin;
+                            model.OperatingSystem = req.HeDieuHanh.Trim();
+                            model.MobileNetwork = req.MangDiDong.Trim();
+                            model.Sim = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Sim.Trim());
+                            model.Wifi = req.Wifi.Trim();
+                            model.GPS = req.GPS.Trim();
+                            model.Bluetooth = req.Bluetooth.Trim();
+                            model.Bluetooth = req.Bluetooth.Trim();
+                            model.Connector = req.CongKetNoi.Trim();
+                            model.Headphonejack = req.JackTaiNghe.Trim();
+                            model.BatteryType = req.LoaiPin.Trim();
+                            model.ChargingSupport = req.HoTroSac.Trim();
+                            model.BatteryTechnology = req.CongNghePin.Trim();
                             if (string.IsNullOrEmpty(model.Title))
                             {
-                                model.SeoTitle = model.Title;
+                                model.SeoTitle = model.Title.Trim();
                             }
                             if (string.IsNullOrEmpty(model.Alias))
                             {
-                                model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
+                                model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title.Trim());
                             }
                             db.tb_Products.Add(model);
                             db.SaveChanges();
@@ -190,8 +190,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             {
 
                 tb_Staff nvSession = (tb_Staff)Session["user"];
-                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.MSNV == nvSession.MSNV);
-                model.Modifeby = checkStaff.TenNhanVien + "-" + checkStaff.MSNV;
+                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
+                model.Modifeby = checkStaff.NameStaff + "-" + checkStaff.Code;
                 model.IsActive = false;
                 model.IsHome = false;
                 model.IsFeature = false;

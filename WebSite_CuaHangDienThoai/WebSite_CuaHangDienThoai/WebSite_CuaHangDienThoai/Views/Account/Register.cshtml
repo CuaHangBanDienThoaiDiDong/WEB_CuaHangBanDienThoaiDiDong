@@ -1,16 +1,21 @@
-﻿@model WebSite_CuaHangDienThoai.Models.tb_KhachHang
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Customer
 
 @{
     ViewBag.Title = "Đăng ký tài khoản";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
+<style>
+    .body {
+        font-family: Poppins-Regular;
+    }
+</style>
 <script>
     function validateForm() {
-        var sdt = document.getElementById('SDT').value.trim();
-        var tenKhachHang = document.getElementById('TenKhachHang').value.trim();
+        var sdt = document.getElementById('PhoneNumber').value.trim();
+        var tenKhachHang = document.getElementById('CustomerName').value.trim();
         var email = document.getElementById('Email').value.trim();
         var password = document.getElementById('Password').value.trim();
-        var diaChi = document.getElementById('DiaChi').value.trim();
+        var diaChi = document.getElementById('Loaction').value.trim();
         var confirmPassword = document.getElementById('ConfirmPassword').value.trim();
 
 
@@ -18,7 +23,7 @@
 
             Swal.fire({
                 icon: "error",
-                title: "Lỗi tìm...",
+                title: "Lỗi điền...",
                 text: "Vui lòng điền đầy đủ thông tin.",
                 /*footer: '<a href="#">Why do I have this issue?</a>'*/
             });
@@ -66,17 +71,24 @@
         -webkit-border-radius: 30px;
     }
 </style>
-
-<div class="p-5 border bg-light khang" style="border-radius: 30px; margin-top: 50px; font-family: Montserrat-Bold ">
-    <div class="container p-4 bg-white">
-        <h4 class="text-center">Đăng ký</h4>
+<br />
+<br />
+<br />
+<br />
+<br />
+<div class="p-5  khang" style="border-radius: 30px; font-family: Poppins-Regular;">
+    <div class="container  p-4 bg-white">
+        <h2 class="text-center">Đăng ký</h2>
         <hr />
         <div class="row">
             <div class="col-5">
-                <img src="~/hinh/img.jpg" class="img-register" width="100%" height="450px" />
+                <img src="~/Uploads/images/SanPham/iphone-15-1-4.jpg" @*class="w-100"*@ style="width:80%;height:auto" />
             </div>
             <div class="col">
-                <div style="border:2px solid #ffffff; border-radius:30px">
+                <h3 class="text-center">
+                    Thông tin tài khoản
+                </h3>
+                <div style="border:2px solid #ffffff; border-radius:30px;">
                     @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { onsubmit = "return validateForm();" }))
                     {
                         @Html.AntiForgeryToken()
@@ -86,16 +98,16 @@
                             <div class="form-group">
                                 <span>Số Điện Thoại *</span>
                                 <div class="col-md-10">
-                                    @Html.EditorFor(model => model.SDT, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Số Điện Thoại" } })
-                                    @Html.ValidationMessageFor(model => model.SDT, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Số Điện Thoại" } })
+                                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <spanp>Họ Tên *</spanp>
                                 <div class="col-md-10">
-                                    @Html.EditorFor(model => model.TenKhachHang, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Tên Của Bạn " } })
-                                    @Html.ValidationMessageFor(model => model.TenKhachHang, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Tên Của Bạn " } })
+                                    @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
@@ -112,7 +124,7 @@
                                 <div class="col-md-10 d-flex">
                                     <input type="password" id="Password" name="Password" class="form-control" autocomplete="new-password" placeholder="Nhập Mật Khẩu" />
                                     <button type="button" class="btn btn-success" onclick="togglePasswordVisibility('Password', 'togglePasswordBtn')"><i class="far fa-eye"></i></button>
-                                    @*@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })*@
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group">
@@ -131,13 +143,14 @@
                                 <span>Địa Chỉ *</span>
 
                                 <div class="col-md-10">
-                                    @Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Địa Chỉ Của Bạn" } })
-                                    @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.Loaction, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Địa Chỉ Của Bạn" } })
+                                    @Html.ValidationMessageFor(model => model.Loaction, "", new { @class = "text-danger" })
                                 </div>
                             </div>
+                            <hr />
                             <div class="form-group text-center">
-                                <div class="col-md-offset-2 col-md-10 pt-5">
-                                    <input type="submit" name="submit" class="btn rounded-5 fw-bold " style="width: 200px; background: #57b846;color:white" value="ĐĂNG KÝ">
+                                <div class="col-md-offset-2 col-md-10 pt-3">
+                                    <input type="submit" name="submit" class="btn rounded-5 fw-bold " style="width: 200px; background: #57b846  ; color:white" value="ĐĂNG KÝ">
                                     <p class="text-center">
                                         Bạn đã có tài khoản?<span>
                                             <a class="nav-link text-danger" href="/Account/Login">Đăng nhập ngay</a>

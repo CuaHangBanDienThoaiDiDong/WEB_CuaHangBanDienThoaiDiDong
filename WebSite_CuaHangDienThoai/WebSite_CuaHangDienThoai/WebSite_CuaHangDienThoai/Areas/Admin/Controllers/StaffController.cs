@@ -25,14 +25,14 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             //{
 
                 //tb_NhanVien nvSession = (tb_NhanVien)Session["user"];
-                //var item = db.tb_PhanQuyen.SingleOrDefault(row => row.MSNV == nvSession.MSNV && (row.IdChucNang == 1 || row.IdChucNang == 2));
+                //var item = db.tb_PhanQuyen.SingleOrDefault(row => row.Code == nvSession.Code && (row.IdChucNang == 1 || row.IdChucNang == 2));
                 //if (item == null)
                 //{
                 //    return RedirectToAction("NonRole", "HomePage");
                 //}
                 //else
                 //{
-                    var items = db.tb_Staff.OrderByDescending(x => x.MSNV).ToList();
+                    var items = db.tb_Staff.OrderByDescending(x => x.Code).ToList();
                     return View(items);
                 //}
             //}
@@ -48,7 +48,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             //{
 
             //tb_NhanVien nvSession = (tb_NhanVien)Session["user"];
-            //var item = db.tb_PhanQuyen.SingleOrDefault(row => row.MSNV == nvSession.MSNV && (row.IdChucNang == 1 || row.IdChucNang == 2));
+            //var item = db.tb_PhanQuyen.SingleOrDefault(row => row.Code == nvSession.Code && (row.IdChucNang == 1 || row.IdChucNang == 2));
             //if (item == null)
             //{
             //    return RedirectToAction("NonRole", "HomePage");
@@ -56,7 +56,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             //else
             //{
             Random ran = new Random();
-            ViewBag.MSNV = "2" + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9);
+            ViewBag.Code = "2" + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9);
 
 
             ViewBag.ChucNang = new SelectList(db.tb_Function.ToList(), "IdChucNang", "TenChucNang");
@@ -91,13 +91,13 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
             {
                 var checkMail = db.tb_Staff.FirstOrDefault(row => row.Email == req.Email);
-                var checkPhone = db.tb_Staff.FirstOrDefault(row => row.SDT == req.SDT);
+                var checkPhone = db.tb_Staff.FirstOrDefault(row => row.PhoneNumber == req.SDT);
                 if (checkMail == null)
                 {
                     if (checkPhone == null)
                     {
                         //tb_NhanVien nvSession = (tb_NhanVien)Session["user"];
-                        //var item = db.tb_NhanVien.SingleOrDefault(x => x.MSNV == nvSession.MSNV);
+                        //var item = db.tb_NhanVien.SingleOrDefault(x => x.Code == nvSession.Code);
                         //if (item != null)
                         //{
                         if (req.FunctionId != null)
@@ -107,40 +107,42 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
                             Random ran = new Random();
 
-                            string msnv = "2" + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9);
-                            model.MSNV = msnv.Trim();
-                            model.SDT = req.SDT;
-                            model.TenNhanVien = req.Name.Trim();
+                            string Code = "2" + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9);
+                            model.Code = Code.Trim();
+                            model.PhoneNumber = req.SDT;
+                            model.NameStaff = req.Name.Trim();
                             model.Password = MaHoaPass(pass);
 
-                            model.CCCD = req.CCCD;
+                            model.CitizenIdentificationCard = req.CCCD;
                             model.Email = req.Email;
                             model.Birthday = req.Birthday;
-                            model.DiaChi = req.DiaChi;
-                            model.Luong = req.Luong;
-                            model.IdChucNang = req.FunctionId;
+                            model.Location = req.DiaChi;
+                            model.Wage = req.Luong;
+                            model.FunctionId = req.FunctionId;
 
                             model.Clock = false;
 
                             model.CreatedDate = DateTime.Now;
-                            model.NgayVaoLam = DateTime.Now;
+                            model.DayofWork = DateTime.Now;
                             model.ModifiedDate = DateTime.Now;
-                            if (req.GioiTinh == "Nam")
-                            {
-                                model.GioiTinh = "Nam";
-                            }
-                            else
-                            {
-                                model.GioiTinh = "Nữ";
-                            }
+                            model.Sex = req.GioiTinh;
+
+                            //if (req.GioiTinh == "Nam")
+                            //{
+                            //    model.Sex = "Nam";
+                            //}
+                            //else
+                            //{
+                            //    model.Sex = "Nữ";
+                            //}
 
                             db.tb_Staff.Add(model);
                             db.SaveChanges();
 
 
-                            int NhaVienIdNew = model.NhanVienId;
-                            modelPhanQuyen.NhanVienId = NhaVienIdNew;
-                            modelPhanQuyen.IdChucNang = (int)req.FunctionId;
+                            int NhaVienIdNew = model.StaffId;
+                            modelPhanQuyen.StaffId = NhaVienIdNew;
+                            modelPhanQuyen.FunctionId = (int)req.FunctionId;
 
                             db.tb_Role.Add(modelPhanQuyen);
                             db.SaveChanges();
@@ -197,7 +199,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         public ActionResult IsLock(int id)
         {
 
-            var item = db.tb_Staff.SingleOrDefault(x => x.NhanVienId==id);
+            var item = db.tb_Staff.SingleOrDefault(x => x.StaffId==id);
             if (item != null)
             {
                 item.Clock = !item.Clock;
