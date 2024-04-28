@@ -1,261 +1,153 @@
-﻿.widget-26 {
-    color: #3c4142;
-    font-weight: 400;
-}
-
-    .widget-26 tr:first-child td {
-        border: 0;
-    }
-
-    .widget-26 .widget-26-job-emp-img img {
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-    }
-
-    .widget-26 .widget-26-job-title {
-        min-width: 200px;
-    }
-
-        .widget-26 .widget-26-job-title a {
-            font-weight: 400;
-            font-size: 0.875rem;
-            color: #3c4142;
-            line-height: 1.5;
-        }
-
-            .widget-26 .widget-26-job-title a:hover {
-                color: #68CBD7;
-                text-decoration: none;
-            }
-
-        .widget-26 .widget-26-job-title .employer-name {
-            margin: 0;
-            line-height: 1.5;
-            font-weight: 400;
-            color: #3c4142;
-            font-size: 0.8125rem;
-            color: #3c4142;
-        }
-
-            .widget-26 .widget-26-job-title .employer-name:hover {
-                color: #68CBD7;
-                text-decoration: none;
-            }
-
-        .widget-26 .widget-26-job-title .time {
-            font-size: 12px;
-            font-weight: 400;
-        }
-
-    .widget-26 .widget-26-job-info {
-        min-width: 100px;
-        font-weight: 400;
-    }
-
-        .widget-26 .widget-26-job-info p {
-            line-height: 1.5;
-            color: #3c4142;
-            font-size: 0.8125rem;
-        }
-
-        .widget-26 .widget-26-job-info .location {
-            color: #3c4142;
-        }
-
-    .widget-26 .widget-26-job-salary {
-        min-width: 70px;
-        font-weight: 400;
-        color: #3c4142;
-        font-size: 0.8125rem;
-    }
-
-    .widget-26 .widget-26-job-category {
-        padding: .5rem;
-        display: inline-flex;
-        white-space: nowrap;
-        border-radius: 15px;
-    }
-
-        .widget-26 .widget-26-job-category .indicator {
-            width: 13px;
-            height: 13px;
-            margin-right: .5rem;
-            float: left;
-            border-radius: 50%;
-        }
-
-        .widget-26 .widget-26-job-category span {
-            font-size: 0.8125rem;
-            color: #3c4142;
-            font-weight: 600;
-        }
-
-    .widget-26 .widget-26-job-starred svg {
-        width: 20px;
-        height: 20px;
-        color: #fd8b2c;
-    }
-
-        .widget-26 .widget-26-job-starred svg.starred {
-            fill: #fd8b2c;
-        }
-
-.bg-soft-base {
-    background-color: #e1f5f7;
-}
-
-.bg-soft-warning {
-    background-color: #fff4e1;
-}
-
-.bg-soft-success {
-    background-color: #d1f6f2;
-}
-
-.bg-soft-danger {
-    background-color: #fedce0;
-}
-
-.bg-soft-info {
-    background-color: #d7efff;
-}
+﻿
 
 
-.search-form {
-    width: 100%;
-    margin: 0 auto;
-    margin-top: 1rem;
-    background-color: white;
-    height:80%;
-}
-
-    .search-form input {
-        height: 100%;
-        background: transparent;
-        border: 0;
-        display: block;
-        width: 100%;
-        padding: 1rem;
-        height: 100%;
-        font-size: 1rem;
-    }
-
-    .search-form select {
-        background: transparent;
-        border: 0;
-        padding: 1rem;
-        height: 100%;
-        font-size: 1rem;
-    }
-
-        .search-form select:focus {
-            border: 0;
-        }
-
-    .search-form button {
-        height: 100%;
-        width: 100%;
-        font-size: 1rem;
-        
-    }
-
-        .search-form button svg {
-            width: 24px;
-            height: 24px;
-        }
-
-.search-body {
-    margin-bottom: 1.5rem;
-}
-
-    .search-body .search-filters .filter-list {
-        margin-bottom: 1.3rem;
-    }
-
-        .search-body .search-filters .filter-list .title {
-            color: #3c4142;
-            margin-bottom: 1rem;
-        }
-
-        .search-body .search-filters .filter-list .filter-text {
-            color: #727686;
-        }
-
-    .search-body .search-result .result-header {
-        margin-bottom: 2rem;
-    }
-
-        .search-body .search-result .result-header .records {
-            color: #3c4142;
-        }
-
-        .search-body .search-result .result-header .result-actions {
-            text-align: right;
+        .s130 form .inner-form {
+            display: -ms-flexbox;
             display: flex;
-            align-items: center;
+            width: 100%;
+            -ms-flex-pack: justify;
             justify-content: space-between;
+            -ms-flex-align: center;
+            align-items: center;
+            box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+            /*border-radius: 34px;*/
+            overflow: hidden;
+            margin-bottom: 30px;
         }
 
-            .search-body .search-result .result-header .result-actions .result-sorting {
-                display: flex;
-                align-items: center;
+            .s130 form .inner-form .input-field {
+                height: 32px;
             }
 
-                .search-body .search-result .result-header .result-actions .result-sorting span {
-                    flex-shrink: 0;
-                    font-size: 0.8125rem;
+                .s130 form .inner-form .input-field input {
+                    height: 100%;
+                    background-color: white;
+                    border: 0;
+                    display: block;
+                    width: 100%;
+                    padding: 10px 0;
+                    font-size: 16px;
+                    color: #000;
                 }
 
-                .search-body .search-result .result-header .result-actions .result-sorting select {
-                    color: #68CBD7;
-                }
-
-                    .search-body .search-result .result-header .result-actions .result-sorting select option {
-                        color: #3c4142;
+                    .s130 form .inner-form .input-field input.placeholder {
+                        color: #222;
+                        font-size: 16px;
                     }
 
-@media (min-width: 768px) and (max-width: 991.98px) {
-    .search-body .search-filters {
+                    .s130 form .inner-form .input-field input:-moz-placeholder {
+                        color: #222;
+                        font-size: 16px;
+                    }
+
+                    .s130 form .inner-form .input-field input::-webkit-input-placeholder {
+                        color: #222;
+                        font-size: 16px;
+                    }
+
+                    .s130 form .inner-form .input-field input:hover, .s130 form .inner-form .input-field input:focus {
+                        box-shadow: none;
+                        outline: 0;
+                    }
+
+                .s130 form .inner-form .input-field.first-wrap {
+                    -ms-flex-positive: 1;
+                    flex-grow: 1;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -ms-flex-align: center;
+                    align-items: center;
+                    background-color:white ;
+                }
+
+                    .s130 form .inner-form .input-field.first-wrap input {
+                        -ms-flex-positive: 1;
+                        flex-grow: 1;
+                    }
+
+                    .s130 form .inner-form .input-field.first-wrap .svg-wrapper {
+                        min-width: 80px;
+                        display: -ms-flexbox;
+                        display: flex;
+                        -ms-flex-pack: center;
+                        justify-content: center;
+                        -ms-flex-align: center;
+                        align-items: center;
+                    }
+
+                    .s130 form .inner-form .input-field.first-wrap svg {
+                        width: 36px;
+                        height: 36px;
+                        fill: #222;
+                    }
+
+                .s130 form .inner-form .input-field.second-wrap {
+                    min-width: 216px;
+                }
+
+                    .s130 form .inner-form .input-field.second-wrap .btn-search {
+                        height: 100%;
+                        width: 50%;
+                        white-space: nowrap;
+                        font-size: 16px;
+                        color: #fff;
+                        border: 0;
+                        cursor: pointer;
+
+
+                        position: relative;
+                        z-index: 0;
+                        background-color: white;
+                        transition: all .2s ease-out, color .2s ease-out;
+                        font-weight: 300;
+                    }
+
+                        .s130 form .inner-form .input-field.second-wrap .btn-search:hover {
+                            background-color: white;
+                        }
+
+                        .s130 form .inner-form .input-field.second-wrap .btn-search:focus {
+                            outline: 0;
+                            box-shadow: none;
+                        }
+
+        .s130 form .info {
+            font-size: 15px;
+            color: #ccc;
+            padding-left: 26px;
+        }
+
+@media screen and (max-width: 992px) {
+    .s130 form .inner-form .input-field {
+        height: 50px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .s130 form .inner-form .input-field.first-wrap .svg-wrapper {
+        min-width: 40px;
+        display: -ms-flexbox;
         display: flex;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -ms-flex-align: center;
+        align-items: center;
+        padding: 0 10px;
     }
 
-        .search-body .search-filters .filter-list {
-            margin-right: 1rem;
+    .s130 form .inner-form .input-field.first-wrap svg {
+        width: 26px;
+        height: 26px;
+        fill: #222;
+    }
+
+    .s130 form .inner-form .input-field.second-wrap {
+        min-width: 100px;
+    }
+
+        .s130 form .inner-form .input-field.second-wrap .btn-search {
+            font-size: 13px;
         }
 }
 
-.card-margin {
-    margin-bottom: 1.875rem;
-}
-
-@media (min-width: 992px) {
-    .col-lg-2 {
-        flex: 0 0 16.66667%;
-        max-width: 16.66667%;
-    }
-}
-
-.card-margin {
-    margin-bottom: 1.875rem;
-}
-
-.card {
-    border: 0;
-    box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
-    -webkit-box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
-    -moz-box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
-    -ms-box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
-}
-
-.card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #ffffff;
-    background-clip: border-box;
-    border: 1px solid #e6e4e9;
-    border-radius: 8px;
-}
+/*# sourceMappingURL=Searchs_130.css.map */

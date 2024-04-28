@@ -46,21 +46,49 @@
     <!---SweetAlter-->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
+        .hide {
+            display: none;
+        }
+
+        .search-form {
+            display: block; /* hoặc display: flex; hoặc display: inline-block; tùy thuộc vào cách bạn muốn hiển thị */
+        }
         .search-suggestions {
             position: absolute;
             background-color: white;
             border: 1px solid #ccc;
             z-index: 999;
-            display: none; /* Ẩn khung gợi ý ban đầu */
-            width: 100%; /* Chiều rộng tương ứng với khung tìm kiếm */
+            width: 92%;
+            top: 100%; /* Hiển thị dưới input */
+            left: 0; /* Đặt vị trí bắt đầu từ góc trên bên trái của input */
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px
         }
+        .bg-sg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #000;
+            opacity: 0.8;
+            z-index: 9998;
+            display: none;
+        }
+
+
     </style>
 </head>
 <body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+            <title>Search</title>
+            <path fill="currentColor" d="M19 3C13.488 3 9 7.488 9 13c0 2.395.84 4.59 2.25 6.313L3.281 27.28l1.439 1.44l7.968-7.969A9.922 9.922 0 0 0 19 23c5.512 0 10-4.488 10-10S24.512 3 19 3zm0 2c4.43 0 8 3.57 8 8s-3.57 8-8 8s-8-3.57-8-8s3.57-8 8-8z" />
+        </symbol>
+    </svg>
 
 
-
-    <header class="header trans_300">
+    <header class="header trans_300" style="position: fixed; z-index: 10000; ">
 
         <!-- Top Navigation -->
 
@@ -77,37 +105,37 @@
                                 Currency / Language / My Account
 
                                 @*<li class="currency">
-                                        <a href="#">
-                                            usd
-                                            <i class="fa fa-angle-down"></i>
-                                        </a>
-                                        <ul class="currency_selection">
-                                            <li><a href="#">cad</a></li>
-                                            <li><a href="#">aud</a></li>
-                                            <li><a href="#">eur</a></li>
-                                            <li><a href="#">gbp</a></li>
-                                        </ul>
-                                    </li>*@
+                                    <a href="#">
+                                        usd
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="currency_selection">
+                                        <li><a href="#">cad</a></li>
+                                        <li><a href="#">aud</a></li>
+                                        <li><a href="#">eur</a></li>
+                                        <li><a href="#">gbp</a></li>
+                                    </ul>
+                                </li>*@
                                 @*<li class="language">
-                                        <a href="#">
-                                            English
-                                            <i class="fa fa-angle-down"></i>
-                                        </a>
-                                        <ul class="language_selection">
-                                            <li><a href="#">French</a></li>
-                                            <li><a href="#">Italian</a></li>
-                                            <li><a href="#">German</a></li>
-                                            <li><a href="#">Spanish</a></li>
-                                        </ul>
-                                    </li>*@
+                                    <a href="#">
+                                        English
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="language_selection">
+                                        <li><a href="#">French</a></li>
+                                        <li><a href="#">Italian</a></li>
+                                        <li><a href="#">German</a></li>
+                                        <li><a href="#">Spanish</a></li>
+                                    </ul>
+                                </li>*@
                                 <li class="account" style="width:auto">
                                     <a href="#">
                                         Tài Khoản
                                         <i class="fa fa-angle-down"></i>
                                     </a>
                                     <ul class="account_selection" style="width:auto">
-                                        <li style="margin-left:-20px"><a href="/account/login"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng nhập</a></li>
-                                        <li style="margin:0px"><a href="/account/register"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng ký</a></li>
+                                        <li style="margin-left:-20px"><a href="/dang-nhap"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng nhập</a></li>
+                                        <li style="margin:0px"><a href="/dang-ky"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng ký</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -127,25 +155,21 @@
         <div class="main_nav_container text-light" style="background-color: #101010; color: white; ">
             <div class="container ">
                 <div class="row align-items-center">
-                    <div class="col-lg-12 text-right">
+                    <div class="col-lg-12 text-right nav-main" style="display:block">
                         <div class="logo_container">
                             <a href="/home/index" style="color: red; font-family: Poppins-Regular; ">LTD<span style="color: white; font-family: Poppins-Regular; ">MiniStore</span></a>
                         </div>
                         <nav class="navbar ">
-
+                            <ul>
+                            </ul>
                             <ul class="navbar_menu">
 
                                 <li><a href="/san-pham" style="color: white; font-family: Poppins-Regular; font-size:18px; "> Sản phẩm</a></li>
 
-                                @Html.Action("Partial_Category", "ProductCategory")
-
-
-
+                                @Html.Action("Partial_Category", "ProductCategory", new { htmlAttributes = new { @class = "nav-category", data_widget = "navbar-search", style = "display: block;" } })
                                 <li><a href="contact.html" style="color: white; font-family: Poppins-Regular; font-size: 18px;">Liên hệ</a></li>
-                            </ul>
-                            <ul class="navbar_user">
-                                <li class="  ">
-                                    <div class="search-form">
+                                <li>
+                                    <div class="search-form" style="display:none">
                                         <form id="search-form">
 
                                             <div class="row">
@@ -166,10 +190,44 @@
                                         </form>
                                     </div>
 
-                                    <!-- Khung hiển thị gợi ý -->
-                                    <div class="search-suggestions">
-                                      <p>Có phải bạn muốn tìm</p>
+                                </li>
+
+
+
+
+
+
+                            </ul>
+                            <ul class="navbar_user">
+                                <li class="  nav-item">
+
+                                    @*<div class="search-form"  style="">
+                            <form id="search-form">
+
+                                <div class="row">
+                                    <div class="col-12 ">
+                                        <div class="row no-gutters">
+
+                                            <div class="col-lg-8 col-md-6 col-sm-12 p-0">
+                                                <input type="text" placeholder="Tìm kiếm sản phẩm..." class="form-control" id="search" name="search">
+                                            </div>
+                                            <div class="col-lg-1 col-md-3 col-sm-12 p-0 ">
+                                                <button type="submit" class="btn btn-base">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
+                                </div>
+                            </form>
+                        </div>*@
+                                    <a class="nav-link rounded-5" data-widget="navbar-search" href="#" role="button" style="background-color: #2f3033;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:white" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                        </svg>
+                                    </a>
+
+                                    <!-- Khung hiển thị gợi ý -->
 
                                 </li>
 
@@ -192,7 +250,7 @@
                                     </li>
                                     <li class="checkout ">
 
-                                        <a href="#" style="background-color: #101010;">
+                                        <a href="#" style="background-color: #2f3033;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:white" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
                                                 <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
                                             </svg>
@@ -208,12 +266,12 @@
                                 else
                                 {
                                     <li>
-                                        <a href="/Account/Login"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a>
+                                        <a href="/dang-nhap"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a>
                                     </li>
 
                                     <li class="checkout ">
 
-                                        <a href="#" style="background-color: #101010;">
+                                        <a href="#" style="background-color: #2f3033;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:white" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
                                                 <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
                                             </svg>
@@ -226,11 +284,8 @@
                                 }
 
 
-
-
-
                                 @*<li><a href="#"><i class="fa fa-search" aria-hidden="true" style="color:white"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a></li>*@
+                    <li><a href="#"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a></li>*@
 
                             </ul>
                             <div class="hamburger_container">
@@ -239,18 +294,55 @@
                         </nav>
                     </div>
 
+                    <div class="col-lg-12 text-right nav-search" style="display:none">
+                        <div class="row pt-4">
+                            <div class="col-md-12">
+                                <div class="s130">
+                                    <form>
+                                        <div class="inner-form">
+                                            <div class="input-field first-wrap">
+                                                <div class="svg-wrapper">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                                                    </svg>
+                                                </div>
+                                                <input id="search" type="text" placeholder="Tìm kiếm sản phẩm ?" />
+                                            </div>
+                                            <div class="input-field second-wrap">
+                                                <button class="btn-search" type="button">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
 
+                                    </form>
+                                    <div class="col-lg-12 search-suggestions" style="display: block;">
+                                        <p>Có phải bạn muốn tìm</p>
+                                        <p>Có phải bạn muốn tìm</p>
+                                        <p>Có phải bạn muốn tìm</p>
+                                        <p>Có phải bạn muốn tìm</p>
+                                        <p>Có phải bạn muốn tìm</p>
+                                        <p>Có phải bạn muốn tìm</p>
+                                        <p>Có phải bạn muốn tìm</p>
+                                        <p>Có phải bạn muốn tìm</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                   
 
 
 
                 </div>
-
-
             </div>
         </div>
+      
 
     </header>
-
 
 
 
@@ -323,15 +415,12 @@
             </ul>
         </div>
     </div>
-
-
-
-    <div style="background-color: #3e3e3f">
+    <div style="background-color: #3e3e3f" class="main">
         @*#f3f3f3*@
+
+        <div class="bg-sg" style="display:none"></div>
         @RenderBody()
     </div>
-
-
 
     <footer class="footer pt-5">
         <div class="container">
@@ -368,12 +457,66 @@
     </footer>
 
     <script>
-        // Lắng nghe sự kiện focus vào input tìm kiếm
-        document.getElementById("search").addEventListener("focus", function () {
-            // Hiển thị khung gợi ý
-            var suggestions = document.querySelector(".search-suggestions");
-            suggestions.style.display = "block";
+
+        document.getElementById("search").addEventListener("input", function () {
+            var inputValue = this.value.trim();
+            var searchSuggestions = document.querySelector(".search-suggestions");
+
+            if (inputValue !== "") {
+                searchSuggestions.style.display = "block"; // Hiển thị khung gợi ý
+                console.log("Nội dung của ô input: ", inputValue); 
+            } else {
+                searchSuggestions.style.display = "none"; // Ẩn khung gợi ý nếu ô input rỗng
+            }
         });
+        document.addEventListener("DOMContentLoaded", function () {
+            var searchBar = document.getElementById("search");
+            var searchButtonMain = document.querySelector("[data-widget='navbar-search']");
+            var searchButtonSearch = document.querySelector(".nav-search .btn-search");
+            var navMain = document.querySelector(".nav-main");
+            var navSearch = document.querySelector(".nav-search");
+            var searchSuggestions = document.querySelector(".search-suggestions");
+            var main = document.querySelector(".main");
+            var bg = document.querySelector(".bg-sg");
+
+            searchButtonMain.addEventListener("click", function (event) {
+                event.preventDefault();
+                navMain.style.display = "none"; // Ẩn nav-main
+                navSearch.style.display = "block"; // Hiển thị nav-search
+                bg.style.display = "block"; // Hiển thị nav-search
+                // Áp dụng hiệu ứng mờ mờ khi hiển thị nav-search
+              
+            });
+
+            searchButtonSearch.addEventListener("click", function (event) {
+                event.preventDefault();
+                navMain.style.display = "block"; // Hiển thị nav-main
+                navSearch.style.display = "none"; // Ẩn nav-search
+                bg.style.display = "none"; // Ẩn nav-search
+             
+              
+            });
+
+            searchBar.addEventListener("input", function () {
+                var inputValues = searchBar.value.trim();
+                if (inputValues.length > 0) {
+                    searchSuggestions.style.display = "block";
+                } else {
+                    searchSuggestions.style.display = "none";
+                }
+            });
+
+            searchBar.addEventListener("focus", function () {
+                searchSuggestions.style.display = "block"; // Hiển thị khung gợi ý khi ô tìm kiếm được tập trung vào
+                // Áp dụng hiệu ứng mờ mờ khi ô tìm kiếm được tập trung vào
+                navSearch.style.filter = "blur(8px)";
+                navSearch.style.backdropFilter = "blur(8px)";
+            });
+
+        });
+
+      
+
     </script>
 
 
@@ -391,22 +534,11 @@
     <!---SweetAlter-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
 
-
-
-
-
     @*====================Start JS Temp Tesst====================*@
 
-
-
-
-
+    <script src="~/Scripts/Client/js/LayOut.js"></script>
 
     @*====================End JS Temp Tesst====================*@
-
-
-
-
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="~/Scripts/jsShopping.js"></script>
     @RenderSection("scripts", required: false)

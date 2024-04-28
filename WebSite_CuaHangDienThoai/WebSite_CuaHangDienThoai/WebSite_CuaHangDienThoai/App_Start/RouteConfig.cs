@@ -8,7 +8,27 @@ namespace WebSite_CuaHangDienThoai
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
+            //// Route cho trang khoi phuc mat khau
+            routes.MapRoute(
+                name: "Forgotpassword",
+                url: "khoi-phuc-mat-khau",
+                defaults: new { controller = "Account", action = "Forgotpassword", id = UrlParameter.Optional },
+                namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+            );
+            //// Route cho trang dang ky
+            routes.MapRoute(
+                name: "Register",
+                url: "dang-ky",
+                defaults: new { controller = "Account", action = "Register", id = UrlParameter.Optional },
+                namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+            );
+            //// Route cho trang login
+            routes.MapRoute(
+                name: "Login",
+                url: "dang-nhap",
+                defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional },
+                namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+            );
             //// Route cho trang chi tiết danh mục sản phẩm
             routes.MapRoute(
                 name: "CategoryProduct",
