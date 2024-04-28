@@ -26,6 +26,20 @@
 @if (Model != null)
 {
     var strImg = "";
+    var Capacity = "";
+    if (Model.Capacity > 999)
+    {
+        Capacity = "1Tb";
+    }
+    else if (Model.Capacity > 1999)
+    {
+        Capacity = "2 Tb";
+    }
+    else
+    {
+        Capacity = Model.Capacity + " Gb";
+    }
+
     //var check = Model.tb_ProductDetail.FirstOrDefault(r => r.ProductsId == Model.ProductsId);
     //var checkImg = check.tb_ProductDetailImage.Where(r => r.ProductDetailId == check.ProductDetailId);
     var ImgDefault = Model.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
@@ -103,7 +117,7 @@
                 <div class="col-lg-5">
                     <div class="product_details">
 
-                        <h3>@Model.Title</h3>
+                        <h3 style="color:white  ;">@Model.tb_Products.Title @Model.Title @Capacity</h3>
 
 
                         <div class="row" id="PriceProductDetail">
@@ -148,8 +162,8 @@
                             @*<h2>Điện thoại @Model.Title</h2>*@
 
 
-                            @*DungLuongDienTHoai*@
-                            @Html.Action("DungLuong", "Product", new { id = Model.ProductsId , DungLuong=Model.Capacity })
+                            @*CapacityDienTHoai*@
+                            @Html.Action("DungLuong", "Product", new { id = Model.ProductsId, DungLuong = Model.Capacity })
 
 
                         </div>

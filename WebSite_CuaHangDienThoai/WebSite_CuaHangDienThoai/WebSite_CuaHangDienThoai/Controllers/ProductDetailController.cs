@@ -17,7 +17,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
-     
+
 
 
 
@@ -57,8 +57,19 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 DungLuong = dl
             }).ToList();
             ViewBag.ProductsId = id;
+            //ViewBag.DungLuongList = result;
+            // Lấy dung lượng của sản phẩm đầu tiên trong kết quả query
+            var productDetailViewModel = query.FirstOrDefault();
+            ViewBag.DungLuong = productDetailViewModel?.Capacity;
+
+            ViewBag.ProductsId = id;
+
             return PartialView(result);
         }
+
+
+
+
 
         //[HttpPost]
         public ActionResult PriceById(int id, string DungLuong)

@@ -4115,6 +4115,7 @@
     <Content Include="Views\Menu\_MenuBrand.cshtml" />
     <Content Include="Views\Product\Find.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Product\Partial_ItemsByCateIdTest.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

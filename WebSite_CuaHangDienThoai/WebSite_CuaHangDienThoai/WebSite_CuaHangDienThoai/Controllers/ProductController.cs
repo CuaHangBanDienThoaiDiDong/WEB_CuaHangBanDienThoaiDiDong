@@ -69,6 +69,15 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return PartialView(items);
         }
 
+        public ActionResult Partial_ItemsByCateIdTest()
+        {
+            var items = db.tb_Products.Where(x => x.IsHome == true && x.IsActive == true).Take(12).ToList();
+            var dungLuong = ViewBag.DungLuong;
+            ViewBag.DungLuong = dungLuong;
+            return PartialView(items);
+        }
+
+
 
         public ActionResult Details(int? id, int ProductDetailId)
         {
@@ -85,6 +94,41 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     if (itemProductDetail != null)
                     {
                         ViewBag.DungLuong = itemProductDetail.Capacity;
+                        return View(itemProductDetail);
+                    }
+                }
+                return View(item);
+            }
+            else
+            {
+                var item = db.tb_Products.Find(id);
+                if (item != null)
+                {
+                    return View(item);
+                }
+                return View();
+            }
+
+
+        }
+
+
+
+        public ActionResult DetailsTest(int? id)
+        {
+            if (id > 0)
+            {
+                var item = db.tb_Products.Find(id);
+                if (item != null)
+                {
+                    ViewBag.Title = item.Title;
+
+                    ViewBag.ProductCompany = item.tb_ProductCompany.Title;
+
+                    var itemProductDetail = db.tb_ProductDetail.FirstOrDefault(r =>  r.ProductsId == id);
+                    if (itemProductDetail != null)
+                    {
+                        //ViewBag.DungLuong = itemProductDetail.Capacity;
                         return View(itemProductDetail);
                     }
                 }
