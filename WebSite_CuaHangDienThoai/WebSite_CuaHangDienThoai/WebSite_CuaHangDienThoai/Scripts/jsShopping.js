@@ -62,17 +62,39 @@
         });
     });
 
-    //$('.sortProductCategory').on('click', function () {
-    //    var category = $(this).data('filter');
-     
-    //    sortCategory(category);
-    //    loadPhanTramSale(productId, dungLuong);
+    $(document).ready(function () {
+        // Bắt sự kiện click vào mỗi thẻ <li>
+        $('.single_product_thumbnails').on('click', 'li', function () {
+            // Lấy giá trị của thuộc tính data-id
+            var productDetailId = $(this).data('id');
+            // Gọi hàm loadImages với productDetailId đã lấy được
+            loadImages(productDetailId);
+        });
+    });
+    $(document).ready(function () {
+        // Kích hoạt sự kiện click trên li đầu tiên
+        $('.single_product_thumbnails li:first-child').click();
+    });
 
-    //    $('.sortProductCategory').removeClass('active');
-    //    $(this).addClass('active');
-    //});
+
 
 });
+function loadImages(productDetailId) {
+    $.ajax({
+        url: '/Product/Partail_LoadListImgByProDetailId',
+        type: 'GET',
+        data: { id: productDetailId },
+        success: function (result) {
+            // Cập nhật phần tử có class loadImgByProductDetailId với kết quả từ controller
+            $('.loadImgByProductDetailId').html(result);
+        },
+        error: function () {
+            alert('Đã xảy ra lỗi khi tải danh sách hình ảnh.');
+        }
+    });
+}
+
+
 function loadPrice(productId, dungLuong) {
     $.ajax({
         url: '/ProductDetail/PriceById',

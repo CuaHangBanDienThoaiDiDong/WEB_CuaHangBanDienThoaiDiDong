@@ -1,33 +1,45 @@
-﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetailImage>
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
 
 
 @if (Model != null && Model.Any())
 {
-    <div class="single_product_pics">
-        <div class="row">
-            <div class="col-md-12 thumbnails_col order-lg-1 order-2">
-                <div class="single_product_thumbnails">
-                    <ul>
-                        <li class="active">
-                            @foreach (var item in Model)
-                            {
-                               
-                                    
-                                        <img src="@item.Image" alt="" data-image="@item.Image" @*class="w-25"*@ style="width:100px;">
-                                        <p class="text-center">
-                                            @item.tb_ProductDetail.Color
-                                        </p>
-                            }
-                         </li>
 
-                        </ul>
-                </div>
-            </div>
-            <div class="col-lg-9 image_col order-lg-2 order-1">
-                <div class="single_product_image">
-                    @*<div class="single_product_image_background" style="background-image:url(@Model.ProductImage.FirstOrDefault(x=>x.IsDefault).Image)"></div>*@
-                </div>
+
+    <div class="row">
+
+        <div class="col-12 image_col order-lg-2 order-1 box01_show">
+            @*load hinh theo li*@
+            <div class="single_product_image d-flex justify-content-center align-items-center loadImgByProductDetailId">
+                    
+
+                
             </div>
         </div>
     </div>
+    <div class="row pt-4">
+        <div class="col-12 thumbnails_col order-lg-1 order-2 scrolling_inner">
+            <div class="single_product_thumbnails">
+                <ul class="d-flex justify-content-center align-items-center flex-wrap">
+                    @foreach (var item in Model)
+                    {
+                        //var activeClass = item.tb_ProductDetailImage.IsDefault ? "active" : "";
+                        var strImg = "";
+
+                        var img = item.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
+
+                        if (img != null)
+                        {
+                            strImg = img.Image;
+                        }
+                        <li class="m-1 liImg" style="width: calc(10% - 3px);" data-id="@item.ProductDetailId">
+                            <!-- 25% - 10px để tính toán margin -->
+                            <img src="@item.Image" alt="@item.Color-@item.Capacity" data-image="@item.Image" style="width: 100%; height: 50%; " />
+                            <small style="color:white " class="text-center d-flex justify-content-center align-items-center">@item.Color</small>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
 }

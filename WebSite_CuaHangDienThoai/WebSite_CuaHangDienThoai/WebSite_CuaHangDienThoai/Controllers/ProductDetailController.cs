@@ -49,6 +49,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     Capacitys.Add((int)item.Capacity);
                 }
             }
+           
 
             // Chuyển đổi danh sách dung lượng sang một danh sách các đối tượng ProductDetailViewModel
             List<ProductDetailViewModel> result = Capacitys.Select(dl => new ProductDetailViewModel
@@ -60,10 +61,11 @@ namespace WebSite_CuaHangDienThoai.Controllers
             //ViewBag.DungLuongList = result;
             // Lấy dung lượng của sản phẩm đầu tiên trong kết quả query
             var productDetailViewModel = query.FirstOrDefault();
-            ViewBag.DungLuong = productDetailViewModel?.Capacity;
-
+          
             ViewBag.ProductsId = id;
+            var dungLuong = productDetailViewModel?.Capacity;
 
+            Session["DungLuong"] = dungLuong;
             return PartialView(result);
         }
 

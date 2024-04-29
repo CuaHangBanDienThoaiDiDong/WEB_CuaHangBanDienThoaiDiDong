@@ -1,0 +1,33 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetailImage>
+@if (Model.Any() && Model != null)
+{
+  
+    <div id="carouselExampleControls" class="carousel slide d-flex justify-content-center align-items-center" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }))
+            {
+                <div class="carousel-item @(item.Index == 0 ? "active" : "")  ">
+                    <img src="@item.Value.Image" class="d-block d-flex justify-content-center align-items-center " style="width: 80%; height: 80%" alt="...">
+                </div>
+            }
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+
+
+
+
+
+}
+else
+{
+    <p class="text-danger">Lỗi tải hình ảnh</p>
+}

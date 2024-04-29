@@ -2,31 +2,42 @@
 @{
     ViewBag.Title = ViewBag.Title;
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    int productId = ViewBag.ProductId;
 }
 <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/single_styles.css">
 <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/single_responsive.css">
-
+<link href="~/Content/assets/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.theme.default.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/OwlCarousel2-2.2.1/animate.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/themify-icons/themify-icons.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/assets/styles/single_styles.css" rel="stylesheet" />
+<link href="~/Content/assets/styles/single_responsive.css" rel="stylesheet" />
 @*<style>
+    <script src="~/Content/assets/js/jquery-3.2.1.min.js"></script>
+
+            .card-title-hand {
+                font-size: 15px;
+                font-weight: bold;
+
+                width:100px;
+            }
 
 
-        .card-title-hand {
-            font-size: 15px;
-            font-weight: bold;
 
-            width:100px;
-        }
-
-
-
-    </style>*@
-
-
+        </style>*@
+@{
+    var db = new WebSite_CuaHangDienThoai.Models.CUAHANGDIENTHOAIEntities(); // Thay YourDbContext bằng tên DbContext của bạn
+    var productDetails = db.tb_ProductDetail.Where(p => p.ProductsId == productId).ToList();
+}
 
 
 @if (Model != null)
 {
     var strImg = "";
     var Capacity = "";
+  
     if (Model.Capacity > 999)
     {
         Capacity = "1Tb";
@@ -43,6 +54,7 @@
     //var check = Model.tb_ProductDetail.FirstOrDefault(r => r.ProductsId == Model.ProductsId);
     //var checkImg = check.tb_ProductDetailImage.Where(r => r.ProductDetailId == check.ProductDetailId);
     var ImgDefault = Model.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
+    //var ImgDefault = Model.tb_ProductDetailImage.Where(x => x.ProductDetailId==Model.ProductDetailId);
     if (ImgDefault != null)
     {
         strImg = ImgDefault.Image;
@@ -104,12 +116,14 @@
             <hr />
             <div class="row">
                 <div class="col-lg-7">
+                   
+                    @*@foreach (var detail in productDetails)
+                    {
 
-                    <div class="row">
-                        <img src="@strImg" />
-                    </div>
+                    }*@
 
-
+                    @Html.Action("Partial_DetailImageById", "Product", new { id = Model.ProductsId });
+                    <div class="breadcrumbs d-flex flex-row align-itemss-center"></div>
 
                     @*@Html.Action("Partial_DetailImageById", "Product", new {id=check.ProductDetailId})*@
 
@@ -139,7 +153,7 @@
                                     }
                                     @if (discountPercentage > 0)
                                     {
-                                        <span class="discount_percentage " style="font-size: larger; padding-left: 5px">
+                                        <span class="discount_percentage " style="font-size: larger; padding-left: 5px ; color:white">
                                             -@discountPercentage.ToString("0")% <!-- Hiển thị phần trăm giảm giá -->
                                         </span>
                                     }
@@ -523,21 +537,44 @@
 
 }
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    function changeImage(imgUrl) {
+        document.getElementById('mainImage').style.backgroundImage = 'url(' + imgUrl + ')';
+        var thumbnails = document.querySelectorAll('.thumbnail_item');
+        thumbnails.forEach(function (thumbnail) {
+            thumbnail.classList.remove('active');
+        });
+        event.currentTarget.classList.add('active');
+    }
+    function updateMainImage(imageSrc) {
+        document.getElementById('mainImage').src = imageSrc;
+    }
+    //function updateMainImage(element) {
+    //    var newImage = element.getAttribute('src');
+
+    //    // Cập nhật ảnh lớn
+    //    document.getElementById('mainImage').style.backgroundImage = 'url(' + newImage + ')';
+
+    //    // Cập nhật trạng thái active của thumbnails
+    //    var thumbnails = document.querySelectorAll('.single_product_thumbnails li');
+    //    thumbnails.forEach(function (thumb) {
+    //        thumb.classList.remove('active');
+    //    });
+    //    element.parentElement.classList.add('active');
+    //}
+</script>
 
 
 
+<script src="~/Content/assets/js/jquery-3.2.1.min.js"></script>
+<script src="~/Content/assets/styles/bootstrap4/popper.js"></script>
+<script src="~/Content/assets/styles/bootstrap4/bootstrap.min.js"></script>
+<script src="~/Content/assets/plugins/Isotope/isotope.pkgd.min.js"></script>
+<script src="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+<script src="~/Content/assets/plugins/easing/easing.js"></script>
+<script src="~/Content/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+<script src="~/Content/assets/js/single_custom.js"></script>
 
-
-
-
-
-
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="styles/bootstrap4/popper.js"></script>
-<script src="styles/bootstrap4/bootstrap.min.js"></script>
-<script src="plugins/Isotope/isotope.pkgd.min.js"></script>
-<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
-<script src="plugins/easing/easing.js"></script>
-<script src="plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-<script src="js/single_custom.js"></script>
 

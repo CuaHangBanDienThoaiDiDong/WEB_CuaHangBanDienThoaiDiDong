@@ -62,12 +62,12 @@
         <li class="active capacity-item rounded">
             @if (ViewBag.DungLuong==item.DungLuong )
             {
-                <a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductsId&dungLuong=@item.DungLuong" class="rounded bg-white text-danger">
+                <a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductsId&Capacity=@item.DungLuong" class="rounded bg-white text-danger">
                     @DungLuong 
                 </a> 
             }
             else
-            { <a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductsId&dungLuong=@item.DungLuong" class="rounded">
+            { <a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductsId&Capacity=@item.DungLuong" class="rounded">
                     @DungLuong
                 </a>
 
