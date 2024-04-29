@@ -26,7 +26,7 @@
             });
         }
     });
-   
+
 
     //$('.btnViewPrice').on('click', function () {
     //    var productId = $(this).data('id');
@@ -62,21 +62,42 @@
         });
     });
 
+    //$(document).ready(function () {
+    //    // Bắt sự kiện click vào mỗi thẻ <li>
+    //    $('.singleProductthumbnails').on('click', 'li', function () {
+    //        // Lấy giá trị của thuộc tính data-id
+    //        var productDetailId = $(this).data('id');
+    //        // Gọi hàm loadImages với productDetailId đã lấy được
+    //        loadImages(productDetailId);
+    //    });
+    //});
+    //$(document).ready(function () {
+    //    // Kích hoạt sự kiện click trên li đầu tiên
+    //    $('.singleProductthumbnails li:first-child').click();
+    //});
+
     $(document).ready(function () {
-        // Bắt sự kiện click vào mỗi thẻ <li>
-        $('.single_product_thumbnails').on('click', 'li', function () {
+        // Bắt sự kiện click vào mỗi thẻ <li> có lớp CSS là 'liImg'
+        $('.liImg').on('click', function () {
             // Lấy giá trị của thuộc tính data-id
             var productDetailId = $(this).data('id');
             // Gọi hàm loadImages với productDetailId đã lấy được
             loadImages(productDetailId);
         });
     });
+
     $(document).ready(function () {
-        // Kích hoạt sự kiện click trên li đầu tiên
-        $('.single_product_thumbnails li:first-child').click();
+
+        $('KyThuat').on('click', function () {
+            alter("dda")
+        });
     });
 
 
+    $(document).ready(function () {
+        // Kích hoạt sự kiện click trên li đầu tiên
+        $('.liImg:first-child').click();
+    });
 
 });
 function loadImages(productDetailId) {

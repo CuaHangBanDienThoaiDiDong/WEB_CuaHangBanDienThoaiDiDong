@@ -87,6 +87,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 if (item != null)
                 {
                     ViewBag.Title = item.Title;
+                    ViewBag.ProductId = id; // Truyền ProductId vào ViewBag
 
                     ViewBag.ProductCompany = item.tb_ProductCompany.Title;
 
@@ -108,11 +109,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 }
                 return View();
             }
-
-
         }
-
-
 
         public ActionResult DetailsTest(int? id){
             if (id > 0)
@@ -241,6 +238,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
             var checkImg = db.tb_ProductDetailImage.Where(x => x.ProductDetailId == id).ToList();
             while (checkImg != null)
             {
+               
                 return PartialView(checkImg);
             }
             return PartialView();
