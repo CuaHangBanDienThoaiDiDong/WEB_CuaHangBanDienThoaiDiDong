@@ -20,15 +20,343 @@
         padding: 12px 0 12px 35px;
         width: 50%;
         display: inline-block;
-        border-bottom: 1px solid #f1f1f1;
-    }
-    .policy__list li p {
-      color:white
     }
 
+        .policy__list li p {
+            color: white
+        }
+
+        .policy__list li svg {
+            width: 100%;
+            height: 100%;
+        }
+
+    .price-discount-warranty span.percent-oldProduct {
+      /*  color: #eb5757;*/
+        background: #fff0e9;
+        padding-right: 5px;
+        position: relative;
+        margin-right: 5px;
+        font-size: 15px;
+        margin-left: 10px
+    }
 
 
- </style>
+        .price-discount-warranty span.percent-oldProduct::after {
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #fff0e9;
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: -15px;
+            transform: rotate(90deg);
+        }
+    .result-label {
+        border-radius: 20px;
+        display: inline-block;
+        font-size: 0;
+        overflow: hidden;
+        max-width: 100%;
+        padding-right: 8px;
+    }
+    .result-label.temp1 {
+        background: linear-gradient(to right, #ef3006, #c60004);
+    }
+        .result-label span {
+            color: #fff;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            font-size: 10px;
+            line-height: 13px;
+            margin-left: 3px;
+            overflow: hidden;
+            padding: 4px 0 0 3px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            -webkit-line-clamp: 2;
+            text-transform: uppercase;
+        }
+    .listproduct .price {
+        color: #e83a45;
+       
+        display: block;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 18px;
+        margin-bottom: 5px;
+    }
+    .listproduct .price-old.black {
+        color: #333;
+    }
+
+    .listproduct .price-old {
+        color: #666;
+        display: inline-block;
+        font-size: 14px;
+        line-height: 17px;
+        text-decoration-line: line-through;
+    }
+    .listproduct .percent {
+        color: #333;
+        display: inline-block;
+        font-size: 13px;
+        line-height: 17px;
+    }
+
+
+
+ /* start  Khuyen mai*/
+    .box_saving.v2.olgr .bs_title {
+        background-color: transparent;
+       
+        background-image: url('../../images/banner/bg-olgr-min-562x204.png');
+    }
+    .box_saving.v2.olgr {
+        background: linear-gradient(272.75deg, #f38c25 38.99%, #fb6848 76.29%);
+    }
+    .box_saving.v2 {
+        background-color: #e2252d;
+        padding-bottom: 1px;
+        border-radius: 10px;
+    }
+    .box_saving {
+        margin-bottom: 10px;
+        position: relative;
+    }
+
+
+        .box_saving.v2.olgr .bs_title {
+            background-color: transparent;
+            background-image: url('../../images/banner/bg-olgr-min-562x204.png');
+        }
+        .box_saving.v2 .bs_title {
+            display: flex;
+            align-items: center;
+            background-color: #e2252d;
+            background-image: url('../../images/banner/bg-olgr-min-562x204.png');
+            background-repeat: no-repeat;
+            background-position: top right;
+            background-size:cover;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .box_saving .bs_title {
+            padding: 10px;
+            border-radius: 4px 4px 0 0;
+            background-color: #e21d22;
+            overflow: hidden;
+        }
+        .box_saving.v2 .bs_title div.bs_price {
+            width: 50%;
+        }
+
+       
+    .box_saving {
+        margin-bottom: 10px;
+        position: relative;
+    }
+        .box_saving.v2 .bs_title div.bs_price {
+            width: 50%;
+        }
+            .box_saving.v2 .bs_title div.bs_price > b {
+                display: block;
+                font-size: 16px;
+                font-weight: normal;
+            }
+            .box_saving.v2 .bs_title div.bs_price > * {
+                margin-bottom: 7px;
+                color: #fff;
+            }
+        .box_saving.v2.olgr .bs_title div.bs_price > strong {
+            color: white;
+        }
+        .box_saving.v2 .bs_title div.bs_price > strong {
+            display: block;
+            color: #ffd028;
+            font-size: 24px;
+        }
+        .box_saving.v2 .bs_title div.bs_price > em {
+            font-style: normal;
+            text-decoration-line: line-through;
+        }
+        .box_saving.v2 .bs_title div.bs_price > * {
+            margin-bottom: 7px;
+            color: #fff;
+        }
+        .box_saving.v2 .bs_title div.bs_time {
+            width: 50%;
+            text-align: right;
+        }
+            .box_saving.v2 .bs_title div.bs_time span {
+                color: #fff;
+                display: block;
+                margin-bottom: 5px;
+            }
+            .box_saving.v2 .bs_title div.bs_time .clockv2 {
+                margin-bottom: 5px;
+                height: 24px;
+            }
+           
+    .bs_container {
+        display: flex;
+        align-items: center; /* Aligns items vertically in the center */
+        justify-content: space-between; /* Distributes space between the children */
+        width: 100%; /* Optional: sets the width of the container to full width */
+    }
+
+    .bs_price, .bs_time {
+        flex: 1; /* Each child will take equal space */
+    }
+
+
+    /* Start noi dung khung khuyn mai */
+    .box_saving.v2 .bs_content {
+        background-color: #fff;
+        margin: 0 5px 5px 5px;
+        padding-bottom: 0;
+        border-radius: 4px;
+    }
+    .box_saving .bs_content {
+        background-color: #fff4de;
+        border: 1px solid #fde8d5;
+        padding: 10px 0;
+    }
+        .box_saving .bs_content .block__promo {
+            border: 0;
+            border-bottom: 1px dashed #f2994a;
+            margin-bottom: 10px;
+            padding: 7px 7px 10px 7px;
+            border-radius: 0;
+        }
+    .block__promo {
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+    .box_saving .bs_rule {
+        padding: 0 7px;
+        margin: 10px 0;
+    }
+        .box_saving .bs_rule p, .box_saving .bs_rule li {
+            margin-bottom: 2px;
+            line-height: 1.6;
+            padding-left: 12px;
+            position: relative;
+            display: list-item;
+            text-align: -webkit-match-parent;
+            unicode-bidi: isolate;
+        }
+    /* End noi dung khung khuyn mai */
+    /* Start btn gia tien */
+    .box_saving .block-button {
+        padding: 0 10px;
+        margin-top: 10px;
+    }
+    .block-button {
+        margin-bottom: 10px;
+        position: relative;
+        overflow: hidden;
+    }
+        .block-button .btn-buynow.twoprice {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+        }
+        .block-button .btn-buynow {
+            margin-bottom: 8px;
+            display: block;
+            padding-left: 0;
+            padding-right: 0;
+        }
+    .btn-buynow.red {
+        background-color: #d0021c;
+        font-weight: bold;
+        padding: 6px 10px;
+    }
+    .btn-buynow {
+        background-color: #fb6e2e;
+        border-radius: 4px;
+        color: #fff;
+        display: block;
+        font-size: 15px;
+        padding: 14px 10px;
+        text-align: center;
+    }
+    .block-button .btn-left {
+        float: left;
+    }
+
+    .block-button .btn-ins {
+        width: 49%;
+    }
+
+    .btn-ins {
+        background-color: #2f80ed;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 13px;
+        line-height: 16px;
+        padding: 7px 0;
+        text-align: center;
+    }
+
+
+    .block-button .btn-right {
+        float: right;
+    }
+
+    .block-button .btn-ins {
+        width: 49%;
+    }
+
+    .btn-ins {
+        background-color: #2f80ed;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 13px;
+        line-height: 16px;
+        padding: 7px 0;
+        text-align: center;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    a {
+        text-decoration: none;
+        transition: .2s;
+        color: #288ad6;
+    }
+    .callorder {
+        line-height: 17px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .divb .nb {
+        background-color: #4a90e2;
+        border-radius: 50%;
+        color: #fff;
+        display: inline-block;
+        font-size: 11px;
+        float: left;
+        height: 16px;
+        line-height: 16px;
+        margin-top: 2px;
+        text-align: center;
+        width: 16px;
+    }
+    /* End btn gia tien */
+
+    
+    /* End  Khuyen mai*/
+</style>
 @{
     var db = new WebSite_CuaHangDienThoai.Models.CUAHANGDIENTHOAIEntities(); // Thay YourDbContext bằng tên DbContext của bạn
     var productDetails = db.tb_ProductDetail.Where(p => p.ProductsId == productId).ToList();
@@ -39,7 +367,7 @@
 {
     var strImg = "";
     var Capacity = "";
-  
+
     if (Model.Capacity > 999)
     {
         Capacity = "1Tb";
@@ -120,44 +448,164 @@
                 <div class="col-lg-7">
 
                     @*@foreach (var detail in productDetails)
-            {
+                        {
 
-            }*@
+                        }*@
 
-                    @Html.Action("Partial_DetailImageById", "Product", new { id = Model.ProductsId });
+                    @Html.Action("Partial_DetailImageById", "Product", new { id = Model.ProductsId })
+
+                    <div>
+                        <div class="row border rounded-3" style="display: flex; flex-wrap: wrap ">
+                            <div class="col-12">
+                                <ul class="policy__list d-flex justify-content-center align-items-center flex-wrap " style="list-style: none;">
+                                    <li class="m-1" style="width: calc(50% - 10px); border-bottom: 1px solid #f1f1f1;">
+                                        <div class="d-flex align-items-center">
+                                            <div style="min-width: 32px;">
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" style="color: #396ce8" fill="currentColor" class="bi bi-bootstrap-reboot pb-5" viewBox="0 0 16 16">
+                                                    <path d="M1.161 8a6.84 6.84 0 1 0 6.842-6.84.58.58 0 1 1 0-1.16 8 8 0 1 1-6.556 3.412l-.663-.577a.58.58 0 0 1 .227-.997l2.52-.69a.58.58 0 0 1 .728.633l-.332 2.592a.58.58 0 0 1-.956.364l-.643-.56A6.8 6.8 0 0 0 1.16 8z" />
+                                                    <path d="M6.641 11.671V8.843h1.57l1.498 2.828h1.314L9.377 8.665c.897-.3 1.427-1.106 1.427-2.1 0-1.37-.943-2.246-2.456-2.246H5.5v7.352zm0-3.75V5.277h1.57c.881 0 1.416.499 1.416 1.32 0 .84-.504 1.324-1.386 1.324z" />
+                                                </svg>
+
+                                            </div>
+                                            <p style="color:white; margin-left: 10px;">
+                                                Hư gì đổi nấy 12 tháng tại 3158 siêu thị toàn quốc (miễn phí tháng đầu) <a href="#">Xem chi tiết</a>
+                                            </p>
+                                        </div>
 
 
-                    <div class="row border" style="display: flex; flex-wrap: wrap ">
-                        <div class="col-12">
-                            <ul class="policy__list d-flex justify-content-center align-items-center flex-wrap" style="list-style: none;">
-                                <li class="m-1" style="width: calc(50% - 10px);">
-                                    <div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:blue" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">
-                                            <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434zM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567zM7.5 9.933l-2.75 1.571v3.134l2.75-1.571zm1 3.134 2.75 1.571v-3.134L8.5 9.933zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567zm2.242-2.433V3.504L8.5 5.076V8.21zM7.5 8.21V5.076L4.75 3.504v3.134zM5.258 2.643 8 4.21l2.742-1.567L8 1.076zM15 9.933l-2.75 1.571v3.134L15 13.067zM3.75 14.638v-3.134L1 9.933v3.134z" />
-                                        </svg>
+                                    </li>
+                                    <li class="m-1" style="width: calc(50% - 10px); border-bottom: 1px solid #f1f1f1;">
+                                        <div class="d-flex align-items-center">
+                                            <div style="min-width: 32px;">
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" style="color: #396ce8" class="bi bi-bookmark-heart pb-5" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z" />
+                                                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z" />
+                                                </svg>
+
+
+
+                                            </div>
+                                            <p style="margin-left: 10px; color: white;">
+                                                "Bảo hành"<b>chính hãng điện thoại 1 năm</b> "tại các trung tâm bảo hành hãng"
+                                            </p>
+                                        </div>
+                                    </li>
+
+                                    <li class="m-1" style="width: calc(50% - 10px);">
+                                        <div class="d-flex align-items-center">
+                                            <div style="min-width: 32px;">
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" style="color: #396ce8" fill="currentColor" class="bi bi-boxes pb-5" viewBox="0 0 16 16">
+                                                    <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434zM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567zM7.5 9.933l-2.75 1.571v3.134l2.75-1.571zm1 3.134 2.75 1.571v-3.134L8.5 9.933zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567zm2.242-2.433V3.504L8.5 5.076V8.21zM7.5 8.21V5.076L4.75 3.504v3.134zM5.258 2.643 8_4.21l2.742-1.567L8_1.076zM15 9.933l-2.75 1.571v3.134L15 13.067zM3.75 14.638v-3.134L1 9.933v3.134z" />
+                                                </svg>
+                                            </div>
+                                            <p style="color:white; margin-left: 10px;">
+                                                Bộ sản phẩm gồm: Hộp, Sách hướng dẫn, Cây lấy sim, Cáp Type C
+                                            </p>
+                                        </div>
+
+
+                                    </li>
+                                    <li class="m-1" style="width: calc(50% - 10px);">
+
+                                    </li>
+
+                                </ul>
+
+
+                            </div>
+                            <div class="col-6">
+
+                            </div>
+                        </div>
+
+
+
+                        @*sản phẩm cũ tương tự*@
+                        <br />
+                        <div class="row border rounded-3 box_oldproduct box_oldproductV2 p-3 d-flex align-items-center" style="display: flex; flex-wrap: wrap; background-color: white">
+                            <div class="col-4">
+                                <a href="#">
+                                    <img src="~/Uploads/images/SanPham/iphone-15-pro-max-blue-1-1.jpg" style="width: 80%; height: 90% " class="mx-auto" />
+                                </a>
+                            </div>
+                            <div class="col-8 information-oldProduct">
+                                <h3 class="viewmore-oldProduct" style=" font-size: 14px; line-height: 1.8 ">Xem sản phẩm cũ </h3>
+                                <a href="#" style="color: #2f80ed; text-decoration: none; transition: .2s  ">@Model.tb_Products.Title @Capacity </a>
+                                <div class="price-discount-warranty">
+                                    <span>
+                                        Giá từ
+                                        <b style="color: #d0021c;"> 26.340.000₫</b>
+                                    </span>
+                                    <span style=" color: #eb5757;" class="percent-oldProduct">
+                                        Tiếp kiệm
+                                        <b> 26.340.000₫</b>
+                                    </span>
+                                    <span>
+                                        Bảo hành 5.5 tháng chính hãng
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Phụ kiẹn cho sản phẩm*@
+                        <br />
+                        <div class="row border rounded-3 related acc needbuy p-3 d-flex align-items-center" style="display: flex; flex-wrap: wrap; background-color:white">
+                            <div class="related__ttl">
+                                <span><b>Phụ kiện nên có cho @Model.tb_Products.Title @Capacity</b></span>
+                            </div>
+                            <div>
+
+                                <div class="g-4 my-5 mx-auto" style="width: 100%; height: 100%;">
+                                    <div class=" g-4 my-5 mx-auto owl-carousel owl-theme m-0 listproduct">
+                                        @for (int i = 0; i <= 15; i++)
+                                        {
+                                            <div class="   col product-item m-1 align-items-center rounded-3 " style=" width:auto;height:auto" id="product-item" data-id="...">
+                                                <a href="#">
+                                                    <div class="item-label">
+                                                        <span class="lb-tragop">Trả góp 0%</span>
+                                                    </div>
+                                                    <div class="item-img item-img_54">
+                                                        <div class="   col product-item m-1 align-items-center rounded-3 " style=" ;width:auto;height:auto" id="product-item">
+                                                            <img src="~/Uploads/images/SanPham/iphone-15-pro-max-blue-1-1.jpg" class="d-block mx-auto" style="width: 100%; height: 100%;" alt="...">
+                                                        </div>
+                                                    </div>
+                                                    @*nếu sản phẩm đó giảm giá thì hiện lên logo của hãng đó*@
+                                                    <p class="result-label temp1" style="display: flex; align-items: center;">
+                                                        <img src="~/images/Logo/50x50-1-100x100-1.png" style="margin-right: 5px;width:15%;height:10%" />
+                                                        <span>Giảm giá mạnh</span>
+                                                    </p>
+                                                    <p>
+                                                        AirPods Pro Gen 2 (USB-C)
+                                                    </p>
+                                                    <div class="box">
+                                                        <p class="price-old black">6.200.000₫</p>
+                                                        <span class="percent">-9%</span>
+                                                        <strong class="price text-center ">5.590.000₫</strong>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                           
+                                        }
+
                                     </div>
-                                    <p style="color:white">
-                                        Hư gì đổi nấy 12 tháng tại 3158 siêu thị toàn quốc (miễn phí tháng đầu) <a href="#">Xem chi tiết</a>
-                                    </p>
-                                </li>
-                                <li class="m-1" style="width: calc(50% - 10px);">
-                                    <div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="color:blue" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">
-                                            <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434zM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567zM7.5 9.933l-2.75 1.571v3.134l2.75-1.571zm1 3.134 2.75 1.571v-3.134L8.5 9.933zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567zm2.242-2.433V3.504L8.5 5.076V8.21zM7.5 8.21V5.076L4.75 3.504v3.134zM5.258 2.643 8_4.21l2.742-1.567L8_1.076zM15 9.933l-2.75 1.571v3.134L15 13.067zM3.75 14.638v-3.134L1 9.933v3.134z" />
-                                        </svg>
-                                    </div>
-                                    <p>
-                                        "Bảo hành"<b>chính hãng điện thoại 1 năm</b> "tại các trung tâm bảo hành hãng"
-                                    </p>
-                                </li>
-                            </ul>
 
+                                </div>
+
+
+                            </div>
 
                         </div>
-                        <div class="col-6">
 
-                        </div>
+
+
+
+
                     </div>
+
+
 
                 </div>
                 <div class="col-lg-5">
@@ -213,69 +661,239 @@
 
 
                         </div>
-                        <div class="row ">
 
-                            <div class="btn-toolbar mb-3 " role="toolbar" aria-label="Toolbar with button groups">
-                                <div class="btn-group me-2" role="group" aria-label="First group">
-                                    <span class="text-right btn btn-outline-secondary">
-                                        <a href="https://www.thegioididong.com/dtdd/iphone-15-pro-256gb?code=0131491003819" data-color="1198" data-code="0131491003819" class="box03__item item act">Titan xanh</a>
-                                    </span>
-                                    <span class="text-right btn btn-outline-secondary">
-                                        <a href="https://www.thegioididong.com/dtdd/iphone-15-pro-256gb?code=0131491003819" data-color="1198" data-code="0131491003819" class="box03__item item act">Titan xanh</a>
-                                    </span>
+                        @*/* start  Khuyen mai*/*@
+                        <div class="box_saving v2 olgr  twoprice border ">
+                            <div class="bs_title" style="  ">
+                                <div class="bs_price " style="color:white">
+                                    @if (Model.PriceSale > 0)
+                                    {
+                                        <div class="bs_price">
+                                            <b>Online Giá Rẻ Quá</b>
+                                            <strong> @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.PriceSale)đ</strong>
+                                            <em>  @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.Price)đ</em>
+                                            @{
+                                                decimal originalPrice = Convert.ToDecimal(Model.Price);
+                                                decimal salePrice = Convert.ToDecimal(Model.PriceSale);
+                                                decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
+                                            }
+                                            @if (discountPercentage > 0)
+                                            {
+
+                                                <i>(-@discountPercentage.ToString("0")%)</i>
+                                            }
+                                        </div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="bs_price">
+                                            <b></b>
+                                            <strong>  @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.Price)đ</strong>
+
+                                        </div>
+                                    }
+
+
+
+                                </div>
+                                <div class="bs_time " style=" flex: 0;  text-align: right; color: white ">
+                                    <span>Kết thúc sau</span>
+                                    <div id="clock_oltk" class="clockv2" data-time="2024/04/30 23:00:00" data-reload="1">
+                                        <b>09</b><i>:</i><b>15</b><i>:</i><b>44</b>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="bs_content">
+                                <div class="block__promo">
+                                    <div class="pr-top">
+                                        <p class="pr-txtb">Khuyến mãi </p>
+                                        <i class="pr-txt">Giá và khuyến mãi có thể kết thúc sớm hơn dự kiến</i>
+                                    </div>
+                                    <div class="pr-content">
+                                        <div class="pr-item">
+                                            <div class="divb t1" data-promotion="2323153" data-group="WebNote" data-discount="0" data-productcode="" data-tovalue="20">
+                                                <span class="nb">1</span>
+                                                <div class="divb-right ml-4">
+                                                    <p>Nhập mã VNPAYLTD2 giảm ngay 1% (tối đa 200.000đ) khi thanh toán qua VNPAY-QR, áp dụng cho đơn hàng từ 3 Triệu <a href="https://www.thegioididong.com/tin-tuc/nhap-ma-vnpaytgdd2-se-duoc-tang-toi-da-200k-khi-thanh-toan-qua-vnpay-1563666" target="_blank">(Xem chi tiết tại đây)</a></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bs_rule">
+                                    <ul style="list-style: none; display: block; list-style-type: disc; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 0px; margin-inline-end: 0px; padding-inline-start: 40px; unicode-bidi: isolate; ">
+                                        <li>Giao hàng nhanh chóng (tuỳ khu vực).</li>
+                                        <li>Mỗi số điện thoại chỉ mua 1 sản phẩm trong 1 tháng.</li>
+                                        <li>Giá và khuyến mãi có thể kết thúc sớm.</li>
+                                    </ul>
+                                </div>
+                                @*dia chi giao hang*@
+                                <div id="status-delivery" class="ml-3">
+                                    <script>
+                                        var dataDeli = {};
+                                        dataDeli.ProductId = 305659;
+                                        dataDeli.ProductCode = "";
+                                        dataDeli.ProvinceId = 3;
+                                        dataDeli.ProvinceName = "H&#x1ED3; Ch&#xED; Minh";
+                                        dataDeli.DistrictId = 0;
+                                        dataDeli.DistrictName = "";
+                                        dataDeli.WardId = 0;
+                                        dataDeli.WardName = "";
+                                        dataDeli.Address = "";
+                                        dataDeli.IsCheckSubmit = true;
+                                    </script>
 
+                                    <div id="thoi-gian-giao-hang" class="xtoydays rslt none">
+                                        <div class="quickdelivery ">
+                                            <div class="deliverytime">
+                                                <p>
+                                                    <a href="javascript:" onclick="OpenLocation(true)" class="onoffdelibox unline">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                                                            <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10" />
+                                                            <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                                                        </svg>Chọn địa chỉ nhận hàng
+                                                    </a> để biết thời gian giao.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <script>
+                                        setTimeout(function () {
+                                            document.querySelectorAll(".block-button").forEach(function (item) {
+                                                item.classList.remove('hide');
+                                            });
+                                            document.querySelectorAll(".isshowdelivery").forEach(function (item) {
+                                                item.classList.remove('hide');
+                                            });
+                                            document.querySelectorAll(".campaign>div>div>a").forEach(function (item) {
+                                                item.classList.remove('hide');
+                                            });
+                                        }, 100);
+                                    </script>
+                                </div>
+
+                                @*btn gia tien*@
+
+                                <div class="block-button twoprice">
+                                    <a href="javascript:void(0);" class="btn-buynow red jsBuy twoprice">
+                                        MUA NGAY GIÁ RẺ QUÁ 36.790.000₫
+                                    </a>
+
+                                    <a href="/tra-gop/tai-chinh/dtdd/iphone-15-pro-max-512gb?gtype=online2gia&amp;productCode=0131491003841" data-url="/tra-gop/tai-chinh/dtdd/iphone-15-pro-max-512gb?gtype=online2gia&amp;productCode=0131491003841" class="btn-ins pay-taichinh btn-left    ">
+                                        MUA TRẢ GÓP
+                                        <span>Duyệt hồ sơ trong 5 phút</span>
+                                    </a>
+                                    <a href="/tra-gop/the/dtdd/iphone-15-pro-max-512gb?gtype=online2gia&amp;productCode=0131491003841" data-url="/tra-gop/the/dtdd/iphone-15-pro-max-512gb?gtype=online2gia&amp;productCode=0131491003841" class="btn-ins btn-right pay-nganluong    ">
+                                        TRẢ GÓP 0% QUA THẺ
+                                        <span>Visa, Mastercard, JCB, Amex</span>
+                                    </a>
+                                </div>
+                                @*end btn gia tien*@
+                                <p class="callorder">
+                                    Gọi đặt mua <a href="tel:0329867771">0329867771</a> (7:30 - 22:00)
+                                </p>
+                            </div>
 
                         </div>
+                        @*/* end khung cam  Khuyen mai*/*@
 
 
 
-                        <div class="container">
 
-                            <table class="table table-bordered table-striped">
-                                <thead class="bg-gray">
-                                    <tr>
-                                        <th>
-                                            Khuyến mãi
-                                            <br />
-                                            <small>Giá và khuyến mãi dự kiến áp dụng đến 23:00 | 01/05</small>
 
-                                        </th>
+                        @*/* start  Cấu hình  sản phầme*/*@
+                    <div class="bg-light">
+                        <div class="p-3">
+                            <div class="row ">
+                                <div class="col-md-12">
+                                    <h5 class="align-items-center"><b style="color:black;text-align:center">Cấu hình @Model.tb_Products.tb_ProductCategory.Title @Model.tb_Products.Title @Capacity</b></h5>
+                                </div>
 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-striped">
+                                        @*<thead>
+                    <tr>
 
-                                        <td>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
 
-                                            <small class="card-title-hand" style="border-radius:15px ; width:100px">1</small>
-                                            <span class="visually-hidden">Loading...</span>
-                                            Ốp lưng chính hãng Apple giảm thêm 300K khi mua kèm iPhone (áp dụng tùy model)
-                                            <br />
-                                            <small class="card-title-hand" style="border-radius:15px ; width:100px">1</small>
-                                            <span class="visually-hidden">Loading...</span>
-                                            Ốp lưng chính hãng Apple giảm thêm 300K khi mua kèm iPhone (áp dụng tùy model)
-                                            <br />
-                                            <small class="card-title-hand" style="border-radius:15px ; width:100px">1</small>
-                                            <span class="visually-hidden">Loading...</span>
-                                            Ốp lưng chính hãng Apple giảm thêm 300K khi mua kèm iPhone (áp dụng tùy model)
-                                            <br />
-                                            <small class="card-title-hand" style="border-radius:15px ; width:100px">1</small>
-                                            <span class="visually-hidden">Loading...</span>
-                                            Ốp lưng chính hãng Apple giảm thêm 300K khi mua kèm iPhone (áp dụng tùy model)
-                                            <br />
-                                            <small class="card-title-hand" style="border-radius:15px ; width:100px">1</small>
-                                            <span class="visually-hidden">Loading...</span>
-                                            Ốp lưng chính hãng Apple giảm thêm 300K khi mua kèm iPhone (áp dụng tùy model)
-                                        </td>
-                                    </tr>
+                    </tr>
+                </thead>*@
+                                        <tbody>
+                                            <tr>
 
-                                </tbody>
-                            </table>
+                                                <td>Hệ điều hành:</td>
+                                                <td>@Model.tb_Products.OperatingSystem</td>
+
+                                            </tr>
+                                            <tr>
+
+                                                <td>Chip:</td>
+                                                <td>@Model.tb_Products.CPU</td>
+
+                                            </tr>
+                                            <tr>
+
+                                                <td>RAM:</td>
+                                                <td>@Model.Ram GB</td>
+
+                                            </tr>
+                                            <tr>
+
+                                                <td>Dung lượng lưu trữ:</td>
+                                                <td>@Capacity </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>SIM:</td>
+                                                <td>
+                                                    @foreach (var simType in Model.tb_Products.Sim.Split(new string[] { "--" }, StringSplitOptions.None))
+                                                    {
+                                                        <div>@simType</div>
+                                                    }
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+
+                                                <td>Pin, Sạc:</td>
+                                                <td>@Model.BatteryCapacity mAh,@Model.tb_Products.ChargingSupport</td>
+
+                                            </tr>
+                                            <tr>
+
+                                                <td>Hãng</td>
+                                                <td>@Model.tb_Products.tb_ProductCompany.Title </td>
+
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <button type="submit" class="btn btn-outline-primary">Xem thêm cấu hình chi tiết
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-caret-right-fill" style="color:blue" viewBox="0 0 16 16">
+                                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                                    </svg>
+                                
+                                </button>
+
+                            </div>
                         </div>
-                        <div id="thoi-gian-giao-hang" class="xtoydays rslt none">
+                    </div>
+                    
+
+
+
+                        @*/* end  Cấu hình  sản phầme*/*@
+
+
+
+
+                        @*<div id="thoi-gian-giao-hang" class="xtoydays rslt none">
                             <div class="quickdelivery ">
                                 <div class="deliverytime">
                                     <p>
@@ -320,7 +938,7 @@
                             </div>
                             <div class="red_button add_to_cart_button "><a href="#">add to cart</a></div>
                             <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
             </div>
@@ -334,77 +952,28 @@
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <div class="tabs_container">
-                            <ul class="tabs d-flex flex-sm-row flex-column align-items-left align-items-md-center justify-content-center">
-                                <li class="tab active" data-active-tab="tab_1"><span>Description</span></li>
+                        <div class="tabs_container ">
+                            <ul class="tabs d-flex flex-sm-row flex-column align-items-left align-items-md-center justify-content-center"style="background-color:white">
+                                <li class="tab active" data-active-tab="tab_1"><span>Đánh giá</span></li>
                                 <li class="tab" data-active-tab="tab_2"><span>Additional Information</span></li>
-                                <li class="tab" data-active-tab="tab_3"><span>Reviews (2)</span></li>
+                                <li class="tab" data-active-tab="tab_3"><span>Thông tin sản phẩm </span></li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-
-                        <!-- Tab Description -->
-
-                        <div id="tab_1" class="tab_container active">
-                            <div class="row">
-                                <div class="col-lg-5 desc_col">
-                                    <div class="tab_title">
-                                        <h4>Description</h4>
-                                    </div>
-                                    <div class="tab_text_block">
-                                        <h2>Pocket cotton sweatshirt</h2>
-                                        <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
-                                    </div>
-                                    <div class="tab_image">
-                                        <img src="images/desc_1.jpg" alt="">
-                                    </div>
-                                    <div class="tab_text_block">
-                                        <h2>Pocket cotton sweatshirt</h2>
-                                        <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-5 offset-lg-2 desc_col">
-                                    <div class="tab_image">
-                                        <img src="images/desc_2.jpg" alt="">
-                                    </div>
-                                    <div class="tab_text_block">
-                                        <h2>Pocket cotton sweatshirt</h2>
-                                        <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
-                                    </div>
-                                    <div class="tab_image desc_last">
-                                        <img src="images/desc_3.jpg" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Tab Additional Info -->
-
-                        <div id="tab_2" class="tab_container">
-                            <div class="row">
-                                <div class="col additional_info_col">
-                                    <div class="tab_title additional_info_title">
-                                        <h4>Additional Information</h4>
-                                    </div>
-                                    <p>COLOR:<span>Gold, Red</span></p>
-                                    <p>SIZE:<span>L,M,XL</span></p>
-                                </div>
-                            </div>
-                        </div>
+                <div class="row" style="background-color:white">
+                    <div class="col ">
 
                         <!-- Tab Reviews -->
 
-                        <div id="tab_3" class="tab_container">
+                        <div id="tab_1" class="tab_container active pt-5 pb-5">
                             <div class="row">
 
                                 <!-- User Reviews -->
 
                                 <div class="col-lg-6 reviews_col">
                                     <div class="tab_title reviews_title">
-                                        <h4>Reviews (2)</h4>
+                                        <h4 class="flex-column align-items-left align-items-md-center justify-content-center">Đánh giá @Model.tb_Products.tb_ProductCategory.Title @Model.tb_Products.Title @Capacity</h4>
                                     </div>
 
                                     <!-- User Review -->
@@ -484,6 +1053,58 @@
 
                             </div>
                         </div>
+
+
+
+                        <!-- Tab Description -->
+
+                        <div id="tab_3" class="tab_container  pt-5 pb-5">
+                            <div class="row">
+                                <div class="col-lg-5 desc_col">
+                                    <div class="tab_title">
+                                        <h4 class="flex-column align-items-left align-items-md-center justify-content-center"> Thông tin sản phẩm</h4>
+                                    </div>
+                                    <div class="tab_text_block">
+                                        <h2>Pocket cotton sweatshirt</h2>
+                                        <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
+                                    </div>
+                                    <div class="tab_image">
+                                        <img src="images/desc_1.jpg" alt="">
+                                    </div>
+                                    <div class="tab_text_block">
+                                        <h2>Pocket cotton sweatshirt</h2>
+                                        <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 offset-lg-2 desc_col">
+                                    <div class="tab_image">
+                                        <img src="images/desc_2.jpg" alt="">
+                                    </div>
+                                    <div class="tab_text_block">
+                                        <h2>Pocket cotton sweatshirt</h2>
+                                        <p>Nam tempus turpis at metus scelerisque placerat nulla deumantos solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis ut...</p>
+                                    </div>
+                                    <div class="tab_image desc_last">
+                                        <img src="images/desc_3.jpg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Additional Info -->
+
+                        <div id="tab_2" class="tab_container pt-5 pb-5">
+                            <div class="row">
+                                <div class="col additional_info_col">
+                                    <div class="tab_title additional_info_title">
+                                        <h4 class="flex-column align-items-left align-items-md-center justify-content-center">Additional Information</h4>
+                                    </div>
+                                    <p>COLOR:<span>Gold, Red</span></p>
+                                    <p>SIZE:<span>L,M,XL</span></p>
+                                </div>
+                            </div>
+                        </div>
+
 
                     </div>
                 </div>
@@ -570,7 +1191,8 @@
 }
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="~/Scripts/owl_carousel/owl.carousel.js"></script>
 <script>
     function changeImage(imgUrl) {
         document.getElementById('mainImage').style.backgroundImage = 'url(' + imgUrl + ')';
@@ -596,6 +1218,43 @@
     //    });
     //    element.parentElement.classList.add('active');
     //}
+
+    //start duung cho phu kien related acc needbuy
+    //$(document).ready(function () {
+    //    $(".owl-carousel").owlCarousel({
+    //        loop: false, // Không lặp lại sau khi cuộn hết
+    //        margin: 10, // Khoảng cách giữa các mục
+
+    //        items: 1 // Chỉ hiển thị một mục mỗi lần
+    //    });
+    //});
+
+
+
+
+
+    $('.owl-carousel').owlCarousel({
+        loop: true,
+        margin: 0,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1,
+            },
+            768: {
+                items: 2,
+            },
+            1100: {
+                items: 3,
+            },
+            1400: {
+                items: 4,
+                loop: false,
+            }
+        }
+    });
+    //End duung cho phu kien related acc needbuy
+
 </script>
 
 

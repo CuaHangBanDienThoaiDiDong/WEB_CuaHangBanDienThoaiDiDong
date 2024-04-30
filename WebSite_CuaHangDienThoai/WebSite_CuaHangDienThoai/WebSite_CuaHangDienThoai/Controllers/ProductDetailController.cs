@@ -132,7 +132,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
             {
                 ViewBag.Title = item.tb_Products.Title;
                 ViewBag.Capacity = item.Capacity;
-
+                ViewBag.ProductId = Productsid; // Truyền ProductId vào ViewBag
                 return View(item);  
             }
             else

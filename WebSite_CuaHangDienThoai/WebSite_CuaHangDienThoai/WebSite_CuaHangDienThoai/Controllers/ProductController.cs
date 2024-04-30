@@ -48,19 +48,47 @@ namespace WebSite_CuaHangDienThoai.Controllers
         //}
 
 
-        [HttpPost]
-        public ActionResult Find(string Search = "")
+        //[HttpPost]
+        //public ActionResult Find(string Search = "")
+        //{
+        //    if (!string.IsNullOrEmpty(Search))
+        //    {
+        //        var FindProduc = db.tb_Products.Where(x => x.Title.ToUpper().Contains(Search.ToUpper()));
+        //        ViewBag.Find = Search;
+        //        return View(FindProduc.ToList());
+        //    }
+        //    return View();
+        //}
+        //[HttpGet]
+        //public ActionResult Search(string search)
+        //{
+        //    var products = db.tb_Products.Where(p => p.Title.Contains(search)).ToList();
+        //    return Json(products, JsonRequestBehavior.AllowGet);
+        //}
+
+        public ActionResult Search(string searchString)
         {
-            if (!string.IsNullOrEmpty(Search))
-            {
-                var FindProduc = db.tb_Products.Where(x => x.Title.ToUpper().Contains(Search.ToUpper()));
-                ViewBag.Find = Search;
-                return View(FindProduc.ToList());
-            }
-            return View();
+            var products = db.tb_Products.Where(p => p.Alias.Contains(searchString)).ToList();
+                return View(products);
         }
 
 
+        [HttpGet]
+        public ActionResult Suggest(string searchString)
+        {
+            var suggestedProducts = db.tb_Products.Where(p => p.Title.Contains(searchString)).Take(5).ToList();
+            HttpContext.Items["SuggestedProducts"] = suggestedProducts; // Lưu danh sách sản phẩm vào HttpContext
+            return PartialView("_SuggestedProducts", suggestedProducts);
+        }
+
+      
+
+        [HttpGet]
+        public ActionResult Result(string searchString)
+        {
+            var products = db.tb_Products.Where(p => p.Title.Contains(searchString)).ToList();
+            return View(products);
+        }
 
 
         public ActionResult Partial_ItemsByCateId() 
@@ -99,19 +127,19 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     }
                 }
                 return View(item);
+
+
+
             }
             else
             {
-                var item = db.tb_Products.Find(id);
-                if (item != null)
-                {
-                    return View(item);
-                }
+                RedirectToAction("NotFound", "Error");
                 return View();
             }
         }
 
-        public ActionResult DetailsTest(int? id){
+        public ActionResult DetailsTest(string Alias, int? id)
+        {
             if (id > 0)
             {
                 var item = db.tb_Products.Find(id);
@@ -121,6 +149,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     ViewBag.ProductId = id; // Truyền ProductId vào ViewBag
 
                     ViewBag.ProductCompany = item.tb_ProductCompany.Title;
+                   
 
                     var itemProductDetail = db.tb_ProductDetail.FirstOrDefault(r => r.ProductsId == id);
                     if (itemProductDetail != null)
@@ -136,11 +165,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
             }
             else
             {
-                var item = db.tb_Products.Find(id);
-                if (item != null)
-                {
-                    return View(item);
-                }
+                RedirectToAction("NotFound", "Error");
                 return View();
             }
 

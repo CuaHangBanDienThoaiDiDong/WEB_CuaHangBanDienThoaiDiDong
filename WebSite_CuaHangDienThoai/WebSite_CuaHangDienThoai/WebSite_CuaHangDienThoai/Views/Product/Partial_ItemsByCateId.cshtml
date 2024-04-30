@@ -81,7 +81,7 @@
 
                    </div>
                    <div class="product_info">
-                       <h6 class="product_name"><a href="single.html" style="color:white">@item.Title</a></h6>
+                       <h6 class="product_name"><a href="/chi-tiet/@item.Alias-p@(item.ProductsId)" style="color:white">@item.Title</a></h6>
                        @*<div class="product_price">$520.00<span>$590.00</span></div>*@
 
                        @Html.Action("Partail_ProductDetailById", "ProductDetail", new { id = item.ProductsId })

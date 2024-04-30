@@ -82,38 +82,38 @@
 
 
 <script>
-    $(document).ready(function () {
-        var owl = $(".carousel-inner");
-        owl.owlCarousel({
-            loop: false,
-            margin: 10,
-            items: 1, // Chỉ hiển thị một ảnh mỗi lần
-            nav: true,
-            dots: false,
-            mouseDrag: true,
-            touchDrag: true,
-            onChanged: updateCounter
-        });
+    //$(document).ready(function () {
+    //    var owl = $(".carousel-inner");
+    //    owl.owlCarousel({
+    //        loop: false,
+    //        margin: 10,
+    //        items: 1, // Chỉ hiển thị một ảnh mỗi lần
+    //        nav: true,
+    //        dots: false,
+    //        mouseDrag: true,
+    //        touchDrag: true,
+    //        onChanged: updateCounter
+    //    });
 
-        function updateCounter(event) {
-            // Lấy chỉ số của ảnh hiện tại (base 0)
-            var currentIndex = event.item.index;
-            // Lấy tổng số ảnh
-            var totalItems = event.item.count;
-            // Cập nhật số thứ tự của ảnh hiện tại
-            $(".Soluong").text("(" + (currentIndex + 1) + "/" + totalItems + ")");
-        }
+    //    function updateCounter(event) {
+    //        // Lấy chỉ số của ảnh hiện tại (base 0)
+    //        var currentIndex = event.item.index;
+    //        // Lấy tổng số ảnh
+    //        var totalItems = event.item.count;
+    //        // Cập nhật số thứ tự của ảnh hiện tại
+    //        $(".Soluong").text("(" + (currentIndex + 1) + "/" + totalItems + ")");
+    //    }
 
-        // Thêm sự kiện click cho nút điều hướng trước
-        $(".carousel-control-prev").click(function () {
-            owl.trigger('prev.owl.carousel');
-        });
+    //    // Thêm sự kiện click cho nút điều hướng trước
+    //    $(".carousel-control-prev").click(function () {
+    //        owl.trigger('prev.owl.carousel');
+    //    });
 
-        // Thêm sự kiện click cho nút điều hướng tiếp theo
-        $(".carousel-control-next").click(function () {
-            owl.trigger('next.owl.carousel');
-        });
-    });
+    //    // Thêm sự kiện click cho nút điều hướng tiếp theo
+    //    $(".carousel-control-next").click(function () {
+    //        owl.trigger('next.owl.carousel');
+    //    });
+    //});
 
 
 

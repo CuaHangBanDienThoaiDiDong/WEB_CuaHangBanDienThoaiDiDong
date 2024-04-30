@@ -8,6 +8,13 @@ namespace WebSite_CuaHangDienThoai
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            //// Route Chi tiet san pham
+            routes.MapRoute(
+             name: "detailProduct",
+             url: "chi-tiet/{alias}-p{id}",
+             defaults: new { controller = "Product", action = "Details", alias = UrlParameter.Optional },
+             namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+         );
             //// Route cho trang khoi phuc mat khau
             routes.MapRoute(
                 name: "Forgotpassword",

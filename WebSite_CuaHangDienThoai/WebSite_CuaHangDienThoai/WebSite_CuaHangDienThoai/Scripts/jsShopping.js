@@ -99,6 +99,109 @@
         $('.liImg:first-child').click();
     });
 
+
+    $('#search-form').submit(function (e) {
+        e.preventDefault();
+        var searchString = $('#search').val();
+        window.location.href = '/Search?searchString=' + searchString;
+    });
+        
+
+  /* Start Tim kim san pham */
+    $(document).ready(function () {
+        var suggestUrl = '@Url.Action("Suggest", "Product")'; 
+        $('#search').keypress(function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                var searchString = $(this).val();
+                window.location.href = '/Search?searchString=' + searchString;
+            }
+        });
+
+        // AJAX gợi ý sản phẩm
+        // AJAX gợi ý sản phẩm
+        $('#search').on('input', function () {
+            $.ajax({
+
+
+            });
+            var searchString = $(this).val().trim();
+            clearTimeout(timeout); // Xóa bỏ timeout trước đó
+            if (searchString !== '') {
+                // Đặt một timeout mới
+                timeout = setTimeout(function () {
+                    $.ajax({
+                        url: suggestUrl,
+                        type: 'GET',
+                        data: { searchString: searchString },
+                        success: function (data) {
+                            var suggestionsHtml = '';
+                            $.each(data, function (index, product) {
+                                suggestionsHtml += '<div class="col-md-12">';
+                                suggestionsHtml += '<div class="me-lg-5">';
+                                suggestionsHtml += '<div class="d-flex">';
+                                suggestionsHtml += '<img src="' + product.Image + '" style="width: 10%; height: 10%" />';
+                                suggestionsHtml += '<div class="">';
+                                suggestionsHtml += '<div class="text-img">';
+                                suggestionsHtml += '<span>' + product.Title + '</span>';
+                                suggestionsHtml += '<p>';
+                                suggestionsHtml += '<h5>' + product.Price + '</h5>';
+                                suggestionsHtml += '<strike>' + product.OldPrice + '</strike> -' + product.Discount + '%';
+                                suggestionsHtml += '</p>';
+                                suggestionsHtml += '</div>';
+                                suggestionsHtml += '</div>';
+                                suggestionsHtml += '</div>';
+                                suggestionsHtml += '</div>';
+                                suggestionsHtml += '</div>';
+                            });
+                            $('.productsuggestions').html(suggestionsHtml);
+                        }
+                    });
+                }, 2000); // Khoảng thời gian chờ (ms)
+            }
+        });
+    });
+    $(document).ready(function () {
+        var suggestUrl = '/Product/Suggest';
+        $('#search').keyup(function () {
+            var searchString = $(this).val().trim();
+            if (searchString !== '') {
+                $.ajax({
+                    url: suggestUrl,
+                    type: 'GET',
+                    data: { searchString: searchString },
+                    success: function (data) {
+                        var suggestionsHtml = '';
+                        $.each(data, function (index, product) {
+                            suggestionsHtml += '<div class="col-md-12">';
+                            suggestionsHtml += '<div class="me-lg-5">';
+                            suggestionsHtml += '<div class="d-flex">';
+                            suggestionsHtml += '<img src="' + product.Image + '" style="width: 10%; height: 10%" />';
+                            suggestionsHtml += '<div class="">';
+                            suggestionsHtml += '<div class="text-img">';
+                            suggestionsHtml += '<span>' + product.Title + '</span>';
+                            suggestionsHtml += '<p>';
+                            suggestionsHtml += '<h5>' + product.Price + '</h5>';
+                            suggestionsHtml += '<strike>' + product.OldPrice + '</strike> -' + product.Discount + '%';
+                            suggestionsHtml += '</p>';
+                            suggestionsHtml += '</div>';
+                            suggestionsHtml += '</div>';
+                            suggestionsHtml += '</div>';
+                            suggestionsHtml += '</div>';
+                            suggestionsHtml += '</div>';
+                        });
+                        $('.productsuggestions').html(suggestionsHtml);
+                    }
+                });
+            }
+        });
+    });
+
+
+    /* End Tim kim san pham */
+
+
+
 });
 function loadImages(productDetailId) {
     $.ajax({

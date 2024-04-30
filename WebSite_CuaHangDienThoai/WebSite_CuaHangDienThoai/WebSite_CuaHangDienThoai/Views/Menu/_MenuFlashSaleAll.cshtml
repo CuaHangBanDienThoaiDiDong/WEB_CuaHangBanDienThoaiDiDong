@@ -224,10 +224,19 @@
                                         </div>
 
                                         <div class="product-info p-3">
-                                       
-                                            <a class="d-inline-block text-truncate text-center center-anchor"style="display: flex; justify-content: center; align-items: center; height: 100%; " href="/Product/Details?id=@items.ProductsId&ProductDetailId=@items.ProductDetailId" style="color: white; text-decoration: none; padding-top: 10px; display: block;">
+
+                                            @*<a class="d-inline-block text-truncate text-center center-anchor" style="display: flex; justify-content: center; align-items: center; height: 100%; " href="/Product/Details?id=@items.ProductsId&ProductDetailId=@items.ProductDetailId" style="color: white; text-decoration: none; padding-top: 10px; display: block;">
+            <h5 style="color:white;padding-top:10px;" class="text-center ">@items.tb_Products.Title @Capacity</h5>
+        </a>*@
+                                            @*<a class="d-inline-block text-truncate text-center center-anchor" style="display: flex; justify-content: center; align-items: center; height: 100%; " href="/product/DetailsTest/@items.ProductsId" style="color: white; text-decoration: none; padding-top: 10px; display: block;">
+            <h5 style="color:white;padding-top:10px;" class="text-center ">@items.tb_Products.Title @Capacity</h5>
+        </a>*@
+
+                                            <a class="d-inline-block text-truncate text-center center-anchor" style="display: flex; justify-content: center; align-items: center; height: 100%; " href="/chi-tiet/@items.tb_Products.Alias-p@(items.ProductsId)" style="color: white; text-decoration: none; padding-top: 10px; display: block;">
                                                 <h5 style="color:white;padding-top:10px;" class="text-center ">@items.tb_Products.Title @Capacity</h5>
                                             </a>
+
+
 
                                             @if (items.PriceSale > 0)
                                             {
