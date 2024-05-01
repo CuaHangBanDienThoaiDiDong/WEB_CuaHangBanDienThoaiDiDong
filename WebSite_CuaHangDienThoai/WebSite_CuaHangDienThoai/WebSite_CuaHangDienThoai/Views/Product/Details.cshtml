@@ -162,6 +162,15 @@
             width: 50%;
         }
 
+    .pr-top .pr-txt {
+        color: #666;
+        line-height: 1.4;
+        font-style: normal;
+    }
+
+    .pr-txtb {
+        font-weight: bold;
+    }
 
     .box_saving {
         margin-bottom: 10px;
@@ -230,7 +239,17 @@
         flex: 1; /* Each child will take equal space */
     }
 
+    .divb-right {
+        padding-left: 26px;
+    }
 
+    .pr-content .pr-item p {
+        line-height: 1.5;
+    }
+
+    .divb-right p {
+        line-height: 20px;
+    }
     /* Start noi dung khung khuyn mai */
     .box_saving.v2 .bs_content {
         background-color: #fff;
@@ -383,6 +402,39 @@
         text-align: center;
         width: 16px;
     }
+
+    .box_saving .bs_content .pr-content .pr-item {
+        padding: 7px 0 10px 0;
+    }
+
+    .pr-content .pr-item:last-child {
+        border: 0;
+    }
+
+    .divb:last-child {
+        margin-bottom: 0;
+    }
+
+    .divb {
+        margin-bottom: 10px;
+    }
+
+    .pr-content .pr-item {
+        padding: 15px 10px 10px 10px;
+    }
+
+
+    .box_saving .bs_content .pr-top {
+        padding: 0;
+        border: 0;
+        background: none;
+    }
+
+    .pr-top {
+        background-color: #f6f6f6;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 8px 10px;
+    }
     /* End btn gia tien */
 
 
@@ -475,7 +527,7 @@
                     </div>
                 </div>*@
             <hr />
-            <div class="row pt-2">
+            <div class="row">
                 <div class="col-lg-7">
 
                     @*@foreach (var detail in productDetails)
@@ -642,7 +694,7 @@
                 <div class="col-lg-5">
                     <div class="product_details">
 
-                        <h3 style="color:white  ;">@Model.tb_Products.Title @Model.Title @Capacity</h3>
+                        <h3 style="color:white  ;">@Model.tb_Products.Title @Capacity</h3>
 
 
                         <div class="row" id="PriceProductDetail">
@@ -670,15 +722,15 @@
                                     }
 
                                 </div>
-                                        }
-                                        else
-                                        {
+                            }
+                            else
+                            {
                                 <span class="product_price">
 
                                     @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.Price)đ
                                 </span>
 
-                                        }
+                            }
                         </div>
 
 
@@ -688,7 +740,7 @@
 
 
                             @*CapacityDienTHoai*@
-                            @Html.Action("DungLuong", "Product", new { id = Model.ProductsId, DungLuong = Model.Capacity })
+                            @Html.Action("DungLuong", "Product", new { productid = Model.ProductsId, DungLuong = Model.Capacity })
 
 
                         </div>
@@ -696,11 +748,9 @@
                         @*/* start  Khuyen mai*/*@
                         <div class="box_saving v2 olgr  twoprice border ">
                             <div class="bs_title" style="  ">
-                                @if (Model.PriceSale > 0)
-                                {
-                                    <div class="bs_price " style="color:white">
-
-                                        
+                                <div class="bs_price " style="color:white">
+                                    @if (Model.PriceSale > 0)
+                                    {
                                         <div class="bs_price">
                                             <b>Online Giá Rẻ Quá</b>
                                             <strong> @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.PriceSale)đ</strong>
@@ -717,28 +767,25 @@
                                             }
                                         </div>
 
+                                    }
+                                    else
+                                    {
+                                        <div class="bs_price">
+                                            <b></b>
+                                            <strong>  @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.Price)đ</strong>
 
-
-
-
-                                    </div>
-                                    <div class="bs_time " style=" flex: 0;  text-align: right; color: white ">
-                                        <span>Kết thúc sau</span>
-                                        <div id="clock_oltk" class="clockv2" data-time="2024/04/30 23:00:00" data-reload="1">
-                                            <b>09</b><i>:</i><b>15</b><i>:</i><b>44</b>
                                         </div>
+                                    }
+
+
+
+                                </div>
+                                <div class="bs_time " style=" flex: 0;  text-align: right; color: white ">
+                                    <span>Kết thúc sau</span>
+                                    <div id="clock_oltk" class="clockv2" data-time="2024/04/30 23:00:00" data-reload="1">
+                                        <b>09</b><i>:</i><b>15</b><i>:</i><b>44</b>
                                     </div>
-                                }
-                                else
-                                {
-                                    <div class="bs_price">
-                                        <b></b>
-                                        <strong>  @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.Price)đ</strong>
-
-                                    </div>
-                                }
-
-
+                                </div>
                             </div>
                             <div class="bs_content">
                                 <div class="block__promo">
@@ -815,15 +862,18 @@
                                 @if (Model.PriceSale > 0)
                                 {
                                     <a href="javascript:void(0);" class="btn-buynow red jsBuy twoprice">
-                                        MUA NGAY GIÁ RẺ QUÁ @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.PriceSale)  ₫
+                                        MUA NGAY GIÁ RẺ QUÁ @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.PriceSale)₫
                                     </a>
                                 }
+
                                 else
                                 {
-                                    <a href="javascript:void(0);" class="btn-buynow red jsBuy twoprice">
-                                        MUA NGAY VỚI GIÁ  @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.Price)  ₫
-                                    </a>
+                            <a href="javascript:void(0);" class="btn-buynow red jsBuy twoprice">
+                                MUA NGAY GIÁ @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.Price)₫
+                            </a>
+
                                 }
+
 
                                 <a href="/tra-gop/tai-chinh/dtdd/iphone-15-pro-max-512gb?gtype=online2gia&amp;productCode=0131491003841" data-url="/tra-gop/tai-chinh/dtdd/iphone-15-pro-max-512gb?gtype=online2gia&amp;productCode=0131491003841" class="btn-ins pay-taichinh btn-left    ">
                                     MUA TRẢ GÓP

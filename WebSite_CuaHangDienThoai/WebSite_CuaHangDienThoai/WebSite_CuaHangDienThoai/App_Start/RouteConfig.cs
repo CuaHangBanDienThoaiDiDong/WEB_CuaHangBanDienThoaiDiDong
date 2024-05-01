@@ -8,6 +8,13 @@ namespace WebSite_CuaHangDienThoai
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            //// Route Trang chu
+            routes.MapRoute(
+             name: "indexHome",
+             url: "trang-chu",
+             defaults: new { controller = "Home", action = "Index", alias = UrlParameter.Optional },
+             namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+         );
             //// Route Chi tiet san pham
             routes.MapRoute(
              name: "detailProduct",

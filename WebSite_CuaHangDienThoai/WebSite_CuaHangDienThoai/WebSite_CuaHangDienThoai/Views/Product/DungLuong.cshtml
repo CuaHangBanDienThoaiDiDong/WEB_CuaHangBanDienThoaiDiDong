@@ -1,6 +1,5 @@
-﻿
+﻿@model List<WebSite_CuaHangDienThoai.Models.ProductColorViewModel>
 
-@model List<WebSite_CuaHangDienThoai.Models.ProductDetailViewModel>
 
 <style>
     .capacity-list {
@@ -81,60 +80,17 @@
         line-height: 36px;
         position: relative;
     }
+
+
+
+
+
+    .box03 .a.active  {
+        border-color: #fb6e2e;
+        color:red;
+    }
 </style>
 
-
-<!--<div class="capacity">
-    <span>Dung lượng</span>
-    <ul class="capacity-list">
-
-        foreach (var item in Model)
-        {
-
-            var uniqueColors = item.Color.Distinct();
-            var DungLuong = "";
-            if (item.DungLuong > 999)
-            {
-                DungLuong = "1Tb";
-            }
-            else if (item.DungLuong > 1999)
-            {
-                DungLuong = "2 Tb";
-            }
-            else
-            {
-                DungLuong = item.DungLuong + " Gb";
-            }-->
-@*<li class="active capacity-item rounded">
-        <a href="https://www.topzone.vn/iphone/iphone-15-pro-max" class="rounded">
-            @DungLuong
-        </a>
-    </li>*@
-<!--<li class="active capacity-item rounded">
-            if (ViewBag.DungLuong==item.DungLuong )
-            {
-                <a href="/Productdetail/ProductDetailByCapacity?productsId=ViewBag.ProductsId&Capacity=item.DungLuong" class="rounded bg-white text-danger">
-                    ungLuong
-                </a>
-            }
-            else
-            { <a href="/Productdetail/ProductDetailByCapacity?productsId=ViewBag.ProductsId&Capacity=item.DungLuong" class="rounded">
-                    DungLuong
-                </a>
-
-            }
-
-
-
-        </li>
-
-
-
-
-        }
-
-    </ul>
-</div>-->
 
 
 
@@ -145,81 +101,66 @@
     <span>Dung lượng</span>
     <div class="scrolling_inner">
         <div class="box03 color group desk">
-            @foreach (var item in Model)
+
+            @if (ViewBag.ProductId != null)
             {
-                var DungLuong = "";
-                if (item.DungLuong > 999)
+                foreach (var item in Model)
                 {
-                    DungLuong = "1Tb";
-                }
-                else if (item.DungLuong > 1999)
-                {
-                    DungLuong = "2 Tb";
-                }
-                else
-                {
-                    DungLuong = item.DungLuong + " Gb";
-                }
-                <a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductsId&Capacity=@item.DungLuong" data-color="1197" data-code="0131491003841" class="box03__item item  ">@DungLuong</a>
 
+                    var DungLuong = "";
+                    if (item.Capacity > 999)
+                    {
+                        DungLuong = "1Tb";
+                    }
+                    else if (item.Capacity > 1999)
+                    {
+                        DungLuong = "2 Tb";
+                    }
+                    else
+                    {
+                        DungLuong = item.Capacity + " Gb";
+                    }
 
+                    if (ViewBag.Capacity == Model.Capacity)
+                    {
+                        <a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductId&Capacity=@item.Capacity" data-color="1197" data-code="0131491003841" class="box03__item item  active " style=" border-color: #fb6e2e; color:red">@DungLuong</a>
+                    }
+                    else
+                    {
+                        <a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductId&Capacity=@item.Capacity" data-color="1197" data-code="0131491003841" class="box03__item item  ">@DungLuong</a>
+
+                    }
+                }
 
             }
-
+            else
+            {
+                <p class="text-danger">Lỗi hệ thôngs</p>
+            }
         </div>
     </div>
 
 </div>
 
 
-
-
-
-
 <div class="scrolling_inner">
 
     <div class="box03 color group desk">
-        <a href="/dtdd/iphone-15-pro-max-512gb?code=0131491003841" data-color="1197" data-code="0131491003841" class="box03__item item act ">Titan đen</a>
+        <a href="/dtdd/iphone-15-pro-max-512gb?code=0131491003841" data-color="1197" data-code="0131491003841" class="box03__item item act ">Titan đen </a>
         <a href="/dtdd/iphone-15-pro-max-512gb?code=0131491003839" data-color="1198" data-code="0131491003839" class="box03__item item ">Titan xanh</a>
         <a href="/dtdd/iphone-15-pro-max-512gb?code=0131491003838" data-color="1195" data-code="0131491003838" class="box03__item item ">Titan tự nhiên</a>
         <a href="/dtdd/iphone-15-pro-max-512gb?code=0131491003840" data-color="1196" data-code="0131491003840" class="box03__item item ">Titan trắng</a>
     </div>
 </div>
 
-@*<div class="color-sp">
-        <span>Màu:</span>
-        <ul class="capacity-list">
-            <li class="active capacity-item rounded">
-                @foreach (var item in Model)
-                {
-
-                    var uniqueColors = item.Color.Distinct();
-                    var DungLuong = "";
-                    if (item.DungLuong > 999)
-                    {
-                        DungLuong = "1Tb";
-                    }
-                    else if (item.DungLuong > 1999)
-                    {
-                        DungLuong = "2 Tb";
-                    }
-                    else
-                    {
-                        DungLuong = item.DungLuong + " Gb";
-                    }
-                    foreach (var color in uniqueColors)
-                    {
-
-                        <a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductsId&dungLuong=@item.DungLuong" class="rounded">
-                           Titan Xanh
-                        </a>
-
-                    }
 
 
 
-                }
-            </li>
 
-            </ul>
-    </div>*@
+
+
+
+
+
+
+

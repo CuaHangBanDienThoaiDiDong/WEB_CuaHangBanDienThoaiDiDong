@@ -35,59 +35,56 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 return View();
             }
         }
-        //public ActionResult Details(int? id)
-        //{
-        //    var item = db.tb_Products.Find(id);
-        //    if (item != null)
-        //    {
-        //        ViewBag.Title = item.Title;
-
-        //        ViewBag.ProductCompany = item.tb_ProductCompany.Title;
-        //    }
-        //    return View(item);
-        //}
-
-
-        //[HttpPost]
-        //public ActionResult Find(string Search = "")
-        //{
-        //    if (!string.IsNullOrEmpty(Search))
-        //    {
-        //        var FindProduc = db.tb_Products.Where(x => x.Title.ToUpper().Contains(Search.ToUpper()));
-        //        ViewBag.Find = Search;
-        //        return View(FindProduc.ToList());
-        //    }
-        //    return View();
-        //}
-        //[HttpGet]
-        //public ActionResult Search(string search)
-        //{
-        //    var products = db.tb_Products.Where(p => p.Title.Contains(search)).ToList();
-        //    return Json(products, JsonRequestBehavior.AllowGet);
-        //}
-
-   
-      
-
+     
 
 
 
         public ActionResult Search(string searchString)
         {
             var products = db.tb_Products.Where(p => p.Alias.Contains(searchString)).ToList();
-                return View(products);
+            ViewBag.SearchString = searchString;
+            return View(products);
         }
 
 
-        [HttpGet]
-        public ActionResult Suggest(string searchString)
-        {
-            var suggestedProducts = db.tb_Products.Where(p => p.Title.Contains(searchString)).Take(5).ToList();
-            HttpContext.Items["SuggestedProducts"] = suggestedProducts; // Lưu danh sách sản phẩm vào HttpContext
-            return PartialView("_SuggestedProducts", suggestedProducts);
-        }
+        //Goi y khi tim san phảm
 
       
+        [HttpGet]
+        public ActionResult Suggest(string searchString)
+       {
+           
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                
+                var suggestedProducts = db.tb_Products
+                                     .Where(p => p.Title.Contains(searchString))
+                                     .Select(x => x.ProductsId)  // Chỉ lấy ID sản phẩm
+                                     .ToList();
+                if (suggestedProducts != null)
+                {
+                   var items = db.tb_ProductDetail
+                                    .Where(pd => pd.ProductsId.HasValue && suggestedProducts.Contains(pd.ProductsId.Value))
+                                    .OrderByDescending(pd => pd.ProductsId)
+                                    .Take(5)
+                                    .ToList();
+                    HttpContext.Items["SuggestedProducts"] = items;
+                    ViewBag.NoiDung = searchString;
+                    return PartialView( items);
+                }
+                else
+                {
+                    return PartialView("_SuggestedProducts", null);
+                }
+            }
+            else
+            {
+                return PartialView("_SuggestedProducts", null);
+            }
+        }
+
+
+
 
         [HttpGet]
         public ActionResult Result(string searchString)
@@ -97,9 +94,9 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
-        public ActionResult Partial_ItemsByCateId() 
+        public ActionResult Partial_ItemsByCateId()
         {
-            var items = db.tb_Products.Where(x => x.IsHome==true && x.IsActive == true).Take(12).ToList();
+            var items = db.tb_Products.Where(x => x.IsHome == true && x.IsActive == true).Take(12).ToList();
             return PartialView(items);
         }
 
@@ -155,7 +152,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     ViewBag.ProductId = id; // Truyền ProductId vào ViewBag
 
                     ViewBag.ProductCompany = item.tb_ProductCompany.Title;
-                   
+
 
                     var itemProductDetail = db.tb_ProductDetail.FirstOrDefault(r => r.ProductsId == id);
                     if (itemProductDetail != null)
@@ -178,114 +175,91 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         }
 
-
-
-
-
-
-
-
-
-
-        public ActionResult DungLuong(int id , int DungLuong  )
-        {
-         
-            if (id > 0)
-            {
-                var query = from pd in db.tb_ProductDetail
-                            join p in db.tb_Products on pd.ProductsId equals p.ProductsId
-                            where pd.ProductsId == id
-                            select new
-                            {
-                                ProductDetailId = pd.ProductDetailId,
-                                Color = pd.Color,
-                                DungLuong = pd.Capacity
-                            };
-
-                // Tạo một danh sách để lưu trữ các màu và dung lượng mà không bị lặp lại
-                List<string> colors = new List<string>();
-                List<int> dungLuongs = new List<int>();
-
-                foreach (var item in query)
-                {
-                    if (!colors.Contains(item.Color))
-                    {
-                        colors.Add(item.Color);
-                    }
-
-                    if (!dungLuongs.Contains((int)item.DungLuong))
-                    {
-                        dungLuongs.Add((int)item.DungLuong);
-                    }
-                }
-
-                // Chuyển đổi danh sách dung lượng sang một danh sách các đối tượng ProductDetailViewModel
-                List<ProductDetailViewModel> result = dungLuongs.Select(dl => new ProductDetailViewModel
-                {
-                    Color = string.Join(", ", colors),
-                    DungLuong = dl
-                }).ToList();
-
-                if (DungLuong > 0)
-                {
-                    ViewBag.DungLuong=DungLuong;
-                }
-                ViewBag.ProductsId = id;
-                return PartialView(result);
-            }
-            else 
-            {
-                
-                return PartialView();
-            }
-
-
-
-          
-        }
-
-
-
-
-
-
-
-        public ActionResult Mau(int id)
+        public ActionResult DungLuong(int productid, int DungLuong)
         {
             using (var dbContext = new CUAHANGDIENTHOAIEntities())
             {
-                var uniqueColorsWithIds = dbContext.tb_ProductDetail
-                    .Where(p => p.ProductsId == id)
-                    .GroupBy(p => p.Color)
-                    .Select(g => new ProductColorViewModel
-                    {
-                        Color = g.Key,
-                        ProductDetailId = g.Min(p => p.ProductDetailId),
-                        ProductslId = id
-                    })
-                    .ToList();
-                ViewBag.ProductId = id; // Truyền ProductId vào ViewBag
-                return View(uniqueColorsWithIds);
+                var uniqueCapacitiesWithIdsAndImages = dbContext.tb_ProductDetail
+                .Where(p => p.ProductsId == productid)
+                .GroupBy(p => p.Capacity)
+                .Select(g => new
+                {
+                    Capacity = g.Key,
+                    ProductDetailId = g.Min(p => p.ProductDetailId),
+
+                })
+                .ToList();
+
+                var viewModels = uniqueCapacitiesWithIdsAndImages.Select(item => new ProductColorViewModel
+                {
+
+                    ProductDetailId = item.ProductDetailId,
+                    ProductslId = productid,
+                    Capacity = (int)item.Capacity,
+
+                }).ToList();
+
+                ViewBag.ProductId = productid;
+                ViewBag.Capacity = DungLuong;
+                return PartialView(viewModels);
             }
         }
-
 
 
         public ActionResult Partial_DetailImageById(int id)
         {
-           
-
-            var checkProductDetail =db.tb_ProductDetail.Where(x=>x.ProductsId == id).ToList();
-            while (checkProductDetail != null)
+            using (var dbContext = new CUAHANGDIENTHOAIEntities())
             {
-                var imgDefault = db.tb_ProductImage.FirstOrDefault(x => x.ProductsId == id &&x.IsDefault);
-                ViewBag.ProductImage = imgDefault.Image;  
-                return PartialView(checkProductDetail);
+                var uniqueColorsWithIdsAndImages = dbContext.tb_ProductDetail
+                    .Where(p => p.ProductsId == id)
+                    .GroupBy(p => p.Color)
+                    .Select(g => new
+                    {
+                        Color = g.Key,
+                        ProductDetailId = g.Min(p => p.ProductDetailId),
+                        Image = dbContext.tb_ProductDetailImage
+                                    .Where(x => x.ProductDetailId == g.Min(p => p.ProductDetailId) && x.IsDefault)
+                                    .Select(x => x.Image)
+                                    .FirstOrDefault()
+                    })
+                    .ToList();
+
+                var viewModels = uniqueColorsWithIdsAndImages.Select(item => new ProductColorViewModel
+                {
+                    Color = item.Color,
+                    ProductDetailId = item.ProductDetailId,
+                    ProductslId = id,
+                    Image = item.Image
+                }).ToList();
+
+                ViewBag.ProductId = id;
+                return PartialView(viewModels);
             }
-            return PartialView();
+            
         }
 
-      
+
+
+
+
+
+
+
+        //public ActionResult Partial_DetailImageById(int id)
+        //{
+
+
+        //    var checkProductDetail =db.tb_ProductDetail.Where(x=>x.ProductsId == id).ToList();
+        //    while (checkProductDetail != null)
+        //    {
+        //        var imgDefault = db.tb_ProductImage.FirstOrDefault(x => x.ProductsId == id &&x.IsDefault);
+        //        ViewBag.ProductImage = imgDefault.Image;  
+        //        return PartialView(checkProductDetail);
+        //    }
+        //    return PartialView();
+        //}
+
+
         public ActionResult Partail_LoadListImgByProDetailId(int id) 
         {
             var checkImg = db.tb_ProductDetailImage.Where(x => x.ProductDetailId == id).ToList();

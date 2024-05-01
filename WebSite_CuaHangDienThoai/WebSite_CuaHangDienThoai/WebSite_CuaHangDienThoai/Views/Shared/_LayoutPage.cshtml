@@ -175,7 +175,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-12 text-right nav-main" style="display:block">
                         <div class="logo_container">
-                            <a href="/home/index" style="color: red; font-family: Poppins-Regular; ">LTD<span style="color: white; font-family: Poppins-Regular; ">MiniStore</span></a>
+                            <a href="/trang-chu" style="color: red; font-family: Poppins-Regular; ">LTD<span style="color: white; font-family: Poppins-Regular; ">MiniStore</span></a>
                         </div>
                         <nav class="navbar ">
                             <ul>
@@ -332,7 +332,7 @@
                                                         <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                                                     </svg>
                                                 </div>
-                                                <input type="text" placeholder="Tìm kiếm sản phẩm..." class="form-control" id="search" name="searchString">
+                                                <input type="text" placeholder="Tìm kiếm sản phẩm..." class="form-control" id="searchString" name="searchString">
                                             </div>
                                             <div class="input-field second-wrap">
                                                 <button class="btn-search" type="button">
@@ -344,83 +344,14 @@
                                         </div>
 
                                     </form>
-                                    <div class="col-lg-12 text-right nav-search" style="display:none">
-                                        <div class="row pt-4">
-                                            <div class="col-md-12">
-                                                <div class="s130">
-                                                    <form id="search-form" method="GET">
-                                                        <div class="inner-form">
-                                                            <div class="input-field first-wrap">
-                                                                <div class="svg-wrapper">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                                                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
-                                                                    </svg>
-                                                                </div>
-                                                                <input type="text" placeholder="Tìm kiếm sản phẩm..." class="form-control" id="search" name="searchString">
-                                                            </div>
-                                                            <div class="input-field second-wrap">
-                                                                <button class="btn-search" type="button">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                                                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-                                                                    </svg>
-                                                                </button>
-                                                            </div>
-                                                        </div>
+                                    <div class="col-lg-12 text-right nav-search   search-suggestions" style="display: block">
+                                        @*<div class="row ">
+                                            <div class="col-lg-12 search-suggestions" style="display: block;">
+                                               
 
-                                                    </form>
-                                                    <div class="col-lg-12 search-suggestions" style="display: block;">
-                                                        <div class="p-3">
-                                                            <small style="color: #888; font-size: 14px; overflow: hidden "> Có phải bạn muốn tìm</small>
-                                                            <div class="text-search" style="overflow: hidden; border-bottom: 1px solid #dfdfdf; padding: 5px 0 15px 0; margin: 5px 0 15px 0; ">
-                                                                <a href="#">nội dung nhập</a>
-                                                            </div>
-                                                            <small style="color: #888; font-size: 14px; overflow: hidden; line-height: 21px; ">Sản phẩm gợi ý</small>
-                                                            <ul class="list-group" style="font-size: 14px; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 0px; ">
-
-                                                                <li class="">
-                                                                    <a href="#">
-
-                                                                        <div class="row gy-3 mb-4 productsuggestions">
-                                                                            @*@for (int i = 0; i <= 10; i++)
-                                                {
-                                                    <div class="col-md-12">
-                                                        <div class="me-lg-5">
-                                                            <div class="d-flex">
-                                                                <img src="~/Uploads/images/SanPham/iphone-15-pro-max-tu-nhien-2.jpg" style="width: 10%; height: 10% " />
-                                                                <div class="">
-                                                                    <div class="text-img">
-                                                                        <span>
-                                                                            Iphone 11
-                                                                        </span>
-                                                                        <p>
-                                                                            <h5>8.990.000₫</h5>
-                                                                            <strike>
-                                                                                11.790.000₫
-                                                                            </strike>"
-                                                                            -23%                    "
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                     }*@
-
-                                                                        </div>
-
-
-
-                                                                    </a>
-                                                                </li>
-
-                                                            </ul>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
                                             </div>
 
-                                        </div>
+                                        </div>*@
                                     </div>
 
 
@@ -449,7 +380,7 @@
         <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
         <div class="hamburger_menu_content text-right">
             <ul class="menu_top_nav">
-                <li class="menu_item has-children">
+                @*<li class="menu_item has-children">
                     <a href="#">
                         usd
                         <i class="fa fa-angle-down"></i>
@@ -460,8 +391,8 @@
                         <li><a href="#">eur</a></li>
                         <li><a href="#">gbp</a></li>
                     </ul>
-                </li>
-                <li class="  has-children">
+                </li>*@
+                @*<li class="  has-children">
                     <a href="#">
                         English132
                         <i class="fa fa-angle-down"></i>
@@ -472,7 +403,7 @@
                         <li><a href="#">German</a></li>
                         <li><a href="#">Spanish</a></li>
                     </ul>
-                </li>
+                </li>*@
                 <li class="menu_item has-children">
                     @if (Session["Client"] != null)
                     {
@@ -560,11 +491,15 @@
 
             if (inputValue !== "") {
                 searchSuggestions.style.display = "block"; // Hiển thị khung gợi ý
-                console.log("Nội dung của ô input: ", inputValue); 
             } else {
                 searchSuggestions.style.display = "none"; // Ẩn khung gợi ý nếu ô input rỗng
             }
         });
+
+
+
+
+
         document.addEventListener("DOMContentLoaded", function () {
             var searchBar = document.getElementById("search");
             var searchButtonMain = document.querySelector("[data-widget='navbar-search']");
@@ -593,6 +528,18 @@
               
             });
 
+
+            bg.addEventListener("click", function (event) {
+                event.preventDefault();
+                navMain.style.display = "block"; // Hiển thị nav-main
+                navSearch.style.display = "none"; // Ẩn nav-search
+                bg.style.display = "none"; // Ẩn nav-search
+
+
+            });
+
+
+
             searchBar.addEventListener("input", function () {
                 var inputValues = searchBar.value.trim();
                 if (inputValues.length > 0) {
@@ -603,8 +550,7 @@
             });
 
             searchBar.addEventListener("focus", function () {
-                searchSuggestions.style.display = "block"; // Hiển thị khung gợi ý khi ô tìm kiếm được tập trung vào
-                // Áp dụng hiệu ứng mờ mờ khi ô tìm kiếm được tập trung vào
+                searchSuggestions.style.display = "block"; 
                 navSearch.style.filter = "blur(8px)";
                 navSearch.style.backdropFilter = "blur(8px)";
             });

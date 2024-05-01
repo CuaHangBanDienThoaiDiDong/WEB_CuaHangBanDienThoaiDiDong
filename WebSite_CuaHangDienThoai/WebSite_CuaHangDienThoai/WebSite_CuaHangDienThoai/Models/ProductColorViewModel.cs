@@ -10,5 +10,8 @@ namespace WebSite_CuaHangDienThoai.Models
         public int ProductDetailId { get; set; }
         public string Color { get; set; }
         public int ProductslId { get; set; }
+
+        public int Capacity { get; set; }
+        public string Image { get; set; }
     }
 }

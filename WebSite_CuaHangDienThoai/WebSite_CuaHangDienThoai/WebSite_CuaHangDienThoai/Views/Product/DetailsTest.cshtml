@@ -152,8 +152,16 @@
         .box_saving.v2 .bs_title div.bs_price {
             width: 50%;
         }
+    .pr-top .pr-txt {
+        color: #666;
 
-       
+        line-height: 1.4;
+        
+        font-style: normal;
+    }
+    .pr-txtb {
+        font-weight: bold;
+    }
     .box_saving {
         margin-bottom: 10px;
         position: relative;
@@ -210,8 +218,16 @@
     .bs_price, .bs_time {
         flex: 1; /* Each child will take equal space */
     }
+    .divb-right {
+        padding-left: 26px;
+    }
+    .pr-content .pr-item p {
+        line-height: 1.5;
+    }
 
-
+    .divb-right p {
+        line-height: 20px;
+    }
     /* Start noi dung khung khuyn mai */
     .box_saving.v2 .bs_content {
         background-color: #fff;
@@ -351,6 +367,37 @@
         margin-top: 2px;
         text-align: center;
         width: 16px;
+    }
+
+    .box_saving .bs_content .pr-content .pr-item {
+        padding: 7px 0 10px 0;
+    }
+
+    .pr-content .pr-item:last-child {
+        border: 0;
+    }
+    .divb:last-child {
+        margin-bottom: 0;
+    }
+
+    .divb {
+        margin-bottom: 10px;
+    }
+    .pr-content .pr-item {
+        padding: 15px 10px 10px 10px;
+    }
+
+
+    .box_saving .bs_content .pr-top {
+        padding: 0;
+        border: 0;
+        background: none;
+    }
+
+    .pr-top {
+        background-color: #f6f6f6;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 8px 10px;
     }
     /* End btn gia tien */
 
@@ -657,7 +704,8 @@
 
 
                             @*CapacityDienTHoai*@
-                            @Html.Action("DungLuong", "Product", new { id = Model.ProductsId, DungLuong = Model.Capacity })
+                            @*@Html.Action("DungLuong", "Product", new { id = Model.ProductsId, DungLuong = Model.Capacity })*@
+                            @Html.Action("DungLuong", "Product", new { productid = Model.ProductsId, DungLuong = Model.Capacity })
 
 
                         </div>

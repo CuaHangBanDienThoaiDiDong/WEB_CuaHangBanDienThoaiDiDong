@@ -162,6 +162,15 @@
             width: 50%;
         }
 
+    .pr-top .pr-txt {
+        color: #666;
+        line-height: 1.4;
+        font-style: normal;
+    }
+
+    .pr-txtb {
+        font-weight: bold;
+    }
 
     .box_saving {
         margin-bottom: 10px;
@@ -230,7 +239,17 @@
         flex: 1; /* Each child will take equal space */
     }
 
+    .divb-right {
+        padding-left: 26px;
+    }
 
+    .pr-content .pr-item p {
+        line-height: 1.5;
+    }
+
+    .divb-right p {
+        line-height: 20px;
+    }
     /* Start noi dung khung khuyn mai */
     .box_saving.v2 .bs_content {
         background-color: #fff;
@@ -382,6 +401,39 @@
         margin-top: 2px;
         text-align: center;
         width: 16px;
+    }
+
+    .box_saving .bs_content .pr-content .pr-item {
+        padding: 7px 0 10px 0;
+    }
+
+    .pr-content .pr-item:last-child {
+        border: 0;
+    }
+
+    .divb:last-child {
+        margin-bottom: 0;
+    }
+
+    .divb {
+        margin-bottom: 10px;
+    }
+
+    .pr-content .pr-item {
+        padding: 15px 10px 10px 10px;
+    }
+
+
+    .box_saving .bs_content .pr-top {
+        padding: 0;
+        border: 0;
+        background: none;
+    }
+
+    .pr-top {
+        background-color: #f6f6f6;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 8px 10px;
     }
     /* End btn gia tien */
 
@@ -642,7 +694,7 @@
                 <div class="col-lg-5">
                     <div class="product_details">
 
-                        <h3 style="color:white  ;">@Model.tb_Products.Title @Model.Title @Capacity</h3>
+                        <h3 style="color:white  ;">@Model.tb_Products.Title @Capacity</h3>
 
 
                         <div class="row" id="PriceProductDetail">
@@ -688,7 +740,7 @@
 
 
                             @*CapacityDienTHoai*@
-                            @Html.Action("DungLuong", "Product", new { id = Model.ProductsId, DungLuong = Model.Capacity })
+                            @Html.Action("DungLuong", "Product", new { productid = Model.ProductsId, DungLuong = Model.Capacity })
 
 
                         </div>
@@ -807,9 +859,21 @@
                                 @*btn gia tien*@
 
                                 <div class="block-button twoprice">
-                                    <a href="javascript:void(0);" class="btn-buynow red jsBuy twoprice">
-                                        MUA NGAY GIÁ RẺ QUÁ 36.790.000₫
-                                    </a>
+                                    @if (Model.PriceSale > 0)
+                                    {
+                                        <a href="javascript:void(0);" class="btn-buynow red jsBuy twoprice">
+                                            MUA NGAY GIÁ RẺ QUÁ @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.PriceSale)₫
+                                        </a>
+                                    }
+
+                                    else
+                                    {
+                                        <a href="javascript:void(0);" class="btn-buynow red jsBuy twoprice">
+                                            MUA NGAY GIÁ @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.Price)₫
+                                        </a>
+
+                                    }
+
 
                                     <a href="/tra-gop/tai-chinh/dtdd/iphone-15-pro-max-512gb?gtype=online2gia&amp;productCode=0131491003841" data-url="/tra-gop/tai-chinh/dtdd/iphone-15-pro-max-512gb?gtype=online2gia&amp;productCode=0131491003841" class="btn-ins pay-taichinh btn-left    ">
                                         MUA TRẢ GÓP
