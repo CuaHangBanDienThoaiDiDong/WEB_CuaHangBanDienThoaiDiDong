@@ -1,0 +1,41 @@
+﻿@model List<WebSite_CuaHangDienThoai.Models.ProductColorViewModel>
+@{
+    ViewBag.Title = "Mau";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    int productId = ViewBag.ProductId;
+}
+@{
+        var db = new WebSite_CuaHangDienThoai.Models.CUAHANGDIENTHOAIEntities(); // Thay YourDbContext bằng tên DbContext của bạn
+        var productDetails = db.tb_ProductDetail.FirstOrDefault(p => p.ProductsId == productId);
+
+       
+
+
+    var strImg = "";
+
+    var img = productDetails.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
+
+    if (img != null)
+    {
+        strImg = img.Image;
+    }
+
+
+
+}
+<h1>Unique Colors with ProductDetailId</h1>
+<ul style="padding:100px">
+    @foreach (var item in Model)
+    {
+
+        <img src="@strImg" alt="" data-image="@strImg" style="width: 100%; height: 50%; " />
+
+        <li>Color: @item.Color, ProductDetailId: @item.ProductDetailId - @item.ProductslId</li>
+    }
+</ul>
+
+
+
+
+
+

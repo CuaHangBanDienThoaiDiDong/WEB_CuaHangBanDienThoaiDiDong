@@ -3975,6 +3975,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProductColorViewModel.cs" />
     <Compile Include="Models\ProductDetailViewModel.cs" />
     <Compile Include="Models\tb_Cart.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -4120,6 +4121,7 @@
     <Content Include="Views\Product\Partial_ItemsByCateIdTest.cshtml" />
     <Content Include="Views\Product\Partail_LoadListImgByProDetailId.cshtml" />
     <Content Include="Views\Product\Search.cshtml" />
+    <Content Include="Views\Product\Mau.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4157,7 +4159,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52055</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:52058/</IISUrl>
+          <IISUrl>http://localhost:12080/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

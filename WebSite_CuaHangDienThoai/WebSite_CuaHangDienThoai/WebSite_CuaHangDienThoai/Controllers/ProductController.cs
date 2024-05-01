@@ -66,6 +66,12 @@ namespace WebSite_CuaHangDienThoai.Controllers
         //    return Json(products, JsonRequestBehavior.AllowGet);
         //}
 
+   
+      
+
+
+
+
         public ActionResult Search(string searchString)
         {
             var products = db.tb_Products.Where(p => p.Alias.Contains(searchString)).ToList();
@@ -239,15 +245,37 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
-     
 
-       
+
+
+
+
+        public ActionResult Mau(int id)
+        {
+            using (var dbContext = new CUAHANGDIENTHOAIEntities())
+            {
+                var uniqueColorsWithIds = dbContext.tb_ProductDetail
+                    .Where(p => p.ProductsId == id)
+                    .GroupBy(p => p.Color)
+                    .Select(g => new ProductColorViewModel
+                    {
+                        Color = g.Key,
+                        ProductDetailId = g.Min(p => p.ProductDetailId),
+                        ProductslId = id
+                    })
+                    .ToList();
+                ViewBag.ProductId = id; // Truyền ProductId vào ViewBag
+                return View(uniqueColorsWithIds);
+            }
+        }
 
 
 
         public ActionResult Partial_DetailImageById(int id)
         {
-            var checkProductDetail=db.tb_ProductDetail.Where(x=>x.ProductsId == id).ToList();
+           
+
+            var checkProductDetail =db.tb_ProductDetail.Where(x=>x.ProductsId == id).ToList();
             while (checkProductDetail != null)
             {
                 var imgDefault = db.tb_ProductImage.FirstOrDefault(x => x.ProductsId == id &&x.IsDefault);
