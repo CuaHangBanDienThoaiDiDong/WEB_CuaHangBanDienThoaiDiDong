@@ -117,7 +117,13 @@
         line-height: 23px;
         color: #222;
     }
-
+    p {
+        -webkit-margin-before: 0;
+        -webkit-margin-after: 0;
+        -webkit-margin-start: 0;
+        -webkit-margin-end: 0;
+        text-rendering: geometricPrecision;
+    }
     .list-sg-search li a strike {
         padding: 0 8px;
     }
@@ -134,7 +140,13 @@
         text-align: left;
         margin-left: 77px;
     }
-
+    .list-sg-search li a p {
+        display: block;
+        overflow: hidden;
+        color: #444;
+        font-size: 15px;
+        line-height: 20px;
+    }
     .item-txt-online.orange {
         color: #ff9f00 !important;
     }
@@ -177,9 +189,10 @@
 
         <div class="sg-search active" style="display: block;">
             <small class="quicklink">Có phải bạn muốn tìm</small>
-            <div class="text-search">
+            @*<div class="text-search">
                 <a href="/iphone-13"><span>iPhone 13 (Mini, Pro, Pro Max)</span></a>
-            </div>
+            </div>*@
+            @Html.Action("SuggestTop", "Product", new { searchString= ViewBag.NoiDung })
             <small>Sản phẩm gợi ý</small>
             <ul class="list-sg-search">
                 @foreach (var item in Model)
@@ -219,29 +232,28 @@
                                 <div class="text-img">
                                     <span>@item.tb_Products.Title @Capacity </span>
                                     <p>
+                                        @{
+                                            decimal originalPrice = Convert.ToDecimal(item.Price);
+                                            decimal salePrice = Convert.ToDecimal(item.PriceSale);
+                                            decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
+                                        }
                                         @if (item.PriceSale > 0)
                                         {
                                             <b>@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.PriceSale)₫</b>
                                             <strike> @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price)₫</strike>
-                                            <div>
-                                                @{
-                                                    decimal originalPrice = Convert.ToDecimal(item.Price);
-                                                    decimal salePrice = Convert.ToDecimal(item.PriceSale);
-                                                    decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
-                                                }
-                                                @if (discountPercentage > 0)
-                                                {
-                                                    <span class="discount_percentage " style="font-size: larger; padding-left: 5px ; color:white">
-                                                        -@discountPercentage.ToString("0")% <!-- Hiển thị phần trăm giảm giá -->
-                                                    </span>
-                                                }
-                                            </div>
+
+                                            if (discountPercentage > 0)
+                                            {
+                                                <span class="discount_percentage " style="font-size: larger; padding-left: 5px ; color:white">
+                                                    -@discountPercentage.ToString("0")% <!-- Hiển thị phần trăm giảm giá -->
+                                                </span>
+                                            }
 
                                         }
                                         else
                                         {
                                             <b>@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price)₫</b>
-                                           
+
                                         }
 
                                     </p>

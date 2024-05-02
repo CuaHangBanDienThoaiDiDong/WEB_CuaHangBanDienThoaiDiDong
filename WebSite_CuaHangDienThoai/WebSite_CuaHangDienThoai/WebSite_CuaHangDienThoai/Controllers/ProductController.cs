@@ -1,6 +1,7 @@
 ﻿using PagedList;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Web;
@@ -48,8 +49,23 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
         //Goi y khi tim san phảm
+        public ActionResult SuggestTop(string searchString)
+        {
 
-      
+            if (!string.IsNullOrEmpty(searchString))
+            {
+
+                var products = db.tb_Products.Where(p => p.Alias.Contains(searchString)).Take(5).ToList();
+                ViewBag.products=products;
+                return PartialView(products);
+            }
+            else
+            {
+                return PartialView( null);
+            }
+        }
+
+
         [HttpGet]
         public ActionResult Suggest(string searchString)
        {
@@ -82,6 +98,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 return PartialView("_SuggestedProducts", null);
             }
         }
+
 
 
 
@@ -174,36 +191,88 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
         }
-
+        //Pass Hien cac nut dung luong
         public ActionResult DungLuong(int productid, int DungLuong)
         {
-            using (var dbContext = new CUAHANGDIENTHOAIEntities())
+            if (productid != null && DungLuong != null)
             {
-                var uniqueCapacitiesWithIdsAndImages = dbContext.tb_ProductDetail
-                .Where(p => p.ProductsId == productid)
-                .GroupBy(p => p.Capacity)
-                .Select(g => new
+                using (var dbContext = new CUAHANGDIENTHOAIEntities())
                 {
-                    Capacity = g.Key,
-                    ProductDetailId = g.Min(p => p.ProductDetailId),
+                    var uniqueCapacitiesWithIdsAndImages = dbContext.tb_ProductDetail
+                    .Where(p => p.ProductsId == productid)
+                    .GroupBy(p => p.Capacity)
+                    .Select(g => new
+                    {
+                        Capacity = g.Key,
+                        ProductDetailId = g.Min(p => p.ProductDetailId),
 
-                })
-                .ToList();
+                    })
+                    .ToList();
 
-                var viewModels = uniqueCapacitiesWithIdsAndImages.Select(item => new ProductColorViewModel
-                {
+                    var viewModels = uniqueCapacitiesWithIdsAndImages.Select(item => new ProductColorViewModel
+                    {
 
-                    ProductDetailId = item.ProductDetailId,
-                    ProductslId = productid,
-                    Capacity = (int)item.Capacity,
+                        ProductDetailId = item.ProductDetailId,
+                        ProductslId = productid,
+                        Capacity = (int)item.Capacity,
 
-                }).ToList();
+                    }).ToList();
 
-                ViewBag.ProductId = productid;
-                ViewBag.Capacity = DungLuong;
-                return PartialView(viewModels);
+                    ViewBag.ProductId = productid;
+                    ViewBag.Capacity = DungLuong;
+                    return PartialView(viewModels);
+                }
             }
+            else 
+            {
+                return PartialView(null);
+            }
+
+            
         }
+
+
+        public ActionResult Partail_ColorByProductsId(int productid )
+        {
+            if (productid != null) 
+            {
+
+                using (var dbContext = new CUAHANGDIENTHOAIEntities())
+                {
+                    var uniqueCapacitiesWithIdsAndImages = dbContext.tb_ProductDetail
+                    .Where(p => p.ProductsId == productid)
+                    .GroupBy(p => p.Color)
+                    .Select(g => new
+                    {
+                        Color = g.Key,
+                        ProductDetailId = g.Min(p => p.ProductDetailId),
+
+                    })
+                    .ToList();
+
+                    var viewModels = uniqueCapacitiesWithIdsAndImages.Select(item => new ProductColorViewModel
+                    {
+
+                        ProductDetailId = item.ProductDetailId,
+                        ProductslId = productid,
+                        Color = item.Color,
+
+                    }).ToList();
+
+                    ViewBag.ProductId = productid;
+                    //ViewBag.Color = Color;
+                    return PartialView(viewModels);
+                }
+            }
+            else
+            {
+                return PartialView(null);
+            }
+
+
+
+        }
+
 
 
         public ActionResult Partial_DetailImageById(int id)

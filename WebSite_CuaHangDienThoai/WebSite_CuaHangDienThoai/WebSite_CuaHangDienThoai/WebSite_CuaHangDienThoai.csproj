@@ -4126,6 +4126,8 @@
     <Content Include="Views\Product\_SuggestedProducts.cshtml" />
     <Content Include="Views\Product\Suggest.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\Product\SuggestTop.cshtml" />
+    <Content Include="Views\Product\Partail_ColorByProductsId.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

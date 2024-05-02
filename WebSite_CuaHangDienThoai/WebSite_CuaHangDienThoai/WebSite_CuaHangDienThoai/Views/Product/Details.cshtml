@@ -451,18 +451,13 @@
     var strImg = "";
     var Capacity = "";
 
-    if (Model.Capacity > 999)
-    {
-        Capacity = "1Tb";
-    }
-    else if (Model.Capacity > 1999)
-    {
-        Capacity = "2 Tb";
-    }
-    else
-    {
-        Capacity = Model.Capacity + " Gb";
-    }
+    string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
+
+    int[] nguongDungLuong = new int[] { 999, 1999 };
+
+    int index = Array.FindIndex(nguongDungLuong, capacity => Model.Capacity > capacity);
+
+     Capacity = index != -1 ? dungLuongOptions[index] : Model.Capacity + " Gb";
 
     //var check = Model.tb_ProductDetail.FirstOrDefault(r => r.ProductsId == Model.ProductsId);
     //var checkImg = check.tb_ProductDetailImage.Where(r => r.ProductDetailId == check.ProductDetailId);
@@ -741,7 +736,7 @@
 
                             @*CapacityDienTHoai*@
                             @Html.Action("DungLuong", "Product", new { productid = Model.ProductsId, DungLuong = Model.Capacity })
-
+                            @Html.Action("Partail_ColorByProductsId", "Product", new { productid = Model.ProductsId })
 
                         </div>
 

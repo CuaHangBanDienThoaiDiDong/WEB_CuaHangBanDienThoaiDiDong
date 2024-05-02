@@ -98,7 +98,7 @@
 
 
 <div class="capacity">
-    <span>Dung lượng</span>
+    <span>Dung lượng </span>
     <div class="scrolling_inner">
         <div class="box03 color group desk">
 
@@ -107,27 +107,23 @@
                 foreach (var item in Model)
                 {
 
-                    var DungLuong = "";
-                    if (item.Capacity > 999)
-                    {
-                        DungLuong = "1Tb";
-                    }
-                    else if (item.Capacity > 1999)
-                    {
-                        DungLuong = "2 Tb";
-                    }
-                    else
-                    {
-                        DungLuong = item.Capacity + " Gb";
-                    }
+                    string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
 
-                    if (ViewBag.Capacity == Model.Capacity)
+                    int[] nguongDungLuong = new int[] { 999, 1999 };
+
+                    int index = Array.FindIndex(nguongDungLuong, capacity => item.Capacity > capacity);
+
+                     var DungLuong = index != -1 ? dungLuongOptions[index] : item.Capacity + " Gb";
+
+
+                    if (ViewBag.Capacity == item.Capacity)
                     {
-                        <a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductId&Capacity=@item.Capacity" data-color="1197" data-code="0131491003841" class="box03__item item  active " style=" border-color: #fb6e2e; color:red">@DungLuong</a>
+                        @*<a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductId&Capacity=@item.Capacity" data-color="1197" data-code="0131491003841" class="box03__item item  active " style=" border-color: #fb6e2e; color:red">@DungLuong</a>*@
+                        <a href="/chi-tiet-dungluong/@ViewBag.ProductId-DungLuong@(item.Capacity)" data-color="1197" data-code="0131491003841" class="box03__item item  active " style=" border-color: #fb6e2e; color:red">@DungLuong</a>
                     }
                     else
                     {
-                        <a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductId&Capacity=@item.Capacity" data-color="1197" data-code="0131491003841" class="box03__item item  ">@DungLuong</a>
+                        <a href="/chi-tiet-dungluong/@ViewBag.ProductId-DungLuong@(item.Capacity)" data-color="1197" data-code="0131491003841" class="box03__item item   " style="  color:red">@DungLuong</a>
 
                     }
                 }
@@ -141,19 +137,6 @@
     </div>
 
 </div>
-
-
-<div class="scrolling_inner">
-
-    <div class="box03 color group desk">
-        <a href="/dtdd/iphone-15-pro-max-512gb?code=0131491003841" data-color="1197" data-code="0131491003841" class="box03__item item act ">Titan đen </a>
-        <a href="/dtdd/iphone-15-pro-max-512gb?code=0131491003839" data-color="1198" data-code="0131491003839" class="box03__item item ">Titan xanh</a>
-        <a href="/dtdd/iphone-15-pro-max-512gb?code=0131491003838" data-color="1195" data-code="0131491003838" class="box03__item item ">Titan tự nhiên</a>
-        <a href="/dtdd/iphone-15-pro-max-512gb?code=0131491003840" data-color="1196" data-code="0131491003840" class="box03__item item ">Titan trắng</a>
-    </div>
-</div>
-
-
 
 
 

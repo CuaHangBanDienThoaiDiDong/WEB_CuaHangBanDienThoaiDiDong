@@ -7,7 +7,22 @@ namespace WebSite_CuaHangDienThoai
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            //// Route sanpham-dungluong
+            routes.MapRoute(
+             name: "ProductDetailByCapacity",
+             url: "chi-tiet-dungluong/{Productsid}-DungLuong{Capacity}",
+             defaults: new { controller = "ProductDetail", action = "ProductDetailByCapacity", alias = UrlParameter.Optional },
+             namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+         );
+            //// Route Gio-hang
+            routes.MapRoute(
+             name: "indexCart",
+             url: "Gio-hang",
+             defaults: new { controller = "Cart", action = "Index", alias = UrlParameter.Optional },
+             namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+         );
             //// Route Trang chu
             routes.MapRoute(
              name: "indexHome",
