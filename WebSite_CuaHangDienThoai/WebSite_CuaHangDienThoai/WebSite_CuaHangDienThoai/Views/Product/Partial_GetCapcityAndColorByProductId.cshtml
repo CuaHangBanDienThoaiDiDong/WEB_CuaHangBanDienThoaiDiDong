@@ -1,0 +1,81 @@
+﻿@model List<WebSite_CuaHangDienThoai.Models.ProductDetailViewModel>
+
+ <style>
+     .test {
+         border-color: #fb6e2e;
+     }
+ </style>
+
+
+<div class="scrolling_inner">
+
+    <div class="box03 color group desk">
+
+
+        <!-- Color buttons -->
+        @foreach (var item in Model)
+        {
+            <button data-code="0131491003841" class="box03__item item color-button test" style="background-color:black" data-type="color" data-value="@item.Color">@item.Color</button><br />
+        }
+
+        <!-- Capacity buttons -->
+        @foreach (var item in Model)
+        {
+            <button data-code="0131491003841" class="box03__item item capacity-button test" data-type="capacity"style="background-color:black"  data-value="@item.DungLuong">@item.DungLuong thuan</button><br />
+        }
+
+
+
+
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Lấy tất cả các phần tử <button> có class là "test"
+        var buttons = document.querySelectorAll("button.test");
+
+        // Lặp qua từng phần tử và gắn sự kiện click
+        buttons.forEach(function (button) {
+            button.addEventListener("click", function (event) {
+                // Ngăn chặn hành vi mặc định của phần tử <button> (nếu có)
+                event.preventDefault();
+
+                // Trích xuất giá trị data-id và data-ProductDetailId từ phần tử <button> được bấm
+                var id = this.getAttribute("data-id");
+                var ProductDetailId = this.getAttribute("data-ProductDetailId");
+                var Color = this.getAttribute("data-color");
+
+                // Hiển thị giá trị data-id trong alert
+                alert("Product ID: " + id + "\nProductDetailId: " + ProductDetailId + "\nColor: " + Color);
+            });
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Lấy tất cả các phần tử có class là "test"
+        var buttons = document.querySelectorAll("button.test");
+
+        // Lặp qua từng phần tử và gắn sự kiện click
+        buttons.forEach(function (button) {
+            button.addEventListener("click", function (event) {
+                // Ngăn chặn hành vi mặc định của phần tử (chuyển hướng trình duyệt)
+                event.preventDefault();
+
+                // Loại bỏ class "active" từ tất cả các nút cùng loại (color hoặc capacity)
+                var type = this.getAttribute("data-type");
+                var value = this.getAttribute("data-value");
+                var relatedButtons = document.querySelectorAll("button.test[data-type='" + type + "']");
+                relatedButtons.forEach(function (btn) {
+                    btn.classList.remove("active");
+                });
+
+                // Thêm class "active" cho nút được bấm
+                this.classList.add("active");
+            });
+        });
+    });
+</script>
+
+
+

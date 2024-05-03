@@ -735,8 +735,9 @@
 
 
                             @*CapacityDienTHoai*@
-                            @Html.Action("DungLuong", "Product", new { productid = Model.ProductsId, DungLuong = Model.Capacity })
-                            @Html.Action("Partail_ColorByProductsId", "Product", new { productid = Model.ProductsId })
+                            @*@Html.Action("DungLuong", "Product", new { productid = Model.ProductsId, DungLuong = Model.Capacity })
+                            @Html.Action("Partail_ColorByProductsId", "Product", new { productid = Model.ProductsId })*@
+                            @Html.Action("Partial_GetCapcityAndColorByProductId", "Product", new { productid = Model.ProductsId })
 
                         </div>
 

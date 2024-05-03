@@ -11,11 +11,13 @@ namespace WebSite_CuaHangDienThoai.Models
         public int DungLuong { get; set; }
         public string Color { get; set; }
         public int ProductDetailId { get; set; }
-
+       
 
 
         public decimal Price { get; set; }
         public decimal PriceSale { get; set; }
-        public decimal OrigianlPrice { get; set; }  
+        public decimal OrigianlPrice { get; set; }
+        public int ProductsId { get; set; }
+
     }
 }

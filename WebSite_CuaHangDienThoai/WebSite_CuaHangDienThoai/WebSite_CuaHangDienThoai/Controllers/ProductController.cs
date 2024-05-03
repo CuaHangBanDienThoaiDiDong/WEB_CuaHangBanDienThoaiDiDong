@@ -275,6 +275,59 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
+
+        //Test
+        public ActionResult Partial_GetCapcityAndColorByProductId(int ProductId)
+        {
+            using (var db = new CUAHANGDIENTHOAIEntities())
+            {
+                var colorQuery =
+                (from pd in db.tb_ProductDetail
+                 where pd.ProductsId == ProductId
+                 group pd by pd.Color into g
+                 select new { FilteredValue = g.Key });
+
+                // Lấy ra các mục Capacity
+                var capacityQuery =
+                    (from pd in db.tb_ProductDetail
+                     where pd.ProductsId == ProductId
+                     group pd by pd.Capacity into g
+                     select new { FilteredValue = g.Key.ToString() });
+
+                // Kết hợp kết quả của hai truy vấn
+                var result = colorQuery.Concat(capacityQuery)
+                                        .Select(x => new ProductDetailViewModel
+                                        {
+                                            ProductDetailId = 0, // Không cần thiết vì đang lấy MIN(ProductDetailId)
+                                            Color = x.FilteredValue,
+                                            DungLuong = 0, // Không cần thiết vì đang lấy MIN(ProductDetailId)
+                                            ProductsId = ProductId
+                                        });
+
+                return PartialView(result.ToList());
+            }
+        }
+
+
+
+
+
+
+
+        //EndTest
+
+
+
+
+
+
+
+
+
+
+
+
+
         public ActionResult Partial_DetailImageById(int id)
         {
             using (var dbContext = new CUAHANGDIENTHOAIEntities())
