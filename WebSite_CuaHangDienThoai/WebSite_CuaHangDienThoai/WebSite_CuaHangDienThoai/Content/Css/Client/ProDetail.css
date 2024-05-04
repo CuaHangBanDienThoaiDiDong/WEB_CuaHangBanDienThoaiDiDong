@@ -1,0 +1,420 @@
+﻿.policy__list li {
+    position: relative;
+    padding: 12px 0 12px 35px;
+    width: 50%;
+    display: inline-block;
+}
+
+    .policy__list li p {
+        color: white
+    }
+
+    .policy__list li svg {
+        width: 100%;
+        height: 100%;
+    }
+
+.price-discount-warranty span.percent-oldProduct {
+    /*  color: #eb5757;*/
+    background: #fff0e9;
+    padding-right: 5px;
+    position: relative;
+    margin-right: 5px;
+    font-size: 15px;
+    margin-left: 10px
+}
+
+
+    .price-discount-warranty span.percent-oldProduct::after {
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 10px solid #fff0e9;
+        content: '';
+        position: absolute;
+        top: 5px;
+        left: -15px;
+        transform: rotate(90deg);
+    }
+
+.result-label {
+    border-radius: 20px;
+    display: inline-block;
+    font-size: 0;
+    overflow: hidden;
+    max-width: 100%;
+    padding-right: 8px;
+}
+
+    .result-label.temp1 {
+        background: linear-gradient(to right, #ef3006, #c60004);
+    }
+
+    .result-label span {
+        color: #fff;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        font-size: 10px;
+        line-height: 13px;
+        margin-left: 3px;
+        overflow: hidden;
+        padding: 4px 0 0 3px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        -webkit-line-clamp: 2;
+        text-transform: uppercase;
+    }
+
+.listproduct .price {
+    color: #e83a45;
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 18px;
+    margin-bottom: 5px;
+}
+
+.listproduct .price-old.black {
+    color: #333;
+}
+
+.listproduct .price-old {
+    color: #666;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 17px;
+    text-decoration-line: line-through;
+}
+
+.listproduct .percent {
+    color: #333;
+    display: inline-block;
+    font-size: 13px;
+    line-height: 17px;
+}
+
+
+
+/* start  Khuyen mai*/
+.box_saving.v2.olgr .bs_title {
+    background-color: transparent;
+    background-image: url('../../images/banner/bg-olgr-min-562x204.png');
+}
+
+.box_saving.v2.olgr {
+    background: linear-gradient(272.75deg, #f38c25 38.99%, #fb6848 76.29%);
+}
+
+.box_saving.v2 {
+    background-color: #e2252d;
+    padding-bottom: 1px;
+    border-radius: 10px;
+}
+
+.box_saving {
+    margin-bottom: 10px;
+    position: relative;
+}
+
+
+    .box_saving.v2.olgr .bs_title {
+        background-color: transparent;
+        background-image: url('../../images/banner/bg-olgr-min-562x204.png');
+    }
+
+    .box_saving.v2 .bs_title {
+        display: flex;
+        align-items: center;
+        background-color: #e2252d;
+        background-image: url('../../images/banner/bg-olgr-min-562x204.png');
+        background-repeat: no-repeat;
+        background-position: top right;
+        background-size: cover;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .box_saving .bs_title {
+        padding: 10px;
+        border-radius: 4px 4px 0 0;
+        background-color: #e21d22;
+        overflow: hidden;
+    }
+
+    .box_saving.v2 .bs_title div.bs_price {
+        width: 50%;
+    }
+
+.pr-top .pr-txt {
+    color: #666;
+    line-height: 1.4;
+    font-style: normal;
+}
+
+.pr-txtb {
+    font-weight: bold;
+}
+
+.box_saving {
+    margin-bottom: 10px;
+    position: relative;
+}
+
+    .box_saving.v2 .bs_title div.bs_price {
+        width: 50%;
+    }
+
+        .box_saving.v2 .bs_title div.bs_price > b {
+            display: block;
+            font-size: 16px;
+            font-weight: normal;
+        }
+
+        .box_saving.v2 .bs_title div.bs_price > * {
+            margin-bottom: 7px;
+            color: #fff;
+        }
+
+    .box_saving.v2.olgr .bs_title div.bs_price > strong {
+        color: white;
+    }
+
+    .box_saving.v2 .bs_title div.bs_price > strong {
+        display: block;
+        color: #ffd028;
+        font-size: 24px;
+    }
+
+    .box_saving.v2 .bs_title div.bs_price > em {
+        font-style: normal;
+        text-decoration-line: line-through;
+    }
+
+    .box_saving.v2 .bs_title div.bs_price > * {
+        margin-bottom: 7px;
+        color: #fff;
+    }
+
+    .box_saving.v2 .bs_title div.bs_time {
+        width: 50%;
+        text-align: right;
+    }
+
+        .box_saving.v2 .bs_title div.bs_time span {
+            color: #fff;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .box_saving.v2 .bs_title div.bs_time .clockv2 {
+            margin-bottom: 5px;
+            height: 24px;
+        }
+
+.bs_container {
+    display: flex;
+    align-items: center; /* Aligns items vertically in the center */
+    justify-content: space-between; /* Distributes space between the children */
+    width: 100%; /* Optional: sets the width of the container to full width */
+}
+
+.bs_price, .bs_time {
+    flex: 1; /* Each child will take equal space */
+}
+
+.divb-right {
+    padding-left: 26px;
+}
+
+.pr-content .pr-item p {
+    line-height: 1.5;
+}
+
+.divb-right p {
+    line-height: 20px;
+}
+/* Start noi dung khung khuyn mai */
+.box_saving.v2 .bs_content {
+    background-color: #fff;
+    margin: 0 5px 5px 5px;
+    padding-bottom: 0;
+    border-radius: 4px;
+}
+
+.box_saving .bs_content {
+    background-color: #fff4de;
+    border: 1px solid #fde8d5;
+    padding: 10px 0;
+}
+
+    .box_saving .bs_content .block__promo {
+        border: 0;
+        border-bottom: 1px dashed #f2994a;
+        margin-bottom: 10px;
+        padding: 7px 7px 10px 7px;
+        border-radius: 0;
+    }
+
+.block__promo {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.box_saving .bs_rule {
+    padding: 0 7px;
+    margin: 10px 0;
+}
+
+    .box_saving .bs_rule p, .box_saving .bs_rule li {
+        margin-bottom: 2px;
+        line-height: 1.6;
+        padding-left: 12px;
+        position: relative;
+        display: list-item;
+        text-align: -webkit-match-parent;
+        unicode-bidi: isolate;
+    }
+/* End noi dung khung khuyn mai */
+/* Start btn gia tien */
+.box_saving .block-button {
+    padding: 0 10px;
+    margin-top: 10px;
+}
+
+.block-button {
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+    .block-button .btn-buynow.twoprice {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+    }
+
+    .block-button .btn-buynow {
+        margin-bottom: 8px;
+        display: block;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+.btn-buynow.red {
+    background-color: #d0021c;
+    font-weight: bold;
+    padding: 6px 10px;
+}
+
+.btn-buynow {
+    background-color: #fb6e2e;
+    border-radius: 4px;
+    color: #fff;
+    display: block;
+    font-size: 15px;
+    padding: 14px 10px;
+    text-align: center;
+}
+
+.block-button .btn-left {
+    float: left;
+}
+
+.block-button .btn-ins {
+    width: 49%;
+}
+
+.btn-ins {
+    background-color: #2f80ed;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 13px;
+    line-height: 16px;
+    padding: 7px 0;
+    text-align: center;
+}
+
+
+.block-button .btn-right {
+    float: right;
+}
+
+.block-button .btn-ins {
+    width: 49%;
+}
+
+.btn-ins {
+    background-color: #2f80ed;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 13px;
+    line-height: 16px;
+    padding: 7px 0;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+    transition: .2s;
+    color: #288ad6;
+}
+
+.callorder {
+    line-height: 17px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.divb .nb {
+    background-color: #4a90e2;
+    border-radius: 50%;
+    color: #fff;
+    display: inline-block;
+    font-size: 11px;
+    float: left;
+    height: 16px;
+    line-height: 16px;
+    margin-top: 2px;
+    text-align: center;
+    width: 16px;
+}
+
+.box_saving .bs_content .pr-content .pr-item {
+    padding: 7px 0 10px 0;
+}
+
+.pr-content .pr-item:last-child {
+    border: 0;
+}
+
+.divb:last-child {
+    margin-bottom: 0;
+}
+
+.divb {
+    margin-bottom: 10px;
+}
+
+.pr-content .pr-item {
+    padding: 15px 10px 10px 10px;
+}
+
+
+.box_saving .bs_content .pr-top {
+    padding: 0;
+    border: 0;
+    background: none;
+}
+
+.pr-top {
+    background-color: #f6f6f6;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 8px 10px;
+}

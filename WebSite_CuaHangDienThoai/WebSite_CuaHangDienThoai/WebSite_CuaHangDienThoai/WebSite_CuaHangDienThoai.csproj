@@ -3274,6 +3274,7 @@
     <Content Include="Content\Css\Client\LayOut.css" />
     <Content Include="Content\Css\Client\LayOutSearch.css" />
     <Content Include="Content\Css\Client\LoginClient.css" />
+    <Content Include="Content\Css\Client\ProDetail.css" />
     <Content Include="Content\Css\Client\RegisterClient.css" />
     <Content Include="Content\LayOut\LayOut.css" />
     <Content Include="Content\LayOut\MenuGoiYHomNay.css" />

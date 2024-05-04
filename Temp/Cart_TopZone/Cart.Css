@@ -1,0 +1,128 @@
+#app>section {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    min-width: 0;
+}
+.topzone section {
+    padding: 0;
+}
+.topzone .yourCart {
+    font-weight: 400;
+}
+.yourCart {
+    display: block;
+    overflow: hidden;
+}
+.topzone .buymore {
+    color: var(--black);
+    padding: 15px 15px 13px;
+    position: relative;
+    line-height: 21px;
+}
+.buymore {
+    float: left;
+    overflow: hidden;
+    font-size: 14px;
+    color: #288ad6;
+    line-height: 16px;
+    padding: 10px;
+}
+.topzone .buymore:before {
+    border: 0;
+    transform: rotate(-45deg);
+    left: 0;
+    bottom: unset;
+    right: unset;
+    z-index: 0;
+    top: 23px;
+}
+.topzone .buymore:after, .topzone .buymore:before {
+    content: "";
+    position: absolute;
+    background: var(--black);
+    border-radius: 24px;
+    display: block;
+    width: 6px;
+    height: 1px;
+    top: 50%;
+}
+.buymore:before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-top: 1px solid #288ad6;
+    border-left: 1px solid #288ad6;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 3px 2px 0;
+    transform: rotate(-45deg);
+}
+.topzone .buymore {
+    color: var(--black);
+    padding: 15px 15px 13px;
+    position: relative;
+    line-height: 21px;
+}
+.buymore {
+    float: left;
+    overflow: hidden;
+    font-size: 14px;
+    color: #288ad6;
+    line-height: 16px;
+    padding: 10px;
+}
+.topzone .buymore:after {
+    border: 0;
+    transform: rotate(-135deg);
+    left: 0;
+    right: unset;
+    top: 27px;
+}
+.topzone .buymore:after, .topzone .buymore:before {
+    content: "";
+    position: absolute;
+    background: var(--black);
+    border-radius: 24px;
+    display: block;
+    width: 6px;
+    height: 1px;
+    top: 50%;
+}
+.topzone .buymore {
+    color: var(--black);
+    padding: 15px 15px 13px;
+    position: relative;
+    line-height: 21px;
+}
+.buymore {
+    float: left;
+    overflow: hidden;
+    font-size: 14px;
+    color: #288ad6;
+    line-height: 16px;
+    padding: 10px;
+}
+user agent stylesheet
+a:-webkit-any-link {
+    color: -webkit-link;
+    cursor: pointer;
+}
+.topzone .yourCart {
+    font-weight: 400;
+}
+.topzone .yourCart>span {
+    padding: 15px 7px 13px;
+    color: var(--black);
+    line-height: 21px;
+    overflow: hidden;
+    width: 300px;
+    text-overflow: ellipsis;
+    text-align: right;
+    white-space: nowrap;
+}
+.yourCart>span {
+    float: right;
+    padding: 9px 10px;
+}

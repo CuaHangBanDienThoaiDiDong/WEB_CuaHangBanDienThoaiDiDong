@@ -150,7 +150,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
-            var checkProductDetail = db.tb_ProductDetail.FirstOrDefault(r => r.Title == req.Title && r.ProductsId == req.ProductsId);
+            //var checkProductDetail = db.tb_ProductDetail.FirstOrDefault(r => r.Title == req.Title && r.ProductsId == req.ProductsId);
+            var checkProductDetail = db.tb_ProductDetail.FirstOrDefault(r =>string.Equals(r.Color,req.Color, StringComparison.OrdinalIgnoreCase) && r.ProductsId == req.ProductsId);
             if (checkProductDetail == null)
             {
                 if (req.ProductsId != null)
