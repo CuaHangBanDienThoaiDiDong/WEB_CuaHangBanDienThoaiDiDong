@@ -2,19 +2,31 @@
 <div class="scrolling_inner">
 
     <div class="box03 color group desk">
-        @if (ViewBag.ProductId != null )
+        @if (ViewBag.ProductId != null)
         {
 
             foreach (var item in Model)
             {
-                <a href="/dtdd/iphone-15-pro-max-512gb?code=0131491003841" data-color="1197" data-code="0131491003841" class="box03__item item act ">@item.Color </a>
+               
+                    <button class="btnloadPricebyCapcity" data-id="@item.ProductDetailId">@item.Color</button>
+                
             }
 
         }
 
-       
+
     </div>
 </div>
+<script>
+    $('.loadPricebyCapcity').on('click', function () {
+        var productId = $(this).data('id');
+        alert('Id: ' + productId);
+    });
+</script>
+
+
+
+
 
 
 

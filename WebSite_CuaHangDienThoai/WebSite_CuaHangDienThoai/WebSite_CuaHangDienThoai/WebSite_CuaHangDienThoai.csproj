@@ -3956,6 +3956,7 @@
     <Compile Include="Controllers\ProductCompanyController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductDetailController.cs" />
+    <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -4129,7 +4130,9 @@
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Product\SuggestTop.cshtml" />
     <Content Include="Views\Product\Partail_ColorByProductsId.cshtml" />
-    <Content Include="Views\Product\Partial_GetCapcityAndColorByProductId.cshtml" />
+    <Content Include="Views\Product\Partial_LoadPriceForBoxSaving.cshtml" />
+    <Content Include="Views\ShoppingCart\Index.cshtml" />
+    <Content Include="Views\ShoppingCart\Partial_ItemCart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

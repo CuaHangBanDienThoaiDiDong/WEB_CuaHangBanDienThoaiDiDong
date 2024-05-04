@@ -151,7 +151,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
             //var checkProductDetail = db.tb_ProductDetail.FirstOrDefault(r => r.Title == req.Title && r.ProductsId == req.ProductsId);
-            var checkProductDetail = db.tb_ProductDetail.FirstOrDefault(r =>string.Equals(r.Color,req.Color, StringComparison.OrdinalIgnoreCase) && r.ProductsId == req.ProductsId);
+            var checkProductDetail = db.tb_ProductDetail.Where(r => r.Title== req.Title&&r.Ram==req.Ram && r.ProductsId == req.ProductsId&&r.Capacity==req.DungLuong);
             if (checkProductDetail == null)
             {
                 if (req.ProductsId != null)

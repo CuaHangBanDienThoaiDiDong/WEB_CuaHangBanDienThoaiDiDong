@@ -29,18 +29,13 @@
                         var uniqueColors = item.Color.Distinct();
                         var DungLuong = "";
 
-                        if (item.DungLuong > 999)
-                        {
-                            DungLuong = "1 Tb";
-                        }
-                        else if (item.DungLuong > 1999)
-                        {
-                            DungLuong = "2 Tb";
-                        }
-                        else
-                        {
-                            DungLuong = item.DungLuong + " Gb";
-                        }
+                        string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
+
+                        int[] nguongDungLuong = new int[] { 999, 1999 };
+
+                        int index = Array.FindIndex(nguongDungLuong, capacity => Model.Capacity > capacity);
+
+                        DungLuong = index != -1 ? dungLuongOptions[index] : Model.Capacity + " Gb";
 
                         // Tạo nút đầu tiên và thiết lập class active cho nó
                         if (isFirstButton)

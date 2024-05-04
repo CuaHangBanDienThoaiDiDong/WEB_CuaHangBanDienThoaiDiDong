@@ -20,7 +20,7 @@ namespace WebSite_CuaHangDienThoai
             routes.MapRoute(
              name: "indexCart",
              url: "Gio-hang",
-             defaults: new { controller = "Cart", action = "Index", alias = UrlParameter.Optional },
+             defaults: new { controller = "ShoppingCart", action = "Index", alias = UrlParameter.Optional },
              namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
          );
             //// Route Trang chu

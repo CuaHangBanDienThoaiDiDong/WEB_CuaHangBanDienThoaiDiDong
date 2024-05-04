@@ -231,16 +231,58 @@ namespace WebSite_CuaHangDienThoai.Controllers
             
         }
 
+        ////[HttpGet]
+        //public ActionResult Partail_ColorByProductsId(int productid )
+        //{
+        //    if (productid != null) 
+        //    {
 
-        public ActionResult Partail_ColorByProductsId(int productid )
+        //        using (var dbContext = new CUAHANGDIENTHOAIEntities())
+        //        {
+        //            var uniqueCapacitiesWithIdsAndImages = dbContext.tb_ProductDetail
+        //            .Where(p => p.ProductsId == productid &&p.Capacity)
+        //            .GroupBy(p => p.Color)
+        //            .Select(g => new
+        //            {
+        //                Color = g.Key,
+        //                ProductDetailId = g.Min(p => p.ProductDetailId),
+
+        //            })
+        //            .ToList();
+
+        //            var viewModels = uniqueCapacitiesWithIdsAndImages.Select(item => new ProductColorViewModel
+        //            {
+
+        //                ProductDetailId = item.ProductDetailId,
+        //                ProductslId = productid,
+        //                Color = item.Color,
+
+        //            }).ToList();
+
+        //            ViewBag.ProductId = productid;
+        //            //ViewBag.Color = Color;
+        //            return PartialView(viewModels);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return PartialView(null);
+        //    }
+
+
+
+        //}
+
+        //[HttpGet]
+        public ActionResult Partail_ColorByProductsId(int productid,int capacity)
         {
-            if (productid != null) 
+            if (productid != null)
             {
 
                 using (var dbContext = new CUAHANGDIENTHOAIEntities())
                 {
                     var uniqueCapacitiesWithIdsAndImages = dbContext.tb_ProductDetail
-                    .Where(p => p.ProductsId == productid)
+                    .Where(p => p.ProductsId == productid && p.Capacity== capacity)
                     .GroupBy(p => p.Color)
                     .Select(g => new
                     {
@@ -270,64 +312,25 @@ namespace WebSite_CuaHangDienThoai.Controllers
             }
 
 
-
         }
-
-
-
-
-        //Test
-        public ActionResult Partial_GetCapcityAndColorByProductId(int ProductId)
+        //load Price for detail by Partail_ColorByProductsId int productid,int capacity
+        public ActionResult Partial_LoadPriceForBoxSaving(int id)
         {
-            using (var db = new CUAHANGDIENTHOAIEntities())
+            if (id != null)
             {
-                var colorQuery =
-                (from pd in db.tb_ProductDetail
-                 where pd.ProductsId == ProductId
-                 group pd by pd.Color into g
-                 select new { FilteredValue = g.Key });
-
-                // Lấy ra các mục Capacity
-                var capacityQuery =
-                    (from pd in db.tb_ProductDetail
-                     where pd.ProductsId == ProductId
-                     group pd by pd.Capacity into g
-                     select new { FilteredValue = g.Key.ToString() });
-
-                // Kết hợp kết quả của hai truy vấn
-                var result = colorQuery.Concat(capacityQuery)
-                                        .Select(x => new ProductDetailViewModel
-                                        {
-                                            ProductDetailId = 0, // Không cần thiết vì đang lấy MIN(ProductDetailId)
-                                            Color = x.FilteredValue,
-                                            DungLuong = 0, // Không cần thiết vì đang lấy MIN(ProductDetailId)
-                                            ProductsId = ProductId
-                                        });
-
-                return PartialView(result.ToList());
+                var item = db.tb_ProductDetail.Find(id);
+                ViewBag.item = item.Title;
+                return PartialView(item);   
             }
+            else 
+            {
+                return PartialView(null);
+            }
+            
         }
 
 
-
-
-
-
-
-        //EndTest
-
-
-
-
-
-
-
-
-
-
-
-
-
+      
         public ActionResult Partial_DetailImageById(int id)
         {
             using (var dbContext = new CUAHANGDIENTHOAIEntities())

@@ -1,0 +1,116 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_CartItem>
+
+
+<div class="container bg-white">
+    <div class="col-md-12 col-sm-12 content">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-info panel-shadow">
+                    @if (Model != null && Model.Any())
+                    {
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" id="SelectAll" /></th>
+                                            <th>STT</th>
+                                            <th>Hình ảnh</th>
+                                            <th>Tên sản phẩm</th>
+                                            <th>Loại sản phẩm</th>
+                                            <th>Size</th>
+                                            <th>Số lượng</th>
+                                            <th>Giá</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            var Capacity = "";
+                                            string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
+
+                                            int[] nguongDungLuong = new int[] { 999, 1999 };
+
+                                            int index = Array.FindIndex(nguongDungLuong, capacity => item.tb_ProductDetail.Capacity > capacity);
+
+                                            Capacity = index != -1 ? dungLuongOptions[index] : item.tb_ProductDetail.Capacity + " Gb";
+
+
+
+                                            var i = 0;
+                                            var strImg = "";
+                                            var img = item.tb_ProductDetail.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
+                                            if (img != null)
+                                            {
+                                                strImg = img.Image;
+                                            }
+
+                                            //var tongTien += item.PriceTotal;
+                                            <tr id="trow_@item.ProductDetailId">
+
+                                                <td><input type="checkbox" class="cbkItem" data-id="@item.ProductDetailId" /></td>
+                                                <td>
+                                                    @(i+1)
+                                                </td>
+                                                <td><img src="@strImg" alt="@item.tb_ProductDetail.tb_Products.Title" class="img-cart w-25"></td>
+                                                <td>
+                                                    @*<a href="/chi-tiet/@item.Alias-p@(item.ProductId)">*@
+                                                    @item.tb_ProductDetail.tb_Products.Title @Capacity
+                                                    @*</a>*@
+                                                </td>
+                                                <td>
+                                                    @item.tb_ProductDetail.tb_Products.tb_ProductCategory.Title
+                                                </td>
+                                                <td>
+                                                    @item.tb_ProductDetail.Color
+                                                </td>
+                                                <td>
+                                                    <form class="form-inline">
+                                                        <input type="number" class="form-control Quantity" id="@item.ProductDetailId" value="@item.Quantity" />
+
+                                                    </form>
+                                                </td>
+                                                <td>@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price) vnđ</td>
+                                                @*<td>@WSite_ShowRoom_CtyThoiTrang.Common.Common.FormatNumber(item.) vnđ</td>*@
+                                                <td>
+
+                                                    <a href="#" data-id="@item.ProductDetailId" class="btn btn-sm btn-danger btnDelete"><i class="far fa-trash-alt"></i></a>
+                                                </td>
+                                            </tr>
+                                            i++;
+                                            <tr>
+                                                <td colspan="8">
+                                                    &nbsp;
+
+                                                </td>
+                                            </tr>
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+
+                        <img src="//theme.hstatic.net/200000420363/1001162486/14/empty_cart.png?v=240" alt="Không có sản phẩm nào trong giỏ hàng của bạn">
+
+
+                        <span>Bạn chưa có sản phẩm nào. Vui long quay lại trang <a href="/home/index">sản phẩm</a> để mua hàng.</span>
+
+                    }
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
