@@ -73,7 +73,7 @@
         height: 80%;*/
     }
 
-    .btns {
+   /* .btns {
         position: absolute;
         left: 0;
         bottom: -100%;
@@ -90,6 +90,27 @@
         }
 
             .btns button:hover {
+                color: #fcb941;
+            }*/
+
+
+    .btns {
+        position: absolute;
+        left: 0;
+        bottom: -100%;
+        font-size: 15px;
+        font-weight: 300;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .btns a {
+            border: none;
+            background-color: rgb(39, 39, 39);
+            color: #fff;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .btns a:hover {
                 color: #fcb941;
             }
 
@@ -209,28 +230,16 @@
                                                     </div>
                                                 </div>
                                             }
+                                        <div class="row btns w-100 mx-auto text-center">
 
-                                            @*<span class="heart-icon">
-                            <i class="far fa-heart"></i>
-                        </span>*@
-                                            <div class="row btns w-100 mx-auto text-center">
-                                                <button type="button" class="col-md-12 py-2 btnAddtoCart">
-                                                    <i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng
-                                                </button>
-                                                @*<button type="button" class="col-6 py-2">
-                                <i class="fa fa-binoculars"></i> View
-                            </button>*@
-                                            </div>
+
+                                            <a href="#" class="col-md-12 py-2 btnAddtoCart"data-id="@items.ProductDetailId" data-Color="@items.Color">
+                                                <i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng
+                                            </a>
+                                        </div>
                                         </div>
 
                                         <div class="product-info p-3">
-
-                                            @*<a class="d-inline-block text-truncate text-center center-anchor" style="display: flex; justify-content: center; align-items: center; height: 100%; " href="/Product/Details?id=@items.ProductsId&ProductDetailId=@items.ProductDetailId" style="color: white; text-decoration: none; padding-top: 10px; display: block;">
-            <h5 style="color:white;padding-top:10px;" class="text-center ">@items.tb_Products.Title @Capacity</h5>
-        </a>*@
-                                            @*<a class="d-inline-block text-truncate text-center center-anchor" style="display: flex; justify-content: center; align-items: center; height: 100%; " href="/product/DetailsTest/@items.ProductsId" style="color: white; text-decoration: none; padding-top: 10px; display: block;">
-            <h5 style="color:white;padding-top:10px;" class="text-center ">@items.tb_Products.Title @Capacity</h5>
-        </a>*@
 
                                             <a class="d-inline-block text-truncate text-center center-anchor" style="display: flex; justify-content: center; align-items: center; height: 100%; " href="/chi-tiet/@items.tb_Products.Alias-p@(items.ProductsId)" style="color: white; text-decoration: none; padding-top: 10px; display: block;">
                                                 <h5 style="color:white;padding-top:10px;" class="text-center ">@items.tb_Products.Title @Capacity</h5>

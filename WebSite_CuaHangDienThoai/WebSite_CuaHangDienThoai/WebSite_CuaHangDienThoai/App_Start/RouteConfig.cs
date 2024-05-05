@@ -9,6 +9,15 @@ namespace WebSite_CuaHangDienThoai
         {
 
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+
+
+            routes.MapRoute(
+                 name: "Search",
+                 url: "tim-kiem/key={key}",
+                 defaults: new { controller = "Product", action = "Search" }
+             );
+
             //// Route sanpham-dungluong
             routes.MapRoute(
              name: "ProductDetailByCapacity",

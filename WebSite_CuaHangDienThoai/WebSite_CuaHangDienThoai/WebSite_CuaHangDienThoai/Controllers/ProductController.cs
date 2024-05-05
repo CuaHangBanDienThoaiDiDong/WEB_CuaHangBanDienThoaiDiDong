@@ -40,10 +40,14 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
-        public ActionResult Search(string searchString)
+
+
+        public ActionResult Search(string key)
         {
-            var products = db.tb_Products.Where(p => p.Alias.Contains(searchString)).ToList();
-            ViewBag.SearchString = searchString;
+            var products = db.tb_Products.Where(p => p.Alias.Contains(key)).ToList();
+            int count = db.tb_Products.Where(p => p.Alias.Contains(key)).Count();
+            ViewBag.Total = count;
+            ViewBag.SearchString = key;
             return View(products);
         }
 
@@ -231,47 +235,6 @@ namespace WebSite_CuaHangDienThoai.Controllers
             
         }
 
-        ////[HttpGet]
-        //public ActionResult Partail_ColorByProductsId(int productid )
-        //{
-        //    if (productid != null) 
-        //    {
-
-        //        using (var dbContext = new CUAHANGDIENTHOAIEntities())
-        //        {
-        //            var uniqueCapacitiesWithIdsAndImages = dbContext.tb_ProductDetail
-        //            .Where(p => p.ProductsId == productid &&p.Capacity)
-        //            .GroupBy(p => p.Color)
-        //            .Select(g => new
-        //            {
-        //                Color = g.Key,
-        //                ProductDetailId = g.Min(p => p.ProductDetailId),
-
-        //            })
-        //            .ToList();
-
-        //            var viewModels = uniqueCapacitiesWithIdsAndImages.Select(item => new ProductColorViewModel
-        //            {
-
-        //                ProductDetailId = item.ProductDetailId,
-        //                ProductslId = productid,
-        //                Color = item.Color,
-
-        //            }).ToList();
-
-        //            ViewBag.ProductId = productid;
-        //            //ViewBag.Color = Color;
-        //            return PartialView(viewModels);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return PartialView(null);
-        //    }
-
-
-
-        //}
 
         //[HttpGet]
         public ActionResult Partail_ColorByProductsId(int productid,int capacity)

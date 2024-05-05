@@ -82,14 +82,14 @@
         transition: all 0.3s ease-in-out;
     }
 
-        .btns button {
+        .btns a {
             border: none;
             background-color: rgb(39, 39, 39);
             color: #fff;
             transition: all 0.3s ease-in-out;
         }
 
-            .btns button:hover {
+            .btns a:hover {
                 color: #fcb941;
             }
 
@@ -205,14 +205,14 @@
                                         @*<span class="heart-icon">
                                         <i class="far fa-heart"></i>
                                     </span>*@
-                                        <div class="row btns w-100 mx-auto text-center">
-                                            <button type="button" class="col-md-12 py-2">
-                                                <i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng
-                                            </button>
-                                            @*<button type="button" class="col-6 py-2">
-                                            <i class="fa fa-binoculars"></i> View
-                                        </button>*@
-                                        </div>
+                                    <div class="row btns w-100 mx-auto text-center">
+                                        <a href="#" class="col-md-12 py-2 btnAddtoCart" data-id="@items.ProductDetailId" data-Color="@items.Color">
+                                            <i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng
+                                        </a>
+                                        @*<button type="button" class="col-6 py-2">
+            <i class="fa fa-binoculars"></i> View
+        </button>*@
+                                    </div>
                                     </div>
 
                                     <div class="product-info p-3">

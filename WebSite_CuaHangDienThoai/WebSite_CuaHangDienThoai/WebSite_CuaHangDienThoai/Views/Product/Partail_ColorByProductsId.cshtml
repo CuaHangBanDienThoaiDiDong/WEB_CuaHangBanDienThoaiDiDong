@@ -2,14 +2,24 @@
 <div class="scrolling_inner">
 
     <div class="box03 color group desk">
+        @{
+            bool isFirstButtonColor = true; // Biến để kiểm tra xem đã chọn button đầu tiên chưa
+        }
         @if (ViewBag.ProductId != null)
         {
 
             foreach (var item in Model)
             {
-               
+                if (isFirstButtonColor)
+                {
                     <button class="btnloadPricebyCapcity" data-id="@item.ProductDetailId">@item.Color</button>
-                
+                }
+                else
+                {
+                    <button class="btnloadPricebyCapcity" data-id="@item.ProductDetailId">@item.Color</button>
+
+                }
+
             }
 
         }
@@ -18,12 +28,26 @@
     </div>
 </div>
 <script>
-    $('.loadPricebyCapcity').on('click', function () {
-        var productId = $(this).data('id');
-        alert('Id: ' + productId);
+    $(document).ready(function () {
+        // Xử lý sự kiện khi nút màu sắc được nhấp
+        $('.btnloadPricebyCapcity').on('click', function () {
+            // Loại bỏ lớp 'selected' từ tất cả các nút màu sắc
+            $('.btnloadPricebyCapcity').removeClass('selected');
+
+            // Gắn lớp 'selected' vào nút được nhấp
+            $(this).addClass('selected');
+
+            // Lấy ID của sản phẩm chi tiết từ thuộc tính data
+            var productDetailId = $(this).data('id');
+
+            // Kiểm tra xem nút hiện tại có class 'selected' hay không
+            if ($(this).hasClass('selected')) {
+                // Nếu có, gọi hàm loadPriceForByCapcityColor với productDetailId
+                loadPriceForByCapcityColor(productDetailId);
+            }
+        });
     });
 </script>
-
 
 
 

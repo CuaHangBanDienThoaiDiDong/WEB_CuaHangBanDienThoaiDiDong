@@ -203,18 +203,15 @@
 
                     var Capacity = "";
 
-                    if (item.Capacity > 999)
-                    {
-                        Capacity = "1Tb";
-                    }
-                    else if (item.Capacity > 1999)
-                    {
-                        Capacity = "2 Tb";
-                    }
-                    else
-                    {
-                        Capacity = item.Capacity + " Gb";
-                    }
+                
+                    string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
+
+                    int[] nguongDungLuong = new int[] { 999, 1999 };
+
+                    int index = Array.FindIndex(nguongDungLuong, capacity => item.Capacity > capacity);
+
+                    Capacity = index != -1 ? dungLuongOptions[index] : item.Capacity + " Gb";
+
                     if (img != null)
                     {
                         strImg = img.Image;
@@ -230,7 +227,7 @@
                                     <img src="@strImg" alt="@item.tb_Products @Capacity">
                                 </div>
                                 <div class="text-img">
-                                    <span>@item.tb_Products.Title @Capacity </span>
+                                    <span>@item.tb_Products.Title @Capacity @item.Color </span>
                                     <p>
                                         @{
                                             decimal originalPrice = Convert.ToDecimal(item.Price);

@@ -51,7 +51,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 {
                     int checkId = checkIdCart.CartId;
 
-                    var cartItem = db.tb_CartItem.Where(row => row.CartId == checkId);
+                    var cartItem = db.tb_CartItem.OrderByDescending(row => row.CartId == checkId);
                     return PartialView(cartItem);
                 }
                 else

@@ -34,23 +34,6 @@
     });
 
 
-    //$('.btnViewPrice').on('click', function () {
-    //    var productId = $(this).data('id');
-    //    var dungLuong = $(this).data('dungluong');
-    //    loadPrice(productId, dungLuong);
-    //    loadPhanTramSale(productId, dungLuong);
-
-    //    $('.btnViewPrice').removeClass('active');
-    //    $(this).addClass('active');
-    //    // Xóa CSS cho tất cả các button và thêm CSS cho button được nhấn
-    //    $('.btnViewPrice').removeAttr('style');
-    //    $(this).css({
-    //        'color': 'orangered',
-    //        'background-color': 'white'
-    //    });
-    //});
-
-
 
 
 
@@ -93,19 +76,8 @@
 
 
 
-    $('#search-form').submit(function (e) {
-        e.preventDefault();
-        var searchString = $('#search').val();
-        window.location.href = '/Search?searchString=' + searchString;
-    });
-
-
-
-
-
-
-
-
+   
+ 
     $(document).ready(function () {
         $("#searchString").on("input", function () {
             var inputValue = $(this).val().trim();
@@ -135,8 +107,8 @@
         $('#search').keypress(function (e) {
             if (e.which == 13) {
                 e.preventDefault();
-                var searchString = $(this).val();
-                window.location.href = '/Search?searchString=' + searchString;
+                var key = $(this).val();
+                window.location.href = '/tim-kiem/key=' + key;
             }
         });
 
@@ -144,25 +116,24 @@
     });
 
 
+
+    ///* Start Tim kim san pham */
+    //$(document).ready(function () {
+    //    var suggestUrl = '@Url.Action("Suggest", "Product")';
+    //    $('#search').keypress(function (e) {
+    //        if (e.which == 13) {
+    //            e.preventDefault();
+    //            var searchString = $(this).val();
+    //            window.location.href = '/Search?searchString=' + searchString;
+    //        }
+    //    });
+
+
+    //});
+
+
     /* End Tim kim san pham */
 
-    //start nut hiện thị tiền theo màu dung lượng cho trang detail
-
-    //var firstButtonPricebyColor = $('.btnloadPricebyCapcity:first');
-    //var productDetailIdloadPricebyColor = $('.btnloadPricebyCapcity:first').data('id');
-
-    //loadPriceForByCapcityColor(productDetailIdloadPricebyColor);
-    //firstButtonPricebyColor.css({
-    //    'color': 'orangered',
-    //    'background-color': 'white'
-    //});
-    $('.btnloadPricebyCapcity').on('click', function () {
-        var productDetailIdloadPricebyColor = $(this).data('id');
-
-        loadPriceForByCapcityColor(productDetailIdloadPricebyColor)
-    });
-
-    //End nut hiện thị tiền theo màu dung lượng cho trang detail
 
     //start nust thêm giỏ hàng btnAddtoCart
 
@@ -209,26 +180,6 @@
                     if (rs.code == -2) {
 
                         location.href = "/Account/Login";
-
-
-
-                        //var soLuong = 1;
-                        //var tQuantity = $('#quantity_value').text();
-                        //if (tQuantity != '') {
-                        //    soLuong = parseInt(tQuantity);
-                        //}
-                        //alert(id);
-                        //$.ajax({
-                        //    url: '/shoppingcart/addtocart',
-                        //    type: 'POST',
-                        //    data: { id: id, soLuong: soLuong },
-                        //    success: function (rs) {
-                        //        if (rs.Success) {
-                        //            $('#checkout_items').html(rs.Count);
-                        //            alert(rs.msg);
-                        //        }
-                        //    }
-                        //});
                     }
                 }
             }
@@ -264,7 +215,48 @@
         });
     });
 
-    //End btn cập nhập số lượng trong giỏ hàng 
+    //End btn cập nhập số lượng trong giỏ hàng
+
+    //start nut hiện thị tiền theo màu dung lượng cho trang detail
+
+
+    $('.btnloadPricebyCapcity').on('click', function () {
+        var productDetailIdloadPricebyColor = $(this).data('id');
+
+        loadPriceForByCapcityColor(productDetailIdloadPricebyColor)
+    });
+
+    //End nut hiện thị tiền theo màu dung lượng cho trang detail
+
+    //Start sự kiện lấy nút màu đầu tiên cho trong details
+    //var firstButtonColor = $('.btnloadPricebyCapcity:first');
+    //var productDetailIdloadPricebyColor = $('.btnloadPricebyCapcity:first').data('id');
+   
+    //loadPriceForByCapcityColor(productDetailIdloadPricebyColor, dungLuong);
+    //firstButtonColor.css({
+    //    'color': 'orangered',
+    //    'background-color': 'white'
+    //});
+
+    //$('.btnloadPricebyCapcity').on('click', function () {
+    //    // Loại bỏ lớp 'selected' từ tất cả các nút màu sắc 
+    //    $('.btnloadPricebyCapcity').removeClass('selected');
+
+    //    // Gắn lớp 'selected' vào nút được nhấp
+    //    $(this).addClass('selected');
+
+    //    // Lấy ID của sản phẩm chi tiết từ thuộc tính data
+    //    var productDetailId = $(this).data('id');
+
+    //    // Kiểm tra xem nút hiện tại có class 'selected' hay không
+    //    if ($(this).hasClass('selected')) {
+    //        // Nếu có, gọi hàm loadPriceForByCapcityColor với productDetailId
+    //        loadPriceForByCapcityColor(productDetailId);
+    //    }
+    //});
+    //ENd sự kiện lấy nút màu đầu tiên cho trong details
+
+
 
 });
 
