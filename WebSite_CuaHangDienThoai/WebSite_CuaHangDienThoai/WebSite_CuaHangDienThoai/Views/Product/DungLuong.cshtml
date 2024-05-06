@@ -119,11 +119,11 @@
                     if (ViewBag.Capacity == item.Capacity)
                     {
                         @*<a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductId&Capacity=@item.Capacity" data-color="1197" data-code="0131491003841" class="box03__item item  active " style=" border-color: #fb6e2e; color:red">@DungLuong</a>*@
-                        <a href="/chi-tiet-dungluong/@ViewBag.ProductId-DungLuong@(item.Capacity)" data-color="1197" data-code="0131491003841" class="box03__item item  active " style=" border-color: #fb6e2e; color:red">@DungLuong</a>
+                        <a href="/chi-tiet-dungluong/@ViewBag.ProductId-DungLuong@(item.Capacity)" data-color="1197" data-code="0131491003841" class="box03__item item  active text-white " style=" border-color: #fb6e2e; color:red">@DungLuong</a>
                     }
                     else
                     {
-                        <a href="/chi-tiet-dungluong/@ViewBag.ProductId-DungLuong@(item.Capacity)" data-color="1197" data-code="0131491003841" class="box03__item item   " style="  color:red">@DungLuong</a>
+                        <a href="/chi-tiet-dungluong/@ViewBag.ProductId-DungLuong@(item.Capacity)" data-color="1197" data-code="0131491003841" class="box03__item item  text-white " style="  color:red">@DungLuong</a>
 
                     }
                 }

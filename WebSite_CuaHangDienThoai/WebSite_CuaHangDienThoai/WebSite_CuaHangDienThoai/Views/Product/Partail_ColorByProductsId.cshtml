@@ -1,14 +1,14 @@
-﻿@model List<WebSite_CuaHangDienThoai.Models.ProductColorViewModel>
-<div class="scrolling_inner">
+﻿    @model List<WebSite_CuaHangDienThoai.Models.ProductColorViewModel>
+    <div class="scrolling_inner">
 
-    <div class="box03 color group desk">
-        @{
-            bool isFirstButtonColor = true; // Biến để kiểm tra xem đã chọn button đầu tiên chưa
-        }
-        @if (ViewBag.ProductId != null)
-        {
+        <div class="box03 color group desk">
+            @{
+                bool isFirstButtonColor = true; // Biến để kiểm tra xem đã chọn button đầu tiên chưa
+            }
+            @if (ViewBag.ProductId != null)
+            {
 
-            foreach (var item in Model)
+                @*foreach (var item in Model)
             {
                 if (isFirstButtonColor)
                 {
@@ -20,34 +20,98 @@
 
                 }
 
+            }*@
+
+                foreach (var item in Model)
+                {
+                    <button class="btnloadPricebyCapcity  box03__item item text-white " data-id="@item.ProductDetailId">@item.Color</button>
+                }
+
             }
 
+
+        </div>
+    </div>
+    <style>
+        /* CSS cho nút được chọn */
+        .btnloadPricebyCapcity {
+            background-color: transparent; 
+        }
+        .box03 {
+            margin-bottom: 10px;
+        }
+
+        .box03__item.act {
+            border-color: #2f80ed;
+            color: white;
+        }
+
+        .box03__item {
+            border: 1px solid #e0e0e0;
+            border-radius: 2px;
+            color: white;
+            display: inline-block;
+            font-size: 13px;
+            min-width: 67px;
+            padding: 0 15px;
+            text-align: center;
+            margin-bottom: 5px;
+            margin-right: 2px;
+            vertical-align: top;
+            height: 36px;
+            line-height: 36px;
+            position: relative;
         }
 
 
-    </div>
-</div>
-<script>
-    $(document).ready(function () {
-        // Xử lý sự kiện khi nút màu sắc được nhấp
-        $('.btnloadPricebyCapcity').on('click', function () {
-            // Loại bỏ lớp 'selected' từ tất cả các nút màu sắc
-            $('.btnloadPricebyCapcity').removeClass('selected');
 
-            // Gắn lớp 'selected' vào nút được nhấp
-            $(this).addClass('selected');
 
-            // Lấy ID của sản phẩm chi tiết từ thuộc tính data
-            var productDetailId = $(this).data('id');
 
-            // Kiểm tra xem nút hiện tại có class 'selected' hay không
-            if ($(this).hasClass('selected')) {
-                // Nếu có, gọi hàm loadPriceForByCapcityColor với productDetailId
+        
+
+        .btnloadPricebyCapcity.selected {
+            border-color: #fb6e2e;
+            color: red;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            // Xác định hàm để chọn nút đầu tiên và gọi hàm loadPriceForByCapcityColor
+            function selectFirstButtonAndLoadPrice() {
+                // Lấy nút màu sắc đầu tiên
+                var firstButton = $('.btnloadPricebyCapcity').first();
+
+                // Nếu không có nút màu sắc nào tồn tại, không làm gì cả
+                if (firstButton.length === 0) return;
+
+                // Lấy ID của sản phẩm chi tiết từ thuộc tính data của nút đầu tiên
+                var productDetailId = firstButton.data('id');
+
+                // Gắn lớp 'selected' và gọi hàm loadPriceForByCapcityColor với ProductDetailId của nút đầu tiên
+                firstButton.addClass('selected');
                 loadPriceForByCapcityColor(productDetailId);
             }
+
+            // Xử lý sự kiện khi người dùng nhấp vào nút màu sắc
+            $('.btnloadPricebyCapcity').on('click', function () {
+                // Loại bỏ lớp 'selected' từ tất cả các nút màu sắc
+                $('.btnloadPricebyCapcity').removeClass('selected');
+
+                // Gắn lớp 'selected' vào nút được nhấp
+                $(this).addClass('selected');
+
+                // Lấy ID của sản phẩm chi tiết từ thuộc tính data của nút được nhấp
+                var productDetailId = $(this).data('id');
+
+                // Gọi hàm loadPriceForByCapcityColor với ProductDetailId của nút được nhấp
+                loadPriceForByCapcityColor(productDetailId);
+            });
+
+            // Gọi hàm chọn nút đầu tiên và gọi hàm loadPriceForByCapcityColor khi trang được tải
+            selectFirstButtonAndLoadPrice();
         });
-    });
-</script>
+
+    </script>
 
 
 

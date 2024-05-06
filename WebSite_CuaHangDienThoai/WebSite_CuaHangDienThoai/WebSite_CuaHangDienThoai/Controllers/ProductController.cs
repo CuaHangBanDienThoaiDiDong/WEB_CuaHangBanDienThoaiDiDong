@@ -151,9 +151,6 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     }
                 }
                 return View(item);
-
-
-
             }
             else
             {

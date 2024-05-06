@@ -69,8 +69,7 @@
     .product-img {
         position: relative;
         overflow: hidden;
-        /*width: 80%;
-        height: 80%;*/
+        
     }
 
    /* .btns {
@@ -92,6 +91,28 @@
             .btns button:hover {
                 color: #fcb941;
             }*/
+
+
+
+
+
+
+
+    .product-info a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        margin: 0; /* Loại bỏ margin */
+        padding: 0; /* Loại bỏ padding */
+    }
+
+    .product-info h5 {
+        margin: 0; /* Loại bỏ margin */
+        padding: 10px 0; /* Thêm padding trên và dưới */
+    }
+
+
 
 
     .btns {
@@ -149,6 +170,20 @@
     .product-item {
         width: 300px;
     }
+    .image-container {
+        width: 100%; /* Đảm bảo chiều rộng 100% */
+        height: 200px; /* Chiều cao cố định */
+        display: flex; /* Sử dụng flexbox */
+        justify-content: center; /* Căn giữa theo chiều ngang */
+        align-items: center; /* Căn giữa theo chiều dọc */
+        overflow: hidden; /* Ngăn hình ảnh vượt ra khỏi container */
+    }
+
+        .image-container img {
+            width: 100%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng của container */
+            height: 100%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều cao của container */
+            object-fit: cover; /* Đảm bảo hình ảnh được hiển thị mà không bị biến dạng */
+        }
 </style>
 
 
@@ -208,8 +243,8 @@
                                 {
                                     <div class="   col product-item m-1 align-items-center rounded-3 " style=" background :#323232 ;width:auto;height:auto" id="product-item">
 
-                                        <div class="product-img">
-                                            <div class="product_image pt-3 d-flex justify-content-center">
+                                        <div class="product-img" >
+                                            <div class="product_image   pt-3 d-flex justify-content-center">
                                                 <img src="@strImg" alt="@items.Title" class="w-75 h-75">
                                             </div>
 
@@ -240,12 +275,13 @@
                                         </div>
 
                                         <div class="product-info p-3">
+                                            <h6 style="color:white;padding-top:10px;" class="text-center product_name ">
+                                                <a class="d-inline-block text-truncate text-center center-anchor text-white" style="display: flex; justify-content: center; align-items: center; height: 100%; " href="/chi-tiet/@items.tb_Products.Alias-p@(items.ProductsId)" style="color: white; text-decoration: none; padding-top: 10px; display: block;">
+                                                    @items.tb_Products.Title @Capacity
 
-                                            <a class="d-inline-block text-truncate text-center center-anchor" style="display: flex; justify-content: center; align-items: center; height: 100%; " href="/chi-tiet/@items.tb_Products.Alias-p@(items.ProductsId)" style="color: white; text-decoration: none; padding-top: 10px; display: block;">
-                                                <h5 style="color:white;padding-top:10px;" class="text-center ">@items.tb_Products.Title @Capacity</h5>
-                                            </a>
+                                                </a>
 
-
+                                            </h6>
 
                                             @if (items.PriceSale > 0)
                                             {

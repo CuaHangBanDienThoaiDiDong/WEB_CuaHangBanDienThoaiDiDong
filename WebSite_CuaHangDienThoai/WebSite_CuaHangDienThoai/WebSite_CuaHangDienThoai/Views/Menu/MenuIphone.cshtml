@@ -216,9 +216,13 @@
                                     </div>
 
                                     <div class="product-info p-3">
-                                        <a class="d-inline-block text-truncate" href="/chi-tiet/@items.tb_Products.Alias-p@(items.ProductsId)">
-                                            <h5 style="color:white;padding-top:10px;" class="text-center">@items.tb_Products.Title @Capacity</h5>
-                                        </a>
+                                        <h6 style="color:white;padding-top:10px;" class="text-center product_name ">
+                                            <a class="d-inline-block text-truncate text-center center-anchor text-white" style="display: flex; justify-content: center; align-items: center; height: 100%; " href="/chi-tiet/@items.tb_Products.Alias-p@(items.ProductsId)" style="color: white; text-decoration: none; padding-top: 10px; display: block;">
+                                                @items.tb_Products.Title @Capacity
+
+                                            </a>
+
+                                        </h6>
                                         @if (items.PriceSale > 0)
                                         {
                                             <div class="text-center">

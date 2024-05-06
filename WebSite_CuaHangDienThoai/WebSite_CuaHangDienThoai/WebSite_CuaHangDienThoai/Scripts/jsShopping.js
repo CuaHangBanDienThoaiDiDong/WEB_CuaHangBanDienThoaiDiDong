@@ -77,7 +77,7 @@
 
 
    
- 
+ //start Hiện thị gợi ý sản phẩm
     $(document).ready(function () {
         $("#searchString").on("input", function () {
             var inputValue = $(this).val().trim();
@@ -98,13 +98,13 @@
             }
         });
     });
-
+    //End Hiện thị gợi ý sản phẩm
 
 
     /* Start Tim kim san pham */
     $(document).ready(function () {
         var suggestUrl = '@Url.Action("Suggest", "Product")';
-        $('#search').keypress(function (e) {
+        $('#searchString').keypress(function (e) {
             if (e.which == 13) {
                 e.preventDefault();
                 var key = $(this).val();
@@ -231,7 +231,7 @@
     //Start sự kiện lấy nút màu đầu tiên cho trong details
     //var firstButtonColor = $('.btnloadPricebyCapcity:first');
     //var productDetailIdloadPricebyColor = $('.btnloadPricebyCapcity:first').data('id');
-   
+
     //loadPriceForByCapcityColor(productDetailIdloadPricebyColor, dungLuong);
     //firstButtonColor.css({
     //    'color': 'orangered',
@@ -239,7 +239,7 @@
     //});
 
     //$('.btnloadPricebyCapcity').on('click', function () {
-    //    // Loại bỏ lớp 'selected' từ tất cả các nút màu sắc 
+    //    // Loại bỏ lớp 'selected' từ tất cả các nút màu sắc
     //    $('.btnloadPricebyCapcity').removeClass('selected');
 
     //    // Gắn lớp 'selected' vào nút được nhấp
@@ -256,11 +256,34 @@
     //});
     //ENd sự kiện lấy nút màu đầu tiên cho trong details
 
+    //Start lấy nút màu đầu tiên trong Partail_ColorByProductsId cho trnag detail
+    $('.btnloadPricebyCapcity').on('click', function () {
+        $('.btnloadPricebyCapcity').removeClass('selected');
+        $(this).addClass('selected');
+        var productDetailId = $(this).data('id');
+        loadPriceForByCapcityColor(productDetailId);
+    });
 
-
+        // Gọi hàm chọn nút đầu tiên và gọi hàm loadPriceForByCapcityColor khi trang được tải
+        selectFirstButtonAndLoadPrice();
+    //End lấy nút màu đầu tiên trong Partail_ColorByProductsId cho trnag detail
 });
+//Start lấy nút màu đầu tiên trong Partail_ColorByProductsId cho trnag detail
+function selectFirstButtonAndLoadPrice() {
+   
+    var firstButton = $('.btnloadPricebyCapcity').first();
 
+   
+    if (firstButton.length === 0) return;
 
+  
+    var productDetailId = firstButton.data('id');
+
+   
+    firstButton.addClass('selected');
+    loadPriceForByCapcityColor(productDetailId);
+}
+//End lấy nút màu đầu tiên trong Partail_ColorByProductsId cho trnag detail
 //load giá tiền theo màu và dung lượng
 function loadPriceForByCapcityColor(productDetailId) {
     $.ajax({
