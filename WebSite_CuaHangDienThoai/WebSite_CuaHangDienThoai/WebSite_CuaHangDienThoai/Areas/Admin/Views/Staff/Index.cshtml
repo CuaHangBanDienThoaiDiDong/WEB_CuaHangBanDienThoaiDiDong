@@ -58,7 +58,7 @@
                         <th class="text-center">Tên nhân viên</th>
                         <th class="text-center">Chức vụ</th>
                         <th><span>Khóa</span></th>
-                        <th style="width:250px;"></th>
+                        <th style="width:250px;"> <p style="display:none">Thuan</p></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -138,14 +138,14 @@
 
             $('body').on('click', '.btnClockStaff', function () {
                 var id = $(this).data("id");
-             
+                alert(id);
 
                 var conf = confirm('Bạn có muốn khóa tài khoản nhân viên này');
                 if (conf === true) {
                     $.ajax({
-                        url: '/admin/Staff/IsLock',
+                        url: '/Admin/Staff/IsLock',
                         type: 'POST',
-                        data: JSON.stringify({ NhanVienId: id }), // Sử dụng JSON.stringify
+                        data: { id: id },// Sử dụng JSON.stringify
                         contentType: 'application/json', // Thiết lập kiểu dữ liệu là JSON
                         success: function (rs) {
                             if (rs.success) {

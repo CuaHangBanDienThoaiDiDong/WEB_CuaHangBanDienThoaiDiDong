@@ -59,7 +59,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             ViewBag.Code = "2" + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9);
 
 
-            ViewBag.ChucNang = new SelectList(db.tb_Function.ToList(), "FunctionId", "TenChucNang");
+            ViewBag.ChucNang = new SelectList(db.tb_Function.ToList(), "FunctionId", "TitLe");
             return PartialView();
             //}
             //}
@@ -189,17 +189,15 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             ViewBag.ChucNang = new SelectList(db.tb_Function.ToList(), "IdChucNang", "TenChucNang");
             return Json(code);
         }
-      
-        
-        
-        
-        
-        
+
+
+
+
         [HttpPost]
-        public ActionResult IsLock(int id)
+        public ActionResult IsLock(int? id)
         {
 
-            var item = db.tb_Staff.SingleOrDefault(x => x.StaffId==id);
+            var item = db.tb_Staff.SingleOrDefault(x => x.StaffId == id);
             if (item != null)
             {
                 item.Clock = !item.Clock;
@@ -210,6 +208,24 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
             return Json(new { success = false });
         }
+
+
+
+        //[HttpPost]
+        //public ActionResult IsLock(int id)
+        //{
+
+        //    var item = db.tb_Staff.SingleOrDefault(x => x.StaffId==id);
+        //    if (item != null)
+        //    {
+        //        item.Clock = !item.Clock;
+        //        db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+        //        db.SaveChanges();
+        //        return Json(new { success = true, isAcive = item.Clock });
+        //    }
+
+        //    return Json(new { success = false });
+        //}
 
 
         public static string MaHoaPass(string str)
