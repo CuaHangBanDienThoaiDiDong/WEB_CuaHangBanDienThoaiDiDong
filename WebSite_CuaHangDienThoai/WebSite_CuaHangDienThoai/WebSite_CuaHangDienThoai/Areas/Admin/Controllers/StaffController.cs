@@ -59,7 +59,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             ViewBag.Code = "2" + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9);
 
 
-            ViewBag.ChucNang = new SelectList(db.tb_Function.ToList(), "IdChucNang", "TenChucNang");
+            ViewBag.ChucNang = new SelectList(db.tb_Function.ToList(), "FunctionId", "TenChucNang");
             return PartialView();
             //}
             //}

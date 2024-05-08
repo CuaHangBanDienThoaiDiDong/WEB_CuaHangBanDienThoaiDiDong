@@ -68,24 +68,24 @@
                      foreach(var item in Model)
                         {
                             var strClock = item.Clock.GetValueOrDefault() ? "<i class=\"fas fa-lock\"></i>" : "<i class=\"fas fa-lock-open\"></i>";
-                            <tr id="trow_@item.MSNV">
-                                <td><input type="checkbox" class="cbkItem" value="@item.MSNV" /></td>
+                            <tr id="trow_@item.StaffId">
+                                <td><input type="checkbox" class="cbkItem" value="@item.StaffId" /></td>
                                 <td class="text-center">@i</td>
                                 <td class="text-center">
-                                    @item.MSNV
+                                    @item.Code
                                 </td>
                                 <td class="text-center">
-                                    @item.TenNhanVien
+                                    @item.NameStaff
                                 </td>
                                 <td class="text-center">
                                     @*@Html.Action("Partial_RoleInId", "Staff", new { id = item.MSNV })*@
                                 </td>
                                 <td>
-                                    <a href='#' class="btnClockStaff" data-id="@item.NhanVienId">@Html.Raw(strClock)</a>
+                                    <a href='#' class="btnClockStaff" data-id="@item.StaffId">@Html.Raw(strClock)</a>
                                 </td>
                                 <td>
-                                    <a href="/admin/Staff/Details/@item.MSNV.Trim()" class="btn btn-sm btn-success">Xem</a>
-                                    <a href="/admin/Staff/edit/@item.MSNV" class="btn btn-sm btn-primary">Sửa</a>
+                                    <a href="/admin/Staff/Details/@item.StaffId" class="btn btn-sm btn-success">Xem</a>
+                                    <a href="/admin/Staff/edit/@item.StaffId" class="btn btn-sm btn-primary">Sửa</a>
 
                                 </td>
                             </tr>
