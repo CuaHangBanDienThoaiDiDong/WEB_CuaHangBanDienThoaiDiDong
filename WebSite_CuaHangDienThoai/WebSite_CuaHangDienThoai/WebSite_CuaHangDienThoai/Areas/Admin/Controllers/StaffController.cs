@@ -17,25 +17,25 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         // GET: Staff
         public ActionResult Index()
         {
-            //if (Session["user"] == null)
-            //{
-            //    return RedirectToAction("DangNhap", "Account");
-            //}
-            //else
-            //{
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
 
-                //tb_NhanVien nvSession = (tb_NhanVien)Session["user"];
-                //var item = db.tb_PhanQuyen.SingleOrDefault(row => row.Code == nvSession.Code && (row.IdChucNang == 1 || row.IdChucNang == 2));
-                //if (item == null)
-                //{
-                //    return RedirectToAction("NonRole", "HomePage");
-                //}
-                //else
-                //{
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
+                if (item == null)
+                {
+                    return RedirectToAction("NonRole", "HomePage");
+                }
+                else
+                {
                     var items = db.tb_Staff.OrderByDescending(x => x.Code).ToList();
                     return View(items);
-                //}
-            //}
+                }
+            }
 
         }
         public ActionResult Partial_AddStaff()
@@ -69,15 +69,15 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
         public ActionResult Add()
         {
-            //if (Session["user"] == null)
-            //{
-            //    return RedirectToAction("DangNhap", "Account");
-            //}
-            //else
-            //{
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
 
-            return View();
-            //}
+                return View();
+            }
         }
 
      
@@ -96,11 +96,11 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 {
                     if (checkPhone == null)
                     {
-                        //tb_NhanVien nvSession = (tb_NhanVien)Session["user"];
-                        //var item = db.tb_NhanVien.SingleOrDefault(x => x.Code == nvSession.Code);
-                        //if (item != null)
-                        //{
-                        if (req.FunctionId != null)
+                        tb_Staff nvSession = (tb_Staff)Session["user"];
+                        var item = db.tb_Staff.SingleOrDefault(x => x.Code == nvSession.Code);
+                        if (item != null)
+                        {
+                            if (req.FunctionId != null)
                         {
                             string pass = "123";
 
@@ -160,9 +160,9 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                             //"Không thấy chức năng cho nhân viên mới";
                             code = new { Success = false, Code = -4, Url = "" };
                         }
-                        //}
-                        //else
-                        //{ ViewBag.error = "Không thấy Session nhân viên hiện tại"; }
+                        }
+                        else
+                        { ViewBag.error = "Không thấy Session nhân viên hiện tại"; }
                     }
                     else
                     {
