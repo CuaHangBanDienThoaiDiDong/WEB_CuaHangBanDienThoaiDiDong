@@ -59,20 +59,13 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
-
-
         public ActionResult Partial_InforProucts(int id)
         {
             var item = db.tb_Products.Find((int)id);
             return PartialView(item);
         }
 
-        public ActionResult Partial_AddProductDetail(int id)
-        {
-            ViewBag.id = id;
-            return PartialView();
-        }
-
+   
         public ActionResult Partial_DetailProduct(int id)
         {
             var item = db.tb_ProductDetail.Where(x => x.ProductsId == id).ToList();
@@ -80,17 +73,6 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
 
 
-        //public ActionResult Partial_CapacityByProductsId(int id)
-        //{
-        //    var item = db.tb_ProductDetail.Find(id);
-        //    if (item !=null)
-        //    {
-
-        //        return PartialView(item);
-        //    }
-        //    ViewBag.txt = "Không tồn tại bảng ghi !!!";
-        //    return PartialView();
-        //}
 
 
         public ActionResult Partial_CapacityByProductsId(int id)
@@ -134,6 +116,11 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
+        public ActionResult Partial_AddProductDetail(int id)
+        {
+            ViewBag.id = id;
+            return PartialView();
+        }
 
 
 
@@ -225,8 +212,10 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         public ActionResult Edit(int id) 
         {
             var item = db.tb_ProductDetail.Find(id);
+            ViewBag.Title= item.Title;  
                 ViewBag.Products = new SelectList(db.tb_Products.ToList(), "ProductsId", "Title");
-                return PartialView(item);
+            ViewBag.DungLuongSelected = item.Capacity;
+            return PartialView(item);
             
         }
         [HttpPost]

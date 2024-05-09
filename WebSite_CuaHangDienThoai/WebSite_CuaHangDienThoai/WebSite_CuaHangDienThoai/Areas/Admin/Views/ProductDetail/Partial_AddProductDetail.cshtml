@@ -15,13 +15,7 @@
 
 
         function validateForm() {
-            //var sdt = document.getElementById('Name').value.trim();
-            //var tenKhachHang = document.getElementById('SDT').value.trim();
-            //var email = document.getElementById('CCCD').value.trim();
-            var OrigianlPrice = document.getElementById('OrigianlPrice').value.trim();
-            var Price = document.getElementById('Price').value.trim();
-            var confirmPassword = document.getElementById('Title').value.trim();
-
+          
 
             if (!confirmPassword) {
 
@@ -313,7 +307,15 @@
                                 @Html.HiddenFor(model => model.ProductsId, new { @Value = ViewBag.id })
 
                                 @*<button type="submit" class="btn btn-success" data-id="">Thêm mới</button>*@
-                                <button type="submit" class="btn btn-success" data-id="@ViewBag.id">Thêm mới</button>
+                                <div class="row">
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-8 text-center">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-success btn-block">Thêm mới</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
                             </div>
                         </div> <!-- /.card -->
                     }
@@ -336,7 +338,7 @@
 
 
 
-    <script>
-      
+<script>
 
-    </script>
+
+</script>

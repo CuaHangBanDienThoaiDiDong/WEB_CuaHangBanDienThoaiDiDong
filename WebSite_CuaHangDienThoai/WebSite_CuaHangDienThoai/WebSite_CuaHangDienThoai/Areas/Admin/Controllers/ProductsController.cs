@@ -55,9 +55,16 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
         public ActionResult Add()
         {
-            //ViewBag.ProductCategory = new SelectList(db.tb_ProductCategory.ToList(), "ProductCategoryId", "Title");
-            //ViewBag.ProductCompany = new SelectList(db.tb_ProductCompany.ToList(), "ProductCompanyId", "Title");
-            return View();
+
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                return View();
+            }
+               
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -69,81 +76,96 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             {
                 if (req.TocDoCPU != null && req.MangDiDong != null && req.Sim != null && req.Wifi != null)
                 {
+                    var ProductCategory = db.tb_ProductCategory.Find(req.ProductCategoryId);
+                    var ProductCompany = db.tb_ProductCompany.Find(req.ProductCompanyId);
 
 
 
-                    var checkTitle = db.tb_Products.SingleOrDefault(r => r.Title == req.Title && r.Alias == WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Title.Trim()) && r.ProductCategoryId == req.ProductCategoryId && r.ProductCompanyId == req.ProductCompanyId);
+                    string alias = model.Title.Trim() + "" + ProductCategory.Title.Trim() + "" + ProductCompany.Title.Trim();
+
+
+                    var checkTitle = db.tb_Products.SingleOrDefault(r => r.Title == req.Title &&r.Alias== alias&&  r.ProductCategoryId == req.ProductCategoryId && r.ProductCompanyId == req.ProductCompanyId);
                     if (checkTitle == null)
                     {
-                        if (ModelState.IsValid)
+                        if (Images != null) 
                         {
-                            if (Images != null && Images.Count > 0)
+                            if (ModelState.IsValid)
                             {
-                                for (int i = 0; i < Images.Count; i++)
+                                if (Images != null && Images.Count > 0)
                                 {
-                                    if (i + 1 == rDefault[0])
+                                    for (int i = 0; i < Images.Count; i++)
                                     {
-                                        model.Image = Images[i];
-                                        db.tb_ProductImage.Add(new tb_ProductImage
+                                        if (i + 1 == rDefault[0])
                                         {
-                                            ProductsId = model.ProductsId,
-                                            Image = Images[i],
-                                            IsDefault = true
-                                        });
-                                    }
-                                    else
-                                    {
-                                        db.tb_ProductImage.Add(new tb_ProductImage
+                                            model.Image = Images[i];
+                                            db.tb_ProductImage.Add(new tb_ProductImage
+                                            {
+                                                ProductsId = model.ProductsId,
+                                                Image = Images[i],
+                                                IsDefault = true
+                                            });
+                                        }
+                                        else
                                         {
-                                            ProductsId = model.ProductsId,
-                                            Image = Images[i],
-                                            IsDefault = true
-                                        });
+                                            db.tb_ProductImage.Add(new tb_ProductImage
+                                            {
+                                                ProductsId = model.ProductsId,
+                                                Image = Images[i],
+                                                IsDefault = true
+                                            });
+                                        }
                                     }
                                 }
+
+                                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
+                                model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
+                                model.CreatedDate = DateTime.Now;
+                                model.ModifiedDate = DateTime.Now;
+                                model.IsActive = req.IsActive;
+                                model.IsHot = req.IsHot;
+                                model.IsFeature = req.IsFeature;
+                                model.IsSale = req.IsSale;
+                                model.IsHome = req.IsHome;
+
+                                model.CPU = req.CPU.Trim();
+                                model.GPU = req.GPU.Trim();
+                                model.CPUspeed = req.TocDoCPU.Trim();
+
+                                model.OperatingSystem = req.HeDieuHanh.Trim();
+                                model.MobileNetwork = req.MangDiDong.Trim();
+                                model.Sim = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Sim.Trim());
+                                model.Wifi = req.Wifi.Trim();
+                                model.GPS = req.GPS.Trim();
+                                model.Bluetooth = req.Bluetooth.Trim();
+                                model.Bluetooth = req.Bluetooth.Trim();
+                                model.Connector = req.CongKetNoi.Trim();
+                                model.Headphonejack = req.JackTaiNghe.Trim();
+                                model.BatteryType = req.LoaiPin.Trim();
+                                model.ChargingSupport = req.HoTroSac.Trim();
+                                model.BatteryTechnology = req.CongNghePin.Trim();
+                                if (string.IsNullOrEmpty(model.Title))
+                                {
+                                    model.SeoTitle = model.Title.Trim();
+                                }
+                                if (string.IsNullOrEmpty(model.Alias))
+                                {
+
+                                   
+                                    model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(alias);
+                                }
+                                db.tb_Products.Add(model);
+                                db.SaveChanges();
+                                code = new { Success = true, Code = 1, Url = "" };
+
+
                             }
-
-                            var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
-                            model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
-                            model.CreatedDate = DateTime.Now;
-                            model.ModifiedDate = DateTime.Now;
-                            model.IsActive = req.IsActive;
-                            model.IsHot = req.IsHot;
-                            model.IsFeature = req.IsFeature;
-                            model.IsSale = req.IsSale;
-                            model.IsHome = req.IsHome;
-
-                            model.CPU = req.CPU.Trim();
-                            model.GPU = req.GPU.Trim();
-                            model.CPUspeed = req.TocDoCPU.Trim();
-
-                            model.OperatingSystem = req.HeDieuHanh.Trim();
-                            model.MobileNetwork = req.MangDiDong.Trim();
-                            model.Sim = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Sim.Trim());
-                            model.Wifi = req.Wifi.Trim();
-                            model.GPS = req.GPS.Trim();
-                            model.Bluetooth = req.Bluetooth.Trim();
-                            model.Bluetooth = req.Bluetooth.Trim();
-                            model.Connector = req.CongKetNoi.Trim();
-                            model.Headphonejack = req.JackTaiNghe.Trim();
-                            model.BatteryType = req.LoaiPin.Trim();
-                            model.ChargingSupport = req.HoTroSac.Trim();
-                            model.BatteryTechnology = req.CongNghePin.Trim();
-                            if (string.IsNullOrEmpty(model.Title))
-                            {
-                                model.SeoTitle = model.Title.Trim();
-                            }
-                            if (string.IsNullOrEmpty(model.Alias))
-                            {
-                                string alias = model.Title.Trim() + "" + model.tb_ProductCategory.Title.Trim() + "" +model.tb_ProductCompany.Title.Trim()  ;
-                                model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(alias);
-                            }
-                            db.tb_Products.Add(model);
-                            db.SaveChanges();
-                            code = new { Success = true, Code = 1, Url = "" };
-
-
                         }
+                        else 
+                        {
+                            //ko tim thaasy anh
+                            code = new { Success = false, Code = -5, Url = "" };
+                        }
+                       
                     }
                     else
                     {//san pham da ton tai
@@ -178,10 +200,20 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
         public ActionResult Edit(int? id)
         {
-            ViewBag.ProductCategory = new SelectList(db.tb_ProductCategory.ToList(), "ProductCategoryId", "Title");
-            ViewBag.ProductCompany = new SelectList(db.tb_ProductCompany.ToList(), "ProductCompanyId", "Title");
-            var item = db.tb_Products.Find(id);
-            return View(item);
+
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                ViewBag.ProductCategory = new SelectList(db.tb_ProductCategory.ToList(), "ProductCategoryId", "Title");
+                ViewBag.ProductCompany = new SelectList(db.tb_ProductCompany.ToList(), "ProductCompanyId", "Title");
+                var item = db.tb_Products.Find(id);
+                return View(item);
+            }
+
+          
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
