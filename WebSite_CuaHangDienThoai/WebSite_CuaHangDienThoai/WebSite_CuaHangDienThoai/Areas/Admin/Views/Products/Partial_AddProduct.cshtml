@@ -205,7 +205,7 @@
                                             </div>
 
                                         </div>
-                                      
+
 
                                         <div class="row">
                                             <div class="col-3">
@@ -296,7 +296,7 @@
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1">Tốc độ CPU:</label>
                                                     @*@Html.TextAreaFor(x => x.CPU, new { @class = "form-control", @id = "txtDetail" })
-                                                    @Html.ValidationMessageFor(x => x.TocDoCPU, null, new { @class = "text-danger" })*@
+                                                        @Html.ValidationMessageFor(x => x.TocDoCPU, null, new { @class = "text-danger" })*@
                                                     <input type="text" name="TocDoCPU" id="TocDoCPU" required class="form-control" autocomplete="off" placeholder="- Tốc độ CPU -" />
                                                     @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
                                                     @Html.ValidationMessageFor(x => x.TocDoCPU, null, new { @class = "text-danger" })
@@ -366,7 +366,7 @@
 
                                             </div>
 
-                                        </div>         
+                                        </div>
 
 
                                         <div class="form-group">
@@ -374,7 +374,7 @@
                                                 <h4 class="m-lg-4 " style="color:blue"><b>Pin & Sạc</b></h4>
                                             </div>
                                             <div class="row">
-                                               
+
                                                 <div class="col-md-4">
                                                     <label for="exampleInputEmail1">Loại pin:</label>
                                                     <input type="text" name="LoaiPin" id="LoaiPin" required class="form-control" autocomplete="off" placeholder="- Loại pin -" />
@@ -382,7 +382,7 @@
                                                     @Html.ValidationMessageFor(x => x.LoaiPin, null, new { @class = "text-danger" })
                                                 </div>
 
-                                        
+
                                                 <div class="col-md-4">
                                                     <label for="exampleInputEmail1">Công nghệ pin:</label>
                                                     <input type="text" name="CongNghePin" id="CongNghePin" required class="form-control" autocomplete="off" placeholder="- Công nghệ pin -" />
@@ -400,7 +400,7 @@
 
                                         </div>
 
-                                      
+
                                     </div>
                                     <!-- /.tab-pane -->
                                 </div>
@@ -433,3 +433,87 @@
 
 
 }
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('.auto').autoNumeric('init');
+        $('#demoPrice').bind('blur focusout keypress keyup', function () {
+            var demoGet = $('#demoPrice').autoNumeric('get');
+            $('#Price').val(demoGet);
+            $('#Price').autoNumeric('set', demoGet);
+        });
+        $('#demoPriceSale').bind('blur focusout keypress keyup', function () {
+            var demoGet = $('#demoPriceSale').autoNumeric('get');
+            $('#PriceSale').val(demoGet);
+            $('#PriceSale').autoNumeric('set', demoGet);
+        });
+        $('#demoOriginalPrice').bind('blur focusout keypress keyup', function () {
+            var demoGet = $('#demoOriginalPrice').autoNumeric('get');
+            $('#OriginalPrice').val(demoGet);
+            $('#OriginalPrice').autoNumeric('set', demoGet);
+        });
+        CKEDITOR.replace('txtDetail', {
+            customConfig: '/content/ckeditor/config.js',
+            extraAllowedContent: 'span',
+        });
+
+        $('body').on('click', '.btnXoaAnh', function () {
+            console.log("Button clicked");
+            var conf = confirm('Bạn có muốn xóa ảnh này không?');
+            if (conf === true) {
+                var _id = $(this).data('id');
+                $('#trow_' + _id).fadeTo('fast', 0.5, function () {
+                    $(this).slideUp('fast', function () { $(this).remove(); });
+                });
+                var temp = $('#tCurrentId').val();
+                var currentId = parseInt(temp) - 1;
+                $('#tCurrentId').val(currentId);
+            }
+        });
+
+
+        $('body').on('click', '.btnXoaAnh123', function () {
+
+            console.log("thuan");
+        });
+
+
+    });
+    function BrowseServer(field) {
+        var finder = new CKFinder();
+        finder.selectActionFunction = function (fileUrl) {
+            addImageProduct(fileUrl);
+        };
+
+        finder.popup();
+    }
+    function addImageProduct(url) {
+        var temp = $('#tCurrentId').val();
+        var currentId = parseInt(temp) + 1;
+        var str = "";
+        if (currentId == 1) {
+            str += `<tr id="trow_${currentId}">
+                              <td class="text-center">${currentId}</td>
+                              <td class="text-center"><img width="80" src="${url}" /> <input type='hidden' value="${url}" name="Images"/></td>
+                              <td class="text-center"><input type="radio" name="rDefault" value="${currentId}" checked="checked"/></td>
+                              <td class="text-center"><a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a></td>
+                              <td class="text-center"><a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh123">Xóa123</a></td>
+                              </tr>`;
+        }
+        else {
+            str += `<tr id="trow_${currentId}">
+                              <td class="text-center">${currentId}</td>
+                              <td class="text-center"><img width="80" src="${url}" /> <input type='hidden' value="${url}" name="Images"/></td>
+                              <td class="text-center"><input type="radio" name="rDefault" value="${currentId}"/></td>
+                              <td class="text-center"><a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a></td>
+                              </tr>`;
+        }
+        $('#tbHtml').append(str);
+        $('#tCurrentId').val(currentId);
+       
+    }
+
+</script>

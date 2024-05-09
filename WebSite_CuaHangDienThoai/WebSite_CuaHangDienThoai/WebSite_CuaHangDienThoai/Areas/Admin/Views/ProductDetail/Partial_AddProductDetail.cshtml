@@ -11,6 +11,9 @@
 {
     <script>
 
+
+
+
         function validateForm() {
             //var sdt = document.getElementById('Name').value.trim();
             //var tenKhachHang = document.getElementById('SDT').value.trim();
@@ -125,7 +128,7 @@
                         icon: "info",
                         title: "Lỗi tìm ảnh...",
                         text: "Vui lòng tải ảnh sản phẩm",
-                   /*     footer: '<a href="#">Why do I have this issue?</a>'*/
+                        /*     footer: '<a href="#">Why do I have this issue?</a>'*/
                     });
                 }
                 if (res.Code == -6) {
@@ -151,7 +154,7 @@
 
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-    
+
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Thông tin thêm mới Sản phẩm</h3>
@@ -242,7 +245,7 @@
                                                 </div>
 
                                             </div>
-                                           
+
                                         </div>
                                         <div class="row">
 
@@ -330,3 +333,10 @@
 
 
 }
+
+
+
+    <script>
+      
+
+    </script>
