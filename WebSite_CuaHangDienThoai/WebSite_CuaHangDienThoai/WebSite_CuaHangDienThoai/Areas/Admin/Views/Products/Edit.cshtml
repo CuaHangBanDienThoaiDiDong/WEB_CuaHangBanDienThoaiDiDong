@@ -82,7 +82,7 @@
                                             @Html.TextBoxFor(x => x.Alias, new { @class = "form-control", @placeholder = "Alias" })
                                             @Html.ValidationMessageFor(x => x.Alias, null, new { @class = "text-danger" })
                                         </div>
-                                        <div class="form-group"style="display:none">
+                                        <div class="form-group" style="display:none">
                                             <label for="exampleInputEmail1">SKU</label>
                                             @Html.TextBoxFor(x => x.ProductCode, new { @class = "form-control", @placeholder = "Mã mã phẩm" })
                                             @Html.ValidationMessageFor(x => x.ProductCode, null, new { @class = "text-danger" })
@@ -147,39 +147,9 @@
 
                                         </div>
                                     </div>
-                                    <!-- /.tab-pane -->
+                                    <!-- /.tab-Imge -->
                                     <div class="tab-pane" id="timeline">
                                         <div class="row">
-                                            <div class="col-md-12">
-                                                @if (Model.tb_ProductImage != null && Model.tb_ProductImage.Any())
-                                                {
-                                                    var i = 0;
-                                                    foreach (var item in Model.tb_ProductImage)
-                                                    {
-                                                        <div class="row">
-                                                            <div class="col-lg-4 mb-4">
-                                                                Billing card 1
-                                                                <div class="card h-100 border-start-lg border-start-primary">
-                                                                    <div class="card-body">
-                                                                        <div class="image-container">
-                                                                            <img src="@item.Image" alt="Hình" class="w-25">
-                                                                            @*<button class="button-overlay" onclick="yourFunction()">Click Me</button>*@
-                                                                            <a href="/admin/Product/DeleteImg/@item.ProductsId" class="btn btn-sm btn-primary">Xóa ảnh</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-                                                    }
-                                                    i++;
-                                                }
-
-                                            </div>
-
-
-
                                             <div class="col-md-12 text-right">
                                                 <input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />
                                             </div>
@@ -194,12 +164,48 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody id="tbHtml">
+                                                        @if (Model.tb_ProductImage != null && Model.tb_ProductImage.Any())
+                                                        {
+                                                            var i = 0;
+                                                            foreach (var item in Model.tb_ProductImage)
+                                                            {
+                                                                int count = Model.tb_ProductImage.Where(r => r.ProductsId == Model.ProductsId).Count();
+                                                                <div class="row">
+                                                                    <div class="col-lg-4 mb-4">
+                                                                        Ảnh đại diện @Model.Title ok
+                                                                        <div class="card h-100 border-start-lg border-start-primary">
+                                                                            <div class="card-body">
+                                                                                <div class="image-container">
+                                                                                    <img src="@item.Image" alt="Hình" class="w-25">
+                                                                                    @*<button class="button-overlay" onclick="yourFunction()">Click Me</button>*@
+                                                                                    @if (count > 1)
+                                                                                    {
+                                                                                        <a href="/admin/Product/DeleteImg/@item.ProductsId" class="btn btn-sm btn-primary">Xoá ảnh</a>
+                                                                                        <input type="button" class="btn btn-primary" id="iTaiAnh" data-producid="@Model.ProductsId" onclick="BrowseServer();" value="Cập nhật ảnh" />
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <a href="/admin/Product/DeleteImg/@item.ProductsId" class="btn btn-sm btn-primary">Cập nhật ảnh</a>
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                i++;
+                                                            }
+                                                        }
                                                     </tbody>
                                                 </table>
                                                 <input type="hidden" id="tCurrentId" value="0" />
                                             </div>
                                         </div>
                                     </div>
+
+
+
+
                                     <!-- /.tab-pane -->
                                     <div class="tab-pane" id="settings">
                                         <form class="form-horizontal">
@@ -244,13 +250,13 @@
                                                 </div>
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1"> CPU:</label>
-                                                   
+
                                                     @Html.TextBoxFor(x => x.CPU, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
                                                     @Html.ValidationMessageFor(x => x.CPU, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1">Tốc độ CPU:</label>
-                                                  
+
                                                     @Html.TextBoxFor(x => x.CPUspeed, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
                                                     @Html.ValidationMessageFor(x => x.CPUspeed, null, new { @class = "text-danger" })
                                                 </div>
@@ -280,14 +286,14 @@
                                                 <div class="col-3">
 
                                                     <label for="exampleInputEmail1">Wifi:</label>
-                                                  
+
                                                     @Html.TextBoxFor(x => x.Wifi, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
                                                     @Html.ValidationMessageFor(x => x.Wifi, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1">GPS:</label>
                                                     @*@Html.TextAreaFor(x => x.GPS, new { @class = "form-control", @id = "txtDetail" })
-                                                    @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })*@
+                        @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })*@
                                                     @Html.TextBoxFor(x => x.GPS, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
                                                     @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })
                                                 </div>
@@ -304,7 +310,7 @@
                                                 </div>
                                                 <div class="col-4">
                                                     <label for="exampleInputEmail1">Cổng kết nối/sạc:</label>
-                                                  @Html.TextBoxFor(x => x.Connector, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.TextBoxFor(x => x.Connector, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
                                                     @Html.ValidationMessageFor(x => x.Connector, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-4">
@@ -323,7 +329,7 @@
                                                 <h4 class="m-lg-4 " style="color:blue"><b>Pin & Sạc</b></h4>
                                             </div>
                                             <div class="row">
-                                               
+
                                                 <div class="col-6">
                                                     <label for="exampleInputEmail1">Loại pin:</label>
                                                     @Html.TextBoxFor(x => x.BatteryType, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
@@ -335,7 +341,7 @@
                                                 <div class="col-6">
                                                     <label for="exampleInputEmail1">Công nghệ pin:</label>
                                                     @*@Html.TextAreaFor(x => x.CongNghePin, new { @class = "form-control", @id = "txtDetail" })
-                                                    @Html.ValidationMessageFor(x => x.CongNghePin, null, new { @class = "text-danger" })*@
+                        @Html.ValidationMessageFor(x => x.CongNghePin, null, new { @class = "text-danger" })*@
                                                     @Html.TextBoxFor(x => x.BatteryTechnology, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
                                                     @Html.ValidationMessageFor(x => x.BatteryTechnology, null, new { @class = "text-danger" })
                                                 </div>
@@ -417,14 +423,45 @@
                 extraAllowedContent: 'span',
             });
         });
-        function BrowseServer(field) {
+       
+        //Start Update hinh ảnh 
+        $('#iTaiAnh').click(function () {
+            // Lấy ProductsId từ data attribute
+            var productsId = $(this).data('producid');
+            // Mở CKFinder
+            BrowseServer(productsId);
+        });
+
+        // Hàm JavaScript để mở CKFinder và xử lý ảnh đã chọn
+        function BrowseServer(productsId) {
             var finder = new CKFinder();
             finder.selectActionFunction = function (fileUrl) {
-                addImageProduct(fileUrl);
+                // Sau khi chọn ảnh, gửi yêu cầu cập nhật đường dẫn ảnh mới
+                updateProductImage(productsId, fileUrl);
             };
             finder.popup();
         }
-       
+        function updateProductImage(productsId, newImageUrl) {
+            // Gửi yêu cầu POST đến action UpdateImage trong controller
+            $.ajax({
+                type: "POST",
+                url: "/Product/UpdateImage",
+                data: { productsId: productsId, newImageUrl: newImageUrl },
+                success: function (response) {
+                    // Xử lý phản hồi từ server sau khi cập nhật thành công hoặc thất bại
+                    if (response.success) {
+                        alert(response.message);
+                        // Cập nhật giao diện nếu cần
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert('Đã xảy ra lỗi khi gửi yêu cầu cập nhật ảnh');
+                }
+            });
+        }
+       // End Update hinh ảnh 
         function addImageProduct(url) {
             var temp = $('#tCurrentId').val();
             var currentId = parseInt(temp) + 1;
@@ -447,20 +484,7 @@
             }
             $('#tbHtml').append(str);
             $('#tCurrentId').val(currentId);
-            //$('#tbHtml tr td a').each(function () {
-            //    $(this).click(function () {
-            //        var conf = confirm('Bạn có muốn xóa ảnh này không?');
-            //        if (conf === true) {
-            //            var _id = $(this).data('id');
-            //            $('#trow_' + _id).fadeTo('fast',1, function () {
-            //                $(this).slideUp('fast', function () { $(this).remove(); });
-            //            });
-            //            var temp = $('#tCurrentId').val();
-            //            var currentId = parseInt(temp) - 1;
-            //            $('#tCurrentId').val(currentId);
-            //            }
-            //        });
-            //    });
+           
         }
 
     </script>

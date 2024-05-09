@@ -72,7 +72,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
-                    var checkTitle = db.tb_Products.FirstOrDefault(r => r.Title == req.Title && r.ProductCategoryId == req.ProductCategoryId && r.ProductCompanyId == req.ProductCompanyId);
+                    var checkTitle = db.tb_Products.SingleOrDefault(r => r.Title == req.Title && r.Alias == WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Title.Trim()) && r.ProductCategoryId == req.ProductCategoryId && r.ProductCompanyId == req.ProductCompanyId);
                     if (checkTitle == null)
                     {
                         if (ModelState.IsValid)
@@ -135,7 +135,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                             }
                             if (string.IsNullOrEmpty(model.Alias))
                             {
-                                model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title.Trim());
+                                string alias = model.Title.Trim() + "" + model.tb_ProductCategory.Title.Trim() + "" +model.tb_ProductCompany.Title.Trim()  ;
+                                model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(alias);
                             }
                             db.tb_Products.Add(model);
                             db.SaveChanges();
@@ -208,6 +209,54 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult UpdateImage(int productsId, string newImageUrl)
+        {
+            try
+            {
+                // Tìm tb_ProductImage tương ứng với ProductsId
+                var productImage = db.tb_ProductImage.FirstOrDefault(pi => pi.ProductsId == productsId);
+
+                // Nếu tồn tại tb_ProductImage, cập nhật đường dẫn ảnh mới
+                if (productImage != null)
+                {
+                    productImage.Image = newImageUrl;
+                    db.SaveChanges();
+                    return Json(new { success = true, message = "Cập nhật ảnh thành công" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Không tìm thấy ảnh để cập nhật" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message });
+            }
+        }
+        //public ActionResult Edit(tb_Products model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+
+        //        tb_Staff nvSession = (tb_Staff)Session["user"];
+        //        var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
+        //        model.Modifeby = checkStaff.NameStaff + "-" + checkStaff.Code;
+        //        model.IsActive = false;
+        //        model.IsHome = false;
+        //        model.IsFeature = false;
+        //        model.IsSale = false;
+        //        model.IsHot = false;
+        //        model.ModifiedDate = DateTime.Now;
+        //        model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
+        //        db.tb_Products.Add(model);
+        //        db.Entry(model).State = System.Data.Entity.EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("index");
+        //    }
+        //    return View(model);
+
+        //}
 
 
 
