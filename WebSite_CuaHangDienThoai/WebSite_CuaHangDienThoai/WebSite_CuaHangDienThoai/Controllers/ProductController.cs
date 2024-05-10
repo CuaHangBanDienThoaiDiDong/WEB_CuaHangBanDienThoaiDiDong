@@ -19,7 +19,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
             IEnumerable<tb_Products> items = db.tb_Products.OrderByDescending(x => x.ProductsId);
             if (items != null)
             {
-                var pageSize = 16;
+                var pageSize = 17;
                 if (page == null)
                 {
                     page = 1;
