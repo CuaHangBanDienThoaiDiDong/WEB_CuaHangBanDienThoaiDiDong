@@ -4056,6 +4056,7 @@
     <Compile Include="Models\Token\Admin\Admin_TokenProductDetail.cs" />
     <Compile Include="Models\Token\Client\Client_ForgetPassClient.cs" />
     <Compile Include="Models\Token\Client\Client_TokenAccount.cs" />
+    <Compile Include="Models\UniqueCompanyTitlesViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -4133,6 +4134,7 @@
     <Content Include="Views\Product\Partial_LoadPriceForBoxSaving.cshtml" />
     <Content Include="Views\ShoppingCart\Index.cshtml" />
     <Content Include="Views\ShoppingCart\Partial_ItemCart.cshtml" />
+    <Content Include="Views\Product\Partial_GetUniqueCompanyTitlesForCategory.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

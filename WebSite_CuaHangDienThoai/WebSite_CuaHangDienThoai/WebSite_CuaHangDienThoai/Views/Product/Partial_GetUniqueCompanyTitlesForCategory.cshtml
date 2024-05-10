@@ -1,0 +1,42 @@
+﻿
+@model List<WebSite_CuaHangDienThoai.Models.UniqueCompanyTitlesViewModel>
+@if (ViewBag.CategoryTitle != null)
+{<ul class="nav nav-treeview menu-submenu" style="display: none;flex-direction: column; ">
+    <li class="nav-item">
+           <a href="/danh-muc-san-pham/@ViewBag.Alias-@ViewBag.CategoryId"class="nav-link" style="color: white">@ViewBag.CategoryTitle</a>
+    </li>
+    @foreach (var item in Model)
+    {
+        <li class="nav-item text-white " >
+            <a href="/#" class="nav-link text-white pl-2" style="margin-left:20%">
+
+                @item.CompanyTitles
+            </a>
+        </li>
+    }
+</ul>
+     
+}
+else
+{
+<li class="nav-item">
+    <p class="text-danger"> Không tìm thấy bảng ghi !!!</p>
+</li>
+    }
+    @*<ul class="nav nav-treeview menu-submenu" style="display: none;">
+
+    @foreach (var item in Model)
+    {
+        <li class="nav-item">
+            <a href="/#" class="nav-link">
+
+                @item.CompanyTitles
+            </a>
+        </li>
+    }
+
+</ul>*@
+
+
+
+

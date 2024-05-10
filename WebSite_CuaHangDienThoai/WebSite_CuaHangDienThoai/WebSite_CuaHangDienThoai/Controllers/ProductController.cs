@@ -326,23 +326,33 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
+        //Start lấy các hãng cho mỗi danh mục 
+        public ActionResult Partial_GetUniqueCompanyTitlesForCategory(int categoryId ,string alias ,string categoryTitle)
+        {
+            using (var db = new CUAHANGDIENTHOAIEntities()) // Thay "YourDbContext" bằng tên DbContext của bạn
+            {
+                var uniqueCompanyData = (from p in db.tb_Products
+                                         where p.ProductCategoryId == categoryId
+                                         group p by p.ProductCompanyId into g
+                                         select new UniqueCompanyTitlesViewModel
+                                         {
+                                             CompanyIds =(int) g.Key, // Sử dụng Key thay vì GetValueOrDefault()
+                                             CompanyTitles = (from c in db.tb_ProductCompany
+                                                              where c.ProductCompanyId == g.Key
+                                                              select c.Title).FirstOrDefault()
+                                         }).Distinct().ToList();
+                ViewBag.CategoryTitle = categoryTitle;
+                ViewBag.Alias = alias;
+                ViewBag.CategoryId = categoryId;    
+                return PartialView(uniqueCompanyData);
+            }
+        }
+
+
+        //End lấy các hãng cho mỗi danh mục 
 
 
 
-
-        //public ActionResult Partial_DetailImageById(int id)
-        //{
-
-
-        //    var checkProductDetail =db.tb_ProductDetail.Where(x=>x.ProductsId == id).ToList();
-        //    while (checkProductDetail != null)
-        //    {
-        //        var imgDefault = db.tb_ProductImage.FirstOrDefault(x => x.ProductsId == id &&x.IsDefault);
-        //        ViewBag.ProductImage = imgDefault.Image;  
-        //        return PartialView(checkProductDetail);
-        //    }
-        //    return PartialView();
-        //}
 
 
         public ActionResult Partail_LoadListImgByProDetailId(int id) 
