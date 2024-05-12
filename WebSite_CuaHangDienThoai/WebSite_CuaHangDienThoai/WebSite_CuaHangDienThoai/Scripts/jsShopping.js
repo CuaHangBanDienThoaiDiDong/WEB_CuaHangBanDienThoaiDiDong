@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
 
-    ShowCount()
+    ShowCount();
 
 
 
@@ -65,14 +65,6 @@
 
 
     /* End div lọc ảnh Products Partial_DetailImageById*/
-    $(document).ready(function () {
-
-        $('KyThuat').on('click', function () {
-            alter("dda")
-        });
-    });
-
-
 
 
 
@@ -140,13 +132,7 @@
     $('body').on('click', '.btnAddtoCart', function (e) {
         e.preventDefault();
         var id = $(this).data('id');
-
         var soLuong = 1;
-        var tQuantity = $('#quantity_value').text();
-        if (tQuantity != '') {
-            soLuong = parseInt(tQuantity);
-        }
-
         $.ajax({
             url: '/Shoppingcart/addtocart',
             type: 'POST',
@@ -157,22 +143,16 @@
                     /*alert(rs.msg);*/
                     if (rs.code == 1) {
                         ShowCount();
-                        location.reload(true);
-                        const Toast = Swal.mixin({
-                            toast: true,
+                        Swal.fire({
                             position: "top-end",
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.onmouseenter = Swal.stopTimer;
-                                toast.onmouseleave = Swal.resumeTimer;
-                            }
-                        });
-
-                        Toast.fire({
                             icon: "success",
-                            title: "Thêm giỏ hàng thành công"
+                            title: "Thêm giỏ hàng thành công",
+                            showConfirmButton: false,
+                            timer: 1100,
+                            customClass: {
+                                container: 'swal2-container-custom',
+                                popup: 'swal2-popup-custom'
+                            }
                         });
                     }
                 }
@@ -187,6 +167,95 @@
     });
 
     //end btn thêm giỏ hàng btnAddtoCart
+
+    //Start btn xoá sản phẩm giỏ hàng \
+
+    $('body').on('click', '.btnDelete', function (e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+
+        Swal.fire({
+            title: "Bạn muốn xoá ?",
+            text: "Bạn muốn xoá sản phẩm ra khỏi giỏ hàng!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Đồng ý, xoá!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/ShoppingCart/Delete',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.Success) {
+                            if (rs.code == 1) {
+                                LoadCart();
+                                ShowCount();
+                                Swal.fire({
+                                    position: "top-end",
+                                    icon: "success",
+                                    title: "Xoá sản phẩm thành công",
+                                    showConfirmButton: false,
+                                    timer: 1100,
+                                    customClass: {
+                                        container: 'swal2-container-custom',
+                                        popup: 'swal2-popup-custom'
+                                    }
+                                });
+                            }
+
+                        }
+                        else
+                        {
+                            if (res.Code == -1) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Lỗi ",
+                                    text: "Lỗi hệ thống máy chủ ",
+                                    footer: '<a href="/dang-nhap">Quay về đăng nhập?</a>'
+                                });
+                            }
+                            if (res.Code == -2) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Lỗi ",
+                                    text: "Lỗi hệ thống máy chủ ",
+                                    footer: '<a href="/dang-nhap">Quay về đăng nhập?</a>'
+                                });
+                            }
+                            if (res.Code == -3) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Giỏ hàng bị lỗi  ",
+                                    text: "Sản phẩm không tồn tại trong giỏ hàng ",
+                                    footer: '<a href="/gio-hang>Quay về giỏ hàng ?</a>',
+                                    customClass: {
+                                        container: 'swal2-container-custom',
+                                        popup: 'swal2-popup-custom'
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+
+               
+            }
+        });
+
+
+
+       
+
+    });
+    //nd btn xoá sản phẩm giỏ hàng 
+
+
+
+
+
 
     //Start btn cập nhập số lượng trong giỏ hàng 
 
@@ -400,3 +469,15 @@ function ShowCount() {
         }
     });
 }
+
+function LoadCart123() {
+    $.ajax({
+        url: '/shoppingcart/Partial_ItemCart',
+        type: 'GET',
+        success: function (rs) {
+            $('#load_data').html(rs);
+        }
+    });
+}
+
+

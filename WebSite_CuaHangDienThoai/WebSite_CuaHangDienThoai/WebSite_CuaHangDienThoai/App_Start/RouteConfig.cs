@@ -9,6 +9,13 @@ namespace WebSite_CuaHangDienThoai
         {
 
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            //// Route Chi tiet san pham
+            routes.MapRoute(
+       name: "LoaSanphamtheoCongTy", 
+       url: "dong-san-pham/{TitleCategory}-{TitleCompany}-Code{CompanyId}-Code{CategoryId}",
+       defaults: new { controller = "Product", action = "ProductsByCompany", alias = UrlParameter.Optional },
+       namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+   );
 
 
 
@@ -46,6 +53,7 @@ namespace WebSite_CuaHangDienThoai
              defaults: new { controller = "Product", action = "Details", alias = UrlParameter.Optional },
              namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
          );
+          
             //// Route cho trang khoi phuc mat khau
             routes.MapRoute(
                 name: "Forgotpassword",

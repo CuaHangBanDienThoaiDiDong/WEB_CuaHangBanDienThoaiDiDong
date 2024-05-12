@@ -40,7 +40,7 @@
 
 
 <div class="container product_section_container">
-    <div class="row pt-2">
+    @*<div class="row pt-2">
         <div class="col-lg-8 ">
             <div class="swiper mySwiper">
                 <div class="swiper-wrapper">
@@ -93,7 +93,7 @@
             </div>
 
         </div>
-    </div>
+    </div>*@
 
 
 
@@ -106,10 +106,7 @@
             <!-- Breadcrumbs -->
 
             <div class="breadcrumbs d-flex flex-row align-itemss-center">
-                @*<ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li class="active"><a href="/"><i class="fa fa-angle-right" aria-hidden="true"></i>Men's</a></li>
-                    </ul>*@
+              @*<p>Thun</p>*@
             </div>
 
             <!-- Sidebar -->
@@ -155,33 +152,39 @@
 
                             <div class="product_sorting_container product_sorting_container_top">
                                 <div class="row">
+                                   
                                     <div class="col-6">
-                                       
+                                       <div class="row">
+                                           <div class=" col-md-12">
+                                               <div class=" d-flex flex-row align-itemss-center">
+                                                   <ul class="product_sorting">
+                                                       <li style="color: white; background: #323232;">
+                                                           <span class="type_sorting_text">Phân loại</span>
+                                                           <i class="fa fa-angle-down"></i>
+                                                           <ul class="sorting_type text-center">
+                                                               <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Mặc định</span></li>
+                                                               <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Giá tiền</span></li>
+                                                               <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Tên sản phẩm</span></li>
+                                                           </ul>
+                                                       </li>
+                                                       <li style="color: white; background: #323232;">
+                                                           <span>Hiển thị</span>
+                                                           <span class="num_sorting_text">6</span>
+                                                           <i class="fa fa-angle-down"></i>
+                                                           <ul class="sorting_num">
+                                                               <li class="num_sorting_btn"><span>6</span></li>
+                                                               <li class="num_sorting_btn"><span>12</span></li>
+                                                               <li class="num_sorting_btn"><span>24</span></li>
+                                                           </ul>
+                                                       </li>
+                                                   </ul>
+                                               </div>
+                                           </div>
+                                       </div>
+                                     
                                     </div>
-                                    <div class="col-6">
-                                        <div class="pages d-flex flex-row align-itemss-center">
-                                            <ul class="product_sorting">
-                                                <li style="color: white; background: #323232;">
-                                                    <span class="type_sorting_text">Phân loại</span>
-                                                    <i class="fa fa-angle-down"></i>
-                                                    <ul class="sorting_type text-center">
-                                                        <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Mặc định</span></li>
-                                                        <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Giá tiền</span></li>
-                                                        <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Tên sản phẩm</span></li>
-                                                    </ul>
-                                                </li>
-                                                <li style="color: white; background: #323232;">
-                                                    <span>Hiển thị</span>
-                                                    <span class="num_sorting_text">6</span>
-                                                    <i class="fa fa-angle-down"></i>
-                                                    <ul class="sorting_num">
-                                                        <li class="num_sorting_btn"><span>6</span></li>
-                                                        <li class="num_sorting_btn"><span>12</span></li>
-                                                        <li class="num_sorting_btn"><span>24</span></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                    <div class="col-3">
+                                       
                                     </div>
                                 </div>
                               

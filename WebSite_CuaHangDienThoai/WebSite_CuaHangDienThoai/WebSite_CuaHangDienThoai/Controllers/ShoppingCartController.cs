@@ -203,6 +203,62 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
+
+
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            var result = new { Success = false, Message = "", Code = -1 };
+
+            try
+            {
+                
+                int? idKhach = Session["CustomerId"] as int?;
+                if (idKhach == null)
+                {
+                    result = new { Success = false, Message = "Không có phiên làm việc (session) cho khách hàng", Code = -1 };
+                    return Json(result);
+                }
+
+               
+                var cart = db.tb_Cart.FirstOrDefault(x => x.CustomerId == idKhach);
+                if (cart == null)
+                {
+                    result = new { Success = false, Message = "Không tìm thấy giỏ hàng", Code = -2 };
+                    return Json(result);
+                }
+
+              
+                var cartItem = db.tb_CartItem.FirstOrDefault(ci => ci.CartId == cart.CartId && ci.ProductDetailId == id);
+                if (cartItem == null)
+                {
+                    result = new { Success = false, Message = "Sản phẩm không tồn tại trong giỏ hàng", Code = -3 };
+                    return Json(result);
+                }
+
+              
+                db.tb_CartItem.Remove(cartItem);
+                db.SaveChanges();
+
+                result = new { Success = true, Message = "Xóa sản phẩm thành công", Code = 1 };
+            }
+            catch (Exception ex)
+            {
+                // Log lỗi nếu cần
+                result = new { Success = false, Message = "Lỗi xóa sản phẩm: " + ex.Message, Code = -1 };
+            }
+
+            return Json(result);
+        }
+
+
+
+
+
+
+
+
         public ActionResult ShowCount()
         {
             if (Session["CustomerId"] != null)

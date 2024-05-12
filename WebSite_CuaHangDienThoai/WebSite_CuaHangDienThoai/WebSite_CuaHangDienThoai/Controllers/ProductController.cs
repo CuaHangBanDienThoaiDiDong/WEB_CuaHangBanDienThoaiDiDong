@@ -36,7 +36,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 return View();
             }
         }
-     
+
 
 
 
@@ -60,37 +60,37 @@ namespace WebSite_CuaHangDienThoai.Controllers
             {
 
                 var products = db.tb_Products.Where(p => p.Alias.Contains(searchString)).Take(5).ToList();
-                ViewBag.products=products;
+                ViewBag.products = products;
                 return PartialView(products);
             }
             else
             {
-                return PartialView( null);
+                return PartialView(null);
             }
         }
 
 
         [HttpGet]
         public ActionResult Suggest(string searchString)
-       {
-           
+        {
+
             if (!string.IsNullOrEmpty(searchString))
             {
-                
+
                 var suggestedProducts = db.tb_Products
                                      .Where(p => p.Title.Contains(searchString))
                                      .Select(x => x.ProductsId)  // Chỉ lấy ID sản phẩm
                                      .ToList();
                 if (suggestedProducts != null)
                 {
-                   var items = db.tb_ProductDetail
-                                    .Where(pd => pd.ProductsId.HasValue && suggestedProducts.Contains(pd.ProductsId.Value))
-                                    .OrderByDescending(pd => pd.ProductsId)
-                                    .Take(5)
-                                    .ToList();
+                    var items = db.tb_ProductDetail
+                                     .Where(pd => pd.ProductsId.HasValue && suggestedProducts.Contains(pd.ProductsId.Value))
+                                     .OrderByDescending(pd => pd.ProductsId)
+                                     .Take(5)
+                                     .ToList();
                     HttpContext.Items["SuggestedProducts"] = items;
                     ViewBag.NoiDung = searchString;
-                    return PartialView( items);
+                    return PartialView(items);
                 }
                 else
                 {
@@ -224,17 +224,17 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     return PartialView(viewModels);
                 }
             }
-            else 
+            else
             {
                 return PartialView(null);
             }
 
-            
+
         }
 
 
         //[HttpGet]
-        public ActionResult Partail_ColorByProductsId(int productid,int capacity)
+        public ActionResult Partail_ColorByProductsId(int productid, int capacity)
         {
             if (productid != null)
             {
@@ -242,7 +242,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 using (var dbContext = new CUAHANGDIENTHOAIEntities())
                 {
                     var uniqueCapacitiesWithIdsAndImages = dbContext.tb_ProductDetail
-                    .Where(p => p.ProductsId == productid && p.Capacity== capacity)
+                    .Where(p => p.ProductsId == productid && p.Capacity == capacity)
                     .GroupBy(p => p.Color)
                     .Select(g => new
                     {
@@ -280,17 +280,17 @@ namespace WebSite_CuaHangDienThoai.Controllers
             {
                 var item = db.tb_ProductDetail.Find(id);
                 ViewBag.item = item.Title;
-                return PartialView(item);   
+                return PartialView(item);
             }
-            else 
+            else
             {
                 return PartialView(null);
             }
-            
+
         }
 
 
-      
+
         public ActionResult Partial_DetailImageById(int id)
         {
             using (var dbContext = new CUAHANGDIENTHOAIEntities())
@@ -320,14 +320,14 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 ViewBag.ProductId = id;
                 return PartialView(viewModels);
             }
-            
+
         }
 
 
 
 
         //Start lấy các hãng cho mỗi danh mục 
-        public ActionResult Partial_GetUniqueCompanyTitlesForCategory(int categoryId ,string alias ,string categoryTitle)
+        public ActionResult Partial_GetUniqueCompanyTitlesForCategory(int categoryId, string alias, string categoryTitle)
         {
             using (var db = new CUAHANGDIENTHOAIEntities()) // Thay "YourDbContext" bằng tên DbContext của bạn
             {
@@ -336,14 +336,15 @@ namespace WebSite_CuaHangDienThoai.Controllers
                                          group p by p.ProductCompanyId into g
                                          select new UniqueCompanyTitlesViewModel
                                          {
-                                             CompanyIds =(int) g.Key, // Sử dụng Key thay vì GetValueOrDefault()
+                                             CompanyIds = (int)g.Key,
                                              CompanyTitles = (from c in db.tb_ProductCompany
                                                               where c.ProductCompanyId == g.Key
-                                                              select c.Title).FirstOrDefault()
+                                                              select c.Title).FirstOrDefault(),
+                                             ProductCount = g.Count()
                                          }).Distinct().ToList();
-                ViewBag.CategoryTitle = categoryTitle;
+                ViewBag.CategoryTitle = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(categoryTitle);
                 ViewBag.Alias = alias;
-                ViewBag.CategoryId = categoryId;    
+                ViewBag.CategoryId = categoryId;
                 return PartialView(uniqueCompanyData);
             }
         }
@@ -351,6 +352,28 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         //End lấy các hãng cho mỗi danh mục 
 
+
+
+        ////StartLấy san phẩm theo loại và tên hãng
+        public ActionResult ProductsByCompany(string TitleCompany, int CompanyId , string TitleCategory , int CategoryId) 
+        {
+            
+
+            var checkProducts = db.tb_Products
+                                    .Where(r => r.ProductCompanyId == CompanyId && r.ProductCategoryId == CategoryId)
+                                     
+                                    .ToList();
+            if (checkProducts != null)
+            {
+                int totalCount = checkProducts.Count;
+                ViewBag.Count = totalCount;
+
+                return View(checkProducts);
+            }
+            return View(); 
+           
+        }
+        //// EndLấy san phẩm theo loại và tên hãng
 
 
 

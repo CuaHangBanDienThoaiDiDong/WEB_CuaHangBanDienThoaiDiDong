@@ -51,7 +51,7 @@
         }
 
         .search-form {
-            display: block; /* hoặc display: flex; hoặc display: inline-block; tùy thuộc vào cách bạn muốn hiển thị */
+            display: block; 
         }
         .search-suggestions {
             position: absolute;
@@ -59,8 +59,8 @@
             border: 1px solid #ccc;
             z-index: 999;
             width: 92%;
-            top: 100%; /* Hiển thị dưới input */
-            left: 0; /* Đặt vị trí bắt đầu từ góc trên bên trái của input */
+            top: 100%; 
+            left: 0; 
             border-bottom-left-radius: 25px;
             border-bottom-right-radius: 25px
         }
@@ -74,6 +74,20 @@
             opacity: 0.8;
             z-index: 9998;
             display: none;
+        }
+        .swal2-container-custom {
+            z-index: 999999 !important;
+        }
+        .swal2-container {
+            z-index: 999999 !important;
+        }
+
+        /* Thiết lập phần tử Swal ở giữa trang */
+        .swal2-popup {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
         }
 
 
@@ -96,7 +110,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="top_nav_left">MIỄN PHÍ VẬN CHUYỂN CHO TẤT CẢ CÁC ĐƠN HÀNG Ở HOA KỲ TRÊN 2.000.000</div>
+                        <div class="top_nav_left">MIỄN PHÍ VẬN CHUYỂN CHO TẤT CẢ CÁC ĐƠN HÀNG Ở TOÀN QUỐC TRÊN 2.000.000</div>
                     </div>
                     <div class="col-md-6 text-right">
                         <div class="top_nav_right">

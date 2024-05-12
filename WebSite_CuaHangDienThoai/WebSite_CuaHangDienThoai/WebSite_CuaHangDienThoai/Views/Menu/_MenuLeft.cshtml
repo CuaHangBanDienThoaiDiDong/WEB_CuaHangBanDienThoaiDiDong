@@ -8,7 +8,7 @@
 @if (Model != null && Model.Any())
 {
     <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column sidebar_categories" data-widget="treeview" role="menu" data-accordion="false">
+        <ul class="nav nav-pills nav-sidebar flex-column sidebar_categories"  style="margin-left:-10px" data-widget="treeview" role="menu" data-accordion="false">
             @foreach (var item in Model)
             {
                 if (ViewBag.CateId == item.ProductCategoryId)
@@ -18,7 +18,7 @@
                         <a href="#" class="nav-link text-danger" onclick="toggleSubmenu(this)">
                             <span class="angle-icon"><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
                             @item.Title
-                            <span class="arrow-icon"><i class="right fas fa-angle-left"></i></span>
+                            <span class="arrow-icon " style="padding-left:20%"><i class="right fas fa-angle-left "></i></span>
                         </a>
 
                         @Html.Action("Partial_GetUniqueCompanyTitlesForCategory", "Product", new { categoryId = item.ProductCategoryId, alias = item.Alias, categoryTitle = item.Title })
@@ -27,10 +27,10 @@
                 }
                 else
                 {
-                    <li class="nav-item">
-                        <a href="#" class="nav-link text-white"  onclick="toggleSubmenu(this)">
-                            @item.Title<i class="right fas fa-angle-left"></i>
-                            
+                    <li class="nav-item" style="margin-top:-30px; ">
+                        <a href="#" class="nav-link text-white" onclick="toggleSubmenu(this)">
+                            @item.Title
+                            <span class="arrow-icon " style="padding-left:2%"><i class="right fas fa-angle-left "></i></span>
                         </a>
 
                         @Html.Action("Partial_GetUniqueCompanyTitlesForCategory", "Product", new { categoryId = item.ProductCategoryId, alias = item.Alias, categoryTitle = item.Title })
@@ -55,18 +55,19 @@
 else
 { <p class="text-danger">Không có bảng ghi loại sản phẩm</p>}
 <script>
-    function toggleSubmenu(link) {
-        var submenu = link.nextElementSibling;
-        var arrowIcon = link.querySelector('.arrow-icon');
+    function toggleSubmenu(element) {
+        // Lấy phần tử span chứa icon
+        var iconSpan = element.querySelector('.arrow-icon i');
 
-        if (submenu.style.display === 'none') {
-            submenu.style.display = 'flex';
-            arrowIcon.querySelector('i').classList.remove('fa-chevron-down');
-            arrowIcon.querySelector('i').classList.add('fa-chevron-up');
+        // Kiểm tra trạng thái hiện tại của icon
+        if (iconSpan.classList.contains('fa-angle-left')) {
+            // Nếu là mở, thì đổi icon thành mũi tên xuống
+            iconSpan.classList.remove('fa-angle-left');
+            iconSpan.classList.add('fa-angle-down');
         } else {
-            submenu.style.display = 'none';
-            arrowIcon.querySelector('i').classList.remove('fa-chevron-up');
-            arrowIcon.querySelector('i').classList.add('fa-chevron-down');
+            // Nếu là đóng, thì đổi icon thành mũi tên sang phải
+            iconSpan.classList.remove('fa-angle-down');
+            iconSpan.classList.add('fa-angle-left');
         }
     }
 

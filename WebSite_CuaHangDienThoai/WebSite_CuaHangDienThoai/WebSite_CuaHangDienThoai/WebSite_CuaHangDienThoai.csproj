@@ -4135,6 +4135,8 @@
     <Content Include="Views\ShoppingCart\Index.cshtml" />
     <Content Include="Views\ShoppingCart\Partial_ItemCart.cshtml" />
     <Content Include="Views\Product\Partial_GetUniqueCompanyTitlesForCategory.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Product\ProductsByCompany.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
