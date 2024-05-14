@@ -27,51 +27,269 @@
         }
     </script>
 
-    <div class="card bg-primary text-white rounded-3">
-        <div class="p-3">
-            <div class="" style="background-color:white">
-                @Html.Action("Partial_ThongTinKhach", "ShoppingCart")
+    <div class=" text-white pt-1 ">
+        <div class="">
+            <div class="">
+                <div class="row " style="">
+                    <div class="col-md-12">
+                        @Html.Action("Partial_ThongTinKhach", "ShoppingCart")
+                    </div>
+                </div>
 
-                <hr />
                 @Html.AntiForgeryToken()
-            <div class="p-2">
-                <div class="form-group">
-                    <label>Hình thức thanh toán</label>
-                    <select class="form-control" id="drTypePayment" name="TypePayment">
-                        <option value="1" selected>COD</option>
-                        <option value="2" id="chuyenkhoan">Chuyển khoản</option>
 
-                    </select>
-                </div>
-                <div class="form-group" id="load_form_payment" style="display:none;">
-                    <h4> <label>Chọn phương thức thanh toán:</label><br /></h4>
-                    <h5>Cách 1: Chuyển hướng sang VNPAY chọn phương thức thanh toán</h5>
-                    <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="0" checked /> Cổng thanh toán VNPAYQR </label>
-                    <h5>Cách 2: Tách phương thức thanh toán tại site của Merchant</h5>
-                    <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="1" /> Thanh toán qua ứng dụng hỗ trợ VNPAYQR </label><br />
-                    <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="2" /> ATM-Tài khoản ngân hàng nội địa </label><br />
-                    <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="3" /> Thanh toán qua thẻ quốc tế </label><br />
-                </div>
+                <div class="row pt-1">
+                    <div class="col-12">
+                        <div class="p-3 pl-3" style="background-color:white">
+                            <div class="">
+                               
+                                
 
-                <div class="form-group" id="load_send"></div>
+                                <div class="tabs_section_container">
+                                    
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col">
+                                                <b style="color:black;font-size:20px">Chọn hình thức nhận hàng</b>
+                                                <div class="tabs_container "style="margin-top: -8px">
 
-                <div class="row pt-2">
-                    <div class="col-md-1"></div>
-                    <div class="col-md-10">
-                        <div class="form-group">
+                                                    <ul class="tabs d-flex flex-sm-row flex-column align-items-left r" style="color:black">
+                                                        <li class="tab active " data-active-tab="tab_1"><span>Giao tận nơi</span></li>
+                                                        <li class="tab" data-active-tab="tab_2"><span>Nhận tại cửa hàng</span></li>
 
-                            @*<button type="submit" class="btn btn-block btn-success btn-checkout" id="btnCheckOut">Đặt hàng</button>*@
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top:-60px">
+                                            <div class="col ">
+                                                <div id="tab_1" class="tab_container active pt-5 pb-5">
+                                                    <div class="" >
+                                                        <div class="row rounded-1"style="background: #f5f5f7">
+                                                            <div class="col-md-12" style="margin-top: -40px">
+                                                                <div class="row phuongthucnhanhang">
+                                                                    <div class="col-6">
+                                                                        <div class="dropdown" style=" width: 100%;">
+                                                                            <button class="btn btn-secondary dropdown-toggle" style=" width: 100%;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <span class=" thanhpho">Hồ Chí Minh</span>
+                                                                            </button>
+                                                                            <div class="dropdown-menu" style=" width: 100%;" aria-labelledby="dropdownMenuButton">
+                                                                                <input type="text" class="searchLocation" />
+                                                                                <a class="dropdown-item" href="#">Action</a>
+                                                                                <a class="dropdown-item" href="#">Another action</a>
+                                                                                <a class="dropdown-item" href="#">Something else here</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="dropdown">
+                                                                            <button class="btn btn-secondary dropdown-toggle" style=" width: 100%;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                Quận huyện
+                                                                            </button>
+                                                                            <div class="dropdown-menu" style=" width: 100%;" aria-labelledby="dropdownMenuButton">
+                                                                                <input type="text" class="searchLocation" />
+                                                                                <a class="dropdown-item" href="#">Action</a>
+                                                                                <a class="dropdown-item" href="#">Another action</a>
+                                                                                <a class="dropdown-item" href="#">Something else here</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
 
-                            <div class="form-group">
-                                <button type="button" class="btn btn-success btn-block btn-checkout full-width-button" id="btnCheckOut"style="width:100%">Đặt Hàng<i class="fas fa-long-arrow-alt-right ms-2 full-width-button" style=""></i></button>
+                                                                </div>
+                                                                <div class="row pt-1 phuongthucnhanhang">
+                                                                    <div class="col-6">
+                                                                        <div class="dropdown" style=" width: 100%;">
+                                                                            <button class="btn btn-secondary dropdown-toggle" style=" width: 100%;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <span class=" thanhpho">Chọn phường xã</span>
+                                                                            </button>
+                                                                            <div class="dropdown-menu" style=" width: 100%;" aria-labelledby="dropdownMenuButton">
+                                                                                <input type="text" class="searchLocation" />
+                                                                                <a class="dropdown-item" href="#">Action</a>
+                                                                                <a class="dropdown-item" href="#">Another action</a>
+                                                                                <a class="dropdown-item" href="#">Something else here</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="" style="height: 100%; align-items: stretch; display: flex; ">
+                                                                            <input type="text" class="sonha" style=" width: 100%; height: 100%; flex: 1;" placeholder="Số nhà , tên đường" />
+                                                                        </div>
+
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+
+
+
+                                                        <div class="row pt-3">
+                                                            <div class="form-check" style="color:black">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                                <label class="form-check-label" for="flexCheckDefault">
+                                                                    Gọi người khác nhận hàng
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check" style="color:black">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                                <label class="form-check-label" for="flexCheckDefault">
+                                                                    Chuyển danh bạ, dữ liệu qua máy mới
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check" style="color:black">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                                <label class="form-check-label" for="flexCheckDefault">
+                                                                    Xuất hóa đơn công ty
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                
+                                                </div>
+
+                                                <!-- Tab Description -->
+                                                <!-- Tab Additional Info -->
+
+                                                <div id="tab_2" class="tab_container ">
+                                                    <div class="row">
+                                                        <div class="col-md-12" style="margin-top: -40px">
+                                                            <div class="row phuongthucnhanhang">
+                                                                <div class="col-6">
+                                                                    <div class="dropdown" style=" width: 100%;">
+                                                                        <button class="btn btn-secondary dropdown-toggle" style=" width: 100%;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                            <span class=" thanhpho">Hồ Chí Minh</span>
+                                                                        </button>
+                                                                        <div class="dropdown-menu" style=" width: 100%;" aria-labelledby="dropdownMenuButton">
+                                                                            <input type="text" class="searchLocation" />
+                                                                            <a class="dropdown-item" href="#">Action</a>
+                                                                            <a class="dropdown-item" href="#">Another action</a>
+                                                                            <a class="dropdown-item" href="#">Something else here</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-secondary dropdown-toggle" style=" width: 100%;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                            Quận huyện
+                                                                        </button>
+                                                                        <div class="dropdown-menu" style=" width: 100%;" aria-labelledby="dropdownMenuButton">
+                                                                            <input type="text" class="searchLocation" />
+                                                                            <a class="dropdown-item" href="#">Action</a>
+                                                                            <a class="dropdown-item" href="#">Another action</a>
+                                                                            <a class="dropdown-item" href="#">Something else here</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-12 cuahang"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="form-check" style="color:black">
+                                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                            <label class="form-check-label" for="flexCheckDefault">
+                                                                Gọi người khác nhận hàng
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check" style="color:black">
+                                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                            <label class="form-check-label" for="flexCheckDefault">
+                                                                Chuyển danh bạ, dữ liệu qua máy mới
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check" style="color:black">
+                                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                            <label class="form-check-label" for="flexCheckDefault">
+                                                                Xuất hóa đơn công ty
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+
+
+                                           
+                                        </div>
+                                   
+
+                                     
+                                    </div>
+
+                                </div>
+
+
+
+
+
+
+
+
+
                             </div>
+                            
+
+
+
+
 
                         </div>
+
                     </div>
-                    <div class="col-md-1"></div>
                 </div>
-               
-            </div>
+
+
+                <div class="row pt-1">
+                    <div class="col-12">
+                        <div class="p-2" style="background-color:white">
+                            <div class="">
+                                <div class="form-group">
+                                    <label>Hình thức thanh toán</label>
+                                    <select class="form-control" id="drTypePayment" name="TypePayment">
+                                        <option value="1" selected>COD</option>
+                                        <option value="2" id="chuyenkhoan">Chuyển khoản</option>
+
+                                    </select>
+                                </div>
+                                <div class="form-group" id="load_form_payment" style="display:none;">
+                                    <h4> <label>Chọn phương thức thanh toán:</label><br /></h4>
+                                    <h5>Cách 1: Chuyển hướng sang VNPAY chọn phương thức thanh toán</h5>
+                                    <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="0" checked /> Cổng thanh toán VNPAYQR </label>
+                                    <h5>Cách 2: Tách phương thức thanh toán tại site của Merchant</h5>
+                                    <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="1" /> Thanh toán qua ứng dụng hỗ trợ VNPAYQR </label><br />
+                                    <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="2" /> ATM-Tài khoản ngân hàng nội địa </label><br />
+                                    <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="3" /> Thanh toán qua thẻ quốc tế </label><br />
+                                </div>
+
+                                <div class="form-group" id="load_send"></div>
+
+                                <div class="row pt-2">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+
+                                            @*<button type="submit" class="btn btn-block btn-success btn-checkout" id="btnCheckOut">Đặt hàng</button>*@
+
+                                            <div class="form-group">
+                                                <button type="button" class="btn btn-success btn-block btn-checkout full-width-button" id="btnCheckOut" style="width:100%">Đặt Hàng<i class="fas fa-long-arrow-alt-right ms-2 full-width-button" style=""></i></button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
            
 
