@@ -318,7 +318,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
         public ActionResult Partial_ThongTinKhach()
         {
-            if (Session["IdKhachHang"] != null)
+            if (Session["CustomerId"] != null)
             {
                 int idKhach = (int)Session["CustomerId"];
                 var khachHang = db.tb_Customer.Find(idKhach);

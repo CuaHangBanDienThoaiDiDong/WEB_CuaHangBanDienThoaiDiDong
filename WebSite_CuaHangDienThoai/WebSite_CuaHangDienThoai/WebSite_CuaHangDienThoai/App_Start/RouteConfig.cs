@@ -9,6 +9,14 @@ namespace WebSite_CuaHangDienThoai
         {
 
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            //// Route Thanh toan
+            routes.MapRoute(
+       name: "ThanhTasn",
+       url: "thanh-toan",
+       defaults: new { controller = "ShoppingCart", action = "CheckOut", alias = UrlParameter.Optional },
+       namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+   );
+
             //// Route Chi tiet san pham
             routes.MapRoute(
        name: "LoaSanphamtheoCongTy", 

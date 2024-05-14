@@ -142,6 +142,7 @@
                     /*alert(rs.msg);*/
                     if (rs.code == 1) {
                         ShowCount();
+
                         Swal.fire({
                             position: "top-end",
                             icon: "success",
@@ -169,87 +170,10 @@
 
     //Start btn xoá sản phẩm giỏ hàng \
 
-    //$('body').on('click', '.btnDelete', function (e) {
-    //    e.preventDefault();
-    //    var id = $(this).data('id');
-
-    //    Swal.fire({
-    //        title: "Bạn muốn xoá ?",
-    //        text: "Bạn muốn xoá sản phẩm ra khỏi giỏ hàng!",
-    //        icon: "warning",
-    //        showCancelButton: true,
-    //        confirmButtonColor: "#3085d6",
-    //        cancelButtonColor: "#d33",
-    //        confirmButtonText: "Đồng ý, xoá!"
-    //    }).then((result) => {
-    //        if (result.isConfirmed) {
-    //            $.ajax({
-    //                url: '/ShoppingCart/Delete',
-    //                type: 'POST',
-    //                data: { id: id },
-    //                success: function (rs) {
-    //                    if (rs.Success) {
-    //                        if (rs.code == 1) {
-    //                            LoadCart();
-    //                            ShowCount();
-    //                            alert("Xóa thành công");
-    //                            //Swal.fire({
-    //                            //    position: "top-end",
-    //                            //    icon: "success",
-    //                            //    title: "Xoá sản phẩm thành công",
-    //                            //    showConfirmButton: false,
-    //                            //    timer: 1100,
-    //                            //    customClass: {
-    //                            //        container: 'swal2-container-custom',
-    //                            //        popup: 'swal2-popup-custom'
-    //                            //    }
-    //                            //});
-    //                        }
-
-    //                    }
-    //                    else
-    //                    {
-    //                        if (res.Code == -1) {
-    //                            Swal.fire({
-    //                                icon: "error",
-    //                                title: "Lỗi ",
-    //                                text: "Lỗi hệ thống máy chủ ",
-    //                                footer: '<a href="/dang-nhap">Quay về đăng nhập?</a>'
-    //                            });
-    //                        }
-    //                        if (res.Code == -2) {
-    //                            Swal.fire({
-    //                                icon: "error",
-    //                                title: "Lỗi ",
-    //                                text: "Lỗi hệ thống máy chủ ",
-    //                                footer: '<a href="/dang-nhap">Quay về đăng nhập?</a>'
-    //                            });
-    //                        }
-    //                        if (res.Code == -3) {
-    //                            Swal.fire({
-    //                                icon: "error",
-    //                                title: "Giỏ hàng bị lỗi  ",
-    //                                text: "Sản phẩm không tồn tại trong giỏ hàng ",
-    //                                footer: '<a href="/gio-hang>Quay về giỏ hàng ?</a>',
-    //                                customClass: {
-    //                                    container: 'swal2-container-custom',
-    //                                    popup: 'swal2-popup-custom'
-    //                                }
-    //                            });
-    //                        }
-    //                    }
-    //                }
-    //            });
-
-
-    //        }
-    //    });
+   
 
 
 
-
-
-    //});
 
 
 

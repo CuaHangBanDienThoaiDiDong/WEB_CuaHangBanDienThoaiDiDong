@@ -1,78 +1,154 @@
-﻿   <div class="card bg-primary text-white rounded-3">
-       <div class="card-body">
-           <div class="d-flex justify-content-between align-items-center mb-4">
-               <h5 class="mb-0">Thông tin khách hàng</h5>
-               <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                    class="img-fluid rounded-3" style="width: 45px;" alt="Avatar">
-           </div>
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Customer
+    <style>
+        .SvK9MH {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+        }
+        .IZawzb {
+            align-items: center;
+            color: #ee4d2d;
+            display: flex;
+            flex: 1 1 auto;
+            font-size: 1.125rem;
+            margin-bottom: 20px;
+            text-transform: capitalize;
+        }
+            .IZawzb .qclVa9 {
+                display: flex;
+                margin-right: 9px;
+            }
+            .IZawzb .qclVa9 {
+                display: flex;
+                margin-right: 9px;
+            }
+        .icon-location-marker {
+            color: #ee4d2d;
+            fill: currentColor;
+        }
+        .HYmUPs h1, .HYmUPs h2, .HYmUPs h3 {
+            color: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            line-height: inherit;
+            margin: 0;
+            padding: 0;
+        }
+        h2 {
+            display: block;
+            font-size: 1.5em;
+            margin-block-start: 0.83em;
+            margin-block-end: 0.83em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-weight: bold;
+            unicode-bidi: isolate;
+        }
+    </style>
+@if (Model != null)
+{
+    @*<div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="mb-0">Thông tin khách hàng</h5>
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+                 class="img-fluid rounded-3" style="width: 45px;" alt="Avatar">
+        </div>*@
+   
+<div class="p-2">
+    <h2 class="text-center">Thông tin đơn hàng </h2>
+    <hr />
+    <div class="m6A2B1 ">
+        <div class="xBNaac"></div>
+        <div class="hYgtuo">
+            @*<div class="SvK9MH">
+                    <div class="IZawzb">
+                        <div class="qclVa9">
+                            <svg height="16" viewBox="0 0 12 16" width="12"
+                                 class="shopee-svg-icon icon-location-marker">
+                                <path d="M6 3.2c1.506 0 2.727 1.195 2.727 2.667 0 1.473-1.22 2.666-2.727 2.666S3.273 7.34 3.273 5.867C3.273 4.395 4.493 3.2 6 3.2zM0 6c0-3.315 2.686-6 6-6s6 2.685 6 6c0 2.498-1.964 5.742-6 9.933C1.613 11.743 0 8.498 0 6z"
+                                      fill-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h2>Địa chỉ nhận hàng</h2>
+                    </div>
+                </div>*@
+            <div class="i1xLmh">
+                <div>
+                    <div class="y0jyrJ">
+                        <div class="PzGLCh">
+                            <h5>
+                                Tên người nhận : @Model.CustomerName
+                                <a href="#" class="btn ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+                                    </svg>
 
-           <p class="small mb-2">Card type</p>
-           <a href="#!" type="submit" class="text-white">
-               <i class="fab fa-cc-mastercard fa-2x me-2"></i>
-           </a>
-           <a href="#!" type="submit" class="text-white">
-               <i class="fab fa-cc-visa fa-2x me-2"></i>
-           </a>
-           <a href="#!" type="submit" class="text-white">
-               <i class="fab fa-cc-amex fa-2x me-2"></i>
-           </a>
-           <a href="#!" type="submit" class="text-white"><i class="fab fa-cc-paypal fa-2x"></i></a>
+                                </a>
+                            </h5>
+                        </div>
+                        <div class="PzGLCh">
+                            <h5>
+                                Số điện thoại : @Model.PhoneNumber
+                                <a href="#" class="btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+                                    </svg>
 
-           <form class="mt-4">
-               <div data-mdb-input-init class="form-outline form-white mb-4">
-                   <input type="text" id="typeName" class="form-control form-control-lg" siez="17"
-                          placeholder="Cardholder's Name" />
-                   <label class="form-label" for="typeName">Cardholder's Name</label>
-               </div>
+                                </a>
+                            </h5>
+                        </div>
+                        <div class="a9c4OR">
+                            @if (Model.Loaction != null)
+                            {
 
-               <div data-mdb-input-init class="form-outline form-white mb-4">
-                   <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
-                          placeholder="1234 5678 9012 3457" minlength="19" maxlength="19" />
-                   <label class="form-label" for="typeText">Card Number</label>
-               </div>
+                                <h5>
+                                    @Model.Loaction
+                                    Địa chỉ :  Đường đt 6 (tạp hóa Mai Hương), ấp 4 xã đông thạnh, Xã Đông
+                                    Thạnh, Huyện Hóc Môn, TP. Hồ Chí Minh
+                                </h5>
+                            }
+                            else
+                            {
+                                <span class="text-danger">
+                                    Bạn chưa có địa chỉ nhận hàng ! Vui lòng cập nhật <a href="">tại đây</a>
+                                </span>
+                                <h5>
+                                    @Model.Loaction
+                                    Địa chỉ :  Đường đt 6 (tạp hóa Mai Hương), ấp 4 xã đông thạnh, Xã Đông
+                                    Thạnh, Huyện Hóc Môn, TP. Hồ Chí Minh
+                                </h5>
+                            }
 
-               <div class="row mb-4">
-                   <div class="col-md-6">
-                       <div data-mdb-input-init class="form-outline form-white">
-                           <input type="text" id="typeExp" class="form-control form-control-lg"
-                                  placeholder="MM/YYYY" size="7" id="exp" minlength="7" maxlength="7" />
-                           <label class="form-label" for="typeExp">Expiration</label>
-                       </div>
-                   </div>
-                   <div class="col-md-6">
-                       <div data-mdb-input-init class="form-outline form-white">
-                           <input type="password" id="typeText" class="form-control form-control-lg"
-                                  placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3" maxlength="3" />
-                           <label class="form-label" for="typeText">Cvv</label>
-                       </div>
-                   </div>
-               </div>
+                        </div>
 
-           </form>
+                    </div>
+                </div>
 
-           <hr class="my-4">
+            </div>
+            <div></div>
+        </div>
+    </div>
+    <hr class="my-4">
 
-           <div class="d-flex justify-content-between">
-               <p class="mb-2">Subtotal</p>
-               <p class="mb-2">$4798.00</p>
-           </div>
+    <div class="d-flex justify-content-between">
+        <p class="mb-2">Subtotal</p>
+        <p class="mb-2">$4798.00</p>
+    </div>
 
-           <div class="d-flex justify-content-between">
-               <p class="mb-2">Shipping</p>
-               <p class="mb-2">$20.00</p>
-           </div>
+    <div class="d-flex justify-content-between">
+        <p class="mb-2">Shipping</p>
+        <p class="mb-2">$20.00</p>
+    </div>
 
-           <div class="d-flex justify-content-between mb-4">
-               <p class="mb-2">Total(Incl. taxes)</p>
-               <p class="mb-2">$4818.00</p>
-           </div>
+    <div class="d-flex justify-content-between mb-4">
+        <p class="mb-2">Total(Incl. taxes)</p>
+        <p class="mb-2">$4818.00</p>
+    </div>
+ 
+</div>
+ 
+}
+else
+{
+    <p class="text-danger">Không tìm thấy dữ liệu khách hàng !!!</p>
+}
 
-           <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-block btn-lg">
-               <div class="d-flex justify-content-between">
-                   <span>$4818.00</span>
-                   <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
-               </div>
-           </button>
-
-       </div>
-   </div>
