@@ -152,7 +152,6 @@
     <Property Name="OrigianlPrice" Type="decimal" Precision="18" Scale="2" />
     <Property Name="TypeProduct" Type="bit" />
     <Property Name="Image" Type="nvarchar" MaxLength="900" />
-    <Property Name="BatteryCapacity" Type="int" />
     <Property Name="Ram" Type="int" />
     <Property Name="Capacity" Type="int" />
     <Property Name="ProductsId" Type="int" />
@@ -212,6 +211,7 @@
     <Property Name="CPU" Type="nvarchar" MaxLength="100" />
     <Property Name="GPU" Type="nvarchar" MaxLength="100" />
     <Property Name="Screen" Type="char" MaxLength="1" />
+    <Property Name="BatteryCapacity" Type="int" />
     <Property Name="ProductCategoryId" Type="int" />
     <Property Name="ProductCompanyId" Type="int" />
   </EntityType>

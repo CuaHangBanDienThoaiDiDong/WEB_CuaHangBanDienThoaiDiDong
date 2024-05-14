@@ -32,7 +32,6 @@ namespace WebSite_CuaHangDienThoai.Models
         public Nullable<decimal> OrigianlPrice { get; set; }
         public Nullable<bool> TypeProduct { get; set; }
         public string Image { get; set; }
-        public Nullable<int> BatteryCapacity { get; set; }
         public Nullable<int> Ram { get; set; }
         public Nullable<int> Capacity { get; set; }
         public Nullable<int> ProductsId { get; set; }

@@ -390,7 +390,7 @@
                                             </div>
                                             <div class="row">
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail1">Loại pin:</label>
                                                         <input type="text" name="LoaiPin" id="LoaiPin" required class="form-control" autocomplete="off" placeholder="- Loại pin -" />
@@ -401,21 +401,29 @@
                                                 </div>
 
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <label for="exampleInputEmail1">Công nghệ pin:</label>
                                                     <input type="text" name="CongNghePin" id="CongNghePin" required class="form-control" autocomplete="off" placeholder="- Công nghệ pin -" />
                                                     @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
                                                     @Html.ValidationMessageFor(x => x.CongNghePin, null, new { @class = "text-danger" })
                                                 </div>
-                                                <div class="col-md-4">
+                                              
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
                                                     <label for="exampleInputEmail1">Hỗ trợ sạc:</label>
                                                     <input type="text" name="HoTroSac" id="HoTroSac" required class="form-control" autocomplete="off" placeholder="- Hỗ trợ sạc -" />
                                                     @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
                                                     @Html.ValidationMessageFor(x => x.HoTroSac, null, new { @class = "text-danger" })
 
                                                 </div>
+                                                <div class="col-md-6">
+                                                    <label for="exampleInputEmail1">Dung lượng Pin</label>
+                                                    <input type="number" name="DungLuongPin" id="DungLuongPin" required class="form-control" autocomplete="off" placeholder="- Dung lượng Pin -" />
+                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                                    @Html.ValidationMessageFor(x => x.DungLuongPin, null, new { @class = "text-danger" })
+                                                </div>
                                             </div>
-
                                         </div>
 
 

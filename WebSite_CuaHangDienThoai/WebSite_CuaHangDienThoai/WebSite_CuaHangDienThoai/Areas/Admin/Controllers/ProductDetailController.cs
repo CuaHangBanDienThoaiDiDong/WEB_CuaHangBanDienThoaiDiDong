@@ -143,7 +143,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             {
                 if (req.ProductsId != null)
                 {
-                    if (req.Ram != 1 && req.DungLuong != 1 && req.DungLuongPin >= 100)
+                    if (req.Ram != 1 && req.DungLuong != 1 )
                     {
                         if (Images != null && Images.Count > 0)
                         {
@@ -176,7 +176,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                             model.OrigianlPrice = req.OrigianlPrice;
                             model.PriceSale = req.PriceSale;
                             model.TypeProduct = req.TypeProduct;
-                            model.BatteryCapacity = req.DungLuongPin;
+                           
                             model.Capacity = req.DungLuong;
                             model.Ram = req.Ram;
                             db.tb_ProductDetail.Add(model);

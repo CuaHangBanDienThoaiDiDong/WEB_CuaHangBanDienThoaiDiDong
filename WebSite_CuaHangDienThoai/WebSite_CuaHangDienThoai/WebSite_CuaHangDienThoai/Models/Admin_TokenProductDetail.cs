@@ -14,7 +14,7 @@ namespace WebSite_CuaHangDienThoai.Models
 
         public decimal OrigianlPrice { get; set; }
         public bool TypeProduct { get; set; }
-        public int DungLuongPin { get; set; }
+      
         public int Ram  {get; set; }
         public int DungLuong  {get; set; }
         public int ProductsId { get; set; }

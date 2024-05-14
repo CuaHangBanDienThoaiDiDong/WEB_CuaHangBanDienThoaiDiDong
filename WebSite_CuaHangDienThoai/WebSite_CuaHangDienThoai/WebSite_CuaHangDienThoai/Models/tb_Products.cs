@@ -55,6 +55,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public string CPU { get; set; }
         public string GPU { get; set; }
         public string Screen { get; set; }
+        public Nullable<int> BatteryCapacity { get; set; }
         public Nullable<int> ProductCategoryId { get; set; }
         public Nullable<int> ProductCompanyId { get; set; }
     

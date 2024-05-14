@@ -177,7 +177,6 @@
     <Property Name="OrigianlPrice" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="TypeProduct" Type="Boolean" />
     <Property Name="Image" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-    <Property Name="BatteryCapacity" Type="Int32" />
     <Property Name="Ram" Type="Int32" />
     <Property Name="Capacity" Type="Int32" />
     <Property Name="ProductsId" Type="Int32" />
@@ -245,6 +244,7 @@
     <Property Name="CPU" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="GPU" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="Screen" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="BatteryCapacity" Type="Int32" />
     <Property Name="ProductCategoryId" Type="Int32" />
     <Property Name="ProductCompanyId" Type="Int32" />
     <NavigationProperty Name="tb_ProductCategory" Relationship="Self.ProductDetaitoProductCategory" FromRole="tb_Products" ToRole="tb_ProductCategory" />

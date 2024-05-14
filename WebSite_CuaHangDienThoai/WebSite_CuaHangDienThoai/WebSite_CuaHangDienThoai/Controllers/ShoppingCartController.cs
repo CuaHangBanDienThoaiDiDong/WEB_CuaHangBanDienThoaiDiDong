@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebSite_CuaHangDienThoai.Models;
+using WebSite_CuaHangDienThoai.Models.Token.Client;
 
 namespace WebSite_CuaHangDienThoai.Controllers
 {
@@ -89,24 +90,18 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
                 if (checkIdCart != null)
                 {
-                    // Lấy CartId từ giỏ hàng của khách hàng
+                    
                     int checkId = checkIdCart.CartId;
-
-                    // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
                     var checkIdCartItem = db.tb_CartItem.SingleOrDefault(ci => ci.CartId == checkId && ci.ProductDetailId == id);
 
                     if (checkIdCartItem != null)
                     {
-                        // Nếu sản phẩm đã tồn tại trong giỏ hàng, cập nhật số lượng và giá
                         checkIdCartItem.Quantity += soluong;
                         checkIdCartItem.TemPrice = checkIdCartItem.Price * checkIdCartItem.Quantity;
                         db.SaveChanges();
                     }
                     else
                     {
-
-
-                        // Nếu sản phẩm chưa tồn tại trong giỏ hàng, thêm mới
                         var productDetail = db.tb_ProductDetail.Find(id);
                         if (productDetail != null)
                         {
@@ -148,6 +143,51 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            var code = new { Success = false, Message = "", Code = -1 };
+
+            try
+            {
+
+                int? idKhach = Session["CustomerId"] as int?;
+                if (idKhach == null)
+                {
+                    code = new { Success = false, Message = "Không có phiên làm việc (session) cho khách hàng", Code = -1 };
+                    return Json(code);
+                }
+
+
+                var cart = db.tb_Cart.FirstOrDefault(x => x.CustomerId == idKhach);
+                if (cart == null)
+                {
+                    code = new { Success = false, Message = "Không tìm thấy giỏ hàng", Code = -2 };
+                    return Json(code);
+                }
+
+
+                var cartItem = db.tb_CartItem.FirstOrDefault(ci => ci.CartId == cart.CartId && ci.ProductDetailId == id);
+                if (cartItem == null)
+                {
+                    code = new { Success = false, Message = "Sản phẩm không tồn tại trong giỏ hàng", Code = -3 };
+                    return Json(code);
+                }
+
+
+                db.tb_CartItem.Remove(cartItem);
+                db.SaveChanges();
+
+                code = new { Success = true, Message = "Xóa sản phẩm thành công", Code = 1 };
+            }
+            catch (Exception ex)
+            {
+                // Log lỗi nếu cần
+                code = new { Success = false, Message = "Lỗi xóa sản phẩm: " + ex.Message, Code = -1 };
+            }
+
+            return Json(code);
+        }
 
 
 
@@ -201,59 +241,115 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
-
-
-
-
-
         [HttpPost]
-        public ActionResult Delete(int id)
+        public ActionResult DatHang(List<int> productIds)
         {
-            var result = new { Success = false, Message = "", Code = -1 };
-
-            try
+            var code = new { Success = false, msg = "", code = -1 };
+            if (productIds != null && productIds.Any())
             {
-                
-                int? idKhach = Session["CustomerId"] as int?;
-                if (idKhach == null)
+                if (Session["CustomerId"] != null)
                 {
-                    result = new { Success = false, Message = "Không có phiên làm việc (session) cho khách hàng", Code = -1 };
-                    return Json(result);
+                    int idKhach = (int)Session["CustomerId"];
+                    var checkIdCart = db.tb_Cart.SingleOrDefault(x => x.CustomerId == idKhach);
+                    if (checkIdCart != null)
+                    {
+                        int checkId = checkIdCart.CartId;
+
+                        ShoppingCart cart = (ShoppingCart)Session[""];
+                        if (cart == null)
+                        {
+                            cart = new ShoppingCart();
+                        }
+
+                        foreach (var productId in productIds)
+                        {
+                            var cartItem = db.tb_CartItem.SingleOrDefault(row => row.CartId == checkId && row.ProductDetailId == productId);
+                            if (cartItem != null)
+                            {
+                                var checkSanPham = db.tb_ProductDetail.FirstOrDefault(row => row.ProductDetailId == productId);
+                                if (checkSanPham != null)
+                                {
+                                    ShoppingCartItem item = new ShoppingCartItem
+                                    {
+                                        ProductId = (int)cartItem.ProductDetailId,
+                                        ProductName = cartItem.tb_ProductDetail.tb_Products.Title.ToString(),
+                                        CategoryName = cartItem.tb_ProductDetail.tb_Products.tb_ProductCategory.Title.ToString(),
+                                        Alias = cartItem.tb_ProductDetail.tb_Products.Alias.ToString(),
+                                        SoLuong = cartItem.Quantity,
+                                    };
+
+                                    if (cartItem.tb_ProductDetail.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault) != null)
+                                    {
+                                        item.ProductImg = cartItem.tb_ProductDetail.tb_Products.tb_ProductImage.FirstOrDefault(row => row.IsDefault).Image;
+                                    }
+
+                                    item.Price = (decimal)checkSanPham.Price;
+                                    if (checkSanPham.PriceSale > 0)
+                                    {
+                                        item.Price = (decimal)checkSanPham.PriceSale;
+                                    }
+                                    item.PriceTotal = item.SoLuong * item.Price;
+                                    cart.AddToCart(item, cartItem.Quantity);
+                                }
+                            }
+                        }
+
+                        Session["Cart"] = cart;
+                        code = new
+                        {
+                            Success = true,
+                            msg = "",
+                            code = 1
+                        };
+                        //return RedirectToAction("CheckOut");
+                    }
                 }
-
-               
-                var cart = db.tb_Cart.FirstOrDefault(x => x.CustomerId == idKhach);
-                if (cart == null)
-                {
-                    result = new { Success = false, Message = "Không tìm thấy giỏ hàng", Code = -2 };
-                    return Json(result);
-                }
-
-              
-                var cartItem = db.tb_CartItem.FirstOrDefault(ci => ci.CartId == cart.CartId && ci.ProductDetailId == id);
-                if (cartItem == null)
-                {
-                    result = new { Success = false, Message = "Sản phẩm không tồn tại trong giỏ hàng", Code = -3 };
-                    return Json(result);
-                }
-
-              
-                db.tb_CartItem.Remove(cartItem);
-                db.SaveChanges();
-
-                result = new { Success = true, Message = "Xóa sản phẩm thành công", Code = 1 };
             }
-            catch (Exception ex)
+            else
             {
-                // Log lỗi nếu cần
-                result = new { Success = false, Message = "Lỗi xóa sản phẩm: " + ex.Message, Code = -1 };
+                code = new { Success = false, msg = "", code = -2 };
+            }
+            return Json(code);
+        }
+
+        public ActionResult Partial_CheckOut()
+        {
+            return PartialView();
+        }
+        public ActionResult Partial_ThongTinKhach()
+        {
+            if (Session["IdKhachHang"] != null)
+            {
+                int idKhach = (int)Session["CustomerId"];
+                var khachHang = db.tb_Customer.Find(idKhach);
+                return PartialView(khachHang);
+            }
+            return PartialView();
+        }
+
+        public ActionResult Partial_ChiTietSanPhamMua()
+        {
+
+            ShoppingCart cart = (ShoppingCart)Session["Cart"];
+            if (cart != null && cart.Items.Any())
+            {
+                return PartialView(cart.Items);
             }
 
-            return Json(result);
+            return PartialView();
         }
 
 
+        public ActionResult CheckOut()
+        {
+            ShoppingCart cart = (ShoppingCart)Session["Cart"];
+            if (cart != null && cart.Items.Any())
+            {
+                ViewBag.Cart = cart;
+            }
 
+            return View();
+        }
 
 
 

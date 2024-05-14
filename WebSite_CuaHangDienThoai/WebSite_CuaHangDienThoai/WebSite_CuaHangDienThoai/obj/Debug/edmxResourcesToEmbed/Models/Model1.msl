@@ -162,7 +162,6 @@
           <ScalarProperty Name="OrigianlPrice" ColumnName="OrigianlPrice" />
           <ScalarProperty Name="TypeProduct" ColumnName="TypeProduct" />
           <ScalarProperty Name="Image" ColumnName="Image" />
-          <ScalarProperty Name="BatteryCapacity" ColumnName="BatteryCapacity" />
           <ScalarProperty Name="Ram" ColumnName="Ram" />
           <ScalarProperty Name="Capacity" ColumnName="Capacity" />
           <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
@@ -225,6 +224,7 @@
           <ScalarProperty Name="CPU" ColumnName="CPU" />
           <ScalarProperty Name="GPU" ColumnName="GPU" />
           <ScalarProperty Name="Screen" ColumnName="Screen" />
+          <ScalarProperty Name="BatteryCapacity" ColumnName="BatteryCapacity" />
           <ScalarProperty Name="ProductCategoryId" ColumnName="ProductCategoryId" />
           <ScalarProperty Name="ProductCompanyId" ColumnName="ProductCompanyId" />
         </MappingFragment>

@@ -130,7 +130,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                 model.CPU = req.CPU.Trim();
                                 model.GPU = req.GPU.Trim();
                                 model.CPUspeed = req.TocDoCPU.Trim();
-
+                                model.BatteryCapacity = req.DungLuongPin;
                                 model.OperatingSystem = req.HeDieuHanh.Trim();
                                 model.MobileNetwork = req.MangDiDong.Trim();
                                 model.Sim = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Sim.Trim());

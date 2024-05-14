@@ -3979,6 +3979,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\OrderViewVNPay.cs" />
     <Compile Include="Models\ProductColorViewModel.cs" />
     <Compile Include="Models\ProductDetailViewModel.cs" />
     <Compile Include="Models\tb_Cart.cs">
@@ -4056,6 +4057,7 @@
     <Compile Include="Models\Token\Admin\Admin_TokenProductDetail.cs" />
     <Compile Include="Models\Token\Client\Client_ForgetPassClient.cs" />
     <Compile Include="Models\Token\Client\Client_TokenAccount.cs" />
+    <Compile Include="Models\ShoppingCart.cs" />
     <Compile Include="Models\UniqueCompanyTitlesViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -4137,6 +4139,10 @@
     <Content Include="Views\Product\Partial_GetUniqueCompanyTitlesForCategory.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Product\ProductsByCompany.cshtml" />
+    <Content Include="Views\ShoppingCart\CheckOut.cshtml" />
+    <Content Include="Views\ShoppingCart\Partial_ThongTinKhach.cshtml" />
+    <Content Include="Views\ShoppingCart\Partial_ChiTietSanPhamMua.cshtml" />
+    <Content Include="Views\ShoppingCart\Partial_CheckOut.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -10,7 +10,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public string Title { get; set; }
 
         public string Image { get; set; }
-        
+
         //public int Quantity { get; set; }
         public int ViewCount { get; set; }
         public bool IsHome { get; set; }
@@ -19,11 +19,11 @@ namespace WebSite_CuaHangDienThoai.Models
         public bool IsHot { get; set; }
         public bool IsActive { get; set; }
 
-      
-  
-    
+
+
+
         public string HeDieuHanh { get; set; }
-       
+
         public string TocDoGPU { get; set; }
         public string TocDoCPU { get; set; }
 
@@ -48,6 +48,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public string GPU { get; set; }
         public float ManHinh { get; set; }
 
+        public int DungLuongPin { get; set; }
         public int ProductCategoryId { get; set; }
         public int ProductCompanyId { get; set; }
 
