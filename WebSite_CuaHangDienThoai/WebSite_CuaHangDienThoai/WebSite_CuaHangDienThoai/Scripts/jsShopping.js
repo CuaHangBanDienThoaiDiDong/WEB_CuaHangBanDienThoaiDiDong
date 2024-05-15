@@ -340,7 +340,42 @@
         }
 
     });
-    //End dưaht hàng
+    //End dưaht hàng list_Provinces_item
+    //Start Load dropdown Phuong Xa
+        $('.loadWardsBtn').click(function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/ProvincesVN/Partial_Wards',
+                type: 'GET',
+                data: { id: id },
+                success: function (result) {
+                    $('.loadDataWards').html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+    //End Load dropdown Phuong Xa
+    //Start Load dropdown Quaajn huyeejn 
+    $('.dropdowm_list_Provinces_item').on('click', function () {
+       
+        var provincesName = $(this).text();
+        $('.provincesNameChose').text(provincesName);
+        var id = $(this).data('id');
+        $.ajax({
+            url: '/ProvincesVN/Partial_Districts',
+            type: 'GET',
+            data: { id: id },
+            success: function (result) {
+                $('.loadDataDistricts').html(result);
+            },
+        });
+            
+    });
+    //End Load dropdown Quaajn huyeejn
+
+   
 });
 
 
@@ -357,7 +392,7 @@ function sendAjaxRequest(selectedProductIds) {
             // Xử lý kết quả từ server nếu cần
             if (result.Success) {
                 console.log('Đặt hàng thành công');
-              /*  window.location.href = '/testCart/CheckOut';*/
+                window.location.href = '/thanh-toan ';
             } else {
                 if (result.code == -2) {
 
@@ -514,6 +549,8 @@ function ShowCount() {
         }
     });
 }
+functiom
+
 
 function LoadCart() {
     $.ajax({

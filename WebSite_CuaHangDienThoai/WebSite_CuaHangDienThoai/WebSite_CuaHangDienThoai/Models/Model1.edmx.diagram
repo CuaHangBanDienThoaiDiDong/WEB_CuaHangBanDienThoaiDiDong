@@ -4,7 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="61fa218454e742d59da59317f2ce3634" Name="Diagram1">
+      <Diagram DiagramId="681ae457d9294f379030170d7ac122e7" Name="Diagram1">
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Districts" Width="1.5" PointX="10" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Provinces" Width="1.5" PointX="7.75" PointY="1.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Cart" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_CartItem" Width="1.5" PointX="7.5" PointY="11.25" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Customer" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
@@ -28,6 +30,9 @@
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Store" Width="1.5" PointX="6" PointY="34.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Voucher" Width="1.5" PointX="7.5" PointY="43.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Warehouse" Width="1.5" PointX="8.25" PointY="34.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Wards" Width="1.5" PointX="12.25" PointY="1.625" IsExpanded="true" />
+        <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK__Districts__idPro__04E4BC85" ManuallyRouted="false" />
+        <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK__Wards__idDistric__07C12930" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.CartItemtoCart" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.GioHangtoKhachHang" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.CartItemtoProducdetai" ManuallyRouted="false" />

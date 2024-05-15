@@ -3275,6 +3275,7 @@
     <Content Include="Content\Css\Client\LayOutSearch.css" />
     <Content Include="Content\Css\Client\LoginClient.css" />
     <Content Include="Content\Css\Client\ProDetail.css" />
+    <Content Include="Content\Css\Client\P_CheckOut.css" />
     <Content Include="Content\Css\Client\RegisterClient.css" />
     <Content Include="Content\LayOut\LayOut.css" />
     <Content Include="Content\LayOut\MenuGoiYHomNay.css" />
@@ -3956,6 +3957,7 @@
     <Compile Include="Controllers\ProductCompanyController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductDetailController.cs" />
+    <Compile Include="Controllers\ProvincesVNController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -3964,6 +3966,9 @@
     <Compile Include="Models\Admin_TokenProducts.cs" />
     <Compile Include="Models\Common\Filter.cs" />
     <Compile Include="Models\CompanyModel.cs" />
+    <Compile Include="Models\Districts.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -3982,6 +3987,9 @@
     <Compile Include="Models\OrderViewVNPay.cs" />
     <Compile Include="Models\ProductColorViewModel.cs" />
     <Compile Include="Models\ProductDetailViewModel.cs" />
+    <Compile Include="Models\Provinces.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tb_Cart.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -4059,6 +4067,9 @@
     <Compile Include="Models\Token\Client\Client_TokenAccount.cs" />
     <Compile Include="Models\ShoppingCart.cs" />
     <Compile Include="Models\UniqueCompanyTitlesViewModel.cs" />
+    <Compile Include="Models\Wards.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -4143,6 +4154,9 @@
     <Content Include="Views\ShoppingCart\Partial_ThongTinKhach.cshtml" />
     <Content Include="Views\ShoppingCart\Partial_ChiTietSanPhamMua.cshtml" />
     <Content Include="Views\ShoppingCart\Partial_CheckOut.cshtml" />
+    <Content Include="Views\ProvincesVN\Partial_Provinces.cshtml" />
+    <Content Include="Views\ProvincesVN\Partial_Districts.cshtml" />
+    <Content Include="Views\ProvincesVN\Partial_Wards.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

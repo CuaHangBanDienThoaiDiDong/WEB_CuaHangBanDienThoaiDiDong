@@ -1,5 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Districts">
+    <Key>
+      <PropertyRef Name="idDistricts" />
+    </Key>
+    <Property Name="idDistricts" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="255" />
+    <Property Name="idProvinces" Type="int" />
+  </EntityType>
+  <EntityType Name="Provinces">
+    <Key>
+      <PropertyRef Name="idProvinces" />
+    </Key>
+    <Property Name="idProvinces" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="255" />
+  </EntityType>
   <EntityType Name="tb_Cart">
     <Key>
       <PropertyRef Name="CartId" />
@@ -337,6 +352,14 @@
     <Property Name="Modifeby" Type="nvarchar(max)" />
     <Property Name="StoreId" Type="int" />
   </EntityType>
+  <EntityType Name="Wards">
+    <Key>
+      <PropertyRef Name="idWards" />
+    </Key>
+    <Property Name="idWards" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="255" />
+    <Property Name="idDistricts" Type="int" />
+  </EntityType>
   <Association Name="CartItemtoCart">
     <End Role="tb_Cart" Type="Self.tb_Cart" Multiplicity="1" />
     <End Role="tb_CartItem" Type="Self.tb_CartItem" Multiplicity="*" />
@@ -394,6 +417,30 @@
       </Principal>
       <Dependent Role="tb_ExportWareHouse">
         <PropertyRef Name="WarehouseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Districts__idPro__04E4BC85">
+    <End Role="Provinces" Type="Self.Provinces" Multiplicity="0..1" />
+    <End Role="Districts" Type="Self.Districts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Provinces">
+        <PropertyRef Name="idProvinces" />
+      </Principal>
+      <Dependent Role="Districts">
+        <PropertyRef Name="idProvinces" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Wards__idDistric__07C12930">
+    <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
+    <End Role="Wards" Type="Self.Wards" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Districts">
+        <PropertyRef Name="idDistricts" />
+      </Principal>
+      <Dependent Role="Wards">
+        <PropertyRef Name="idDistricts" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -686,6 +733,8 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
+    <EntitySet Name="Districts" EntityType="Self.Districts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Provinces" EntityType="Self.Provinces" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Cart" EntityType="Self.tb_Cart" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_CartItem" EntityType="Self.tb_CartItem" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Customer" EntityType="Self.tb_Customer" Schema="dbo" store:Type="Tables" />
@@ -709,6 +758,7 @@
     <EntitySet Name="tb_Store" EntityType="Self.tb_Store" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Voucher" EntityType="Self.tb_Voucher" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Warehouse" EntityType="Self.tb_Warehouse" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Wards" EntityType="Self.Wards" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="CartItemtoCart" Association="Self.CartItemtoCart">
       <End Role="tb_Cart" EntitySet="tb_Cart" />
       <End Role="tb_CartItem" EntitySet="tb_CartItem" />
@@ -728,6 +778,14 @@
     <AssociationSet Name="ExportWareHousetoWareHouse" Association="Self.ExportWareHousetoWareHouse">
       <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
       <End Role="tb_ExportWareHouse" EntitySet="tb_ExportWareHouse" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Districts__idPro__04E4BC85" Association="Self.FK__Districts__idPro__04E4BC85">
+      <End Role="Provinces" EntitySet="Provinces" />
+      <End Role="Districts" EntitySet="Districts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Wards__idDistric__07C12930" Association="Self.FK__Wards__idDistric__07C12930">
+      <End Role="Districts" EntitySet="Districts" />
+      <End Role="Wards" EntitySet="Wards" />
     </AssociationSet>
     <AssociationSet Name="GioHangtoKhachHang" Association="Self.GioHangtoKhachHang">
       <End Role="tb_Customer" EntitySet="tb_Customer" />

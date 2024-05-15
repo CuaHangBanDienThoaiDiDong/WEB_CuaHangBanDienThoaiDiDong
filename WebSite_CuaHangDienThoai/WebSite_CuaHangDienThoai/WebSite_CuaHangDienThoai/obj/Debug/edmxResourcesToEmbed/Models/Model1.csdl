@@ -1,5 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="CUAHANGDIENTHOAIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Districts">
+    <Key>
+      <PropertyRef Name="idDistricts" />
+    </Key>
+    <Property Name="idDistricts" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="idProvinces" Type="Int32" />
+    <NavigationProperty Name="Provinces" Relationship="Self.FK__Districts__idPro__04E4BC85" FromRole="Districts" ToRole="Provinces" />
+    <NavigationProperty Name="Wards" Relationship="Self.FK__Wards__idDistric__07C12930" FromRole="Districts" ToRole="Wards" />
+  </EntityType>
+  <EntityType Name="Provinces">
+    <Key>
+      <PropertyRef Name="idProvinces" />
+    </Key>
+    <Property Name="idProvinces" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Districts" Relationship="Self.FK__Districts__idPro__04E4BC85" FromRole="Provinces" ToRole="Districts" />
+  </EntityType>
   <EntityType Name="tb_Cart">
     <Key>
       <PropertyRef Name="CartId" />
@@ -395,6 +413,39 @@
     <NavigationProperty Name="tb_ImportWarehouse" Relationship="Self.ImportWarehousetoWarehouse" FromRole="tb_Warehouse" ToRole="tb_ImportWarehouse" />
     <NavigationProperty Name="tb_Store" Relationship="Self.WarehousetoStore" FromRole="tb_Warehouse" ToRole="tb_Store" />
   </EntityType>
+  <EntityType Name="Wards">
+    <Key>
+      <PropertyRef Name="idWards" />
+    </Key>
+    <Property Name="idWards" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="idDistricts" Type="Int32" />
+    <NavigationProperty Name="Districts" Relationship="Self.FK__Wards__idDistric__07C12930" FromRole="Wards" ToRole="Districts" />
+  </EntityType>
+  <Association Name="FK__Districts__idPro__04E4BC85">
+    <End Role="Provinces" Type="Self.Provinces" Multiplicity="0..1" />
+    <End Role="Districts" Type="Self.Districts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Provinces">
+        <PropertyRef Name="idProvinces" />
+      </Principal>
+      <Dependent Role="Districts">
+        <PropertyRef Name="idProvinces" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Wards__idDistric__07C12930">
+    <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
+    <End Role="Wards" Type="Self.Wards" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Districts">
+        <PropertyRef Name="idDistricts" />
+      </Principal>
+      <Dependent Role="Wards">
+        <PropertyRef Name="idDistricts" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="CartItemtoCart">
     <End Role="tb_Cart" Type="Self.tb_Cart" Multiplicity="1" />
     <End Role="tb_CartItem" Type="Self.tb_CartItem" Multiplicity="*" />
@@ -744,6 +795,8 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="CUAHANGDIENTHOAIEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Districts" EntityType="Self.Districts" />
+    <EntitySet Name="Provinces" EntityType="Self.Provinces" />
     <EntitySet Name="tb_Cart" EntityType="Self.tb_Cart" />
     <EntitySet Name="tb_CartItem" EntityType="Self.tb_CartItem" />
     <EntitySet Name="tb_Customer" EntityType="Self.tb_Customer" />
@@ -767,6 +820,15 @@
     <EntitySet Name="tb_Store" EntityType="Self.tb_Store" />
     <EntitySet Name="tb_Voucher" EntityType="Self.tb_Voucher" />
     <EntitySet Name="tb_Warehouse" EntityType="Self.tb_Warehouse" />
+    <EntitySet Name="Wards" EntityType="Self.Wards" />
+    <AssociationSet Name="FK__Districts__idPro__04E4BC85" Association="Self.FK__Districts__idPro__04E4BC85">
+      <End Role="Provinces" EntitySet="Provinces" />
+      <End Role="Districts" EntitySet="Districts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Wards__idDistric__07C12930" Association="Self.FK__Wards__idDistric__07C12930">
+      <End Role="Districts" EntitySet="Districts" />
+      <End Role="Wards" EntitySet="Wards" />
+    </AssociationSet>
     <AssociationSet Name="CartItemtoCart" Association="Self.CartItemtoCart">
       <End Role="tb_Cart" EntitySet="tb_Cart" />
       <End Role="tb_CartItem" EntitySet="tb_CartItem" />

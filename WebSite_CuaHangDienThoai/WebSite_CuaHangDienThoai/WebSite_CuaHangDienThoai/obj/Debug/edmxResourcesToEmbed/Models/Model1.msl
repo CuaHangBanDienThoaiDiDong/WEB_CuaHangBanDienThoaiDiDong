@@ -1,6 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="CUAHANGDIENTHOAIModelStoreContainer" CdmEntityContainer="CUAHANGDIENTHOAIEntities">
+    <EntitySetMapping Name="Districts">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Districts">
+        <MappingFragment StoreEntitySet="Districts">
+          <ScalarProperty Name="idDistricts" ColumnName="idDistricts" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="idProvinces" ColumnName="idProvinces" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Provinces">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Provinces">
+        <MappingFragment StoreEntitySet="Provinces">
+          <ScalarProperty Name="idProvinces" ColumnName="idProvinces" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="tb_Cart">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Cart">
         <MappingFragment StoreEntitySet="tb_Cart">
@@ -357,6 +374,15 @@
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
           <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
           <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Wards">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Wards">
+        <MappingFragment StoreEntitySet="Wards">
+          <ScalarProperty Name="idWards" ColumnName="idWards" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="idDistricts" ColumnName="idDistricts" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

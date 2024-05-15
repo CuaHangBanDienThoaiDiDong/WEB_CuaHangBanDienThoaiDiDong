@@ -365,9 +365,16 @@ namespace WebSite_CuaHangDienThoai.Controllers
                                     .ToList();
             if (checkProducts != null)
             {
+
+
+
+
+                var item = db.tb_ProductCategory.FirstOrDefault(r => r.ProductCategoryId == CategoryId);
+
                 int totalCount = checkProducts.Count;
                 ViewBag.Count = totalCount;
-
+                ViewBag.Company = TitleCompany;
+                ViewBag.Category = item.Title;
                 return View(checkProducts);
             }
             return View(); 
