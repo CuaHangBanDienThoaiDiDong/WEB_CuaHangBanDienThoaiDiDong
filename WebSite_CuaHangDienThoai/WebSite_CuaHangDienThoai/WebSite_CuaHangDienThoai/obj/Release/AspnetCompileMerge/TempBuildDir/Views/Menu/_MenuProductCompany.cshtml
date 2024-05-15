@@ -1,0 +1,22 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Products>
+@if (Model.Any() && Model != null)
+{
+    foreach (var item in Model)
+    {
+        //var checkCategory = item.ProductCategoryId == 2;
+        if (item.ProductCategoryId == 2)
+        {
+            <li class="nav-item">
+                <a class="nav-link" href="#">@item.tb_ProductCompany.Title</a>
+            </li>
+        }
+        else
+        {
+        }
+    }
+
+}
+else
+{
+    <p>Không tồn tại bảng ghi hãng</p>
+}

@@ -1,0 +1,241 @@
+﻿.area-total, .area-total .discountcode {
+    display: block;
+    overflow: visible;
+    color: black;
+}
+
+    .area-total .codeboxinput__button--dropdown, .topzone .area-total .codeboxinput__dropdown--content, .topzone .area-total .codeboxinput__voucher-type--active, .topzone .area-total .codeboxinput__voucher-type--active-one {
+        border-radius: 8px;
+    }
+
+    .area-total .codeboxinput__dropdown--content {
+        background-color: #f1f1f1;
+        margin-top: 12px;
+        padding: 10px;
+        border-radius: 4px;
+        display: grid;
+        gap: 5px;
+    }
+
+    .area-total .codeboxinput__button--dropdown {
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 4px;
+        border: 1px solid #e0e0e0;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        width: -moz-fit-content;
+        width: fit-content;
+        position: relative;
+    }
+
+.cartnew-discount {
+    background-position: -184px -48px;
+    width: 15px;
+    height: 15px;
+}
+
+.area-total .codeboxinput__button--dropdown:after {
+    border-top: 2px solid #333;
+    border-right: 2px solid #333;
+    content: "";
+    height: 6px;
+    transform: rotate(135deg);
+    transition: .3s ease-in-out;
+    width: 6px;
+}
+
+.accumulated-point {
+    display: block
+}
+
+.area-total .codeboxinput__dropdown--content, .topzone .area-total .codeboxinput__voucher-type--active, .topzone .area-total .codeboxinput__voucher-type--active-one {
+    border-radius: 8px;
+}
+
+.area-total .codeboxinput__dropdown--content-normal, .codeboxpincode {
+    display: grid;
+    gap: 10px;
+}
+
+.area-total .codeboxinput__apply-voucher > div {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+}
+
+.area-total .codeboxinput__apply-voucher--input {
+    border-radius: 8px 0 0 8px;
+}
+
+    .area-total .codeboxinput__apply-voucher--input:placeholder-shown {
+        text-overflow: ellipsis;
+    }
+
+.area-total .codeboxinput__apply-voucher--input {
+    border-radius: 4px 0 0 4px;
+    border-width: 1px 0 1px 1px;
+    border-style: solid;
+    border-color: #e0e0e0;
+    padding: 10px;
+}
+
+area-total .codeboxinput__apply-voucher--button.disabled {
+    background-color: #a4a4a4;
+    border-color: #a4a4a4;
+}
+
+.topzone .area-total .codeboxinput__apply-voucher--button {
+    border-radius: 0 8px 8px 0;
+}
+
+.area-total .codeboxinput__apply-voucher--button {
+    background-color: var(--blue);
+    border-color: var(--blue);
+}
+
+    .area-total .codeboxinput__apply-voucher--button.disabled {
+        background-color: #a4a4a4;
+        border-color: #a4a4a4;
+    }
+
+.area-total .codeboxinput__apply-voucher--button {
+    border-width: 1px 0 1px 1px;
+    border-style: solid;
+    border-radius: 0 4px 4px 0;
+    padding: 10px 20px;
+    color: #fff;
+    width: 100px;
+    background-color: #2377e8;
+    border-color: #2377e8;
+}
+
+.topzone .anotheroption li form {
+    border: 0;
+    background: var(--lightgray);
+    border-radius: 12px;
+}
+
+.anotheroption li form {
+    border: 1px solid #288ad6;
+    padding: 10px 10px 3px;
+    border-radius: 4px;
+    background: #f6f6f6;
+    margin: 10px 0 0;
+    position: relative;
+}
+
+anotheroption form .fillinput {
+    padding: 2px;
+}
+
+.anotheroption  form:before {
+    border-top: 1px solid var(--lightgray);
+    background: var(--lightgray);
+    border-left: 1px solid var(--lightgray);
+}
+.anotheroption infocompany {
+    background-color: #f1f1f1;
+    margin-top: 12px;
+    padding: 10px;
+    border-radius: 4px;
+    display: grid;
+    gap: 5px;
+}
+
+.anotheroption infocompany:before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-top: 1px solid #288ad6;
+    border-left: 1px solid #288ad6;
+    background: #f6f6f6;
+    transform: rotate(45deg);
+    position: absolute;
+    top: -5px;
+    left: 50px;
+}
+
+.anotheroption infocompany .fillinput {
+    overflow: hidden;
+    margin-right: 5px;
+}
+
+.anotheroption .inputtext {
+    padding: 15px;
+    border: 1px solid var(--lightgray2);
+    border-radius: 12px;
+}
+
+.anotheroption .inputtext {
+    line-height: 18px;
+    font-size: 13px;
+    color: var(--black);
+}
+
+.anotheroption .inputtext {
+    display: block;
+    overflow: hidden;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 7px;
+}
+
+.select.active {
+    border: 1px solid var(--lightgray2);
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(0,0,0,.15);
+    border-radius: 12px;
+}
+.select .boxsearch {
+    position: relative;
+    display: block;
+    margin: 10px 0;
+}
+
+.select input {
+    border-radius: 12px;
+    border: 1px solid var(--lightgray2);
+    font-size: 13px;
+    line-height: 18px;
+    padding: 15px;
+}
+ .select input {
+    margin: 10px 0;
+    border: 1px solid #d1d1d1;
+    padding: 10px;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.deli-address form input {
+    display: block;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 1.7% 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+.boxsearch a {
+    padding: 0;
+}
+.boxsearch a {
+    padding: 10px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+ .listName {
+    display: block;
+    overflow-y: scroll;
+    max-height: 190px;
+}

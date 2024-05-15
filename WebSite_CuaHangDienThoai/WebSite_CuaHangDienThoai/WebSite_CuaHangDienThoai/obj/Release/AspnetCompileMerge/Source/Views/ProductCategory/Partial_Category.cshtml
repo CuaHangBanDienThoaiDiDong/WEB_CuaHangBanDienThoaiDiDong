@@ -1,0 +1,14 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductCategory>
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+
+       
+        <li class=""><a href="/danh-muc-san-pham/@item.Alias-@item.ProductCategoryId" style="color: white; font-family: Poppins-Regular; font-size: 18px; ">@item.Title</a></li>
+    }
+}
+else
+{
+    <p class="text-danger">Không có bảng ghi nào !!</p>
+}

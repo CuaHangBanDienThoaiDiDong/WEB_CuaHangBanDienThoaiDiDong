@@ -1,0 +1,149 @@
+﻿@model List<WebSite_CuaHangDienThoai.Models.ProductColorViewModel>
+
+
+<style>
+    .capacity-list {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        padding: 0;
+        margin: -5px;
+    }
+
+        .capacity-list li {
+            /*flex: 0 0 calc(30% - 10px);*/ /* Sử dụng calc để tính toán chiều rộng với khoảng trống và margin */
+            margin: 5px; /* Tạo khoảng cách giữa các mục */
+            padding: 10px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+            .capacity-list li a {
+                border: solid 1px gray;
+                border-radius: 10px;
+                width: auto;
+                height: auto;
+                padding: 10px;
+                background: #2f3033;
+                color: white
+            }
+
+    .capacity span {
+        display: block;
+        overflow: hidden;
+        color: #fff;
+        font-size: 15px;
+        line-height: 20px;
+        margin: 0 0 10px;
+    }
+
+    .color-sp span {
+        display: block;
+        overflow: hidden;
+        color: #fff;
+        font-size: 15px;
+        line-height: 20px;
+        margin: 0 0 10px;
+    }
+
+
+
+
+
+
+    .scrolling_inner {
+        position: relative;
+    }
+
+    .box03 {
+        margin-bottom: 10px;
+    }
+
+    .box03__item.act {
+        border-color: #2f80ed;
+        color: white;
+    }
+
+    .box03__item {
+        border: 1px solid #e0e0e0;
+        border-radius: 2px;
+        color: white;
+        display: inline-block;
+        font-size: 13px;
+        min-width: 67px;
+        padding: 0 15px;
+        text-align: center;
+        margin-bottom: 5px;
+        margin-right: 2px;
+        vertical-align: top;
+        height: 36px;
+        line-height: 36px;
+        position: relative;
+    }
+
+
+
+
+
+    .box03 .a.active  {
+        border-color: #fb6e2e;
+        color:red;
+    }
+</style>
+
+
+
+
+
+
+
+<div class="capacity">
+    <span>Dung lượng </span>
+    <div class="scrolling_inner">
+        <div class="box03 color group desk">
+
+            @if (ViewBag.ProductId != null)
+            {
+                foreach (var item in Model)
+                {
+
+                    string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
+
+                    int[] nguongDungLuong = new int[] { 999, 1999 };
+
+                    int index = Array.FindIndex(nguongDungLuong, capacity => item.Capacity > capacity);
+
+                     var DungLuong = index != -1 ? dungLuongOptions[index] : item.Capacity + " Gb";
+
+
+                    if (ViewBag.Capacity == item.Capacity)
+                    {
+                        @*<a href="/Productdetail/ProductDetailByCapacity?productsId=@ViewBag.ProductId&Capacity=@item.Capacity" data-color="1197" data-code="0131491003841" class="box03__item item  active " style=" border-color: #fb6e2e; color:red">@DungLuong</a>*@
+                        <a href="/chi-tiet-dungluong/@ViewBag.ProductId-DungLuong@(item.Capacity)" data-color="1197" data-code="0131491003841" class="box03__item item  active text-white " style=" border-color: #fb6e2e; color:red">@DungLuong</a>
+                    }
+                    else
+                    {
+                        <a href="/chi-tiet-dungluong/@ViewBag.ProductId-DungLuong@(item.Capacity)" data-color="1197" data-code="0131491003841" class="box03__item item  text-white " style="  color:red">@DungLuong</a>
+
+                    }
+                }
+
+            }
+            else
+            {
+                <p class="text-danger">Lỗi hệ thôngs</p>
+            }
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+

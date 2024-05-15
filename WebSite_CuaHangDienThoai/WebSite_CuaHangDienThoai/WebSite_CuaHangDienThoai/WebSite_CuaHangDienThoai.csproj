@@ -3688,6 +3688,12 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
+    <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
+    <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - Web Deploy1.pubxml" />
+    <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - Web Deploy2.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -3705,8 +3711,6 @@
     <Content Include="Scripts\owl_carousel\owl.carousel.js" />
     <Content Include="Scripts\owl_carousel\owl.theme.default.css" />
     <Content Include="Uploads\files\password.png" />
-    <Content Include="Uploads\images\244994762_2380031152133544_4984166604951804110_n.jpg" />
-    <Content Include="Uploads\images\avatar.png" />
     <Content Include="Uploads\images\ProductsCategory\icon\icon-moi-128x129.jpg" />
     <Content Include="Uploads\images\ProductsCategory\icon\Laptop-129x129.jpg" />
     <Content Include="Uploads\images\ProductsCategory\icon\Oplung-128x128.jpg" />
@@ -3823,8 +3827,6 @@
     <Content Include="Uploads\images\SanPham\xiaomi-13t-pro-xanh-9.jpg" />
     <Content Include="Uploads\images\setting\product_6.png" />
     <Content Include="Uploads\_thumbs\Files\password.png" />
-    <Content Include="Uploads\_thumbs\Images\244994762_2380031152133544_4984166604951804110_n.jpg" />
-    <Content Include="Uploads\_thumbs\Images\avatar.png" />
     <Content Include="Uploads\_thumbs\Images\Products\apple-watch-s9-41mm-vien-nhom-day-silicone-1.jpg" />
     <Content Include="Uploads\_thumbs\Images\Products\apple-watch-s9-41mm-vien-nhom-day-silicone-2.jpg" />
     <Content Include="Uploads\_thumbs\Images\Products\DienThoai\iphone-12-256gb638176718531908814.jpg" />

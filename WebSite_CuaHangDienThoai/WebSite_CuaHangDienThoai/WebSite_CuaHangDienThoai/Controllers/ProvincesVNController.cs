@@ -16,10 +16,10 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return View();
         }
 
-        public ActionResult SearchProvinces(string key)
-        {
+        //public ActionResult SearchProvinces(string key)
+        //{
             
-        }
+        //}
 
 
 

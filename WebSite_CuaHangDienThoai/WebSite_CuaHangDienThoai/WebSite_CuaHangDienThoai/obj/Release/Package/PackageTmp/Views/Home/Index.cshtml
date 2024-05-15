@@ -1,0 +1,491 @@
+﻿
+@{
+    ViewBag.Title = "LTDMINISTORE";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+
+
+<style>
+    html,
+    body {
+        position: relative;
+        height: 100%;
+    }
+
+    body {
+        background: #eee;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color: #000;
+        margin: 0;
+        padding: 0;
+    }
+
+    .swiper {
+        width: 100%;
+        height: 100%;
+    }
+
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+
+    /*.arrivals_grid_sorting li {
+        margin-right: 15px;
+    }
+
+
+        .arrivals_grid_sorting li:last-child {
+            margin-right: 0;
+        }
+
+
+    .arrivals_grid_sorting {
+        list-style: none;*/ /* Xóa các bullet points */
+    /*padding: 0;*/ /* Xóa padding mặc định */
+    /*}
+
+        .arrivals_grid_sorting li {
+            margin-right: 20px;*/ /* Thêm khoảng cách bên phải */
+    /*margin-bottom: 10px;*/ /* Thêm khoảng cách phía dưới */
+    /*display: inline-flex;*/ /* Sử dụng inline-flex để cải thiện bố trí */
+    /*align-items: center;*/ /* Căn giữa các mục theo chiều dọc */
+    /*justify-content: center;*/ /* Căn giữa nội dung theo chiều ngang */
+    /*vertical-align: top;*/ /* Đảm bảo các mục li align ở phía trên */
+    /*text-align: center;*/ /* Căn giữa nội dung trong mỗi mục li */
+    /*border: 1px solid #ccc;*/ /* Thêm viền cho khung */
+    /*border-radius: 8px;*/ /* Bo tròn góc của khung */
+    /*padding: 10px;*/ /* Thêm padding để tạo không gian bên trong khung */
+    /*box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/ /* Thêm bóng cho khung */
+    /*background-color: #fff;*/ /* Màu nền cho khung */
+    /*flex-wrap: wrap;*/ /* Cho phép nội dung bao bọc nếu cần */
+    /*height: auto;
+            width: 300px;
+        }*/
+
+    /* Định kiểu cho ảnh trong mỗi li */
+    .arrivals_grid_sorting li img {
+        width: 20%;
+        height: 20%;
+        margin-bottom: 5px;
+    }
+
+    /* Nếu cần, thêm định kiểu cho văn bản để nó không quá dài và vượt quá khung */
+    /*.arrivals_grid_sorting li span {
+                display: block;*/ /* Văn bản hiển thị trên một dòng riêng */
+    /*overflow: hidden;*/ /* Cắt bớt nội dung nếu quá dài */
+    /*text-overflow: ellipsis;*/ /* Thêm dấu ba chấm nếu văn bản bị cắt */
+    /*white-space: nowrap;*/ /* Giữ cho văn bản không xuống dòng */
+    /*}*/
+
+    .span-with-image {
+        display: flex; /* Sử dụng flexbox để sắp xếp các phần tử con */
+        align-items: center; /* Căn giữa các phần tử theo chiều dọc */
+    }
+
+        .span-with-image img {
+            margin-right: 10px; /* Thêm khoảng cách phải cho ảnh */
+            width: 50px; /* Đặt chiều rộng cố định cho ảnh */
+            height: 50px; /* Đặt chiều cao cố định cho ảnh */
+        }
+
+    #Iphone {
+        display: flex; /* Sử dụng flexbox */
+        align-items: center; /* Căn giữa các mục theo chiều dọc */
+        color: white; /* Màu chữ trắng */
+        justify-content: center; /* Căn giữa theo chiều ngang */
+        align-items: center;
+    }
+
+        #Iphone h2 {
+            margin: 0 0 -5px 0px; /* Thêm một chút khoảng cách giữa SVG và h2 */
+        }
+</style>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_responsive.css">
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <div class="row d-flex align-items-center">
+                <div class="col-md-6">
+                    <div class="banner-content">
+                        <h1 class="display-2 text-uppercase text-dark pb-5">Sản phẩm của bạn thật tuyệt vời.</h1>
+                        <a href="/Product/index" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Xem sản phẩm</a>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="image-holder">
+                        @*<img src="~/images/banner-image.png" class="w-100" />*@
+                        <img src="~/Uploads/images/SanPham/iphone-15-1-4.jpg" @*class="w-100"*@ style="width:auto;height:auto" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="row d-flex align-items-center">
+                <div class="col-md-6">
+                    <div class="banner-content">
+                        <h1 class="display-2 text-uppercase text-dark pb-5">Sản phẩm của bạn thật tuyệt vời.</h1>
+                        <a href="/Product/index" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Xem sản phẩm</a>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="image-holder">
+                        @*<img src="~/images/banner-image.png" class="w-100" />*@
+                        <img src="~/Uploads/images/SanPham/iphone-15-128gb-hong-3-1.jpg" style="width:auto;height:auto" />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="row d-flex align-items-center">
+                <div class="col-md-6">
+                    <div class="banner-content">
+                        <h1 class="display-2 text-uppercase text-dark pb-5">Sản phẩm của bạn thật tuyệt vời.</h1>
+                        <a href="/Product/index" class="btn btn-medium btn-dark text-uppercase btn-rounded-none">Xem sản phẩm</a>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="image-holder">
+                        @*<img src="~/images/banner-image.png" class="w-100" />*@
+                        <img src="~/Uploads/images/SanPham/iphone-15-pro-max-tu-nhien-2.jpg" style="width:auto;height:80%" />
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="swiper-pagination"></div>
+</div>
+
+
+@*<div class="banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 banner_category bg-white rounded ">
+                    <div class="row p-2">
+                        <div class="col-4">
+                            <img src="~/images/banner/Frame427320037--1--min-120x120.gif" class="w-100" />
+                        </div>
+                        <div class="col-8">
+                            <div class="">
+                                <a href="categories.html">women's</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+                    <div class="banner_item align-items-center" style="background-image: url(~/images/banner_2.jpg)">
+                        <div class="banner_category">
+                            <a href="categories.html">accessories's</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="banner_item align-items-center" style="background-image: url(~/images/banner_3.jpg)">
+                        <div class="banner_category">
+                            <a href="categories.html">men's</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="banner_item align-items-center" style="background-image: url(~/images/banner_3.jpg)">
+                        <div class="banner_category">
+                            <a href="categories.html">men's</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+<!--Menu ProductDetail -->
+<div class="container pt-5">
+
+    <div class="row" id="banner">
+        <div class="col-md-12">
+            <img src="~/images/banner/1200x100-1200x100-4.jpg" class="w-100" />
+        </div>
+    </div>
+
+
+
+
+
+    <!--Menu Flash Sale ddor -->
+    <div class="row pt-3" id="flashSale">
+        <div class="col-md-12">
+            <div class="">
+                @Html.Action("MenuFlashSaleAll", "Menu")
+            </div>
+        </div>
+    </div>
+
+    <div class="row pt-3" id="flashSale">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4" style="color:white">
+                <div id="Iphone">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="color:white" fill="currentColor" class="bi bi-apple" viewBox="0 0 16 16">
+                        <path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282" />
+                        <path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282" />
+                    </svg>
+
+
+                    <h2 style="color:white">iPhone</h2>
+                </div>
+
+            </div>
+            <div class="col-4"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 " style="margin-top:-60px">
+                <div class="">
+                    @Html.Action("MenuIphone", "Menu")
+                </div>
+            </div>
+        </div>
+       
+    </div>
+
+
+
+    @*<div class="row pt-4" id="Deal">
+            <div class="col-md-12">
+                <div class="">
+                    @Html.Action("MenuDeal", "Menu")
+                </div>
+            </div>
+        </div>*@
+
+
+
+
+
+
+
+
+    @*<div class="row pt-4" id="SalePhone">
+            <div class="col-md-12">
+                <div class="">
+                    @Html.Action("MenuFlashSalePhone", "Menu")
+                </div>
+            </div>
+        </div>*@
+
+
+
+
+    <div class="row pt-4" id="DanhMucNoiBat">
+        <div class="col-md-12">
+            <div class="">
+                @Html.Action("MenuDanhMucNoiBat", "Menu")
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    @*<div class="row pt-4" style="border: none; height:100%">
+        <div class="col-md-12">
+            <div class="">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="#"><h4>Điện thoại</h4></a>
+                                </li>
+                                @Html.Action("MenuProductCompany", "Menu")
+                            </ul>
+                        </div>
+                        @Html.Action("MenuProductDetail", "Menu")
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
+
+
+
+
+</div>
+
+
+
+@*=----------------------------------------------------------MenuArrivals*@
+
+<div class="new_arrivals pb-5">
+    <div class="container  align-items-center ">
+        @Html.Action("MenuArrivals", "Menu")
+    </div>
+</div>
+
+
+
+
+<!-- Deal of the week -->
+
+@*<div class="deal_ofthe_week " style="margin-top:60px">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="deal_ofthe_week_img">
+                    <img src="images/deal_ofthe_week.png" alt="">
+                </div>
+            </div>
+            <div class="col-lg-6 text-right deal_ofthe_week_col">
+                <div class="deal_ofthe_week_content d-flex flex-column align-items-center float-right">
+                    <div class="section_title">
+                        <h2>Deal Of The Week</h2>
+                    </div>
+                    <ul class="timer">
+                        <li class="d-inline-flex flex-column justify-content-center align-items-center">
+                            <div id="day" class="timer_num">03</div>
+                            <div class="timer_unit">Day</div>
+                        </li>
+                        <li class="d-inline-flex flex-column justify-content-center align-items-center">
+                            <div id="hour" class="timer_num">15</div>
+                            <div class="timer_unit">Hours</div>
+                        </li>
+                        <li class="d-inline-flex flex-column justify-content-center align-items-center">
+                            <div id="minute" class="timer_num">45</div>
+                            <div class="timer_unit">Mins</div>
+                        </li>
+                        <li class="d-inline-flex flex-column justify-content-center align-items-center">
+                            <div id="second" class="timer_num">23</div>
+                            <div class="timer_unit">Sec</div>
+                        </li>
+                    </ul>
+                    <div class="red_button deal_ofthe_week_button"><a href="#">shop now</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+
+
+
+<!-- Best Sellers -->
+<!-- Benefit -->
+
+<div class="benefit">
+    <div class="container">
+        <div class="row benefit_row">
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>MIỄN PHÍ VẬN CHUYỂN</h6>
+                        <p>Bị thay đổi dưới một số hình thức</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>>tiền mặt khi giao hàng</h6>
+                        <p>Thanh toán trực tuyến VnPay</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>45 ngày hoàn trả</h6>
+                        <p>Với các thao tác trả hàn đơn giản</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 benefit_col">
+                <div class="benefit_item d-flex flex-row align-items-center">
+                    <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+                    <div class="benefit_content">
+                        <h6>Mở cửa các ngày trong tuần</h6>
+                        <p>8Sáng - 09Tối</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
+
+<!-- Initialize Swiper -->
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        pagination: {
+            el: ".swiper-pagination",
+            dynamicBullets: true,
+        },
+    });
+</script>
+
+
+@section scripts{
+    <script src="~/Content/assets/js/categories_custom.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var swiper = new Swiper('.mySwiper', {
+                spaceBetween: 30,
+                centeredSlides: true,
+                autoplay: {
+                    delay: 1000, // Thời gian chờ là 1000 ms = 1 giây
+                    disableOnInteraction: false, // Tiếp tục autoplay khi tương tác với slider
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+            });
+        });
+    </script>
+    @*<script>
+            $(document).ready(function () {
+                $('.arrivals_grid_sorting li').click(function () {
+                    // Đặt lại màu nền cho tất cả các hình ảnh trong các mục li
+                    $('.arrivals_grid_sorting li img').css('background-color', '');
+
+                    // Thay đổi màu nền của hình ảnh trong mục li được nhấp
+                    $(this).find('img').css('background-color', '#fe4c50');
+                });
+            });
+        </script>*@
+}
+

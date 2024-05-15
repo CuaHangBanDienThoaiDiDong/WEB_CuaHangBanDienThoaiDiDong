@@ -1,0 +1,69 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Products>
+@if (Model.Any() && Model != null)
+{
+
+
+
+
+    <div class="p-3">
+        <small style="color: #888; font-size: 14px; overflow: hidden "> Có phải bạn muốn tìm</small>
+        <div class="text-search" style="overflow: hidden; border-bottom: 1px solid #dfdfdf; padding: 5px 0 15px 0; margin: 5px 0 15px 0; ">
+            <a href="#">nội dung nhập</a>
+        </div>
+        <small style="color: #888; font-size: 14px; overflow: hidden; line-height: 21px; ">Sản phẩm gợi ý</small>
+        <ul class="list-group" style="font-size: 14px; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 0px; ">
+
+            <li class="">
+                <a href="#">
+
+                    <div class="row gy-3 mb-4 productsuggestions">
+                        @foreach (var item in Model)
+                        {
+                            var strImg = "";
+                            var img = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
+                            var checkDetail = item.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == item.ProductsId);
+                            if (checkDetail != null && img != null)
+                            {
+                                <div class="col-md-12">
+                                    <div class="me-lg-5">
+                                        <div class="d-flex">
+                                            <img src="@strImg" style="width: 10%; height: 10% " />
+                                            <div class="">
+                                                <div class="text-img">
+                                                    <span>
+                                                       @item.Title
+                                                    </span>
+                                                    <p>
+                                                        <h5>@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.tb_ProductDetail.P)  8.990.000₫</h5>
+                                                        <strike>
+                                                            11.790.000₫
+                                                        </strike>"
+                                                        -23%                    "
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        }
+
+                    </div>
+
+
+
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+
+
+
+
+}
+
+
+

@@ -1,0 +1,157 @@
+﻿
+@model WebSite_CuaHangDienThoai.Models.Token.Client.Client_TokenAccount
+@using (Ajax.BeginForm("UpdatePass", "Account", new AjaxOptions
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "load_data",
+    OnComplete = "OnSuccessCO",
+    OnFailure = "OnFailure"
+
+}, new { @Id = "myForm", onsubmit = "return validateForm();" }))
+{
+    <script>
+        function OnBeginCO() {
+            $('#btnOutOrder').attr("disabled", "disabled");
+        }
+
+
+
+        function OnSuccessCO(res) {
+            if (res.Success == true) {
+
+                if (res.Code == 1) {
+
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "success",
+                        title: "Xuất đơn hàng thành công"
+                    });
+
+                } else {
+                }
+            }
+            else {
+                if (res.Code == -2) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi tìm...",
+                        text: "Không tìm thấy đơn hàng",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+
+                }
+
+            }
+
+        }
+        function validateForm() {
+            var confirmPassword = document.getElementById('ConfirmPassword').value.trim();
+            var password = document.getElementById('Password').value.trim();
+            var code = document.getElementById('Code').value.trim();
+            if (!password || !confirmPassword || !code) {
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi ...",
+                    text: "Vui lòng điền đầy đủ thông tin.",
+                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                });
+                return false;
+
+            }
+            if (password !== confirmPassword) {
+
+                Swal.fire({
+                    icon: "warning",
+                    title: "Lỗi tìm...",
+                    text: "Mật khẩu và xác nhận mật khẩu không khớp.",
+                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                });
+                return false;
+                return false;
+            }
+
+            return true;
+
+        }
+
+        function togglePasswordVisibility(inputId, buttonId) {
+            var passwordInput = document.getElementById(inputId);
+            var toggleButton = document.getElementById(buttonId);
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+
+            } else {
+                passwordInput.type = "password";
+
+            }
+        }
+
+
+
+
+
+    </script>
+
+
+
+    @Html.AntiForgeryToken()
+    <h3>Thông tin khách hàng</h3>
+
+
+
+    <div class="form-group">
+        <label>Khách hàng</label>
+
+        @if (ViewBag.Id != null)
+        {
+            <input type="hidden" id="Id" name="Id" value="@ViewBag.Id" />
+        }
+    </div>
+
+    <div class="form-group">
+        <span> Mã Code</span>
+        <div class="col-md-10 d-flex">
+            <input type="text" id="Code" name="Code" class="form-control" autocomplete="new-password" placeholder="Mã Code được cung cấp" />
+
+
+        </div>
+    </div>
+    <div class="form-group">
+        <span> Mật Khẩu</span>
+        <div class="col-md-10 d-flex">
+            <input type="password" id="Password" name="Password" class="form-control" autocomplete="new-password" placeholder="Nhập Mật Khẩu" />
+            <button type="button" class="btn btn-success" onclick="togglePasswordVisibility('Password', 'togglePasswordBtn')"><i class="far fa-eye"></i></button>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <span> Nhập lại mật khẩu </span>
+        <div class="col-md-10 d-flex">
+            <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Nhập Lại Mật Khẩu" />
+            <button type="button" class="btn btn-success" onclick="togglePasswordVisibility('ConfirmPassword', 'toggleConfirmPasswordBtn')"><i class="far fa-eye"></i></button>
+
+        </div>
+    </div>
+
+    <div class="form-group" id="load_send"></div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-block btn-success btnForgotPass">Xác nhận</button>
+
+    </div>
+
+
+}

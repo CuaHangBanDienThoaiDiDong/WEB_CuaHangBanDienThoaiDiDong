@@ -1,0 +1,163 @@
+﻿
+@{
+    ViewBag.Title = "Thanh toán";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/single_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/single_responsive.css">
+<link href="~/Content/assets/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.theme.default.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/OwlCarousel2-2.2.1/animate.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/themify-icons/themify-icons.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/assets/styles/single_styles.css" rel="stylesheet" />
+<link href="~/Content/assets/styles/single_responsive.css" rel="stylesheet" />
+<link href="~/Content/Css/Client/ProDetail.css" rel="stylesheet" />
+<br />
+<br />
+<br />
+<br />
+<br />
+<section class="h-100 h-custom" style="">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+                <div class="">
+                    <div class=" p-4" style="background-color: #3e3e3f">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+
+                                @Html.Action("Partial_ChiTietSanPhamMua", "ShoppingCart")
+
+
+                            </div>
+
+                            @*Phan khach hang*@
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                @Html.Action("Partial_CheckOut", "ShoppingCart")
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="~/Scripts/owl_carousel/owl.carousel.js"></script>
+<script>
+    function changeImage(imgUrl) {
+        document.getElementById('mainImage').style.backgroundImage = 'url(' + imgUrl + ')';
+        var thumbnails = document.querySelectorAll('.thumbnail_item');
+        thumbnails.forEach(function (thumbnail) {
+            thumbnail.classList.remove('active');
+        });
+        event.currentTarget.classList.add('active');
+    }
+    function updateMainImage(imageSrc) {
+        document.getElementById('mainImage').src = imageSrc;
+    }
+    //function updateMainImage(element) {
+    //    var newImage = element.getAttribute('src');
+
+    //    // Cập nhật ảnh lớn
+    //    document.getElementById('mainImage').style.backgroundImage = 'url(' + newImage + ')';
+
+    //    // Cập nhật trạng thái active của thumbnails
+    //    var thumbnails = document.querySelectorAll('.single_product_thumbnails li');
+    //    thumbnails.forEach(function (thumb) {
+    //        thumb.classList.remove('active');
+    //    });
+    //    element.parentElement.classList.add('active');
+    //}
+
+    //start duung cho phu kien related acc needbuy
+    //$(document).ready(function () {
+    //    $(".owl-carousel").owlCarousel({
+    //        loop: false, // Không lặp lại sau khi cuộn hết
+    //        margin: 10, // Khoảng cách giữa các mục
+
+    //        items: 1 // Chỉ hiển thị một mục mỗi lần
+    //    });
+    //});
+
+
+
+
+
+    $('.owl-carousel').owlCarousel({
+        loop: true,
+        margin: 0,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1,
+            },
+            768: {
+                items: 2,
+            },
+            1100: {
+                items: 3,
+            },
+            1400: {
+                items: 4,
+                loop: false,
+            }
+        }
+    });
+    //End duung cho phu kien related acc needbuy
+
+</script>
+
+
+
+<script src="~/Content/assets/js/jquery-3.2.1.min.js"></script>
+<script src="~/Content/assets/styles/bootstrap4/popper.js"></script>
+<script src="~/Content/assets/styles/bootstrap4/bootstrap.min.js"></script>
+<script src="~/Content/assets/plugins/Isotope/isotope.pkgd.min.js"></script>
+<script src="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+<script src="~/Content/assets/plugins/easing/easing.js"></script>
+<script src="~/Content/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+<script src="~/Content/assets/js/single_custom.js"></script>
+
+
+
+@section scripts{
+    <script src="~/Content/assets/js/categories_custom.js"></script>
+    <script>
+        function OnFailure(rs) {
+            if (!rs.Success) {
+                $('#show_success').html("Bạn mua hàng thất bại! Xin vui lòng thử lại");
+            }
+        }
+        $(document).ready(function () {
+            $('.TypePaymentVN').on('change', function () {
+                // Nếu checkbox được chọn, hủy chọn tất cả các checkbox khác
+                if ($(this).prop('checked')) {
+                    $('.TypePaymentVN').not(this).prop('checked', false);
+                }
+            });
+        });
+        $(document).ready(function () {
+            $('body').on('change', '#drTypePayment', function () {
+                var type = $(this).val();
+                $('#load_form_payment').hide();
+                if (type == "2") {
+                    $('#load_form_payment').show();
+                }
+            });
+
+        });
+    </script>
+}

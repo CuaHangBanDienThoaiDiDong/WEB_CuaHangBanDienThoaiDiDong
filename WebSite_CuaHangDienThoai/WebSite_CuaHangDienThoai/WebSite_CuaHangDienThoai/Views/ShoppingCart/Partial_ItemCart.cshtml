@@ -42,7 +42,7 @@
 
                                             var i = 0;
                                             var strImg = "";
-                                            var img = item.tb_ProductDetail.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
+                                            var img = item.tb_ProductDetail.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault && x.ProductDetailId==item.ProductDetailId);
                                             if (img != null)
                                             {
                                                 strImg = img.Image;
@@ -55,7 +55,11 @@
                                                 <td>
                                                     @(i+1)
                                                 </td>
-                                                <td style="width: 30%; height: 30%"><img src="@strImg" alt="@item.tb_ProductDetail.tb_Products.Title" class="img-cart "style="width: 30%; height: 30%"></td>
+                                                <td style="width: 30%; height: 30%">
+                                                    
+                                                    <img src="@strImg"
+                                                         class="@item.tb_ProductDetail.tb_Products.Title" style="width: 70%; height: 70%" alt="Cotton T-shirt">
+                                                </td>
                                                 <td>
                                                     @*<a href="/chi-tiet/@item.Alias-p@(item.ProductId)">*@
                                                     @item.tb_ProductDetail.tb_Products.Title @Capacity

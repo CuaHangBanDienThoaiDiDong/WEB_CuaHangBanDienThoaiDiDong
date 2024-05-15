@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_responsive.css">
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+<br />
+
+
+
+<div class="container bg-white p-5 pb-5 rounded-3">
+    <div class="row " style="">
+        <div class=" d-flex ">
+
+            <span><a href="/Trang-chu">Trang chủ</a></span>/@ViewBag.Title
+
+        </div>
+        <div class="col-md-12" id="load_data">
+            @Html.Action("Partial_ItemCart", "ShoppingCart")
+        </div>
+
+    </div>
+    <div class="row">
+        @if (ViewBag.Cart != null)
+        {
+            <div class="col-md-1"></div>
+            <div class="col-md-10 text-center">
+                <div class="form-group">
+                    <button type="button" class="btn btn-success btn-block btn-dat-hang full-width-button" style="width:100%">Đặt Hàng</button>
+                </div>
+                <br />
+                <small>Bạn có thể lựa chọn các hình thức thanh toán ở bước sau</small>
+            </div>
+            <div class="col-md-1"></div>
+        }
+    </div>
+
+
+</div>
+
+
+@section scripts{
+    <script src="~/Content/assets/js/categories_custom.js"></script>
+    <script>
+        $('body').on('change', '#SelectAll', function () {
+            var checkStatus = this.checked;
+            var checkbox = $(this).parents('.card-body').find('tr td input:checkbox');
+            checkbox.each(function () {
+                this.checked = checkStatus;
+                if (this.checked) {
+                    checkbox.attr('selected', 'checked');
+                } else {
+                    checkbox.attr('selected', '');
+                    $('#show_success').html("Vui lòng chọn sản phẩm");
+                }
+            });
+        });
+
+
+
+
+    </script>
+
+
+}

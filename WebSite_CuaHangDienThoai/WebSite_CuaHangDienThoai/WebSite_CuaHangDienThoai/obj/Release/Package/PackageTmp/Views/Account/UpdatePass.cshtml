@@ -1,0 +1,12 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_KhachHang
+@{
+    ViewBag.Title = "Cập nhập mật khẩu ";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<div class="container" style="padding-top:50px">
+    <div class="row text-center-md text-center-xs d-middle justify-content-start">
+        @Html.Action("Partail_UpdatePass", "Account", new { id = Model.IdKhachHang })
+    </div>
+</div>
+
+

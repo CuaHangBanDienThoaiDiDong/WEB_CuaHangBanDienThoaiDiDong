@@ -1,0 +1,117 @@
+﻿.navPhone1 {
+    list-style: none;
+    text-decoration: none;
+    display: none;
+    position: absolute;
+    top: 70%; /* Đặt phần tử ul nằm dưới dòng header */
+    left: -10%;
+    transform: translateX(-50%);
+    z-index: 1; /* Đảm bảo phần tử ul nằm trên header */
+    background-color: #fff; /* Màu nền của menu */
+    padding: 3px; /* Phần padding để tạo khoảng cách cho các items */
+    width: 100%;
+}
+
+.navPhone {
+}
+
+    .navPhone:hover a {
+    }
+
+    .navPhone:hover .navPhone1 {
+        display: block;
+        border-radius: 10px;
+    }
+
+
+
+
+.navPhone1 li a {
+    color: black;
+    display: block;
+}
+
+#SanPham {
+    font-size: 14px;
+}
+
+    #SanPham:hover {
+        padding-left: 5px;
+        color: red;
+    }
+
+.navPhone1 li {
+    border-radius: 10px;
+    background-color: whitesmoke;
+    /* padding: 0px;*/
+}
+
+    .navPhone1 li:hover a {
+        /* background-color: blue;*/
+        /*padding-left:5px;
+       color: red;*/
+    }
+
+.dropdown:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu li {
+    /*display: none;
+    position: absolute;
+    top: 70%;  
+    left: -10%;*/
+    /* transform: translateX(-50%);*/
+    /*z-index: 1;  
+    background-color: #fff;  
+    padding: 3px;  
+   width:1000px;*/
+}
+
+.dropdown > .dropdown-toggle:active {
+    pointer-events: none;
+    /*list-style: none;
+    text-decoration: none;
+    display: none;
+    position: absolute;
+    top: 70%;  
+    left: -10%;
+    transform: translateX(-50%);
+    z-index: 1;  
+    background-color: #fff;  
+    padding: 3px;  
+    width: 1000px;*/
+}
+
+
+
+/*Hover cho hinh san pham */
+
+
+#product {
+    position: relative;
+}
+
+    #product img {
+    }
+
+    #product #imgProducts {
+        width: 100%;
+        height: auto;
+        transition: transform 0.3s ease;
+    }
+
+    #product .details {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background: rgba(255, 255, 255, 0.8);
+        Một phần của ảnh để hiển thị tiêu đề và giá width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        transition: transform 0.3s ease;
+    }
+
+    #product:hover #imgProducts {
+        transform: translateY(-20px);
+    }

@@ -78,5 +78,8 @@ namespace WebSite_CuaHangDienThoai.Models
         public decimal Price { get; set; }
         public decimal PriceTotal { get; set; }
 
+        public string Color { get; set; }
+        public int Capcity { get; set; }
+
     }
 }

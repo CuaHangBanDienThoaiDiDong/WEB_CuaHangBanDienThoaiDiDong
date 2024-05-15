@@ -1,0 +1,279 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
+<style>
+    .sg-search {
+        position: absolute;
+        width: 80%;
+        right: 0;
+        left: 0;
+        margin: auto;
+    /*    padding: 20px 25px;*/
+        border-radius: 0 0 16px 16px;
+        background: #fff;
+        display: none;
+        transition: .5s ease-out;
+    }
+
+        .sg-search.active small.quicklink {
+            padding-left: 0;
+            opacity: 1;
+        }
+
+        .sg-search small.quicklink {
+            padding-left: 65px;
+            transition: .7s ease-out;
+            opacity: .2;
+        }
+
+        .sg-search small {
+            display: block;
+            overflow: hidden;
+            font-size: 14px;
+            line-height: 21px;
+            color: #888;
+        }
+
+        .sg-search .text-search {
+            display: block;
+            overflow: hidden;
+            border-bottom: 1px solid #dfdfdf;
+            padding: 0 0 15px;
+            margin: 0 0 15px;
+        }
+
+    a {
+        text-decoration: none;
+        transition: .3s;
+    }
+
+    .sg-search small {
+        display: block;
+        overflow: hidden;
+        font-size: 14px;
+        line-height: 21px;
+        color: #888;
+    }
+
+    .list-sg-search {
+        display: block;
+        overflow: hidden;
+    }
+
+        .list-sg-search li {
+            display: block;
+            overflow: hidden;
+            padding: 15px 0 0;
+        }
+
+            .list-sg-search li a {
+                display: block;
+                overflow: hidden;
+            }
+
+    li {
+        display: list-item;
+        text-align: -webkit-match-parent;
+    }
+
+    a {
+        text-decoration: none;
+        transition: .3s;
+    }
+
+    .list-sg-search li a .img-search {
+        float: left;
+        width: 60px;
+        margin: 0 17px 0 0;
+    }
+
+    .list-sg-search li a img {
+        display: block;
+        width: 100%;
+    }
+
+    .list-sg-search li a .text-img {
+        display: block;
+        overflow: hidden;
+    }
+
+    .list-sg-search li a span {
+        display: block;
+        overflow: hidden;
+        color: #222;
+        font-size: 14px;
+        line-height: 21px;
+        padding: 0 0 4px;
+    }
+
+    .list-sg-search li a p {
+        display: block;
+        overflow: hidden;
+        color: #444;
+        font-size: 15px;
+        line-height: 20px;
+    }
+
+    .list-sg-search li a b {
+        font-size: 18px;
+        line-height: 23px;
+        color: #222;
+    }
+    p {
+        -webkit-margin-before: 0;
+        -webkit-margin-after: 0;
+        -webkit-margin-start: 0;
+        -webkit-margin-end: 0;
+        text-rendering: geometricPrecision;
+    }
+    .list-sg-search li a strike {
+        padding: 0 8px;
+    }
+
+    .list-sg-search li a p.item-txt-online.orange {
+        color: #ff9f00;
+    }
+
+    .list-sg-search li a p.item-txt-online {
+        color: #757575;
+        font-size: 14px;
+        line-height: 16px;
+        margin: 5px 0;
+        text-align: left;
+        margin-left: 77px;
+    }
+    .list-sg-search li a p {
+        display: block;
+        overflow: hidden;
+        color: #444;
+        font-size: 15px;
+        line-height: 20px;
+    }
+    .item-txt-online.orange {
+        color: #ff9f00 !important;
+    }
+
+    .list-sg-search li a p {
+        display: block;
+        overflow: hidden;
+        color: #444;
+        font-size: 15px;
+        line-height: 20px;
+    }
+
+    .item-txt-online {
+        color: #757575;
+        font-size: 14px;
+        line-height: 16px;
+        padding-top: 5px;
+        text-align: center;
+    }
+</style>
+
+@functions {
+    // Hàm tính phần trăm giảm giá
+    public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
+    {
+        if (originalPrice == 0 || salePrice >= originalPrice)
+        {
+            return 0; // Trả về 0 nếu giá gốc bằng 0 hoặc giá bán lớn hơn hoặc bằng giá gốc
+        }
+
+        decimal discount = 1 - (salePrice / originalPrice);
+        return discount * 100;
+    }
+}
+
+@if (ViewBag.NoiDung != null)
+{
+    if (Model.Any() && Model != null)
+    {
+
+        <div class="sg-search active" style="display: block;">
+            <small class="quicklink">Có phải bạn muốn tìm</small>
+            @*<div class="text-search">
+                <a href="/iphone-13"><span>iPhone 13 (Mini, Pro, Pro Max)</span></a>
+            </div>*@
+            @Html.Action("SuggestTop", "Product", new { searchString= ViewBag.NoiDung })
+            <small>Sản phẩm gợi ý</small>
+            <ul class="list-sg-search">
+                @foreach (var item in Model)
+                {
+                    var strImg = "";
+                    var img = item.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
+                    var checkDetail = item.tb_ProductDetailImage.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId);
+
+                    var Capacity = "";
+
+                
+                    string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
+
+                    int[] nguongDungLuong = new int[] { 999, 1999 };
+
+                    int index = Array.FindIndex(nguongDungLuong, capacity => item.Capacity > capacity);
+
+                    Capacity = index != -1 ? dungLuongOptions[index] : item.Capacity + " Gb";
+
+                    if (img != null)
+                    {
+                        strImg = img.Image;
+                    }
+
+                    if (checkDetail != null && img != null)
+                    {
+
+                        <li>
+
+                            <a href="/chi-tiet/@item.tb_Products.Alias-p@(item.ProductsId)" class="main-contain" data-s="TwoPriceDetail" data-site="16" data-pro="3" data-cache="True" data-name="iPhone 13" data-id="250258" data-brand="iPhone (Apple)" data-cate="iPhone" data-box="BoxHome">
+                                <div class="img-search">
+                                    <img src="@strImg" alt="@item.tb_Products @Capacity">
+                                </div>
+                                <div class="text-img">
+                                    <span>@item.tb_Products.Title @Capacity @item.Color </span>
+                                    <p>
+                                        @{
+                                            decimal originalPrice = Convert.ToDecimal(item.Price);
+                                            decimal salePrice = Convert.ToDecimal(item.PriceSale);
+                                            decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
+                                        }
+                                        @if (item.PriceSale > 0)
+                                        {
+                                            <b>@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.PriceSale)₫</b>
+                                            <strike> @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price)₫</strike>
+
+                                            if (discountPercentage > 0)
+                                            {
+                                                <span class="discount_percentage " style="font-size: larger; padding-left: 5px ; color:white">
+                                                    -@discountPercentage.ToString("0")% <!-- Hiển thị phần trăm giảm giá -->
+                                                </span>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            <b>@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price)₫</b>
+
+                                        }
+
+                                    </p>
+                                </div>
+                                <p class="item-txt-online orange">Online giá rẻ quá</p>
+                            </a>
+
+                        </li>
+                    }
+
+
+                }
+
+            </ul>
+
+
+
+
+        </div>
+    }
+}
+else
+{
+
+}
+

@@ -1,0 +1,32 @@
+﻿
+@model List<WebSite_CuaHangDienThoai.Models.ProductDetailViewModel>
+
+@{
+    ViewBag.Title = "Product List";
+}
+
+<div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group me-2" role="group" aria-label="First group">
+
+        @foreach (var item in Model)
+        {
+            <button type="button" class="btn btn-outline-secondary">@item.DungLuong</button>
+        }
+    </div>
+
+</div>
+
+@*@foreach (var item in Model)
+{
+    
+
+
+    <div class="product">
+        <p>Ram: @item.Ram</p>
+        <p>Dung Luong: @item.DungLuong</p>
+        <p>Colors: @item.Color</p>
+        <p>Giá bán : @item.Price</p>
+    </div>
+}*@
+
+

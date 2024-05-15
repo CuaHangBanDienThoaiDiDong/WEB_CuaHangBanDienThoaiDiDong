@@ -276,11 +276,13 @@ namespace WebSite_CuaHangDienThoai.Controllers
                                         CategoryName = cartItem.tb_ProductDetail.tb_Products.tb_ProductCategory.Title.ToString(),
                                         Alias = cartItem.tb_ProductDetail.tb_Products.Alias.ToString(),
                                         SoLuong = cartItem.Quantity,
+                                        Capcity= (int)checkSanPham.Capacity,
+                                        Color= checkSanPham.Color
                                     };
 
                                     if (cartItem.tb_ProductDetail.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault) != null)
                                     {
-                                        item.ProductImg = cartItem.tb_ProductDetail.tb_Products.tb_ProductImage.FirstOrDefault(row => row.IsDefault).Image;
+                                        item.ProductImg = cartItem.tb_ProductDetail.tb_ProductDetailImage.FirstOrDefault(row => row.IsDefault).Image;
                                     }
 
                                     item.Price = (decimal)checkSanPham.Price;
