@@ -68,127 +68,125 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public ActionResult Add(tb_Products model, List<string> Images, List<int> rDefault, Admin_TokenProducts req)
-        //{
-        //    var code = new { Success = false, Code = -1, Url = "" };
-        //    tb_Staff nvSession = (tb_Staff)Session["user"];
-        //    if (nvSession.Code != null)
-        //    {
-        //        if (req.TocDoCPU != null && req.MangDiDong != null && req.Sim != null && req.Wifi != null)
-        //        {
-        //            var ProductCategory = db.tb_ProductCategory.Find(req.ProductCategoryId);
-        //            var ProductCompany = db.tb_ProductCompany.Find(req.ProductCompanyId);
+        public ActionResult Add(tb_Products model, List<string> Images, List<int> rDefault, Admin_TokenProducts req)
+        {
+            var code = new { Success = false, Code = -1, Url = "" };
+            tb_Staff nvSession = (tb_Staff)Session["user"];
+            if (nvSession.Code != null)
+            {
+                if (req.TocDoCPU != null && req.MangDiDong != null && req.Sim != null && req.Wifi != null)
+                {
+                    var ProductCategory = db.tb_ProductCategory.Find(req.ProductCategoryId);
+                    var ProductCompany = db.tb_ProductCompany.Find(req.ProductCompanyId);
 
+                    string alias = model.Title.Trim() + "" + ProductCategory.Title.Trim() + "" + ProductCompany.Title.Trim();
 
+                    var checkTitle = db.tb_Products.SingleOrDefault(r => r.Title == req.Title && r.Alias == alias && r.ProductCategoryId == req.ProductCategoryId && r.ProductCompanyId == req.ProductCompanyId);
+                    if (checkTitle == null)
+                    {
+                        if (Images != null)
+                        {
+                            if (ModelState.IsValid)
+                            {
+                                if (Images != null && Images.Count > 0)
+                                {
+                                    for (int i = 0; i < Images.Count; i++)
+                                    {
+                                        try
+                                        {
+                                            byte[] imageBytes = System.IO.File.ReadAllBytes(Server.MapPath(Images[i]));
 
-        //            string alias = model.Title.Trim() + "" + ProductCategory.Title.Trim() + "" + ProductCompany.Title.Trim();
+                                            bool isDefault = (i + 1 == rDefault[0]);
 
+                                            tb_ProductImage productImage = new tb_ProductImage
+                                            {
+                                                ProductsId = model.ProductsId,
+                                                Image = imageBytes,
+                                                IsDefault = isDefault
+                                            };
 
-        //            var checkTitle = db.tb_Products.SingleOrDefault(r => r.Title == req.Title &&r.Alias== alias&&  r.ProductCategoryId == req.ProductCategoryId && r.ProductCompanyId == req.ProductCompanyId);
-        //            if (checkTitle == null)
-        //            {
-        //                if (Images != null) 
-        //                {
-        //                    if (ModelState.IsValid)
-        //                    {
-        //                        if (Images != null && Images.Count > 0)
-        //                        {
-        //                            for (int i = 0; i < Images.Count; i++)
-        //                            {
-        //                                if (i + 1 == rDefault[0])
-        //                                {
-        //                                    model.Image = Images[i];
-        //                                    db.tb_ProductImage.Add(new tb_ProductImage
-        //                                    {
-        //                                        ProductsId = model.ProductsId,
-        //                                        Image = Images[i],
-        //                                        IsDefault = true
-        //                                    });
-        //                                }
-        //                                else
-        //                                {
-        //                                    db.tb_ProductImage.Add(new tb_ProductImage
-        //                                    {
-        //                                        ProductsId = model.ProductsId,
-        //                                        Image = Images[i],
-        //                                        IsDefault = true
-        //                                    });
-        //                                }
-        //                            }
-        //                        }
+                                            db.tb_ProductImage.Add(productImage);
+                                        }
+                                        catch (System.IO.IOException ex)
+                                        {
+                                            code = new { Success = false, Code = -5, Url = "" };
+                                        }
+                                        catch (System.UnauthorizedAccessException ex)
+                                        {
+                                            code = new { Success = false, Code = -5, Url = "" };
+                                        }
+                                        catch (System.Exception ex)
+                                        {
+                                            code = new { Success = false, Code = -5, Url = "" };
+                                        }
+                                    }
 
-        //                        var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
-        //                        model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
-        //                        model.CreatedDate = DateTime.Now;
-        //                        model.ModifiedDate = DateTime.Now;
-        //                        model.IsActive = req.IsActive;
-        //                        model.IsHot = req.IsHot;
-        //                        model.IsFeature = req.IsFeature;
-        //                        model.IsSale = req.IsSale;
-        //                        model.IsHome = req.IsHome;
+                                }
 
-        //                        model.CPU = req.CPU.Trim();
-        //                        model.GPU = req.GPU.Trim();
-        //                        model.CPUspeed = req.TocDoCPU.Trim();
-        //                        model.BatteryCapacity = req.DungLuongPin;
-        //                        model.OperatingSystem = req.HeDieuHanh.Trim();
-        //                        model.MobileNetwork = req.MangDiDong.Trim();
-        //                        model.Sim = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Sim.Trim());
-        //                        model.Wifi = req.Wifi.Trim();
-        //                        model.GPS = req.GPS.Trim();
-        //                        model.Bluetooth = req.Bluetooth.Trim();
-        //                        model.Bluetooth = req.Bluetooth.Trim();
-        //                        model.Connector = req.CongKetNoi.Trim();
-        //                        model.Headphonejack = req.JackTaiNghe.Trim();
-        //                        model.BatteryType = req.LoaiPin.Trim();
-        //                        model.ChargingSupport = req.HoTroSac.Trim();
-        //                        model.BatteryTechnology = req.CongNghePin.Trim();
-        //                        if (string.IsNullOrEmpty(model.Title))
-        //                        {
-        //                            model.SeoTitle = model.Title.Trim();
-        //                        }
-        //                        if (string.IsNullOrEmpty(model.Alias))
-        //                        {
+                                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
+                                model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
+                                model.CreatedDate = DateTime.Now;
+                                model.ModifiedDate = DateTime.Now;
+                                model.IsActive = req.IsActive;
+                                model.IsHot = req.IsHot;
+                                model.IsFeature = req.IsFeature;
+                                model.IsSale = req.IsSale;
+                                model.IsHome = req.IsHome;
 
-                                   
-        //                            model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(alias);
-        //                        }
-        //                        db.tb_Products.Add(model);
-        //                        db.SaveChanges();
-        //                        code = new { Success = true, Code = 1, Url = "" };
+                                model.CPU = req.CPU.Trim();
+                                model.GPU = req.GPU.Trim();
+                                model.CPUspeed = req.TocDoCPU.Trim();
+                                model.BatteryCapacity = req.DungLuongPin;
+                                model.OperatingSystem = req.HeDieuHanh.Trim();
+                                model.MobileNetwork = req.MangDiDong.Trim();
+                                model.Sim = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Sim.Trim());
+                                model.Wifi = req.Wifi.Trim();
+                                model.GPS = req.GPS.Trim();
+                                model.Bluetooth = req.Bluetooth.Trim();
+                                model.Connector = req.CongKetNoi.Trim();
+                                model.Headphonejack = req.JackTaiNghe.Trim();
+                                model.BatteryType = req.LoaiPin.Trim();
+                                model.ChargingSupport = req.HoTroSac.Trim();
+                                model.BatteryTechnology = req.CongNghePin.Trim();
+                                if (string.IsNullOrEmpty(model.Title))
+                                {
+                                    model.SeoTitle = model.Title.Trim();
+                                }
+                                if (string.IsNullOrEmpty(model.Alias))
+                                {
+                                    model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(alias);
+                                }
+                                db.tb_Products.Add(model);
+                                db.SaveChanges();
+                                code = new { Success = true, Code = 1, Url = "" };
+                            }
+                        }
+                        else
+                        {
+                            // Không tìm thấy ảnh
+                            code = new { Success = false, Code = -5, Url = "" };
+                        }
+                    }
+                    else
+                    {
+                        // Sản phẩm đã tồn tại
+                        code = new { Success = false, Code = -3, Url = "" };
+                    }
+                }
+                else
+                {
+                    // Điền không đầy đủ thông tin
+                    code = new { Success = false, Code = -2, Url = "" };
+                }
+            }
+            else
+            {
+                // Không tìm thấy session
+                code = new { Success = false, Code = -4, Url = "" };
+            }
 
-
-        //                    }
-        //                }
-        //                else 
-        //                {
-        //                    //ko tim thaasy anh
-        //                    code = new { Success = false, Code = -5, Url = "" };
-        //                }
-                       
-        //            }
-        //            else
-        //            {//san pham da ton tai
-        //                code = new { Success = false, Code = -3, Url = "" };
-
-        //            }
-        //        }
-        //        else //Dien ko day du thong tin
-        //        {
-        //            code = new { Success = false, Code = -2, Url = "" };
-        //        }
-        //    }
-        //    else 
-        //    {//Không tìm thấy sesstion
-        //        code = new { Success = false, Code = -4, Url = "" };
-        //    }
-          
-        //    //ViewBag.ProductCategory = new SelectList(db.tb_ProductCategory.ToList(), "ProductCategoryId", "Title");
-        //    //ViewBag.ProductCompany = new SelectList(db.tb_ProductCompany.ToList(), "ProductCompanyId", "Title");
-        //    return Json(code);
-        //    //return RedirectToAction("AddProductDetail", "ProductDetailController", new { productId = newProductId });
-        //}
-
+            return Json(code);
+        }
 
         public ActionResult Detail(int id) 
         {

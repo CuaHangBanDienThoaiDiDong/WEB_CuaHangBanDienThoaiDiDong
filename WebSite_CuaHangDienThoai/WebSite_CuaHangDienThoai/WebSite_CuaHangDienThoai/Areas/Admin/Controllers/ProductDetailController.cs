@@ -129,8 +129,92 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             ViewBag.id = id;
             return View();
         }
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public ActionResult Add(tb_ProductDetail model, Admin_TokenProductDetail req, List<string> Images, List<int> rDefault)
+        {
+            var code = new { Success = false, Code = -1, Url = "" };
+
+            var checkProductDetail = db.tb_ProductDetail.SingleOrDefault(r => r.Color == req.Color && r.Ram == req.Ram && r.ProductsId == req.ProductsId && r.Capacity == req.DungLuong);
+            if (checkProductDetail == null)
+            {
+                if (req.ProductsId != null && req.Ram != 1 && req.DungLuong != 1)
+                {
+                    if (Images != null && Images.Count > 0)
+                    {
+                        try
+                        {
+                            model.Color = req.Color;
+                            model.Title = req.Title.Trim();
+                            model.ProductsId = req.ProductsId;
+                            model.Price = req.Price;
+                            model.OrigianlPrice = req.OrigianlPrice;
+                            model.PriceSale = req.PriceSale;
+                            model.TypeProduct = req.TypeProduct;
+                            model.Capacity = req.DungLuong;
+                            model.Ram = req.Ram;
+
+                            db.tb_ProductDetail.Add(model);
+                            db.SaveChanges();
+
+                            int index = 0;
+                            foreach (var image in Images)
+                            {
+                                // Sử dụng Server.MapPath để chuyển đổi đường dẫn URL thành đường dẫn vật lý
+                                string physicalPath = Server.MapPath(image);
+
+                                // Đọc tệp và chuyển đổi thành mảng byte
+                                byte[] imageBytes = System.IO.File.ReadAllBytes(physicalPath);
+
+                                tb_ProductDetailImage productDetailImage = new tb_ProductDetailImage
+                                {
+                                    ProductDetailId = model.ProductDetailId,
+                                    Image = imageBytes,
+                                    IsDefault = index == (rDefault[0] - 1) // Kiểm tra xem hình ảnh này có phải là mặc định không
+                                };
+
+                                db.tb_ProductDetailImage.Add(productDetailImage);
+                                index++;
+                            }
+
+                            db.SaveChanges();
+                            code = new { Success = true, Code = 1, Url = "" };
+                        }
+                        catch (Exception ex)
+                        {
+                            // Xử lý ngoại lệ nếu có
+                            ViewBag.Error = "Đã xảy ra lỗi khi thêm mới sản phẩm: " + ex.Message;
+                        }
+                    }
+                    else
+                    {
+                        // Hãy tải ảnh lên 
+                        code = new { Success = false, Code = -5, Url = "" };
+                    }
+                }
+                else
+                {
+                    // Vui lòng nhập đủ thông tin
+                    code = new { Success = false, Code = -4, Url = "" };
+                }
+            }
+            else
+            {
+                // Cấu hình đã tồn tại
+                code = new { Success = false, Code = -6, Url = "" };
+            }
+
+            return Json(code);
+        }
+
+
+
+
+
+
+
+
         //public ActionResult Add(tb_ProductDetail model, Admin_TokenProductDetail req, List<string> Images, List<int> rDefault)
         //{
         //    var code = new { Success = false, Code = -1, Url = "" };
@@ -138,12 +222,12 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
         //    //var checkProductDetail = db.tb_ProductDetail.FirstOrDefault(r => r.Title == req.Title && r.ProductsId == req.ProductsId);
-        //    var checkProductDetail = db.tb_ProductDetail.SingleOrDefault(r => r.Color == req.Color&&r.Ram==req.Ram && r.ProductsId == req.ProductsId&&r.Capacity==req.DungLuong);
+        //    var checkProductDetail = db.tb_ProductDetail.SingleOrDefault(r => r.Color == req.Color && r.Ram == req.Ram && r.ProductsId == req.ProductsId && r.Capacity == req.DungLuong);
         //    if (checkProductDetail == null)
         //    {
         //        if (req.ProductsId != null)
         //        {
-        //            if (req.Ram != 1 && req.DungLuong != 1 )
+        //            if (req.Ram != 1 && req.DungLuong != 1)
         //            {
         //                if (Images != null && Images.Count > 0)
         //                {
@@ -176,7 +260,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         //                    model.OrigianlPrice = req.OrigianlPrice;
         //                    model.PriceSale = req.PriceSale;
         //                    model.TypeProduct = req.TypeProduct;
-                           
+
         //                    model.Capacity = req.DungLuong;
         //                    model.Ram = req.Ram;
         //                    db.tb_ProductDetail.Add(model);

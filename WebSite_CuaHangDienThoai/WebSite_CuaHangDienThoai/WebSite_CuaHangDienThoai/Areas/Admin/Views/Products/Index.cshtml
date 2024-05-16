@@ -89,25 +89,35 @@
                                 var strCheckIsFeature = item.IsFeature.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
                                 var strCheckSale = item.IsSale.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
 
-                                var strImg = "";
-                                var CheckImage = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
+
 
                                 var checkProductDetail = item.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == item.ProductsId);
+
+
+                                byte[] strImg = null;
+                                var CheckImage = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
 
                                 if (CheckImage != null)
                                 {
                                     strImg = CheckImage.Image;
                                 }
-                                else
+
+                                string imgSrc = "";
+                                if (strImg != null && strImg.Length > 0)
                                 {
-                                    <p>Không tồn tại</p>
+                                    string base64String = Convert.ToBase64String(strImg);
+                                    imgSrc = $"data:image;base64,{base64String}";
                                 }
+
+
                                 if (item.IsActive == false)
                                 {
                                     <tr class="text-center opacity-100 bg-gray-light" id="trow_@item.ProductsId">
                                         <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
                                         <td>@i</td>
-                                        <td><img class="imgproduct" data-id="@item.ProductsId" src="@strImg" width="50" /></td>
+                                        <td>
+                                            <img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" />
+                                        </td>
                                         <td> <a href="/admin/Products/Detail/@item.ProductsId"> @item.Title</a>  </td>
                                         <td>@item.tb_ProductCategory.Title</td>
                                         <td>

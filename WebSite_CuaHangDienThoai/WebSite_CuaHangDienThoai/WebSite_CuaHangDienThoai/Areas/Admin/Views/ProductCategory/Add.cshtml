@@ -66,50 +66,37 @@
             };
             finder.popup();
         }
+        function addImageProduct(url) {
+            var temp = $('#tCurrentId').val();
+            var currentId = 1; // Đặt currentId là 1 vì chỉ có một ảnh duy nhất
+            var str = "";
 
+            // Xóa tất cả các hàng trong bảng nếu có ảnh mới
+            $('#imageTable tbody').empty();
 
+            str += `<tr id="trow_${currentId}">
+                <td class="text-center">${currentId}</td>
+                <td class="text-center"><img width="80" src="${url}" /> <input type='hidden' value="${url}" name="Icon"/></td>
+                <td class="text-center"><input type="radio" name="rDefault" value="${currentId}" checked="checked"/></td>
+                <td class="text-center"><a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">
+                <svg xmlns="http://www.w3.org/2000/svg" width=18" height="18" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+  <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+</svg>
+                </a></td>
+            </tr>`;
 
-        function handleImageSelection(files) {
-            var tbody = document.getElementById('tbHtml');
-            tbody.innerHTML = ''; // Xóa nội dung cũ
-
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                var reader = new FileReader();
-
-                reader.onload = (function (file) {
-                    return function (event) {
-                        var imageData = event.target.result;
-                        var byteData = convertImageDataToByteArray(imageData);
-                        addImageRow(file.name, imageData, byteData);
-                    };
-                })(file);
-
-                reader.readAsDataURL(file);
-            }
+            // Thêm hàng mới vào bảng
+            $('#imageTable tbody').append(str);
+            $('#tCurrentId').val(currentId);
         }
 
-        function convertImageDataToByteArray(imageData) {
-            // Chuyển đổi dữ liệu ảnh sang byte array tại đây và trả về
-        }
-
-        function addImageRow(fileName, imageData, byteData) {
-            var tbody = document.getElementById('tbHtml');
-            var row = tbody.insertRow();
-            var count = tbody.getElementsByTagName('tr').length;
-
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
-            var cell4 = row.insertCell(3);
-
-            cell1.innerHTML = count;
-            cell2.innerHTML = '<img src="' + imageData + '" style="max-width:100px; max-height:100px;" />';
-            cell3.innerHTML = '<input type="checkbox" name="isFeatured" />';
-            cell4.innerHTML = '<button class="btn btn-danger" onclick="deleteImage(this)">Xóa</button>';
-
-            // Lưu trữ byteData tại đây hoặc gửi nó đến máy chủ
-        }
+        // Hàm để xóa ảnh
+        $(document).on('click', '.btnXoaAnh', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            $('#trow_' + id).remove();
+            $('#tCurrentId').val(0);
+        });
 
 
 

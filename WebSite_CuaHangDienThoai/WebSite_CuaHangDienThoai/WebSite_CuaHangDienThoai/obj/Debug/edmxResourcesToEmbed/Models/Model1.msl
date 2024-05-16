@@ -200,8 +200,8 @@
         <MappingFragment StoreEntitySet="tb_ProductImage">
           <ScalarProperty Name="ProductImageId" ColumnName="ProductImageId" />
           <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
-          <ScalarProperty Name="Image" ColumnName="Image" />
           <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

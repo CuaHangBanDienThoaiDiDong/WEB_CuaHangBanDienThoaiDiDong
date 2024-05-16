@@ -48,7 +48,7 @@
           <Property Name="CustomerName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" />
           <Property Name="Password" Type="varchar" MaxLength="100" />
-          <Property Name="Image" Type="varbinary(max)" />
+          <Property Name="Image" Type="nvarchar" MaxLength="250" />
           <Property Name="Birthday" Type="date" />
           <Property Name="Loaction" Type="nvarchar(max)" />
           <Property Name="NumberofPurchases" Type="int" />
@@ -191,8 +191,8 @@
           </Key>
           <Property Name="ProductImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProductsId" Type="int" Nullable="false" />
-          <Property Name="Image" Type="varbinary(max)" />
           <Property Name="IsDefault" Type="bit" Nullable="false" />
+          <Property Name="Image" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="tb_Products">
           <Key>
@@ -301,7 +301,7 @@
           <Property Name="CitizenIdentificationCard" Type="char" MaxLength="12" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Image" Type="varbinary(max)" />
+          <Property Name="Image" Type="nvarchar" MaxLength="250" />
           <Property Name="Birthday" Type="date" Nullable="false" />
           <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
           <Property Name="DayofWork" Type="date" />
@@ -944,7 +944,7 @@
           <Property Name="CustomerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Image" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Birthday" Type="DateTime" Precision="0" />
           <Property Name="Loaction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="NumberofPurchases" Type="Int32" />
@@ -1115,8 +1115,8 @@
           </Key>
           <Property Name="ProductImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProductsId" Type="Int32" Nullable="false" />
-          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="IsDefault" Type="Boolean" Nullable="false" />
+          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="tb_Products" Relationship="Self.ProductstoProductImage" FromRole="tb_ProductImage" ToRole="tb_Products" />
         </EntityType>
         <EntityType Name="tb_Products">
@@ -1242,7 +1242,7 @@
           <Property Name="CitizenIdentificationCard" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Image" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="DayofWork" Type="DateTime" Precision="0" />
@@ -2045,8 +2045,8 @@
               <MappingFragment StoreEntitySet="tb_ProductImage">
                 <ScalarProperty Name="ProductImageId" ColumnName="ProductImageId" />
                 <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
-                <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -43,7 +43,7 @@
     <Property Name="CustomerName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="100" />
     <Property Name="Password" Type="varchar" MaxLength="100" />
-    <Property Name="Image" Type="varbinary(max)" />
+    <Property Name="Image" Type="nvarchar" MaxLength="250" />
     <Property Name="Birthday" Type="date" />
     <Property Name="Loaction" Type="nvarchar(max)" />
     <Property Name="NumberofPurchases" Type="int" />
@@ -186,8 +186,8 @@
     </Key>
     <Property Name="ProductImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ProductsId" Type="int" Nullable="false" />
-    <Property Name="Image" Type="varbinary(max)" />
     <Property Name="IsDefault" Type="bit" Nullable="false" />
+    <Property Name="Image" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="tb_Products">
     <Key>
@@ -296,7 +296,7 @@
     <Property Name="CitizenIdentificationCard" Type="char" MaxLength="12" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="Image" Type="varbinary(max)" />
+    <Property Name="Image" Type="nvarchar" MaxLength="250" />
     <Property Name="Birthday" Type="date" Nullable="false" />
     <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
     <Property Name="DayofWork" Type="date" />

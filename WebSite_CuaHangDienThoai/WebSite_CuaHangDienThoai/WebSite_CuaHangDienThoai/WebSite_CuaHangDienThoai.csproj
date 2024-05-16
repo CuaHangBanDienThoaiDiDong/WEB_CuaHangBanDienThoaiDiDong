@@ -3688,6 +3688,7 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\ProductCompany\Partial_AddProductComapny.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
@@ -4064,6 +4065,7 @@
     <Compile Include="Models\Token\Admin\Admin_Add_Staff_ToKen.cs" />
     <Compile Include="Models\Token\Admin\Admin_TokenFunction.cs" />
     <Compile Include="Models\Token\Admin\Admin_TokenProductCategory.cs" />
+    <Compile Include="Models\Token\Admin\Admin_TokenProductComany.cs" />
     <Compile Include="Models\Token\Admin\Admin_TokenProductDetail.cs" />
     <Compile Include="Models\Token\Client\Client_ForgetPassClient.cs" />
     <Compile Include="Models\Token\Client\Client_TokenAccount.cs" />

@@ -29,7 +29,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public string CitizenIdentificationCard { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
         public System.DateTime Birthday { get; set; }
         public string Location { get; set; }
         public Nullable<System.DateTime> DayofWork { get; set; }

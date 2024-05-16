@@ -77,7 +77,9 @@
                                 <td>
                                     @if (item.Icon != null)
                                     {
-                                        <img class="imgproduct" data-id="@item.ProductCompanyId" src="@item.Icon" width="100" />
+                                       
+                                        string base64Image = Convert.ToBase64String(item.Icon);
+                                        <img class="imgproduct" data-id="@item.ProductCompanyId" src="data:image/png;base64,@base64Image" width="100" />
                                     }
                                     else
                                     {

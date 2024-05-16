@@ -28,7 +28,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public string CustomerName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
         public Nullable<System.DateTime> Birthday { get; set; }
         public string Loaction { get; set; }
         public Nullable<int> NumberofPurchases { get; set; }

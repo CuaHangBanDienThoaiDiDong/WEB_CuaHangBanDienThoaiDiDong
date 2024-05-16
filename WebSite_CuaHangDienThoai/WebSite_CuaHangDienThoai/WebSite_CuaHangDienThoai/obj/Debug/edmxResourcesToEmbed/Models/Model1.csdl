@@ -50,7 +50,7 @@
     <Property Name="CustomerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="Image" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
     <Property Name="Birthday" Type="DateTime" Precision="0" />
     <Property Name="Loaction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="NumberofPurchases" Type="Int32" />
@@ -221,8 +221,8 @@
     </Key>
     <Property Name="ProductImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ProductsId" Type="Int32" Nullable="false" />
-    <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
     <Property Name="IsDefault" Type="Boolean" Nullable="false" />
+    <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
     <NavigationProperty Name="tb_Products" Relationship="Self.ProductstoProductImage" FromRole="tb_ProductImage" ToRole="tb_Products" />
   </EntityType>
   <EntityType Name="tb_Products">
@@ -348,7 +348,7 @@
     <Property Name="CitizenIdentificationCard" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
     <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="Image" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
     <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="DayofWork" Type="DateTime" Precision="0" />
