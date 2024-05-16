@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="CUAHANGDIENTHOAI_newModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="Districts">
     <Key>
       <PropertyRef Name="idDistricts" />
@@ -43,7 +43,7 @@
     <Property Name="CustomerName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="100" />
     <Property Name="Password" Type="varchar" MaxLength="100" />
-    <Property Name="Image" Type="nvarchar" MaxLength="250" />
+    <Property Name="Image" Type="varbinary(max)" />
     <Property Name="Birthday" Type="date" />
     <Property Name="Loaction" Type="nvarchar(max)" />
     <Property Name="NumberofPurchases" Type="int" />
@@ -134,7 +134,7 @@
     <Property Name="ProductCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Title" Type="nvarchar" MaxLength="150" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" />
-    <Property Name="Icon" Type="nvarchar" MaxLength="250" />
+    <Property Name="Icon" Type="varbinary(max)" />
     <Property Name="CreatedBy" Type="nvarchar(max)" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime" />
@@ -153,7 +153,7 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="Modifeby" Type="nvarchar(max)" />
     <Property Name="Alias" Type="nvarchar" MaxLength="250" />
-    <Property Name="Icon" Type="nvarchar" MaxLength="250" />
+    <Property Name="Icon" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="tb_ProductDetail">
     <Key>
@@ -166,7 +166,7 @@
     <Property Name="PriceSale" Type="decimal" Precision="18" Scale="2" />
     <Property Name="OrigianlPrice" Type="decimal" Precision="18" Scale="2" />
     <Property Name="TypeProduct" Type="bit" />
-    <Property Name="Image" Type="nvarchar" MaxLength="900" />
+    <Property Name="Image" Type="varbinary(max)" />
     <Property Name="Ram" Type="int" />
     <Property Name="Capacity" Type="int" />
     <Property Name="ProductsId" Type="int" />
@@ -177,7 +177,7 @@
     </Key>
     <Property Name="ProductImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ProductDetailId" Type="int" Nullable="false" />
-    <Property Name="Image" Type="nvarchar(max)" />
+    <Property Name="Image" Type="varbinary(max)" />
     <Property Name="IsDefault" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="tb_ProductImage">
@@ -186,7 +186,7 @@
     </Key>
     <Property Name="ProductImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ProductsId" Type="int" Nullable="false" />
-    <Property Name="Image" Type="nvarchar(max)" />
+    <Property Name="Image" Type="varbinary(max)" />
     <Property Name="IsDefault" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="tb_Products">
@@ -222,7 +222,7 @@
     <Property Name="BatteryType" Type="char" MaxLength="900" />
     <Property Name="ChargingSupport" Type="nvarchar" MaxLength="900" />
     <Property Name="BatteryTechnology" Type="nvarchar" MaxLength="900" />
-    <Property Name="Image" Type="nvarchar" MaxLength="900" />
+    <Property Name="Image" Type="varbinary(max)" />
     <Property Name="CPU" Type="nvarchar" MaxLength="100" />
     <Property Name="GPU" Type="nvarchar" MaxLength="100" />
     <Property Name="Screen" Type="char" MaxLength="1" />
@@ -296,7 +296,7 @@
     <Property Name="CitizenIdentificationCard" Type="char" MaxLength="12" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="Image" Type="nvarchar" MaxLength="250" />
+    <Property Name="Image" Type="varbinary(max)" />
     <Property Name="Birthday" Type="date" Nullable="false" />
     <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
     <Property Name="DayofWork" Type="date" />
@@ -420,7 +420,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Districts__idPro__04E4BC85">
+  <Association Name="FK__Districts__idPro__656C112C">
     <End Role="Provinces" Type="Self.Provinces" Multiplicity="0..1" />
     <End Role="Districts" Type="Self.Districts" Multiplicity="*" />
     <ReferentialConstraint>
@@ -432,7 +432,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Wards__idDistric__07C12930">
+  <Association Name="FK__Wards__idDistric__68487DD7">
     <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
     <End Role="Wards" Type="Self.Wards" Multiplicity="*" />
     <ReferentialConstraint>
@@ -732,7 +732,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
+  <EntityContainer Name="CUAHANGDIENTHOAI_newModelStoreContainer">
     <EntitySet Name="Districts" EntityType="Self.Districts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Provinces" EntityType="Self.Provinces" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Cart" EntityType="Self.tb_Cart" Schema="dbo" store:Type="Tables" />
@@ -779,11 +779,11 @@
       <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
       <End Role="tb_ExportWareHouse" EntitySet="tb_ExportWareHouse" />
     </AssociationSet>
-    <AssociationSet Name="FK__Districts__idPro__04E4BC85" Association="Self.FK__Districts__idPro__04E4BC85">
+    <AssociationSet Name="FK__Districts__idPro__656C112C" Association="Self.FK__Districts__idPro__656C112C">
       <End Role="Provinces" EntitySet="Provinces" />
       <End Role="Districts" EntitySet="Districts" />
     </AssociationSet>
-    <AssociationSet Name="FK__Wards__idDistric__07C12930" Association="Self.FK__Wards__idDistric__07C12930">
+    <AssociationSet Name="FK__Wards__idDistric__68487DD7" Association="Self.FK__Wards__idDistric__68487DD7">
       <End Role="Districts" EntitySet="Districts" />
       <End Role="Wards" EntitySet="Wards" />
     </AssociationSet>

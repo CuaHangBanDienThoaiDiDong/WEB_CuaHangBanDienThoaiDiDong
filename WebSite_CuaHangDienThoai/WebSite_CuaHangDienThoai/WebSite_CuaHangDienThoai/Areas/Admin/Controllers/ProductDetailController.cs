@@ -131,82 +131,82 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add(tb_ProductDetail model, Admin_TokenProductDetail req, List<string> Images, List<int> rDefault)
-        {
-            var code = new { Success = false, Code = -1, Url = "" };
+        //public ActionResult Add(tb_ProductDetail model, Admin_TokenProductDetail req, List<string> Images, List<int> rDefault)
+        //{
+        //    var code = new { Success = false, Code = -1, Url = "" };
 
 
 
-            //var checkProductDetail = db.tb_ProductDetail.FirstOrDefault(r => r.Title == req.Title && r.ProductsId == req.ProductsId);
-            var checkProductDetail = db.tb_ProductDetail.SingleOrDefault(r => r.Color == req.Color&&r.Ram==req.Ram && r.ProductsId == req.ProductsId&&r.Capacity==req.DungLuong);
-            if (checkProductDetail == null)
-            {
-                if (req.ProductsId != null)
-                {
-                    if (req.Ram != 1 && req.DungLuong != 1 )
-                    {
-                        if (Images != null && Images.Count > 0)
-                        {
-                            for (int i = 0; i < Images.Count; i++)
-                            {
-                                if (i + 1 == rDefault[0])
-                                {
-                                    model.Image = Images[i];
-                                    db.tb_ProductDetailImage.Add(new tb_ProductDetailImage
-                                    {
-                                        ProductDetailId = model.ProductDetailId,
-                                        Image = Images[i],
-                                        IsDefault = true
-                                    });
-                                }
-                                else
-                                {
-                                    db.tb_ProductDetailImage.Add(new tb_ProductDetailImage
-                                    {
-                                        ProductDetailId = model.ProductDetailId,
-                                        Image = Images[i],
-                                        IsDefault = true
-                                    });
-                                }
-                            }
-                            model.Color = req.Color;
-                            model.Title = req.Title.Trim();
-                            model.ProductsId = req.ProductsId;
-                            model.Price = req.Price;
-                            model.OrigianlPrice = req.OrigianlPrice;
-                            model.PriceSale = req.PriceSale;
-                            model.TypeProduct = req.TypeProduct;
+        //    //var checkProductDetail = db.tb_ProductDetail.FirstOrDefault(r => r.Title == req.Title && r.ProductsId == req.ProductsId);
+        //    var checkProductDetail = db.tb_ProductDetail.SingleOrDefault(r => r.Color == req.Color&&r.Ram==req.Ram && r.ProductsId == req.ProductsId&&r.Capacity==req.DungLuong);
+        //    if (checkProductDetail == null)
+        //    {
+        //        if (req.ProductsId != null)
+        //        {
+        //            if (req.Ram != 1 && req.DungLuong != 1 )
+        //            {
+        //                if (Images != null && Images.Count > 0)
+        //                {
+        //                    for (int i = 0; i < Images.Count; i++)
+        //                    {
+        //                        if (i + 1 == rDefault[0])
+        //                        {
+        //                            model.Image = Images[i];
+        //                            db.tb_ProductDetailImage.Add(new tb_ProductDetailImage
+        //                            {
+        //                                ProductDetailId = model.ProductDetailId,
+        //                                Image = Images[i],
+        //                                IsDefault = true
+        //                            });
+        //                        }
+        //                        else
+        //                        {
+        //                            db.tb_ProductDetailImage.Add(new tb_ProductDetailImage
+        //                            {
+        //                                ProductDetailId = model.ProductDetailId,
+        //                                Image = Images[i],
+        //                                IsDefault = true
+        //                            });
+        //                        }
+        //                    }
+        //                    model.Color = req.Color;
+        //                    model.Title = req.Title.Trim();
+        //                    model.ProductsId = req.ProductsId;
+        //                    model.Price = req.Price;
+        //                    model.OrigianlPrice = req.OrigianlPrice;
+        //                    model.PriceSale = req.PriceSale;
+        //                    model.TypeProduct = req.TypeProduct;
                            
-                            model.Capacity = req.DungLuong;
-                            model.Ram = req.Ram;
-                            db.tb_ProductDetail.Add(model);
-                            db.SaveChanges();
-                            code = new { Success = true, Code = 1, Url = "" };
-                        }
-                        else
-                        {
-                            // Hãy tải ảnh lên 
-                            code = new { Success = false, Code = -5, Url = "" };
-                        }
+        //                    model.Capacity = req.DungLuong;
+        //                    model.Ram = req.Ram;
+        //                    db.tb_ProductDetail.Add(model);
+        //                    db.SaveChanges();
+        //                    code = new { Success = true, Code = 1, Url = "" };
+        //                }
+        //                else
+        //                {
+        //                    // Hãy tải ảnh lên 
+        //                    code = new { Success = false, Code = -5, Url = "" };
+        //                }
 
-                    }
-                    else
-                    {//Vui lòng nhập đủ thông tin
-                        code = new { Success = false, Code = -4, Url = "" };
-                    }
-                }
-                else
-                {//Không tồn tại mã sản phẩm
-                    code = new { Success = false, Code = -3, Url = "" };
-                }
-            }
-            else
-            {
-                //Cấu hình đã tồn tại
-                code = new { Success = false, Code = -6, Url = "" };
-            }
-            return Json(code);
-        }
+        //            }
+        //            else
+        //            {//Vui lòng nhập đủ thông tin
+        //                code = new { Success = false, Code = -4, Url = "" };
+        //            }
+        //        }
+        //        else
+        //        {//Không tồn tại mã sản phẩm
+        //            code = new { Success = false, Code = -3, Url = "" };
+        //        }
+        //    }
+        //    else
+        //    {
+        //        //Cấu hình đã tồn tại
+        //        code = new { Success = false, Code = -6, Url = "" };
+        //    }
+        //    return Json(code);
+        //}
 
 
         public ActionResult Edit(int id) 

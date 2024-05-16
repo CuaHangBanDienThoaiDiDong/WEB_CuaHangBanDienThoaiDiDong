@@ -23,7 +23,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public int ProductCategoryId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Icon { get; set; }
+        public byte[] Icon { get; set; }
         public string CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }

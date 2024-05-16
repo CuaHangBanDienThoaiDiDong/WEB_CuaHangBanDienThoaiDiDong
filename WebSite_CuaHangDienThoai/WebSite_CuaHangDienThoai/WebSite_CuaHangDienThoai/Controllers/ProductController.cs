@@ -291,37 +291,37 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
-        public ActionResult Partial_DetailImageById(int id)
-        {
-            using (var dbContext = new CUAHANGDIENTHOAIEntities())
-            {
-                var uniqueColorsWithIdsAndImages = dbContext.tb_ProductDetail
-                    .Where(p => p.ProductsId == id)
-                    .GroupBy(p => p.Color)
-                    .Select(g => new
-                    {
-                        Color = g.Key,
-                        ProductDetailId = g.Min(p => p.ProductDetailId),
-                        Image = dbContext.tb_ProductDetailImage
-                                    .Where(x => x.ProductDetailId == g.Min(p => p.ProductDetailId) && x.IsDefault)
-                                    .Select(x => x.Image)
-                                    .FirstOrDefault()
-                    })
-                    .ToList();
+        //public ActionResult Partial_DetailImageById(int id)
+        //{
+        //    using (var dbContext = new CUAHANGDIENTHOAIEntities())
+        //    {
+        //        var uniqueColorsWithIdsAndImages = dbContext.tb_ProductDetail
+        //            .Where(p => p.ProductsId == id)
+        //            .GroupBy(p => p.Color)
+        //            .Select(g => new
+        //            {
+        //                Color = g.Key,
+        //                ProductDetailId = g.Min(p => p.ProductDetailId),
+        //                Image = dbContext.tb_ProductDetailImage
+        //                            .Where(x => x.ProductDetailId == g.Min(p => p.ProductDetailId) && x.IsDefault)
+        //                            .Select(x => x.Image)
+        //                            .FirstOrDefault()
+        //            })
+        //            .ToList();
 
-                var viewModels = uniqueColorsWithIdsAndImages.Select(item => new ProductColorViewModel
-                {
-                    Color = item.Color,
-                    ProductDetailId = item.ProductDetailId,
-                    ProductslId = id,
-                    Image = item.Image
-                }).ToList();
+        //        var viewModels = uniqueColorsWithIdsAndImages.Select(item => new ProductColorViewModel
+        //        {
+        //            Color = item.Color,
+        //            ProductDetailId = item.ProductDetailId,
+        //            ProductslId = id,
+        //            Image = item.Image
+        //        }).ToList();
 
-                ViewBag.ProductId = id;
-                return PartialView(viewModels);
-            }
+        //        ViewBag.ProductId = id;
+        //        return PartialView(viewModels);
+        //    }
 
-        }
+        //}
 
 
 

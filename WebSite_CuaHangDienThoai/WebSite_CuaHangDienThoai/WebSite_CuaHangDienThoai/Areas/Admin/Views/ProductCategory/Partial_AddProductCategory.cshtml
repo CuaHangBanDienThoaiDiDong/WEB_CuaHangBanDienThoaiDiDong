@@ -187,7 +187,7 @@
                                     <div class="tab-pane" id="timeline">
                                         <div class="row">
                                             <div class="col-md-12 text-right">
-                                                <input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />
+                                                <input type="file" class="btn btn-primary" id="iTaiAnh" onchange="handleImageSelection(this.files);" multiple accept="image/*" />
                                             </div>
                                             <div class="col-md-12">
                                                 <table class="table table-hover" id="tbAnhSanPham">
@@ -206,9 +206,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- /.tab-pane infor -->
 
-                                   
+                                    <!-- /.tab-pane infor -->
                                     <!-- /.tab-pane -->
                                 </div>
                                 <!-- /.tab-content -->

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="CUAHANGDIENTHOAIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+<Schema Namespace="CUAHANGDIENTHOAI_newModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityType Name="Districts">
     <Key>
       <PropertyRef Name="idDistricts" />
@@ -7,8 +7,8 @@
     <Property Name="idDistricts" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="idProvinces" Type="Int32" />
-    <NavigationProperty Name="Provinces" Relationship="Self.FK__Districts__idPro__04E4BC85" FromRole="Districts" ToRole="Provinces" />
-    <NavigationProperty Name="Wards" Relationship="Self.FK__Wards__idDistric__07C12930" FromRole="Districts" ToRole="Wards" />
+    <NavigationProperty Name="Provinces" Relationship="Self.FK__Districts__idPro__656C112C" FromRole="Districts" ToRole="Provinces" />
+    <NavigationProperty Name="Wards" Relationship="Self.FK__Wards__idDistric__68487DD7" FromRole="Districts" ToRole="Wards" />
   </EntityType>
   <EntityType Name="Provinces">
     <Key>
@@ -16,7 +16,7 @@
     </Key>
     <Property Name="idProvinces" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Districts" Relationship="Self.FK__Districts__idPro__04E4BC85" FromRole="Provinces" ToRole="Districts" />
+    <NavigationProperty Name="Districts" Relationship="Self.FK__Districts__idPro__656C112C" FromRole="Provinces" ToRole="Districts" />
   </EntityType>
   <EntityType Name="tb_Cart">
     <Key>
@@ -50,7 +50,7 @@
     <Property Name="CustomerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="Image" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
     <Property Name="Birthday" Type="DateTime" Precision="0" />
     <Property Name="Loaction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="NumberofPurchases" Type="Int32" />
@@ -160,7 +160,7 @@
     <Property Name="ProductCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Title" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="Icon" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Icon" Type="Binary" MaxLength="Max" FixedLength="false" />
     <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
@@ -180,7 +180,7 @@
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Alias" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-    <Property Name="Icon" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Icon" Type="Binary" MaxLength="Max" FixedLength="false" />
     <NavigationProperty Name="tb_Products" Relationship="Self.ProductCompanytoProductDetai" FromRole="tb_ProductCompany" ToRole="tb_Products" />
   </EntityType>
   <EntityType Name="tb_ProductDetail">
@@ -194,7 +194,7 @@
     <Property Name="PriceSale" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="OrigianlPrice" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="TypeProduct" Type="Boolean" />
-    <Property Name="Image" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
+    <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
     <Property Name="Ram" Type="Int32" />
     <Property Name="Capacity" Type="Int32" />
     <Property Name="ProductsId" Type="Int32" />
@@ -211,7 +211,7 @@
     </Key>
     <Property Name="ProductImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ProductDetailId" Type="Int32" Nullable="false" />
-    <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
     <Property Name="IsDefault" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="tb_ProductDetail" Relationship="Self.ProductDetailImageToProductDetail" FromRole="tb_ProductDetailImage" ToRole="tb_ProductDetail" />
   </EntityType>
@@ -221,7 +221,7 @@
     </Key>
     <Property Name="ProductImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ProductsId" Type="Int32" Nullable="false" />
-    <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
     <Property Name="IsDefault" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="tb_Products" Relationship="Self.ProductstoProductImage" FromRole="tb_ProductImage" ToRole="tb_Products" />
   </EntityType>
@@ -258,7 +258,7 @@
     <Property Name="BatteryType" Type="String" MaxLength="900" FixedLength="true" Unicode="false" />
     <Property Name="ChargingSupport" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
     <Property Name="BatteryTechnology" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-    <Property Name="Image" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
+    <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
     <Property Name="CPU" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="GPU" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="Screen" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
@@ -348,7 +348,7 @@
     <Property Name="CitizenIdentificationCard" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
     <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Image" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
     <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="DayofWork" Type="DateTime" Precision="0" />
@@ -420,9 +420,9 @@
     <Property Name="idWards" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="idDistricts" Type="Int32" />
-    <NavigationProperty Name="Districts" Relationship="Self.FK__Wards__idDistric__07C12930" FromRole="Wards" ToRole="Districts" />
+    <NavigationProperty Name="Districts" Relationship="Self.FK__Wards__idDistric__68487DD7" FromRole="Wards" ToRole="Districts" />
   </EntityType>
-  <Association Name="FK__Districts__idPro__04E4BC85">
+  <Association Name="FK__Districts__idPro__656C112C">
     <End Role="Provinces" Type="Self.Provinces" Multiplicity="0..1" />
     <End Role="Districts" Type="Self.Districts" Multiplicity="*" />
     <ReferentialConstraint>
@@ -434,7 +434,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Wards__idDistric__07C12930">
+  <Association Name="FK__Wards__idDistric__68487DD7">
     <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
     <End Role="Wards" Type="Self.Wards" Multiplicity="*" />
     <ReferentialConstraint>
@@ -821,11 +821,11 @@
     <EntitySet Name="tb_Voucher" EntityType="Self.tb_Voucher" />
     <EntitySet Name="tb_Warehouse" EntityType="Self.tb_Warehouse" />
     <EntitySet Name="Wards" EntityType="Self.Wards" />
-    <AssociationSet Name="FK__Districts__idPro__04E4BC85" Association="Self.FK__Districts__idPro__04E4BC85">
+    <AssociationSet Name="FK__Districts__idPro__656C112C" Association="Self.FK__Districts__idPro__656C112C">
       <End Role="Provinces" EntitySet="Provinces" />
       <End Role="Districts" EntitySet="Districts" />
     </AssociationSet>
-    <AssociationSet Name="FK__Wards__idDistric__07C12930" Association="Self.FK__Wards__idDistric__07C12930">
+    <AssociationSet Name="FK__Wards__idDistric__68487DD7" Association="Self.FK__Wards__idDistric__68487DD7">
       <End Role="Districts" EntitySet="Districts" />
       <End Role="Wards" EntitySet="Wards" />
     </AssociationSet>

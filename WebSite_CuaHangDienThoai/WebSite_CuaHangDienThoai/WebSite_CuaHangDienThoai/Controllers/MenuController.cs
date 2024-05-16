@@ -164,7 +164,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
         public ActionResult MenuFlashSaleAll()
         {
             List<tb_ProductDetail> productDetails = new List<tb_ProductDetail>();
-            var checkSale = db.tb_Products.Where(x => x.IsSale == true/* && x.ProductCategoryId == 2*/ && x.IsActive == true).ToList();
+            var checkSale = db.tb_Products.Where(x => x.IsSale == true && x.IsActive == true).ToList();
             if (checkSale.Any())
             {
 

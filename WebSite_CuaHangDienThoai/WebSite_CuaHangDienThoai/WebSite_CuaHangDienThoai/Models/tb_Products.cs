@@ -51,7 +51,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public string BatteryType { get; set; }
         public string ChargingSupport { get; set; }
         public string BatteryTechnology { get; set; }
-        public string Image { get; set; }
+        public byte[] Image { get; set; }
         public string CPU { get; set; }
         public string GPU { get; set; }
         public string Screen { get; set; }

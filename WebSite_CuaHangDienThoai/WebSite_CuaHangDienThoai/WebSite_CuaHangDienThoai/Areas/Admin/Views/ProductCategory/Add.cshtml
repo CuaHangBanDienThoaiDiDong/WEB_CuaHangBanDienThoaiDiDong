@@ -67,6 +67,52 @@
             finder.popup();
         }
 
+
+
+        function handleImageSelection(files) {
+            var tbody = document.getElementById('tbHtml');
+            tbody.innerHTML = ''; // Xóa nội dung cũ
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var reader = new FileReader();
+
+                reader.onload = (function (file) {
+                    return function (event) {
+                        var imageData = event.target.result;
+                        var byteData = convertImageDataToByteArray(imageData);
+                        addImageRow(file.name, imageData, byteData);
+                    };
+                })(file);
+
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function convertImageDataToByteArray(imageData) {
+            // Chuyển đổi dữ liệu ảnh sang byte array tại đây và trả về
+        }
+
+        function addImageRow(fileName, imageData, byteData) {
+            var tbody = document.getElementById('tbHtml');
+            var row = tbody.insertRow();
+            var count = tbody.getElementsByTagName('tr').length;
+
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+
+            cell1.innerHTML = count;
+            cell2.innerHTML = '<img src="' + imageData + '" style="max-width:100px; max-height:100px;" />';
+            cell3.innerHTML = '<input type="checkbox" name="isFeatured" />';
+            cell4.innerHTML = '<button class="btn btn-danger" onclick="deleteImage(this)">Xóa</button>';
+
+            // Lưu trữ byteData tại đây hoặc gửi nó đến máy chủ
+        }
+
+
+
     </script>
 }
 

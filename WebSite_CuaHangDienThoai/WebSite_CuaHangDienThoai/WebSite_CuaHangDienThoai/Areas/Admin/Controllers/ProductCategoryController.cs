@@ -78,62 +78,62 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Add(tb_ProductCategory model, Admin_TokenProductCategory req)
-        {
-            var code = new { Success = false, Code = -1, Url = "" };
-            if (req.Title != null) {
-                var title = db.tb_ProductCategory.FirstOrDefault(r => r.Title == req.Title);
-                if (title == null) 
-                {
-                    if (req.Image != null) 
-                    {
-                        try
-                        {
-                            if (model.Title != null)
-                            {
-                                tb_Staff nvSession = (tb_Staff)Session["user"];
-                                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
-                                model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
-                                model.Icon = req.Image;
-                                model.CreatedDate = DateTime.Now;
-                                model.ModifiedDate = DateTime.Now;
-                                model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
-                                db.tb_ProductCategory.Add(model);
-                                db.SaveChanges();
-                                code = new { Success = true, Code = 1, Url = "" };
-                            }
-                            else
-                            {
-                                ViewBag.txt = "Vui lòng nhập thông tin";
-                                return View();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            // Xử lý ngoại lệ nếu có
-                            ViewBag.Error = "Đã xảy ra lỗi khi thêm mới loại sản phẩm: " + ex.Message;
-                        }
-                    }
-                    else
-                    {
-                        // Chọn ảnh đại diện
-                        code = new { Success = false, Code = -4, Url = "" };
-                    }   
-                }
-                else
-                {
-                    // Tên đã tồn tại
-                    code = new { Success = false, Code = -3, Url = "" };
-                }
-            }
-            else {
-                // Vui lòng điền tên tiêu đề
-                code = new { Success = false, Code = -2, Url = "" };
-            }
-            return Json(code);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Add(tb_ProductCategory model, Admin_TokenProductCategory req)
+        //{
+        //    var code = new { Success = false, Code = -1, Url = "" };
+        //    if (req.Title != null) {
+        //        var title = db.tb_ProductCategory.FirstOrDefault(r => r.Title == req.Title);
+        //        if (title == null) 
+        //        {
+        //            if (req.Image != null) 
+        //            {
+        //                try
+        //                {
+        //                    if (model.Title != null)
+        //                    {
+        //                        tb_Staff nvSession = (tb_Staff)Session["user"];
+        //                        var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
+        //                        model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
+        //                        model.Icon = (byte)req.Image;
+        //                        model.CreatedDate = DateTime.Now;
+        //                        model.ModifiedDate = DateTime.Now;
+        //                        model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
+        //                        db.tb_ProductCategory.Add(model);
+        //                        db.SaveChanges();
+        //                        code = new { Success = true, Code = 1, Url = "" };
+        //                    }
+        //                    else
+        //                    {
+        //                        ViewBag.txt = "Vui lòng nhập thông tin";
+        //                        return View();
+        //                    }
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    // Xử lý ngoại lệ nếu có
+        //                    ViewBag.Error = "Đã xảy ra lỗi khi thêm mới loại sản phẩm: " + ex.Message;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                // Chọn ảnh đại diện
+        //                code = new { Success = false, Code = -4, Url = "" };
+        //            }   
+        //        }
+        //        else
+        //        {
+        //            // Tên đã tồn tại
+        //            code = new { Success = false, Code = -3, Url = "" };
+        //        }
+        //    }
+        //    else {
+        //        // Vui lòng điền tên tiêu đề
+        //        code = new { Success = false, Code = -2, Url = "" };
+        //    }
+        //    return Json(code);
+        //}
 
         public ActionResult Edit(int id)
         {

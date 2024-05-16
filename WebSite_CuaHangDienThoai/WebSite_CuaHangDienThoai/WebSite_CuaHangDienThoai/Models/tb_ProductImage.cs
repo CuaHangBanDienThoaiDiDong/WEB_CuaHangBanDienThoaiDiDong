@@ -16,7 +16,7 @@ namespace WebSite_CuaHangDienThoai.Models
     {
         public int ProductImageId { get; set; }
         public int ProductsId { get; set; }
-        public string Image { get; set; }
+        public byte[] Image { get; set; }
         public bool IsDefault { get; set; }
     
         public virtual tb_Products tb_Products { get; set; }

@@ -27,7 +27,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string Modifeby { get; set; }
         public string Alias { get; set; }
-        public string Icon { get; set; }
+        public byte[] Icon { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_Products> tb_Products { get; set; }

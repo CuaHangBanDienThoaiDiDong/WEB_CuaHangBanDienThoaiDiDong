@@ -27,7 +27,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                              where p.ProductCategoryId == id
                              select new CompanyModel
                              {
-                                 Image=pc.Icon,
+                                 //Image=pc.Icon,
                                  ProductCompanyId = pc.ProductCompanyId,
                                  Title = pc.Title
                              }).Distinct().ToList();

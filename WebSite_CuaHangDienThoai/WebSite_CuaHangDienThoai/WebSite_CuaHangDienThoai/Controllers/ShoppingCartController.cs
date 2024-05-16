@@ -241,78 +241,78 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
-        [HttpPost]
-        public ActionResult DatHang(List<int> productIds)
-        {
-            var code = new { Success = false, msg = "", code = -1 };
-            if (productIds != null && productIds.Any())
-            {
-                if (Session["CustomerId"] != null)
-                {
-                    int idKhach = (int)Session["CustomerId"];
-                    var checkIdCart = db.tb_Cart.SingleOrDefault(x => x.CustomerId == idKhach);
-                    if (checkIdCart != null)
-                    {
-                        int checkId = checkIdCart.CartId;
+        //[HttpPost]
+        //public ActionResult DatHang(List<int> productIds)
+        //{
+        //    var code = new { Success = false, msg = "", code = -1 };
+        //    if (productIds != null && productIds.Any())
+        //    {
+        //        if (Session["CustomerId"] != null)
+        //        {
+        //            int idKhach = (int)Session["CustomerId"];
+        //            var checkIdCart = db.tb_Cart.SingleOrDefault(x => x.CustomerId == idKhach);
+        //            if (checkIdCart != null)
+        //            {
+        //                int checkId = checkIdCart.CartId;
 
-                        ShoppingCart cart = (ShoppingCart)Session[""];
-                        if (cart == null)
-                        {
-                            cart = new ShoppingCart();
-                        }
+        //                ShoppingCart cart = (ShoppingCart)Session[""];
+        //                if (cart == null)
+        //                {
+        //                    cart = new ShoppingCart();
+        //                }
 
-                        foreach (var productId in productIds)
-                        {
-                            var cartItem = db.tb_CartItem.SingleOrDefault(row => row.CartId == checkId && row.ProductDetailId == productId);
-                            if (cartItem != null)
-                            {
-                                var checkSanPham = db.tb_ProductDetail.FirstOrDefault(row => row.ProductDetailId == productId);
-                                if (checkSanPham != null)
-                                {
-                                    ShoppingCartItem item = new ShoppingCartItem
-                                    {
-                                        ProductId = (int)cartItem.ProductDetailId,
-                                        ProductName = cartItem.tb_ProductDetail.tb_Products.Title.ToString(),
-                                        CategoryName = cartItem.tb_ProductDetail.tb_Products.tb_ProductCategory.Title.ToString(),
-                                        Alias = cartItem.tb_ProductDetail.tb_Products.Alias.ToString(),
-                                        SoLuong = cartItem.Quantity,
-                                        Capcity= (int)checkSanPham.Capacity,
-                                        Color= checkSanPham.Color
-                                    };
+        //                foreach (var productId in productIds)
+        //                {
+        //                    var cartItem = db.tb_CartItem.SingleOrDefault(row => row.CartId == checkId && row.ProductDetailId == productId);
+        //                    if (cartItem != null)
+        //                    {
+        //                        var checkSanPham = db.tb_ProductDetail.FirstOrDefault(row => row.ProductDetailId == productId);
+        //                        if (checkSanPham != null)
+        //                        {
+        //                            ShoppingCartItem item = new ShoppingCartItem
+        //                            {
+        //                                ProductId = (int)cartItem.ProductDetailId,
+        //                                ProductName = cartItem.tb_ProductDetail.tb_Products.Title.ToString(),
+        //                                CategoryName = cartItem.tb_ProductDetail.tb_Products.tb_ProductCategory.Title.ToString(),
+        //                                Alias = cartItem.tb_ProductDetail.tb_Products.Alias.ToString(),
+        //                                SoLuong = cartItem.Quantity,
+        //                                Capcity= (int)checkSanPham.Capacity,
+        //                                Color= checkSanPham.Color
+        //                            };
 
-                                    if (cartItem.tb_ProductDetail.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault) != null)
-                                    {
-                                        item.ProductImg = cartItem.tb_ProductDetail.tb_ProductDetailImage.FirstOrDefault(row => row.IsDefault).Image;
-                                    }
+        //                            if (cartItem.tb_ProductDetail.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault) != null)
+        //                            {
+        //                                item.ProductImg = cartItem.tb_ProductDetail.tb_ProductDetailImage.FirstOrDefault(row => row.IsDefault).Image;
+        //                            }
 
-                                    item.Price = (decimal)checkSanPham.Price;
-                                    if (checkSanPham.PriceSale > 0)
-                                    {
-                                        item.Price = (decimal)checkSanPham.PriceSale;
-                                    }
-                                    item.PriceTotal = item.SoLuong * item.Price;
-                                    cart.AddToCart(item, cartItem.Quantity);
-                                }
-                            }
-                        }
+        //                            item.Price = (decimal)checkSanPham.Price;
+        //                            if (checkSanPham.PriceSale > 0)
+        //                            {
+        //                                item.Price = (decimal)checkSanPham.PriceSale;
+        //                            }
+        //                            item.PriceTotal = item.SoLuong * item.Price;
+        //                            cart.AddToCart(item, cartItem.Quantity);
+        //                        }
+        //                    }
+        //                }
 
-                        Session["Cart"] = cart;
-                        code = new
-                        {
-                            Success = true,
-                            msg = "",
-                            code = 1
-                        };
-                        //return RedirectToAction("CheckOut");
-                    }
-                }
-            }
-            else
-            {
-                code = new { Success = false, msg = "", code = -2 };
-            }
-            return Json(code);
-        }
+        //                Session["Cart"] = cart;
+        //                code = new
+        //                {
+        //                    Success = true,
+        //                    msg = "",
+        //                    code = 1
+        //                };
+        //                //return RedirectToAction("CheckOut");
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        code = new { Success = false, msg = "", code = -2 };
+        //    }
+        //    return Json(code);
+        //}
 
         public ActionResult Partial_CheckOut()
         {
