@@ -359,7 +359,6 @@
     //End Load dropdown Phuong Xa
     //Start Load dropdown Quaajn huyeejn 
     $('.dropdowm_list_Provinces_item').on('click', function () {
-       
         var provincesName = $(this).text();
         $('.provincesNameChose').text(provincesName);
         var id = $(this).data('id');
@@ -371,7 +370,6 @@
                 $('.loadDataDistricts').html(result);
             },
         });
-            
     });
     //End Load dropdown Quaajn huyeejn
 

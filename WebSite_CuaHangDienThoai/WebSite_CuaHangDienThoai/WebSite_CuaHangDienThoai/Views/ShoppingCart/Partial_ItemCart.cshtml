@@ -41,23 +41,39 @@
 
 
                                             var i = 0;
-                                            var strImg = "";
-                                            var img = item.tb_ProductDetail.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault && x.ProductDetailId==item.ProductDetailId);
-                                            if (img != null)
+
+
+
+                                            byte[] strImg = null;
+                                            var CheckImage = item.tb_ProductDetail.tb_ProductDetailImage.SingleOrDefault(x => x.IsDefault == true);
+
+                                            if (CheckImage != null)
                                             {
-                                                strImg = img.Image;
+                                                strImg = CheckImage.Image;
                                             }
+
+                                            string imgSrc = "";
+                                            if (strImg != null && strImg.Length > 0)
+                                            {
+                                                string base64String = Convert.ToBase64String(strImg);
+                                                imgSrc = $"data:image;base64,{base64String}";
+                                            }
+
+                                        
 
                                             //var tongTien += item.PriceTotal;
                                             <tr id="trow_@item.ProductDetailId">
+                                                @if (imgSrc != null)
+                                                {
 
+                                                }
                                                 <td><input type="checkbox" class="cbkItem" data-id="@item.ProductDetailId" /></td>
                                                 <td>
                                                     @(i+1)
                                                 </td>
                                                 <td style="width: 30%; height: 30%">
-                                                    
-                                                    <img src="@strImg"
+
+                                                    <img src="@imgSrc"
                                                          class="@item.tb_ProductDetail.tb_Products.Title" style="width: 70%; height: 70%" alt="Cotton T-shirt">
                                                 </td>
                                                 <td>

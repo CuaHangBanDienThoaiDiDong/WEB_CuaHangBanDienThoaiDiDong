@@ -40,6 +40,9 @@
 {
     <script>
         function OnBeginCO() {
+            $('#btnCheckOut').on('click', function () {
+                alert('Đặt hàng thành công!');
+            });
             $('#btnCheckOut').attr("disabled", "disabled");
             $('#load_send').html('<h2>Đang gửi....</h2>');
         }
@@ -441,7 +444,7 @@
                                                         @*<button type="submit" class="btn btn-block btn-success btn-checkout" id="btnCheckOut">Đặt hàng</button>*@
 
                                                         <div class="form-group">
-                                                            <button type="button" class="btn btn-success btn-block btn-checkout full-width-button" id="btnCheckOut" style="width:100%">Đặt Hàng<i class="fas fa-long-arrow-alt-right ms-2 full-width-button" style=""></i></button>
+                                                            <button type="submit" class="btn btn-success btn-block btn-checkout full-width-button" id=" " style="width:100%">Đặt Hàng<i class="fas fa-long-arrow-alt-right ms-2 full-width-button" style=""></i></button>
                                                         </div>
 
                                                     </div>
@@ -471,4 +474,6 @@
 }
 
 
-
+<script>
+  
+</script>

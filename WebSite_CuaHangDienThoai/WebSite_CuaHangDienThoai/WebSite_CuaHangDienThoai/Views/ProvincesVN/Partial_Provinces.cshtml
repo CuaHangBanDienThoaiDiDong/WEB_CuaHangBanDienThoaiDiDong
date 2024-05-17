@@ -1,29 +1,55 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.Provinces>
 @if (Model.Any() && Model != null)
 {
+    if (ViewBag.Provinces != null)
+    {
+        <div class="dropdown" style="width: 100%;">
+            <button class="btn btn-secondary dropdown-toggle" style="width: 100%;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="provincesNameChose">Hồ Chí Minh</span>
+            </button>
+            <div class="dropdown-menu" style="width: 100%;" aria-labelledby="dropdownMenuButton">
 
-    <div class="dropdown" style="width: 100%;">
-        <button class="btn btn-secondary dropdown-toggle" style="width: 100%;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="provincesNameChose">Hồ Chí Minh</span>
-        </button>
-        <div class="dropdown-menu" style="width: 100%;" aria-labelledby="dropdownMenuButton">
-
-            <div class="input-group p-2" style="display: flex; align-items: stretch;">
-                <input type="text" class="form-control searchProvinces" style="max-width: calc(100% - 20px); overflow: hidden; line-height: 1.5;" placeholder="Tìm theo quận huyện" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                <span class="input-group-text" id="basic-addon2" style="height: auto; line-height: 1.5;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                    </svg>
-                </span>
-            </div>
-            <div class="list_Provinces pl-4 loadDataProvinces" style="max-height: 200px; margin-left:20px; overflow-y: auto;">
-                @foreach (var item in Model)
-                {
-                    <a href="#" class=" dropdowm_list_Provinces_item" data-id="@item.idProvinces">@item.name</a>
-                }
+                <div class="input-group p-2" style="display: flex; align-items: stretch;">
+                    <input type="text" class="form-control searchProvinces" style="max-width: calc(100% - 20px); overflow: hidden; line-height: 1.5;" placeholder="Tìm theo quận huyện" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <span class="input-group-text" id="basic-addon2" style="height: auto; line-height: 1.5;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                        </svg>
+                    </span>
+                </div>
+                <div class="list_Provinces pl-4 loadDataProvinces" style="max-height: 200px; margin-left:20px; overflow-y: auto;">
+                    @foreach (var item in Model)
+                    {
+                        <div  class="btn dropdowm_list_Provinces_item" data-id="@item.idProvinces">@item.name</div>
+                    }
+                </div>
             </div>
         </div>
-    </div>
+    }
+    else
+    {
+
+        <div class="dropdown" style="width: 100%;">
+            <button class="btn btn-secondary dropdown-toggle" style="width: 100%;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="text-danger">Lỗi định vị máy chủ !!!</span>
+            </button>
+            <div class="dropdown-menu" style="width: 100%;" aria-labelledby="dropdownMenuButton">
+
+                <div class="input-group p-2" style="display: flex; align-items: stretch;">
+                    <input type="text" class="form-control searchProvinces" style="max-width: calc(100% - 20px); overflow: hidden; line-height: 1.5;" placeholder="Tìm theo quận huyện" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <span class="input-group-text" id="basic-addon2" style="height: auto; line-height: 1.5;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                        </svg>
+                    </span>
+                </div>
+                <div class="list_Provinces pl-4 loadDataProvinces" style="max-height: 200px; margin-left:20px; overflow-y: auto;">
+                    <p class="text-danger"> Lỗi định vị máy chủ !!!</p>
+                </div>
+            </div>
+        </div>
+       
+    }
 
 
 }

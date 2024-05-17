@@ -16,7 +16,7 @@ namespace WebSite_CuaHangDienThoai.Models
 
         public void AddToCart(ShoppingCartItem item, int SoLuong)
         {
-            var checkSanPham = Items.FirstOrDefault(x => x.ProductId == item.ProductId);
+            var checkSanPham = Items.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId);
 
             if (checkSanPham != null)
             {
@@ -47,7 +47,7 @@ namespace WebSite_CuaHangDienThoai.Models
         ///
         public void Remove(int id)
         {
-            var checkSanPham = Items.SingleOrDefault(x => x.ProductId == id);
+            var checkSanPham = Items.SingleOrDefault(x => x.ProductDetailId == id);
             if (checkSanPham != null)
             {
                 Items.Remove(checkSanPham);
@@ -57,7 +57,7 @@ namespace WebSite_CuaHangDienThoai.Models
         //Cap Nhap San Pham Ra khoi gio hang
         public void UpSoLuong(int id, int SoLuong)
         {
-            var checkSanPham = Items.SingleOrDefault(x => x.ProductId == id);
+            var checkSanPham = Items.SingleOrDefault(x => x.ProductDetailId == id);
             if (checkSanPham != null)
             {
                 checkSanPham.SoLuong = SoLuong;
@@ -69,11 +69,11 @@ namespace WebSite_CuaHangDienThoai.Models
 
     public class ShoppingCartItem
     {
-        public int ProductId { get; set; }
+        public int ProductDetailId { get; set; }
         public string ProductName { get; set; }
         public string Alias { get; set; }
         public string CategoryName { get; set; }
-        public string ProductImg { get; set; }
+        public byte[] ProductImg { get; set; }
         public int SoLuong { get; set; }
         public decimal Price { get; set; }
         public decimal PriceTotal { get; set; }
