@@ -181,7 +181,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
-                // Không tìm thấy session
+               
                 code = new { Success = false, Code = -4, Url = "" };
             }
 

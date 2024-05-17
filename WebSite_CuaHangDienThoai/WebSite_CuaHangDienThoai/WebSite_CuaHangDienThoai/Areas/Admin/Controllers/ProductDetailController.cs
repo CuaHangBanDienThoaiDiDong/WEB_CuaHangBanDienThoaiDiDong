@@ -141,57 +141,88 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             {
                 if (req.ProductsId != null && req.Ram != 1 && req.DungLuong != 1)
                 {
-                    if (Images != null && Images.Count > 0)
+                    var itemProducts = db.tb_Products.SingleOrDefault(p => p.ProductsId == req.ProductsId);
+                    if (itemProducts != null) 
                     {
-                        try
+                        if (Images != null && Images.Count > 0)
                         {
-                            model.Color = req.Color;
-                            model.Title = req.Title.Trim();
-                            model.ProductsId = req.ProductsId;
-                            model.Price = req.Price;
-                            model.OrigianlPrice = req.OrigianlPrice;
-                            model.PriceSale = req.PriceSale;
-                            model.TypeProduct = req.TypeProduct;
-                            model.Capacity = req.DungLuong;
-                            model.Ram = req.Ram;
-
-                            db.tb_ProductDetail.Add(model);
-                            db.SaveChanges();
-
-                            int index = 0;
-                            foreach (var image in Images)
+                            try
                             {
-                                // Sử dụng Server.MapPath để chuyển đổi đường dẫn URL thành đường dẫn vật lý
-                                string physicalPath = Server.MapPath(image);
 
-                                // Đọc tệp và chuyển đổi thành mảng byte
-                                byte[] imageBytes = System.IO.File.ReadAllBytes(physicalPath);
 
-                                tb_ProductDetailImage productDetailImage = new tb_ProductDetailImage
+                                model.Color = req.Color.Trim();
+                                model.Title = itemProducts.Title.Trim()+""+ req.Color.Trim();
+                                model.ProductsId = req.ProductsId;
+                                model.Price = req.Price;
+                                model.OrigianlPrice = req.OrigianlPrice;
+                                model.PriceSale = req.PriceSale;
+                                model.TypeProduct = req.TypeProduct;
+                                model.Capacity = req.DungLuong;
+                                model.Ram = req.Ram;
+
+                                db.tb_ProductDetail.Add(model);
+                                db.SaveChanges();
+
+                                int index = 0;
+                                foreach (var image in Images)
                                 {
-                                    ProductDetailId = model.ProductDetailId,
-                                    Image = imageBytes,
-                                    IsDefault = index == (rDefault[0] - 1) // Kiểm tra xem hình ảnh này có phải là mặc định không
-                                };
 
-                                db.tb_ProductDetailImage.Add(productDetailImage);
-                                index++;
+                                    if (string.IsNullOrEmpty(image))
+                                    {
+                                        code = new { Success = false, Code = -5, Url = "" };
+                                        continue;
+                                    }
+
+                                    string physicalPath = Server.MapPath(image);
+
+                                    if (!System.IO.File.Exists(physicalPath))
+                                    {
+                                        code = new { Success = false, Code = -5, Url = "" };
+                                        continue;
+                                    }
+
+                                    try
+                                    {
+                                        // Đọc tệp và chuyển đổi thành mảng byte
+                                        byte[] imageBytes = System.IO.File.ReadAllBytes(physicalPath);
+
+                                        tb_ProductDetailImage productDetailImage = new tb_ProductDetailImage
+                                        {
+                                            ProductDetailId = model.ProductDetailId,
+                                            Image = imageBytes,
+                                            IsDefault = index == (rDefault[0] - 1) // Kiểm tra xem hình ảnh này có phải là mặc định không
+                                        };
+
+                                        db.tb_ProductDetailImage.Add(productDetailImage);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine($"Error reading file: {ex.Message}");
+                                    }
+
+                                    index++;
+                                }
+
+                                db.SaveChanges();
+                                code = new { Success = true, Code = 1, Url = "" };
                             }
-
-                            db.SaveChanges();
-                            code = new { Success = true, Code = 1, Url = "" };
+                            catch (Exception ex)
+                            {
+                                // Xử lý ngoại lệ nếu có
+                                ViewBag.Error = "Đã xảy ra lỗi khi thêm mới sản phẩm: " + ex.Message;
+                            }
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            // Xử lý ngoại lệ nếu có
-                            ViewBag.Error = "Đã xảy ra lỗi khi thêm mới sản phẩm: " + ex.Message;
+                            // Hãy tải ảnh lên 
+                            code = new { Success = false, Code = -5, Url = "" };
                         }
                     }
-                    else
-                    {
-                        // Hãy tải ảnh lên 
-                        code = new { Success = false, Code = -5, Url = "" };
+                    else 
+                    {//Khoong tim thaasyt san pham
+                        code = new { Success = false, Code = -7, Url = "" };
                     }
+                    
                 }
                 else
                 {

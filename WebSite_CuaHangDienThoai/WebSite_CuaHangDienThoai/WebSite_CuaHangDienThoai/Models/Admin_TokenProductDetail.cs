@@ -8,7 +8,7 @@ namespace WebSite_CuaHangDienThoai.Models
     public class Admin_TokenProductDetail
     {
         public string Color { get; set; }
-        public string Title { get; set; }
+     
         public decimal Price { get; set; }
         public decimal PriceSale { get; set; }
 

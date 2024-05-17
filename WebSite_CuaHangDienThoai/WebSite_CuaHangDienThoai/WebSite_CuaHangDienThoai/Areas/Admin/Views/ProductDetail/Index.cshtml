@@ -81,14 +81,19 @@
                             {
 
 
-                                var strImg = "";
-                                var CheckImage = item.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
-                       
-  
+                                byte[] strImg = null;
 
-                                if (CheckImage != null)
+
+                                if (item.Image != null)
                                 {
-                                    strImg = CheckImage.Image;
+                                    strImg = item.Image;
+                                }
+
+                                string imgSrc = "";
+                                if (strImg != null && strImg.Length > 0)
+                                {
+                                    string base64String = Convert.ToBase64String(strImg);
+                                    imgSrc = $"data:image;base64,{base64String}";
                                 }
                                 else
                                 {
@@ -98,7 +103,7 @@
                                     <tr class="text-center" id="trow_@item.ProductsId">
                                         <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
                                         <td>@i</td>
-                                        <td><img class="imgproduct" data-id="@item.ProductsId" src="@strImg" width="50" /></td>
+                                        <td><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" /></td>
                                         <td> <a href="/admin/Products/Detail/@item.ProductsId"> @item.Title</a>  </td>
                                         <td>@item.tb_Products.Title</td>
                                         <td>@item.tb_Products.tb_ProductCategory.Title</td>

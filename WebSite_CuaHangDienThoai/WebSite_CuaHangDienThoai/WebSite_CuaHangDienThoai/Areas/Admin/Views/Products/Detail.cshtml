@@ -54,7 +54,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-3 col-sm-12 col-xs-12">
-                    @if (Model.tb_ProductImage != null && Model.tb_ProductImage.Any())
+                    @if (Model.tb_ProductImage != null )
                     {
                         <div class="single_product_pics">
                             <div class="row">
@@ -64,21 +64,32 @@
                                         @foreach (var item in Model.tb_ProductImage)
                                         {
 
+                                            byte[] strImg = null;
+                                            
 
+                                            if (item.Image != null)
+                                            {
+                                                strImg = item.Image;
+                                            }
 
-
+                                            string imgSrc = "";
+                                            if (strImg != null && strImg.Length > 0)
+                                            {
+                                                string base64String = Convert.ToBase64String(strImg);
+                                                imgSrc = $"data:image;base64,{base64String}";
+                                            }
                                             <div class="@*carousel-inner*@">
                                                 @if (item.IsDefault)
                                                 {
                                                     <div class="item active">
-                                                        <img src="@item.Image" class="img-responsive w-100" />
+                                                        <img src="@imgSrc" class="img-responsive w-100" />
                                                     </div>
 
                                                 }
                                                 else
                                                 {
                                                     <div class="item">
-                                                        <img src="@item.Image" class="img-responsive w-100" />
+                                                        <img src="@imgSrc" class="img-responsive w-100" />
                                                     </div>
                                                 }
 

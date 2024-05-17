@@ -105,12 +105,30 @@
 
 
 
-                                 var strImg = "";
+
+
+
+                                 byte[] strImg = null;
                                  var CheckImage = items.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
+
                                  if (CheckImage != null)
                                  {
                                      strImg = CheckImage.Image;
                                  }
+
+                                 string imgSrc = "";
+                                 if (strImg != null && strImg.Length > 0)
+                                 {
+                                     string base64String = Convert.ToBase64String(strImg);
+                                     imgSrc = $"data:image;base64,{base64String}";
+                                 }
+
+
+
+
+
+
+
                                  if (items.tb_Products.IsActive == true && items.tb_Products.IsHome == true && items.tb_Products.IsSale ==true)
                                  {
 

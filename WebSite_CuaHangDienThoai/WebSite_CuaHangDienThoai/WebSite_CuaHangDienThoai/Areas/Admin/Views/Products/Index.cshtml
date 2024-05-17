@@ -95,7 +95,7 @@
 
 
                                 byte[] strImg = null;
-                                var CheckImage = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
+                                var CheckImage = item.tb_ProductImage.SingleOrDefault(x => x.IsDefault==true);
 
                                 if (CheckImage != null)
                                 {

@@ -18,14 +18,14 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
-        //public ActionResult Partial_Category() 
-        //{
+        public ActionResult Partial_Category()
+        {
 
 
 
-        //    var item = db.tb_ProductCategory.Where(r=>r.IsActive==true).ToList();
-        //    return PartialView(item); 
-        //}   
+            var item = db.tb_ProductCategory.Where(r => r.IsActive == true).ToList();
+            return PartialView(item);
+        }
 
 
 

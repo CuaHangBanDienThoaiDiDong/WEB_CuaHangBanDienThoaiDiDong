@@ -228,16 +228,19 @@
                                         return discount * 100;
                                     }
                                 }
-                                var strImg = "";
+                                byte[] strImg = null;
+                                var CheckImage = items.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
 
-                                var img = items.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
-
-
-                                //var strImg = "";
-                                //var CheckImage = items.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
-                                if (img != null)
+                                if (CheckImage != null)
                                 {
-                                    strImg = img.Image;
+                                    strImg = CheckImage.Image;
+                                }
+
+                                string imgSrc = "";
+                                if (strImg != null && strImg.Length > 0)
+                                {
+                                    string base64String = Convert.ToBase64String(strImg);
+                                    imgSrc = $"data:image;base64,{base64String}";
                                 }
                                 if (items.tb_Products.IsActive == true && items.tb_Products.IsHome == true && items.tb_Products.IsSale == true && items.PriceSale > 0)
                                 {
@@ -245,7 +248,7 @@
 
                                         <div class="product-img" >
                                             <div class="product_image   pt-3 d-flex justify-content-center">
-                                                <img src="@strImg" alt="@items.Title" class="w-75 h-75">
+                                                <img src="@imgSrc" alt="@items.Title" class="w-75 h-75">
                                             </div>
 
 
