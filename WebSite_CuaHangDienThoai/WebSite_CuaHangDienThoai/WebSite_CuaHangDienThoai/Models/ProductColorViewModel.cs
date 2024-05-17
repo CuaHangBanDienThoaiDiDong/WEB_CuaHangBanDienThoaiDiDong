@@ -12,6 +12,6 @@ namespace WebSite_CuaHangDienThoai.Models
         public int ProductslId { get; set; }
 
         public int Capacity { get; set; }
-        public string Image { get; set; }
+        public byte[]  Image { get; set; }
     }
 }

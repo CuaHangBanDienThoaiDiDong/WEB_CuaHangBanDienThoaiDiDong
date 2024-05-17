@@ -30,7 +30,7 @@
 
 @if (Model != null)
 {
-    var strImg = "";
+    
     var Capacity = "";
 
     string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
@@ -43,12 +43,23 @@
 
     //var check = Model.tb_ProductDetail.FirstOrDefault(r => r.ProductsId == Model.ProductsId);
     //var checkImg = check.tb_ProductDetailImage.Where(r => r.ProductDetailId == check.ProductDetailId);
-    var ImgDefault = Model.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
-    //var ImgDefault = Model.tb_ProductDetailImage.Where(x => x.ProductDetailId==Model.ProductDetailId);
-    if (ImgDefault != null)
+    byte[] strImg = null;
+    var CheckImage = Model.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
+
+    if (CheckImage != null)
     {
-        strImg = ImgDefault.Image;
+        strImg = CheckImage.Image;
     }
+
+    string imgSrc = "";
+    if (strImg != null && strImg.Length > 0)
+    {
+        string base64String = Convert.ToBase64String(strImg);
+        imgSrc = $"data:image;base64,{base64String}";
+    }
+
+
+   
 
 
     @functions {
@@ -82,27 +93,6 @@
         <div class="container single_product_container">
 
 
-            @*<div class="row">
-                    <div class="col-lg-9">
-
-                    </div>
-                    <div class="col-md-3">
-
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                Địa chỉ còn hàng
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li>
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <input type="text" placeholder="Chọn quận huyện" />
-                                </li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>*@
             <hr />
             <div class="row">
                 <div class="col-lg-7">
@@ -396,7 +386,7 @@
                                                 <tr>
 
                                                     <td>Pin, Sạc:</td>
-                                                    <td>@Model.BatteryCapacity mAh,@Model.tb_Products.ChargingSupport</td>
+                                                    <td>@Model.tb_Products.BatteryCapacity mAh,@Model.tb_Products.ChargingSupport</td>
 
                                                 </tr>
                                                 <tr>

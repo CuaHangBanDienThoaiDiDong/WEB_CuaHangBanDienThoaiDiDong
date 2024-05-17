@@ -40,60 +40,7 @@
 
 
 <div class="container product_section_container">
-    @*<div class="row pt-2">
-        <div class="col-lg-8 ">
-            <div class="swiper mySwiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="row d-flex align-items-center">
-                            <div class="col-12">
-                                <div class="image-holder">
-                                    <img src="~/images/background/Redmi-Note-13-1200-300-1200x300.png" class="w-100 , h-100" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="row d-flex align-items-center">
-                            <div class="col-12">
-                                <div class="image-holder">
-                                    <img src="~/images/background/Redmi-Note-13-1200-300-1200x300.png" class="w-100 , h-100" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="row d-flex align-items-center">
-                            <div class="col-12">
-                                <div class="image-holder">
-                                    <img src="~/images/background/Redmi-Note-13-1200-300-1200x300.png" class="w-100 , h-100" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-pagination"></div>
-            </div>
-
-        </div>
-        <div class="col-4 ">
-            <div class="row ">
-                <div class="col-md-12 bg-blue">
-                    <img src="~/images/background/sticky-a58-390x97.png" class="w-100" style="width:auto" />
-                </div>
-
-            </div>
-            <div class="row pt-3">
-                <div class="col-md-12 bg-body">
-
-                    <img src="~/images/background/sticky-m54-390x97.png" />
-                </div>
-
-
-            </div>
-
-        </div>
-    </div>*@
+ 
 
 
 
@@ -205,7 +152,7 @@
 
 
                                         byte[] strImg = null;
-                                        var CheckImage = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
+                                        var CheckImage = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault == true);
 
                                         if (CheckImage != null)
                                         {
@@ -221,6 +168,7 @@
 
 
 
+                             
                                         var checkDetail = item.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == item.ProductsId);
                                         if (checkDetail != null)
                                         {

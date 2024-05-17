@@ -156,7 +156,7 @@
                     <tr class="text-center" id="trow_@item.ProductsId">
                         <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
                         <td>@i</td>
-                        <td><img class="imgproduct" data-id="@item.ProductsId" src="@strImg" width="50" /></td>
+                        <td><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" /></td>
                         <td> <a href="/admin/Products/Detail/@item.ProductsId"> @item.Title</a>  </td>
                         <td>@item.tb_ProductCategory.Title</td>
                         <td>
@@ -175,22 +175,7 @@
                             }
                             else
                             {
-                                @*<span>
-                                    @checkProductDetail.Ram GB /
-                                    @if (checkProductDetail.DungLuong >= 999)
-                                    {
-                                        <span>1Tb</span>
-                                    }
-                                    else if (checkProductDetail.DungLuong == 2999)
-                                    {
-                                        <span>2Tb</span>
-                                    }
-                                    else
-                                    {
-                                        <span>@checkProductDetail.DungLuong</span>
-                                    }
-
-                                </span>*@
+                               <div class=" loadCapacity"></div>
                                 @Html.Action("Partial_CapacityByProductsId", "ProductDetail", new {id= item.ProductsId })
                               
                                 <a href="/admin/ProductDetail/add/@item.ProductsId" style="margin-top:-20px">Thêm</a>
@@ -244,9 +229,7 @@
                         }
 
                         <td>
-                            @*<a href="/admin/Product/edit/@item.ProductId" class="btn btn-sm btn-primary">Sửa</a>
-            <a href="#" data-id="@item.ProductId" class="btn btn-sm btn-danger btnDelete">Xóa</a>*@
-
+                         
                             <a href="/admin/Products/Detail/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Xem</a>
                             <a href="/admin/Products/Edit/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Sửa</a>
                         </td>

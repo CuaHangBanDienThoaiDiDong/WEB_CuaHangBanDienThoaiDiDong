@@ -3681,6 +3681,7 @@
     <Content Include="Areas\Admin\Views\HomePage\NonRole.cshtml" />
     <Content Include="Areas\Admin\Views\Function\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Function\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCompany\Partial_AddProductComapny.cshtml" />
     <EntityDeploy Include="Models\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
@@ -3688,7 +3689,6 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
-    <Content Include="Areas\Admin\Views\ProductCompany\Partial_AddProductComapny.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
@@ -3707,6 +3707,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\JsAdmin.js" />
     <Content Include="Scripts\jsShopping.js" />
     <Content Include="Scripts\owl_carousel\owl.carousel.css" />
     <Content Include="Scripts\owl_carousel\owl.carousel.js" />

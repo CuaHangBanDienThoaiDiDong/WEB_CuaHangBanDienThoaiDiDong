@@ -8,7 +8,7 @@
     @foreach (var item in Model)
     {
         <li class="nav-item text-white" style="margin-top:-50px; ">
-            <a href="/dong-san-pham/@ViewBag.CategoryTitle-@item.CompanyTitles-Code@(item.CompanyIds)-Code@(ViewBag.CategoryId)" class="nav-link text-white pl-2"style=" margin-left: 20% ">
+            <a href="/dong-san-pham/@ViewBag.CategoryTitle-@item.CompanyTitles-@(item.CompanyIds)-@(ViewBag.CategoryId)" class="nav-link text-white pl-2"style=" margin-left: 20% ">
                 @item.CompanyTitles (@item.ProductCount)
             </a>
         </li>

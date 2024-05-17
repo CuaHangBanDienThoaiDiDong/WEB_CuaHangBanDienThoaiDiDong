@@ -16,9 +16,13 @@ namespace WebSite_CuaHangDienThoai.Controllers
         CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
         public ActionResult Index(int? page)
         {
-            IEnumerable<tb_Products> items = db.tb_Products.OrderByDescending(x => x.ProductsId);
+            IEnumerable<tb_Products> items = db.tb_Products.Where(x => x.IsActive==true).OrderByDescending(x => x.ProductsId );
             if (items != null)
             {
+
+                
+
+
                 var pageSize = 17;
                 if (page == null)
                 {
@@ -36,9 +40,6 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 return View();
             }
         }
-
-
-
 
 
 
@@ -291,37 +292,37 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
-        //public ActionResult Partial_DetailImageById(int id)
-        //{
-        //    using (var dbContext = new CUAHANGDIENTHOAIEntities())
-        //    {
-        //        var uniqueColorsWithIdsAndImages = dbContext.tb_ProductDetail
-        //            .Where(p => p.ProductsId == id)
-        //            .GroupBy(p => p.Color)
-        //            .Select(g => new
-        //            {
-        //                Color = g.Key,
-        //                ProductDetailId = g.Min(p => p.ProductDetailId),
-        //                Image = dbContext.tb_ProductDetailImage
-        //                            .Where(x => x.ProductDetailId == g.Min(p => p.ProductDetailId) && x.IsDefault)
-        //                            .Select(x => x.Image)
-        //                            .FirstOrDefault()
-        //            })
-        //            .ToList();
+        public ActionResult Partial_DetailImageById(int id)
+        {
+            using (var dbContext = new CUAHANGDIENTHOAIEntities())
+            {
+                var uniqueColorsWithIdsAndImages = dbContext.tb_ProductDetail
+                    .Where(p => p.ProductsId == id)
+                    .GroupBy(p => p.Color)
+                    .Select(g => new
+                    {
+                        Color = g.Key,
+                        ProductDetailId = g.Min(p => p.ProductDetailId),
+                        Image = dbContext.tb_ProductDetailImage
+                                    .Where(x => x.ProductDetailId == g.Min(p => p.ProductDetailId) && x.IsDefault)
+                                    .Select(x => x.Image)
+                                    .FirstOrDefault()
+                    })
+                    .ToList();
 
-        //        var viewModels = uniqueColorsWithIdsAndImages.Select(item => new ProductColorViewModel
-        //        {
-        //            Color = item.Color,
-        //            ProductDetailId = item.ProductDetailId,
-        //            ProductslId = id,
-        //            Image = item.Image
-        //        }).ToList();
+                var viewModels = uniqueColorsWithIdsAndImages.Select(item => new ProductColorViewModel
+                {
+                    Color = item.Color,
+                    ProductDetailId = item.ProductDetailId,
+                    ProductslId = id,
+                    Image = item.Image
+                }).ToList();
 
-        //        ViewBag.ProductId = id;
-        //        return PartialView(viewModels);
-        //    }
+                ViewBag.ProductId = id;
+                return PartialView(viewModels);
+            }
 
-        //}
+        }
 
 
 
@@ -332,7 +333,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
             using (var db = new CUAHANGDIENTHOAIEntities()) // Thay "YourDbContext" bằng tên DbContext của bạn
             {
                 var uniqueCompanyData = (from p in db.tb_Products
-                                         where p.ProductCategoryId == categoryId
+                                         where p.ProductCategoryId == categoryId && p.IsActive==true
                                          group p by p.ProductCompanyId into g
                                          select new UniqueCompanyTitlesViewModel
                                          {

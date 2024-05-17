@@ -95,9 +95,28 @@
 
                 @foreach (var item in Model)
                 {
+
+
+                    byte[] strImg = null;
+               
+
+                    if (item.Image != null)
+                    {
+                        strImg = item.Image;
+                    }
+
+                    string imgSrc = "";
+                    if (strImg != null && strImg.Length > 0)
+                    {
+                        string base64String = Convert.ToBase64String(strImg);
+                        imgSrc = $"data:image;base64,{base64String}";
+                    }
+
+
+
                     <div id="thumb-color-images-gallery-1198" class="item itemTab active  " data-gallery-id="color-images-gallery" data-color-id="1198" data-is-full-spec="False" data-color-order-id="0" data-isfeatureimage="True">
                         <div class="item-border liImg" data-id="@item.ProductDetailId">
-                            <img data-src="@item.Image" alt="@item.Color" width="41" height="41" loading="lazy" class=" lazyloaded" src="@item.Image">
+                            <img data-src="@item.Image" alt="@item.Color" width="41" height="41" loading="lazy" class=" lazyloaded" src="@imgSrc">
                         </div>
                         <p>@item.Color</p>
                     </div>

@@ -196,19 +196,32 @@
                                     {
                                         foreach (var item in Model)
                                         {
-                                            var strImg = "";
-                                            var img = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
+                                            byte[] strImg = null;
+                                            var CheckImage = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault == true);
+
+                                            if (CheckImage != null)
+                                            {
+                                                strImg = CheckImage.Image;
+                                            }
+
+                                            string imgSrc = "";
+                                            if (strImg != null && strImg.Length > 0)
+                                            {
+                                                string base64String = Convert.ToBase64String(strImg);
+                                                imgSrc = $"data:image;base64,{base64String}";
+                                            }
+
                                             var checkDetail = item.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == item.ProductsId);
                                             if (checkDetail != null)
                                             {
-                                                if (img != null)
+                                                if (imgSrc != null)
                                                 {
-                                                    strImg = img.Image;
+                                                    
 
                                                     <div class="product-item men rounded-3  @item.tb_ProductCategory " data-id="@item.ProductsId" style="background: #323232; padding-left: -20px; margin-top: 5px;  ">
                                                         <div class=" discount p-3 " style="padding:50px  ;">
                                                             <div class="product_image pt-3 d-flex justify-content-center">
-                                                                <img src="@strImg" alt="@item.Title" class="w-75 h-75">
+                                                                <img src="@imgSrc" alt="@item.Title" class="w-75 h-75">
                                                             </div>
                                                             <div class="favorite favorite_left"></div>
                                                             <div class="product_bubble_right product_bubble product_bubble_red d-flex flex-column align-items-center loadPhanTramSale " id="loadPhanTramSale_@item.ProductsId" data-id="@item.ProductsId" style="visibility: hidden;">

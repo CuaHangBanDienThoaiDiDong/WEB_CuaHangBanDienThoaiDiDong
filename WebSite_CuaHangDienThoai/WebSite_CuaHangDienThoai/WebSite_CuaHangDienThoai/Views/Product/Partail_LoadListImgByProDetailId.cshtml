@@ -25,8 +25,24 @@
                     <div class="carousel-inner">
                         @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }))
                         {
+                            byte[] strImg = null;
+
+
+                            if (@item.Value.Image != null)
+                            {
+                                strImg = @item.Value.Image;
+                            }
+
+                            string imgSrc = "";
+                            if (strImg != null && strImg.Length > 0)
+                            {
+                                string base64String = Convert.ToBase64String(strImg);
+                                imgSrc = $"data:image;base64,{base64String}";
+                            }
+
+
                             <div class="carousel-item @(item.Index == 0 ? "active" : "")">
-                            <img src="@item.Value.Image" class="d-block mx-auto" style="width: 80%; height: 80%; object-fit: contain;" alt="@item.Value.tb_ProductDetail.tb_Products.Title">
+                            <img src="@imgSrc" class="d-block mx-auto" style="width: 80%; height: 80%; object-fit: contain;" alt="@item.Value.tb_ProductDetail.tb_Products.Title">
                             </div>
                         }
                     </div>

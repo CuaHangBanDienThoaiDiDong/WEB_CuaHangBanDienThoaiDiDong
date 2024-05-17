@@ -20,7 +20,7 @@ namespace WebSite_CuaHangDienThoai
             //// Route Chi tiet san pham
             routes.MapRoute(
        name: "LoaSanphamtheoCongTy", 
-       url: "dong-san-pham/{TitleCategory}-{TitleCompany}-Code{CompanyId}-Code{CategoryId}",
+       url: "dong-san-pham/{TitleCategory}-{TitleCompany}-{CompanyId}-{CategoryId}",
        defaults: new { controller = "Product", action = "ProductsByCompany", alias = UrlParameter.Optional },
        namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
    );
