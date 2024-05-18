@@ -18,6 +18,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public tb_Store()
         {
             this.tb_Warehouse = new HashSet<tb_Warehouse>();
+            this.tb_Staff = new HashSet<tb_Staff>();
         }
     
         public int StoreId { get; set; }
@@ -30,8 +31,17 @@ namespace WebSite_CuaHangDienThoai.Models
         public string City { get; set; }
         public string District { get; set; }
         public Nullable<bool> IsStatus { get; set; }
+        public Nullable<int> idProvinces { get; set; }
+        public Nullable<int> idDistricts { get; set; }
+        public Nullable<int> idWards { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_Warehouse> tb_Warehouse { get; set; }
+        public virtual Districts Districts { get; set; }
+        public virtual Provinces Provinces { get; set; }
+        public virtual Wards Wards { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_Staff> tb_Staff { get; set; }
+        public virtual Provinces Provinces1 { get; set; }
     }
 }

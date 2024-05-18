@@ -62,6 +62,11 @@
         <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.ReviewDetailtoReview" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.RoletoStaff" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.WarehousetoStore" ManuallyRouted="false" />
+        <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.StoretoDistricts" />
+        <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.StoretoProvinces" />
+        <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.StoretoWards" />
+        <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.StafftoStore" />
+        <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.StoretoProvinces1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

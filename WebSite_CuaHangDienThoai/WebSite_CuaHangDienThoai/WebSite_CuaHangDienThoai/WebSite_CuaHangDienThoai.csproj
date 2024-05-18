@@ -3689,6 +3689,18 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\Store\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ProvincesVN\Partial_Provinces.cshtml" />
+    <Content Include="Areas\Admin\Views\Store\Partial_AddStore.cshtml" />
+    <Content Include="Areas\Admin\Views\Store\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Store\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouse\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\AddQuantityForProduct.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\Partial_AddQuantityForProduct.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\Partial_QuantityProductDtail.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\Partail_ProductDetail.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
@@ -3950,7 +3962,11 @@
     <Compile Include="Areas\Admin\Controllers\ProductDetailController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductDetailImageController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProvincesVNController.cs" />
     <Compile Include="Areas\Admin\Controllers\StaffController.cs" />
+    <Compile Include="Areas\Admin\Controllers\StoreController.cs" />
+    <Compile Include="Areas\Admin\Controllers\WareHouseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\WareHouseImportController.cs" />
     <Compile Include="Common\Common.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />
@@ -3966,8 +3982,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Admin_TokenImportWareHouse.cs" />
     <Compile Include="Models\Admin_TokenProductDetail.cs" />
     <Compile Include="Models\Admin_TokenProducts.cs" />
+    <Compile Include="Models\Admin_TokenStore.cs" />
     <Compile Include="Models\Common\Filter.cs" />
     <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\Districts.cs">

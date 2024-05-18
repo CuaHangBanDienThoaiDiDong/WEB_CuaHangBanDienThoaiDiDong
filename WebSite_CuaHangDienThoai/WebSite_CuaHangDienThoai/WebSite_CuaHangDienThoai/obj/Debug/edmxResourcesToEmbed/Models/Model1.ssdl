@@ -308,6 +308,7 @@
     <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
     <Property Name="Clock" Type="bit" />
     <Property Name="FunctionId" Type="int" />
+    <Property Name="StoreId" Type="int" />
   </EntityType>
   <EntityType Name="tb_Store">
     <Key>
@@ -323,6 +324,9 @@
     <Property Name="City" Type="nvarchar" MaxLength="60" />
     <Property Name="District" Type="nvarchar" MaxLength="60" />
     <Property Name="IsStatus" Type="bit" />
+    <Property Name="idProvinces" Type="int" />
+    <Property Name="idDistricts" Type="int" />
+    <Property Name="idWards" Type="int" />
   </EntityType>
   <EntityType Name="tb_Voucher">
     <Key>
@@ -708,6 +712,54 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="StafftoStore">
+    <End Role="tb_Store" Type="Self.tb_Store" Multiplicity="0..1" />
+    <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Store">
+        <PropertyRef Name="StoreId" />
+      </Principal>
+      <Dependent Role="tb_Staff">
+        <PropertyRef Name="FunctionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StoretoDistricts">
+    <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
+    <End Role="tb_Store" Type="Self.tb_Store" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Districts">
+        <PropertyRef Name="idDistricts" />
+      </Principal>
+      <Dependent Role="tb_Store">
+        <PropertyRef Name="idDistricts" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StoretoProvinces">
+    <End Role="Provinces" Type="Self.Provinces" Multiplicity="0..1" />
+    <End Role="tb_Store" Type="Self.tb_Store" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Provinces">
+        <PropertyRef Name="idProvinces" />
+      </Principal>
+      <Dependent Role="tb_Store">
+        <PropertyRef Name="idProvinces" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StoretoWards">
+    <End Role="Wards" Type="Self.Wards" Multiplicity="0..1" />
+    <End Role="tb_Store" Type="Self.tb_Store" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Wards">
+        <PropertyRef Name="idWards" />
+      </Principal>
+      <Dependent Role="tb_Store">
+        <PropertyRef Name="idWards" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="VouchertoOrder">
     <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="0..1" />
     <End Role="tb_Voucher" Type="Self.tb_Voucher" Multiplicity="*" />
@@ -874,6 +926,22 @@
     <AssociationSet Name="StafftoFunction" Association="Self.StafftoFunction">
       <End Role="tb_Function" EntitySet="tb_Function" />
       <End Role="tb_Staff" EntitySet="tb_Staff" />
+    </AssociationSet>
+    <AssociationSet Name="StafftoStore" Association="Self.StafftoStore">
+      <End Role="tb_Store" EntitySet="tb_Store" />
+      <End Role="tb_Staff" EntitySet="tb_Staff" />
+    </AssociationSet>
+    <AssociationSet Name="StoretoDistricts" Association="Self.StoretoDistricts">
+      <End Role="Districts" EntitySet="Districts" />
+      <End Role="tb_Store" EntitySet="tb_Store" />
+    </AssociationSet>
+    <AssociationSet Name="StoretoProvinces" Association="Self.StoretoProvinces">
+      <End Role="Provinces" EntitySet="Provinces" />
+      <End Role="tb_Store" EntitySet="tb_Store" />
+    </AssociationSet>
+    <AssociationSet Name="StoretoWards" Association="Self.StoretoWards">
+      <End Role="Wards" EntitySet="Wards" />
+      <End Role="tb_Store" EntitySet="tb_Store" />
     </AssociationSet>
     <AssociationSet Name="VouchertoOrder" Association="Self.VouchertoOrder">
       <End Role="tb_Order" EntitySet="tb_Order" />

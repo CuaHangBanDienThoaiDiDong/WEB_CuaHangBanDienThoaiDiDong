@@ -9,6 +9,7 @@
     <Property Name="idProvinces" Type="Int32" />
     <NavigationProperty Name="Provinces" Relationship="Self.FK__Districts__idPro__656C112C" FromRole="Districts" ToRole="Provinces" />
     <NavigationProperty Name="Wards" Relationship="Self.FK__Wards__idDistric__68487DD7" FromRole="Districts" ToRole="Wards" />
+    <NavigationProperty Name="tb_Store" Relationship="CUAHANGDIENTHOAI_newModel.StoretoDistricts" FromRole="Districts" ToRole="tb_Store" />
   </EntityType>
   <EntityType Name="Provinces">
     <Key>
@@ -17,6 +18,8 @@
     <Property Name="idProvinces" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Districts" Relationship="Self.FK__Districts__idPro__656C112C" FromRole="Provinces" ToRole="Districts" />
+    <NavigationProperty Name="tb_Store" Relationship="CUAHANGDIENTHOAI_newModel.StoretoProvinces" FromRole="Provinces" ToRole="tb_Store" />
+    <NavigationProperty Name="tb_Store1" Relationship="CUAHANGDIENTHOAI_newModel.StoretoProvinces1" FromRole="Provinces" ToRole="tb_Store" />
   </EntityType>
   <EntityType Name="tb_Cart">
     <Key>
@@ -364,6 +367,8 @@
     <NavigationProperty Name="tb_Function" Relationship="Self.StafftoFunction" FromRole="tb_Staff" ToRole="tb_Function" />
     <NavigationProperty Name="tb_ImportWarehouse" Relationship="Self.ImportWarehouseToStaff" FromRole="tb_Staff" ToRole="tb_ImportWarehouse" />
     <NavigationProperty Name="tb_Role" Relationship="Self.RoletoStaff" FromRole="tb_Staff" ToRole="tb_Role" />
+    <Property Name="StoreId" Type="Int32" />
+    <NavigationProperty Name="tb_Store" Relationship="CUAHANGDIENTHOAI_newModel.StafftoStore" FromRole="tb_Staff" ToRole="tb_Store" />
   </EntityType>
   <EntityType Name="tb_Store">
     <Key>
@@ -380,6 +385,14 @@
     <Property Name="District" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
     <Property Name="IsStatus" Type="Boolean" />
     <NavigationProperty Name="tb_Warehouse" Relationship="Self.WarehousetoStore" FromRole="tb_Store" ToRole="tb_Warehouse" />
+    <Property Name="idProvinces" Type="Int32" />
+    <Property Name="idDistricts" Type="Int32" />
+    <Property Name="idWards" Type="Int32" />
+    <NavigationProperty Name="Districts" Relationship="CUAHANGDIENTHOAI_newModel.StoretoDistricts" FromRole="tb_Store" ToRole="Districts" />
+    <NavigationProperty Name="Provinces" Relationship="CUAHANGDIENTHOAI_newModel.StoretoProvinces" FromRole="tb_Store" ToRole="Provinces" />
+    <NavigationProperty Name="Wards" Relationship="CUAHANGDIENTHOAI_newModel.StoretoWards" FromRole="tb_Store" ToRole="Wards" />
+    <NavigationProperty Name="tb_Staff" Relationship="CUAHANGDIENTHOAI_newModel.StafftoStore" FromRole="tb_Store" ToRole="tb_Staff" />
+    <NavigationProperty Name="Provinces1" Relationship="CUAHANGDIENTHOAI_newModel.StoretoProvinces1" FromRole="tb_Store" ToRole="Provinces" />
   </EntityType>
   <EntityType Name="tb_Voucher">
     <Key>
@@ -421,6 +434,7 @@
     <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="idDistricts" Type="Int32" />
     <NavigationProperty Name="Districts" Relationship="Self.FK__Wards__idDistric__68487DD7" FromRole="Wards" ToRole="Districts" />
+    <NavigationProperty Name="tb_Store" Relationship="CUAHANGDIENTHOAI_newModel.StoretoWards" FromRole="Wards" ToRole="tb_Store" />
   </EntityType>
   <Association Name="FK__Districts__idPro__656C112C">
     <End Role="Provinces" Type="Self.Provinces" Multiplicity="0..1" />
@@ -945,5 +959,85 @@
       <End Role="tb_Store" EntitySet="tb_Store" />
       <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
     </AssociationSet>
+    <AssociationSet Name="StoretoDistricts" Association="CUAHANGDIENTHOAI_newModel.StoretoDistricts">
+      <End Role="Districts" EntitySet="Districts" />
+      <End Role="tb_Store" EntitySet="tb_Store" />
+    </AssociationSet>
+    <AssociationSet Name="StoretoProvinces" Association="CUAHANGDIENTHOAI_newModel.StoretoProvinces">
+      <End Role="Provinces" EntitySet="Provinces" />
+      <End Role="tb_Store" EntitySet="tb_Store" />
+    </AssociationSet>
+    <AssociationSet Name="StoretoWards" Association="CUAHANGDIENTHOAI_newModel.StoretoWards">
+      <End Role="Wards" EntitySet="Wards" />
+      <End Role="tb_Store" EntitySet="tb_Store" />
+    </AssociationSet>
+    <AssociationSet Name="StafftoStore" Association="CUAHANGDIENTHOAI_newModel.StafftoStore">
+      <End Role="tb_Store" EntitySet="tb_Store" />
+      <End Role="tb_Staff" EntitySet="tb_Staff" />
+    </AssociationSet>
+    <AssociationSet Name="StoretoProvinces1" Association="CUAHANGDIENTHOAI_newModel.StoretoProvinces1">
+      <End Role="Provinces" EntitySet="Provinces" />
+      <End Role="tb_Store" EntitySet="tb_Store" />
+    </AssociationSet>
   </EntityContainer>
+  <Association Name="StoretoDistricts">
+    <End Type="CUAHANGDIENTHOAI_newModel.Districts" Role="Districts" Multiplicity="0..1" />
+    <End Type="CUAHANGDIENTHOAI_newModel.tb_Store" Role="tb_Store" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Districts">
+        <PropertyRef Name="idDistricts" />
+      </Principal>
+      <Dependent Role="tb_Store">
+        <PropertyRef Name="idDistricts" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StoretoProvinces">
+    <End Type="CUAHANGDIENTHOAI_newModel.Provinces" Role="Provinces" Multiplicity="0..1" />
+    <End Type="CUAHANGDIENTHOAI_newModel.tb_Store" Role="tb_Store" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Provinces">
+        <PropertyRef Name="idProvinces" />
+      </Principal>
+      <Dependent Role="tb_Store">
+        <PropertyRef Name="idDistricts" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StoretoWards">
+    <End Type="CUAHANGDIENTHOAI_newModel.Wards" Role="Wards" Multiplicity="0..1" />
+    <End Type="CUAHANGDIENTHOAI_newModel.tb_Store" Role="tb_Store" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Wards">
+        <PropertyRef Name="idWards" />
+      </Principal>
+      <Dependent Role="tb_Store">
+        <PropertyRef Name="idWards" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StafftoStore">
+    <End Type="CUAHANGDIENTHOAI_newModel.tb_Store" Role="tb_Store" Multiplicity="0..1" />
+    <End Type="CUAHANGDIENTHOAI_newModel.tb_Staff" Role="tb_Staff" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Store">
+        <PropertyRef Name="StoreId" />
+      </Principal>
+      <Dependent Role="tb_Staff">
+        <PropertyRef Name="FunctionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StoretoProvinces1">
+    <End Type="CUAHANGDIENTHOAI_newModel.Provinces" Role="Provinces" Multiplicity="0..1" />
+    <End Type="CUAHANGDIENTHOAI_newModel.tb_Store" Role="tb_Store" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Provinces">
+        <PropertyRef Name="idProvinces" />
+      </Principal>
+      <Dependent Role="tb_Store">
+        <PropertyRef Name="idProvinces" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

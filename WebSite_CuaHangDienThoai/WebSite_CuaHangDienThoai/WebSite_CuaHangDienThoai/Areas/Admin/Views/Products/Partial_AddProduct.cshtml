@@ -90,7 +90,10 @@
                         icon: "success",
                         title: "Thêm sản phẩm  thành công"
                     });
-                    location.href = "/admin/Products/index";
+                    setTimeout(function () {
+                        location.href = "/admin/Products/index";
+                    }, 5000); 
+                  
 
                 } else {
                 }
@@ -101,7 +104,7 @@
                         icon: "error",
                         title: "Không thể bỏ trống...",
                         text: "Vui lòng điền đầy đủ thông tin",
-                        footer: '<a href="#">Why do I have this issue?</a>'
+                        
                     });
 
                 }
@@ -110,7 +113,7 @@
                         icon: "warning",
                         title: "Sản phẩm đã tồn tại...",
                         text: "Cấu hình này đã có dữ liệu",
-                        footer: '<a href="#">Bạn có muốn cập nhật lại số lượng?</a>'
+                       
                     });
                 }
                 if (res.Code == -4) {
@@ -118,7 +121,7 @@
                         icon: "warning",
                         title: "Lỗi máy chủ...",
                         text: "Không tìm thấy dữ liệu nhân viên",
-                        footer: '<a href="#">Bạn có muốn cập nhật lại số lượng?</a>'
+                     
                     });
                 }
 
@@ -127,7 +130,7 @@
                         icon: "info",
                         title: "Lỗi hình ảnh...",
                         text: "Vui lòng chọn ảnh cho sản phẩm ",
-                        footer: '<a href="#">Why do I have this issue?</a>'
+                      
                     });
                 }
                 if (res.Code == -6) {
@@ -135,7 +138,7 @@
                         icon: "warning",
                         title: "Lỗi tìm...",
                         text: "Đơn hàng lập lại 2 lần ",
-                        footer: '<a href="#">Why do I have this issue?</a>'
+                      
                     });
                 }
             }

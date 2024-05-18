@@ -41,6 +41,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public System.DateTime ModifiedDate { get; set; }
         public Nullable<bool> Clock { get; set; }
         public Nullable<int> FunctionId { get; set; }
+        public Nullable<int> StoreId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_ExportWareHouse> tb_ExportWareHouse { get; set; }
@@ -49,5 +50,6 @@ namespace WebSite_CuaHangDienThoai.Models
         public virtual ICollection<tb_ImportWarehouse> tb_ImportWarehouse { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_Role> tb_Role { get; set; }
+        public virtual tb_Store tb_Store { get; set; }
     }
 }

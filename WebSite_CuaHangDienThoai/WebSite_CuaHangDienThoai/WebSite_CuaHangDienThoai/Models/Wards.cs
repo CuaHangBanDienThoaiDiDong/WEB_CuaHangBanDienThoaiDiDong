@@ -14,10 +14,18 @@ namespace WebSite_CuaHangDienThoai.Models
     
     public partial class Wards
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Wards()
+        {
+            this.tb_Store = new HashSet<tb_Store>();
+        }
+    
         public int idWards { get; set; }
         public string name { get; set; }
         public Nullable<int> idDistricts { get; set; }
     
         public virtual Districts Districts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_Store> tb_Store { get; set; }
     }
 }

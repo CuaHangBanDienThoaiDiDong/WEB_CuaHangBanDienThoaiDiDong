@@ -1,0 +1,295 @@
+﻿
+
+@model WebSite_CuaHangDienThoai.Models.Admin_TokenStore
+@using (Ajax.BeginForm("Add", "Products", new AjaxOptions
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "load_data",
+    OnSuccess = "OnSuccessCO",
+    OnFailure = "OnFailure",
+    OnBegin = "OnBeginCO"
+}, new { @Id = "myForm" }))
+{
+    <script>
+
+        function validateForm() {
+            var title = document.getElementById('Title').value.trim();
+            var productCategory = document.getElementById('ProductCategoryId').value.trim();
+            var productCompany = document.getElementById('ProductCompanyId').value.trim();
+            var heDieuHanh = document.getElementById('HeDieuHanh').value.trim();
+            var cpu = document.getElementById('CPU').value.trim();
+            var tocDoCPU = document.getElementById('TocDoCPU').value.trim();
+            var gpu = document.getElementById('GPU').value.trim();
+            var mangDiDong = document.getElementById('MangDiDong').value.trim();
+            var bluetooth = document.getElementById('Bluetooth').value.trim();
+            var sim = document.getElementById('SIM').value.trim();
+            var wifi = document.getElementById('Wifi').value.trim();
+            var gps = document.getElementById('GPS').value.trim();
+            var congKetNoi = document.getElementById('CongKetNoi').value.trim();
+            var jackTaiNghe = document.getElementById('JackTaiNghe').value.trim();
+            var loaiPin = document.getElementById('LoaiPin').value.trim();
+            var congNghePin = document.getElementById('CongNghePin').value.trim();
+            var hoTroSac = document.getElementById('HoTroSac').value.trim();
+
+            if (title === '' || heDieuHanh === '' || tocDoCPU === '' || mangDiDong === '' || sim === '' ||
+                wifi === '' || gps === '' || bluetooth === '' || congKetNoi === '' || jackTaiNghe === '' ||
+                loaiPin === '' || hoTroSac === '' || congNghePin === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi...',
+                    text: 'Vui lòng điền đầy đủ thông tin',
+                    footer: '<a href="#">Hệ thống quản lý LTD</a>'
+                });
+                return false;
+            }
+
+
+            var title = document.getElementById('Title').value.trim();
+            var titleError = document.getElementById('titleError');
+
+            if (!title) {
+                titleError.style.display = 'block'; // Hiển thị thông báo nếu ô input trống
+                return false;
+            } else {
+                titleError.style.display = 'none'; // Ẩn thông báo nếu ô input không trống
+            }
+
+
+
+
+
+
+            return true;
+        }
+
+
+
+        function OnBeginCO() {
+            $('#btnRegister').attr("disabled", "disabled");
+        }
+
+
+
+        function OnSuccessCO(res) {
+            if (res.Success) {
+                if (res.Code == 1) {
+
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "success",
+                        title: "Thêm sản phẩm  thành công",
+                        footer: '<a href="/admin/store/index">Về danh sách?</a>'
+                    });
+                    setTimeout(function () {
+                        location.href = "/admin/Store/index";
+                    }, 3000); 
+
+                } else {
+                }
+            }
+            else {
+                if (res.Code == -2) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Không thể bỏ trống...",
+                        text: "Vui lòng điền đầy đủ thông tin",
+                        footer: '<a href="#">Why do I have this issue?</a>'
+                    });
+
+                }
+                if (res.Code == -3) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Cửa hàng đã tồn tại ...",
+                        text: "Thay đổi lại địa chỉ",
+                        footer: '<a href="/admin/store/add">Bạn có muốn cập nhật lại địa chỉ?</a>'
+                    });
+                }
+                if (res.Code == -4) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi máy chủ...",
+                        text: "Không tìm thấy dữ liệu nhân viên",
+                        footer: '<a href="#">Bạn có muốn cập nhật lại số lượng?</a>'
+                    });
+                }
+
+                if (res.Code == -5) {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Lỗi hình ảnh...",
+                        text: "Vui lòng chọn ảnh cho sản phẩm ",
+                        footer: '<a href="#">Why do I have this issue?</a>'
+                    });
+                }
+                if (res.Code == -6) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi tìm...",
+                        text: "Đơn hàng lập lại 2 lần ",
+                        footer: '<a href="#">Why do I have this issue?</a>'
+                    });
+                }
+            }
+
+        }
+
+
+
+        $(document).ready(function () {
+            $("#ddlProvinces").change(function () {
+                var idProvinces = $(this).val();
+                $.getJSON('/admin/ProvincesVN/GetDistrictsByProvince', { idProvinces: idProvinces }, function (districts) {
+                    console.log("ok")
+                    var items = '<option value="">-Chọn danh mục Quận/Huyện-</option>';
+                    $.each(districts, function (i, district) {
+                        items += "<option value='" + district.idDistricts + "'>" + district.name + "</option>";
+                    });
+                    $("#ddlDistricts").html(items);
+                });
+            });
+
+            $("#ddlDistricts").change(function () {
+                var idDistricts = $(this).val();
+                $.getJSON('/admin/ProvincesVN/GetWardsByDistrict', { idDistricts: idDistricts }, function (wards) {
+                    var items = '<option value="">-Chọn danh mục Phường/Xã-</option>';
+                    $.each(wards, function (i, ward) {
+                        items += "<option value='" + ward.idWards + "'>" + ward.name + "</option>";
+                    });
+                    $("#ddlWards").html(items);
+                });
+            });
+        });
+
+
+
+    </script>
+    <style>
+        .error-message {
+            display: none;
+            color: red;
+        }
+    </style>
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Thông tin thêm mới Sản phẩm</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 ">
+                    @using (Html.BeginForm("Add", "Store", FormMethod.Post, new { }))
+                    {
+
+                        <div class="card">
+                            <div class="card-header p-2">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
+
+                                </ul>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="active tab-pane" id="activity">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Địa chỉ cửa hàng</label>
+
+                                            <input type="text" name="Location" id="Location" required class="form-control" autocomplete="off" placeholder="Địa chỉ cửa hàng..." />
+                                            <span id="titleError" class="error-message">Vui lòng nhập tên địa chỉ cửa hàng.</span>
+                                            @Html.ValidationMessageFor(x => x.Location, null, new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <label for="exampleInputEmail1">Danh mục Tỉnh/Thành phố</label>
+                                                    @Html.DropDownListFor(x => x.idProvinces, ViewBag.Provinces as SelectList, "-Chọn danh mục Tỉnh/Thành phố-", new { @class = "form-control", @id = "ddlProvinces" })
+                                                    @Html.ValidationMessageFor(x => x.idProvinces, null, new { @class = "text-danger" })
+                                                </div>
+                                                <div class="col-4">
+                                                    <label for="exampleInputEmail1">Danh mục Quận/Huyện</label>
+                                                    @Html.DropDownListFor(x => x.idDistricts, new SelectList(Enumerable.Empty<SelectListItem>()), "-Chọn danh mục Quận/Huyện-", new { @class = "form-control", @id = "ddlDistricts" })
+                                                    @Html.ValidationMessageFor(x => x.idDistricts, null, new { @class = "text-danger" })
+                                                </div>
+                                                <div class="col-4">
+                                                    <label for="exampleInputEmail1">Danh mục Phường/Xã</label>
+                                                    @Html.DropDownListFor(x => x.idWards, new SelectList(Enumerable.Empty<SelectListItem>()), "-Chọn danh mục Phường/Xã-", new { @class = "form-control", @id = "ddlWards" })
+                                                    @Html.ValidationMessageFor(x => x.idWards, null, new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="form-group">
+
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(x => x.isStatus, new { @class = "custom-control-input", @id = "customCheckbox2" })
+                                                        <label for="customCheckbox2" class="custom-control-label">Hiển thị</label>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                        <!-- /.tab-pane -->
+                                        <!-- /.tab-pane infor -->
+                                        <!-- /.tab-pane -->
+                                    </div>
+                                    <!-- /.tab-content -->
+                                </div><!-- /.card-body -->
+                                <div class="row">
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-8 text-center">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-success btn-block">Thêm mới</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                            </div>
+
+
+                        </div> <!-- /.card -->
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+
+
+
+
+
+
+}
+
+
+
+@section scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+
+       
+    </script>
+}

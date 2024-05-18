@@ -309,6 +309,7 @@
     <EntitySetMapping Name="tb_Staff">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_Staff">
         <MappingFragment StoreEntitySet="tb_Staff">
+          <ScalarProperty Name="StoreId" ColumnName="StoreId" />
           <ScalarProperty Name="StaffId" ColumnName="StaffId" />
           <ScalarProperty Name="Code" ColumnName="Code" />
           <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
@@ -334,6 +335,9 @@
     <EntitySetMapping Name="tb_Store">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_Store">
         <MappingFragment StoreEntitySet="tb_Store">
+          <ScalarProperty Name="idWards" ColumnName="idWards" />
+          <ScalarProperty Name="idDistricts" ColumnName="idDistricts" />
+          <ScalarProperty Name="idProvinces" ColumnName="idProvinces" />
           <ScalarProperty Name="StoreId" ColumnName="StoreId" />
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />

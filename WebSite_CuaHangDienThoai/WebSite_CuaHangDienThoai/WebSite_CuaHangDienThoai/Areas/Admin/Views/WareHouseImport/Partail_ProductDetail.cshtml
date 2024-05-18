@@ -1,0 +1,106 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Danh sách sản phẩm</h2>
+        <div class="card-tools">
+            <input type="text" />
+            <a href="/admin/WareHouseImport/add" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clipboard2-plus" viewBox="0 0 16 16">
+                    <path d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5z" />
+                    <path d="M3 2.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 0 0-1h-.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1H12a.5.5 0 0 0 0 1h.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5z" />
+                    <path d="M8.5 6.5a.5.5 0 0 0-1 0V8H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V9H10a.5.5 0 0 0 0-1H8.5z" />
+                </svg>
+                Tạo phiếu nhập
+            </a>
+            <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
+        </div>
+    </div>
+    <div class="card-body loadListProductDetail">
+        @if (Model.Any() && Model != null)
+        {
+            <div style="overflow-x:auto;">
+                <!-- Bảng chứa thead -->
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="text-center">
+                            <th><input type="checkbox" id="SelectAll" /></th>
+                            <th>STT</th>
+                            <th>Hình ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Màu</th>
+                            <th>Loại sản phẩm</th>
+                            <th>Hãng</th>
+                            <th>Dung lượng</th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <!-- Div chứa tbody với cuộn dọc -->
+                <div style="max-height: 600px; overflow-y: auto;">
+                    <table class="table table-hover">
+                        <tbody>
+                            @if (Model.Any())
+                            {
+                                var i = 1;
+                                foreach (var item in Model)
+                                {
+                                    byte[] strImg = null;
+                                    var CheckImage = item.tb_Products.tb_ProductImage.SingleOrDefault(x => x.IsDefault == true);
+
+                                    if (CheckImage != null)
+                                    {
+                                        strImg = CheckImage.Image;
+                                    }
+
+                                    string imgSrc = "";
+                                    if (strImg != null && strImg.Length > 0)
+                                    {
+                                        string base64String = Convert.ToBase64String(strImg);
+                                        imgSrc = $"data:image;base64,{base64String}";
+                                    }
+
+                                    <tr class="text-center opacity-100 " id="trow_@item.ProductsId">
+                                        <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
+                                        <td>@i</td>
+                                        <td>
+                                            <img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" />
+                                        </td>
+                                        <td><a href="/admin/Products/Detail/@item.ProductsId" style="color:black"> @item.tb_Products.Title</a></td>
+                                        <td>@item.Color</td>
+                                        <td>@item.tb_Products.tb_ProductCategory.Title</td>
+                                        <td>@item.tb_Products.tb_ProductCompany.Title</td>
+                                        <td>@item.Capacity</td>
+                                    </tr>
+
+                                    i++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="8">Không có bản ghi nào!!!</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <p class="text-danger">Không tìm thấy bảng ghi nào !!!</p>
+        }
+    </div>
+
+    <div class="card-footer">
+        <button class="btn btn-success addListPhieuNhap">
+            Thêm vào phiếu
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-plus" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7" />
+                <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z" />
+                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z" />
+            </svg>
+        </button>
+    </div>
+</div>

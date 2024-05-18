@@ -18,6 +18,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public Districts()
         {
             this.Wards = new HashSet<Wards>();
+            this.tb_Store = new HashSet<tb_Store>();
         }
     
         public int idDistricts { get; set; }
@@ -27,5 +28,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public virtual Provinces Provinces { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Wards> Wards { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_Store> tb_Store { get; set; }
     }
 }
