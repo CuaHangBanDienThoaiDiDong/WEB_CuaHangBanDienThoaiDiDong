@@ -15,6 +15,16 @@
     <Property Name="idProvinces" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="name" Type="nvarchar" MaxLength="255" />
   </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
   <EntityType Name="tb_Cart">
     <Key>
       <PropertyRef Name="CartId" />
@@ -85,9 +95,17 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="Modifeby" Type="nvarchar(max)" />
     <Property Name="StaffId" Type="int" />
+    <Property Name="WarehouseId" Type="int" />
+    <Property Name="SupplierId" Type="int" />
+  </EntityType>
+  <EntityType Name="tb_ImportWarehouseDetail">
+    <Key>
+      <PropertyRef Name="ImportWarehouseDetailId" />
+    </Key>
+    <Property Name="ImportWarehouseDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ProductDetailId" Type="int" />
     <Property Name="QuanTity" Type="int" />
-    <Property Name="WarehouseId" Type="int" />
+    <Property Name="ImportWarehouseId" Type="int" />
   </EntityType>
   <EntityType Name="tb_Order">
     <Key>
@@ -328,6 +346,15 @@
     <Property Name="idDistricts" Type="int" />
     <Property Name="idWards" Type="int" />
   </EntityType>
+  <EntityType Name="tb_Supplier">
+    <Key>
+      <PropertyRef Name="SupplierId" />
+    </Key>
+    <Property Name="SupplierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="500" />
+    <Property Name="Phone" Type="int" />
+    <Property Name="Location" Type="nvarchar" MaxLength="500" />
+  </EntityType>
   <EntityType Name="tb_Voucher">
     <Key>
       <PropertyRef Name="VoucherId" />
@@ -460,15 +487,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="ImportWarehouseToProductDetail">
-    <End Role="tb_ProductDetail" Type="Self.tb_ProductDetail" Multiplicity="0..1" />
-    <End Role="tb_ImportWarehouse" Type="Self.tb_ImportWarehouse" Multiplicity="*" />
+  <Association Name="ImportWarehouseDetailToImportWarehouse">
+    <End Role="tb_ImportWarehouse" Type="Self.tb_ImportWarehouse" Multiplicity="0..1" />
+    <End Role="tb_ImportWarehouseDetail" Type="Self.tb_ImportWarehouseDetail" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="tb_ProductDetail">
-        <PropertyRef Name="ProductDetailId" />
+      <Principal Role="tb_ImportWarehouse">
+        <PropertyRef Name="ImportWarehouseId" />
       </Principal>
-      <Dependent Role="tb_ImportWarehouse">
-        <PropertyRef Name="ProductDetailId" />
+      <Dependent Role="tb_ImportWarehouseDetail">
+        <PropertyRef Name="ImportWarehouseId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -481,6 +508,18 @@
       </Principal>
       <Dependent Role="tb_ImportWarehouse">
         <PropertyRef Name="StaffId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ImportWarehouseToSupplier">
+    <End Role="tb_Supplier" Type="Self.tb_Supplier" Multiplicity="0..1" />
+    <End Role="tb_ImportWarehouse" Type="Self.tb_ImportWarehouse" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Supplier">
+        <PropertyRef Name="SupplierId" />
+      </Principal>
+      <Dependent Role="tb_ImportWarehouse">
+        <PropertyRef Name="SupplierId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -787,12 +826,14 @@
   <EntityContainer Name="CUAHANGDIENTHOAI_newModelStoreContainer">
     <EntitySet Name="Districts" EntityType="Self.Districts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Provinces" EntityType="Self.Provinces" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Cart" EntityType="Self.tb_Cart" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_CartItem" EntityType="Self.tb_CartItem" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Customer" EntityType="Self.tb_Customer" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_ExportWareHouse" EntityType="Self.tb_ExportWareHouse" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Function" EntityType="Self.tb_Function" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_ImportWarehouse" EntityType="Self.tb_ImportWarehouse" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_ImportWarehouseDetail" EntityType="Self.tb_ImportWarehouseDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Order" EntityType="Self.tb_Order" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_OrderDetail" EntityType="Self.tb_OrderDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_ProductCategory" EntityType="Self.tb_ProductCategory" Schema="dbo" store:Type="Tables" />
@@ -808,6 +849,7 @@
     <EntitySet Name="tb_Role" EntityType="Self.tb_Role" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Staff" EntityType="Self.tb_Staff" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Store" EntityType="Self.tb_Store" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_Supplier" EntityType="Self.tb_Supplier" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Voucher" EntityType="Self.tb_Voucher" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Warehouse" EntityType="Self.tb_Warehouse" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Wards" EntityType="Self.Wards" Schema="dbo" store:Type="Tables" />
@@ -843,12 +885,16 @@
       <End Role="tb_Customer" EntitySet="tb_Customer" />
       <End Role="tb_Cart" EntitySet="tb_Cart" />
     </AssociationSet>
-    <AssociationSet Name="ImportWarehouseToProductDetail" Association="Self.ImportWarehouseToProductDetail">
-      <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
+    <AssociationSet Name="ImportWarehouseDetailToImportWarehouse" Association="Self.ImportWarehouseDetailToImportWarehouse">
       <End Role="tb_ImportWarehouse" EntitySet="tb_ImportWarehouse" />
+      <End Role="tb_ImportWarehouseDetail" EntitySet="tb_ImportWarehouseDetail" />
     </AssociationSet>
     <AssociationSet Name="ImportWarehouseToStaff" Association="Self.ImportWarehouseToStaff">
       <End Role="tb_Staff" EntitySet="tb_Staff" />
+      <End Role="tb_ImportWarehouse" EntitySet="tb_ImportWarehouse" />
+    </AssociationSet>
+    <AssociationSet Name="ImportWarehouseToSupplier" Association="Self.ImportWarehouseToSupplier">
+      <End Role="tb_Supplier" EntitySet="tb_Supplier" />
       <End Role="tb_ImportWarehouse" EntitySet="tb_ImportWarehouse" />
     </AssociationSet>
     <AssociationSet Name="ImportWarehousetoWarehouse" Association="Self.ImportWarehousetoWarehouse">

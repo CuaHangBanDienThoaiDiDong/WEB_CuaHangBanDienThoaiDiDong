@@ -1,0 +1,23 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Supplier
+<p>Thũzn</p>
+
+
+
+@*@if (Model != null)
+{
+    <div class="card-header">
+        <div class="card-title">
+            <p>@Model.Name</p>
+        </div>
+    </div>
+    <div class="card-body">
+        <span><b>Mã:</b> <span>00 @Model.SupplierId</span> <b>Tên:</b> <span>@Model.Name</span></span>
+        <span><b>Địa chỉ:</b> @Model.Location</span>
+        <span><b>Điện thoại:</b> @Model.Phone</span>
+    </div>
+}
+else
+{
+    <p class="text-danger">Không tồn tại bảng ghi nào !!!</p>
+}*@
+

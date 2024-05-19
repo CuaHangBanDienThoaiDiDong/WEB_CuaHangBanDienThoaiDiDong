@@ -42,13 +42,46 @@
 
 
 <section class="content">
-   <div class="row">
-       <div class="col-6">
-           @Html.Action("Partail_ProductDetail", "WareHouseImport")
-       </div>
-       <div class="col-6">
+    <div class="row">
+        <div class="col-6">
+            @Html.Action("Partail_ProductDetail", "WareHouseImport")
+        </div>
+        <div class="col-6 ">
 
-       </div>
-   </div>
+
+            @Html.Action("Partail_PhieuNhapKho", "WareHouseImport")
+        </div>
+    </div>
 
 </section>
+@section  scripts{
+    <script>
+        $(document).ready(function () {
+            // Khi thay đổi giá trị của dropdown list nhà cung cấp
+            $("#listSupplier").change(function () {
+                // Lấy ID của nhà cung cấp được chọn
+                var idSupplier = $(this).val();
+
+                // Gửi yêu cầu AJAX đến action Partial_Supplier trong controller WareHouseImportController
+                $.ajax({
+                    url: '/WareHouseImport/Partial_Supplier', // Đường dẫn đến action trong controller
+                    type: 'GET', 
+                    data: { id: idSupplier }, 
+                    success: function (response) {
+                        
+                        $('#load_data_Supplier').html(response);
+                    },
+                    error: function (xhr, status, error) {
+                        // Xử lý lỗi nếu có
+                        console.error("Error: " + status + " - " + error);
+                        console.error(xhr.responseText);
+                        // Hiển thị thông báo lỗi cho người dùng
+                        alert('Đã xảy ra lỗi khi tải thông tin nhà cung cấp: ' + xhr.responseText);
+                    }
+                });
+            });
+        });
+
+       
+    </script>
+    }

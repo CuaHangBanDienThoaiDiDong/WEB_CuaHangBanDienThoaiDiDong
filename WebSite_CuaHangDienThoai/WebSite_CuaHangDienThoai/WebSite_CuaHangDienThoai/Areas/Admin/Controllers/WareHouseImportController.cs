@@ -46,8 +46,103 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
         public ActionResult Partail_ProductDetail()
         {
-            var item=db.tb_ProductDetail.ToList();
-            return View(item);  
+            var item = db.tb_ProductDetail.ToList();
+            return View(item);
+        }
+
+        public ActionResult Partail_PhieuNhapKho()
+        {
+
+            ViewBag.Supplier = new SelectList(db.tb_Supplier.ToList(), "SupplierId", "name");
+            return PartialView();
+        }
+
+        public ActionResult Partail_ListProduct() 
+        {
+            ImportWareHouse cart = (ImportWareHouse)Session["ImportWareHouse"];
+            if (cart != null && cart.Items.Any())
+            {
+                int count = cart.Items.Count;
+                ViewBag.Count = count;
+                return PartialView(cart.Items);
+            }
+            return PartialView();
+        }
+
+
+        public ActionResult Partial_Supplier(int id)
+        {
+            var item = db.tb_Supplier.Find(id);
+            if (item != null)
+            {
+                return PartialView("_SupplierDetails", item);
+            }
+            return PartialView("_SupplierDetails");
+        }
+
+        [HttpPost]
+        public ActionResult AddListProduct(int id, int soluong)
+        {
+            var code = new { Success = false, Code = -1, Count = 0 };
+            var checkSanPham = db.tb_ProductDetail.FirstOrDefault(row => row.ProductDetailId  == id);
+            if (checkSanPham != null)
+            {
+
+                if (checkSanPham !=null)
+                {
+                    ImportWareHouse cart = (ImportWareHouse)Session["ImportWareHouse"];
+                    if (cart == null)
+                    {
+                        cart = new ImportWareHouse();
+                    }
+                    ImportWareHouseItem item = new ImportWareHouseItem
+                    {
+                        ProductDetailId = checkSanPham.ProductDetailId,
+                        ProductName = checkSanPham.tb_Products.Title,
+                        Category = checkSanPham.tb_Products.tb_ProductCategory.Title,
+                        Capacity=(int)checkSanPham.Capacity,
+                        Color=checkSanPham.Color,
+                        Company=checkSanPham.tb_Products.tb_ProductCompany.Title,
+                        
+                        SoLuong = 0,
+                    };
+                    if (checkSanPham.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault) != null)
+                    {
+                        item.ProductDetailImg = checkSanPham.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault).Image;
+                    }
+                
+
+                    //checkSanPham.Quantity = -soluong;
+                    cart.AddToCart(item, soluong);
+                    Session["ImportWareHouse"] = cart;
+                    code = new { Success = true, Code = 1, Count = cart.Items.Count };
+
+                }
+                else
+                {
+                    code = new { Success = false, Code = -1, Count = 0 };//Số Lượng Không Đủ
+                }
+
+            }
+            return Json(code);
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            var code = new { Success = false, Code = -1, Count = 0 };
+
+            ImportWareHouse cart = (ImportWareHouse)Session["ImportWareHouse"];
+            if (cart != null)
+            {
+                var checkProduct = cart.Items.FirstOrDefault(x => x.ProductDetailId == id);
+                if (checkProduct != null)
+                {
+                    cart.Remove(id);
+                    code = new { Success = true, Code = 1, Count = cart.Items.Count };
+                }
+            }
+            return Json(code);
         }
 
 
@@ -55,13 +150,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
-
-
-
-
-
         public ActionResult Partial_QuantityProductDtail(int id) {
-            var item = db.tb_ImportWarehouse.FirstOrDefault(x => x.ProductDetailId == id);
+            var item = db.tb_ImportWarehouseDetail.FirstOrDefault(x => x.ProductDetailId == id);
             if (item != null) 
             {
                 ViewBag.Quantity = item.QuanTity;

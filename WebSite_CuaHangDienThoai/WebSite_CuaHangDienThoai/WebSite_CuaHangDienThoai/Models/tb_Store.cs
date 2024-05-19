@@ -17,8 +17,8 @@ namespace WebSite_CuaHangDienThoai.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tb_Store()
         {
-            this.tb_Warehouse = new HashSet<tb_Warehouse>();
             this.tb_Staff = new HashSet<tb_Staff>();
+            this.tb_Warehouse = new HashSet<tb_Warehouse>();
         }
     
         public int StoreId { get; set; }
@@ -35,13 +35,12 @@ namespace WebSite_CuaHangDienThoai.Models
         public Nullable<int> idDistricts { get; set; }
         public Nullable<int> idWards { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tb_Warehouse> tb_Warehouse { get; set; }
         public virtual Districts Districts { get; set; }
         public virtual Provinces Provinces { get; set; }
-        public virtual Wards Wards { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_Staff> tb_Staff { get; set; }
-        public virtual Provinces Provinces1 { get; set; }
+        public virtual Wards Wards { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_Warehouse> tb_Warehouse { get; set; }
     }
 }

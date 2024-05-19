@@ -18,7 +18,6 @@ namespace WebSite_CuaHangDienThoai.Models
         public tb_ProductDetail()
         {
             this.tb_CartItem = new HashSet<tb_CartItem>();
-            this.tb_ImportWarehouse = new HashSet<tb_ImportWarehouse>();
             this.tb_OrderDetail = new HashSet<tb_OrderDetail>();
             this.tb_ProductDetailImage = new HashSet<tb_ProductDetailImage>();
             this.tb_Review = new HashSet<tb_Review>();
@@ -38,8 +37,6 @@ namespace WebSite_CuaHangDienThoai.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_CartItem> tb_CartItem { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tb_ImportWarehouse> tb_ImportWarehouse { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_OrderDetail> tb_OrderDetail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

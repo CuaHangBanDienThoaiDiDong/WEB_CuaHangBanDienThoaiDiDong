@@ -7,11 +7,16 @@ namespace WebSite_CuaHangDienThoai.Models
 {
     public class Admin_TokenImportWareHouse
     {
+        public int NhaCungCap { get;set; }
 
-
+       
 
         public int ProductDetailId { get; set; }
         public int Quantity { get; set; }
+
+
+         public int Supplierid { get; set; }
+
 
 
     }

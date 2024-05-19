@@ -19,7 +19,6 @@ namespace WebSite_CuaHangDienThoai.Models
         {
             this.Districts = new HashSet<Districts>();
             this.tb_Store = new HashSet<tb_Store>();
-            this.tb_Store1 = new HashSet<tb_Store>();
         }
     
         public int idProvinces { get; set; }
@@ -29,7 +28,5 @@ namespace WebSite_CuaHangDienThoai.Models
         public virtual ICollection<Districts> Districts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_Store> tb_Store { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tb_Store> tb_Store1 { get; set; }
     }
 }

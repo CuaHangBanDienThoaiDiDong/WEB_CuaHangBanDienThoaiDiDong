@@ -160,18 +160,9 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 ViewBag.SelectedProvince = item.idProvinces;
                 ViewBag.SelectedDistrict = item.idDistricts;
                 ViewBag.SelectedWard = item.idWards;
-
-                // Load danh sách tỉnh/thành phố
                 ViewBag.Provinces = new SelectList(db.Provinces.ToList(), "idProvinces", "name");
-
-                // Load danh sách quận/huyện dựa trên tỉnh/thành phố đã chọn
                 ViewBag.Districts = new SelectList(db.Districts.Where(d => d.idProvinces == item.idProvinces).ToList(), "idDistricts", "name");
-
-                // Load danh sách phường/xã dựa trên quận/huyện đã chọn
                 ViewBag.Wards = new SelectList(db.Wards.Where(w => w.idDistricts == item.idDistricts).ToList(), "idWards", "name");
-
-
-
 
                 if (item == null)
                 {

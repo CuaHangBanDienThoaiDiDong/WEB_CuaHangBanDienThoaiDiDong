@@ -27,12 +27,14 @@ namespace WebSite_CuaHangDienThoai.Models
     
         public virtual DbSet<Districts> Districts { get; set; }
         public virtual DbSet<Provinces> Provinces { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<tb_Cart> tb_Cart { get; set; }
         public virtual DbSet<tb_CartItem> tb_CartItem { get; set; }
         public virtual DbSet<tb_Customer> tb_Customer { get; set; }
         public virtual DbSet<tb_ExportWareHouse> tb_ExportWareHouse { get; set; }
         public virtual DbSet<tb_Function> tb_Function { get; set; }
         public virtual DbSet<tb_ImportWarehouse> tb_ImportWarehouse { get; set; }
+        public virtual DbSet<tb_ImportWarehouseDetail> tb_ImportWarehouseDetail { get; set; }
         public virtual DbSet<tb_Order> tb_Order { get; set; }
         public virtual DbSet<tb_OrderDetail> tb_OrderDetail { get; set; }
         public virtual DbSet<tb_ProductCategory> tb_ProductCategory { get; set; }
@@ -48,6 +50,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public virtual DbSet<tb_Role> tb_Role { get; set; }
         public virtual DbSet<tb_Staff> tb_Staff { get; set; }
         public virtual DbSet<tb_Store> tb_Store { get; set; }
+        public virtual DbSet<tb_Supplier> tb_Supplier { get; set; }
         public virtual DbSet<tb_Voucher> tb_Voucher { get; set; }
         public virtual DbSet<tb_Warehouse> tb_Warehouse { get; set; }
         public virtual DbSet<Wards> Wards { get; set; }

@@ -1,0 +1,160 @@
+﻿@model WebSite_CuaHangDienThoai.Models.Admin_TokenImportWareHouse
+@using (Ajax.BeginForm("Add", "WareHouseImport", new AjaxOptions
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "load_data",
+    OnSuccess = "OnSuccessCO",
+    OnFailure = "OnFailure",
+    OnBegin = "OnBeginCO"
+}, new { @id = "myForm" }))
+{
+    <script>
+        function validateForm() {
+            var title = document.getElementById('Title').value.trim();
+            var productCategory = document.getElementById('ProductCategoryId').value.trim();
+            var productCompany = document.getElementById('ProductCompanyId').value.trim();
+            var heDieuHanh = document.getElementById('HeDieuHanh').value.trim();
+            var cpu = document.getElementById('CPU').value.trim();
+            var tocDoCPU = document.getElementById('TocDoCPU').value.trim();
+            var gpu = document.getElementById('GPU').value.trim();
+            var mangDiDong = document.getElementById('MangDiDong').value.trim();
+            var bluetooth = document.getElementById('Bluetooth').value.trim();
+            var sim = document.getElementById('SIM').value.trim();
+            var wifi = document.getElementById('Wifi').value.trim();
+            var gps = document.getElementById('GPS').value.trim();
+            var congKetNoi = document.getElementById('CongKetNoi').value.trim();
+            var jackTaiNghe = document.getElementById('JackTaiNghe').value.trim();
+            var loaiPin = document.getElementById('LoaiPin').value.trim();
+            var congNghePin = document.getElementById('CongNghePin').value.trim();
+            var hoTroSac = document.getElementById('HoTroSac').value.trim();
+
+            if (title === '' || heDieuHanh === '' || tocDoCPU === '' || mangDiDong === '' || sim === '' ||
+                wifi === '' || gps === '' || bluetooth === '' || congKetNoi === '' || jackTaiNghe === '' ||
+                loaiPin === '' || hoTroSac === '' || congNghePin === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi...',
+                    text: 'Vui lòng điền đầy đủ thông tin',
+                    footer: '<a href="#">Hệ thống quản lý LTD</a>'
+                });
+                return false;
+            }
+
+            var titleError = document.getElementById('titleError');
+            if (!title) {
+                titleError.style.display = 'block'; // Hiển thị thông báo nếu ô input trống
+                return false;
+            } else {
+                titleError.style.display = 'none'; // Ẩn thông báo nếu ô input không trống
+            }
+
+            return true;
+        }
+
+        function OnBeginCO() {
+            $('#btnRegister').attr("disabled", "disabled");
+        }
+
+        function OnSuccessCO(res) {
+            if (res.Success) {
+                if (res.Code == 1) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "success",
+                        title: "Thêm sản phẩm thành công"
+                    });
+                    setTimeout(function () {
+                        location.href = "/admin/Products/index";
+                    }, 5000);
+                } else {
+                }
+            }
+            else {
+                if (res.Code == -2) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Không thể bỏ trống...",
+                        text: "Vui lòng điền đầy đủ thông tin",
+                    });
+                }
+                if (res.Code == -3) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Sản phẩm đã tồn tại...",
+                        text: "Cấu hình này đã có dữ liệu",
+                    });
+                }
+                if (res.Code == -4) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi máy chủ...",
+                        text: "Không tìm thấy dữ liệu nhân viên",
+                    });
+                }
+                if (res.Code == -5) {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Lỗi hình ảnh...",
+                        text: "Vui lòng chọn ảnh cho sản phẩm ",
+                    });
+                }
+                if (res.Code == -6) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi tìm...",
+                        text: "Đơn hàng lặp lại 2 lần ",
+                    });
+                }
+            }
+        }
+    </script>
+    <style>
+        .error-message {
+            display: none;
+            color: red;
+        }
+    </style>
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="card">
+        <div class="card-header">
+            @using (Html.BeginForm("Add", "WareHouseImport", FormMethod.Post, new { }))
+            {
+                <div class="card-title">
+                    Thông tin nhập kho  <label for="exampleInputEmail1">Danh sách nhà cung cấp</label>
+                    @Html.DropDownListFor(x => x.Supplierid, ViewBag.Supplier as SelectList, "-Danh sách nhà cung cấp-", new { @class = "form-control", @placeholder = "Mã sản phẩm", @id = "listSupplier" })
+                    @Html.ValidationMessageFor(x => x.Supplierid, null, new { @class = "text-danger" })
+                </div>
+                <br>
+                <br>
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div id="load_data_Supplier">
+                                <!-- Nội dung nhà cung cấp sẽ được tải vào đây -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="card-body" id="load_data">
+            <button class="btn btn-success addListPhieuNhap">
+                Lưu kho
+            </button>
+        </div>
+    </div>
+}

@@ -14,18 +14,25 @@ namespace WebSite_CuaHangDienThoai.Models
     
     public partial class tb_ImportWarehouse
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public tb_ImportWarehouse()
+        {
+            this.tb_ImportWarehouseDetail = new HashSet<tb_ImportWarehouseDetail>();
+        }
+    
         public int ImportWarehouseId { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string Modifeby { get; set; }
         public Nullable<int> StaffId { get; set; }
-        public Nullable<int> ProductDetailId { get; set; }
-        public Nullable<int> QuanTity { get; set; }
         public Nullable<int> WarehouseId { get; set; }
+        public Nullable<int> SupplierId { get; set; }
     
-        public virtual tb_ProductDetail tb_ProductDetail { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_ImportWarehouseDetail> tb_ImportWarehouseDetail { get; set; }
         public virtual tb_Staff tb_Staff { get; set; }
+        public virtual tb_Supplier tb_Supplier { get; set; }
         public virtual tb_Warehouse tb_Warehouse { get; set; }
     }
 }
