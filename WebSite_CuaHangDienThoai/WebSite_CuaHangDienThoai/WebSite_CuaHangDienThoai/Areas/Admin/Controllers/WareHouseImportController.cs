@@ -12,7 +12,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
     public class WareHouseImportController : Controller
     {
         // GET: Admin/WareHouseImport
-        CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
+        2CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
         public ActionResult Index(int? page)
         {
 
@@ -69,7 +69,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             return PartialView();
         }
 
-
+      
         public ActionResult Partial_Supplier(int id)
         {
             var item = db.tb_Supplier.Find(id);
@@ -79,6 +79,10 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             return PartialView("_SupplierDetails");
         }
+
+
+     
+       
 
         [HttpPost]
         public ActionResult AddListProduct(int id, int soluong)
@@ -104,7 +108,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                         Color=checkSanPham.Color,
                         Company=checkSanPham.tb_Products.tb_ProductCompany.Title,
                         
-                        SoLuong = 0,
+                        Quantity = 0,
                     };
                     if (checkSanPham.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault) != null)
                     {
@@ -125,6 +129,18 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
             }
             return Json(code);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateQuanTity(int id, int quantity)
+        {
+            ImportWareHouse cart = (ImportWareHouse)Session["ImportWareHouse"];
+            if (cart != null && cart.Items.Any())
+            {
+                cart.UpQuantity(id, quantity);
+                return Json(new { Success = true });
+            }
+            return Json(new { Success = false });
         }
 
         [HttpPost]
@@ -173,6 +189,94 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 return View();
             }
                 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Add(Admin_TokenImportWareHouse req) 
+        {
+           tb_Staff nvSession = (tb_Staff)Session["user"];
+            var code = new { Success = false, Code = -1, Url = "" };
+            if (nvSession.NameStaff != null)
+            {
+                if (req.Supplierid > 0) 
+                {
+                    ImportWareHouse cart = (ImportWareHouse)Session["ImportWareHouse"];
+                    if (cart != null)
+                    {
+                        var checkWareHouse = db.tb_Warehouse.SingleOrDefault(x => x.StoreId == nvSession.StoreId);
+                        if (checkWareHouse != null) 
+                        {
+                            foreach (var item in cart.Items)
+                            {
+                                if (item.Quantity > 0)
+                                {
+                                    var checkQuantityPro = db.tb_ImportWarehouseDetail.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId && x.tb_ImportWarehouse.tb_Warehouse.WarehouseId == checkWareHouse.WarehouseId);
+                                    if (checkQuantityPro != null)
+                                    {
+                                        checkQuantityPro.QuanTity += item.Quantity;
+
+
+                                        db.Entry(checkQuantityPro).State = System.Data.Entity.EntityState.Modified;
+
+                                    }
+
+                                }
+                                else
+                                {
+                                    code = new { Success = false, Code = -5, Url = "" };//Khoong nha cung cap
+                                    return Json(code);
+                                }
+
+                            }
+                            //var checkWareHouse = db.tb_Store.FirstOrDefault(x => x.StoreId == nvSession.StoreId);
+
+
+                            tb_ImportWarehouse ImportWarehouse = new tb_ImportWarehouse();
+                            ImportWarehouse.SupplierId = req.Supplierid;
+                            ImportWarehouse.CreatedBy = nvSession.NameStaff;
+                            ImportWarehouse.CreateDate = DateTime.Now;
+                            ImportWarehouse.WarehouseId = checkWareHouse.WarehouseId;
+
+
+                            cart.Items.ForEach(x => ImportWarehouse.tb_ImportWarehouseDetail.Add(new tb_ImportWarehouseDetail
+                            {
+                                ProductDetailId = x.ProductDetailId,
+                                QuanTity = x.Quantity,
+
+                            }));
+
+                            db.tb_ImportWarehouse.Add(ImportWarehouse);
+                            db.SaveChanges();
+
+
+                            cart.ClearImport();
+                            code = new { Success = true, Code = 1, Url = "" };//Xuất hóa đơn thành công
+                        } 
+                        else
+                        {
+                            code = new { Success = false, Code = -6, Url = "" }; // Không tồn tại kho
+
+                        }
+                       
+
+                    }
+                    else
+                    {
+                        code = new { Success = false, Code = -3, Url = "" }; // Không có sản phẩm
+                    }
+                } 
+                else
+                {
+                    code = new { Success = false, Code = -4, Url = "" };//Khoong nha cung cap
+                }
+                
+            }
+            else
+            {
+                code = new { Success = false, Code = -2, Url = "" }; // Lỗi không tìm thấy nhân viên
+            }
+            return Json(code);
+
         }
 
 

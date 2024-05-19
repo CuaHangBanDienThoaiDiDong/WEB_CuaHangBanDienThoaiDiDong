@@ -499,6 +499,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="ImportWarehouseDetailToProductdtail">
+    <End Role="tb_ProductDetail" Type="Self.tb_ProductDetail" Multiplicity="0..1" />
+    <End Role="tb_ImportWarehouseDetail" Type="Self.tb_ImportWarehouseDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_ProductDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Principal>
+      <Dependent Role="tb_ImportWarehouseDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="ImportWarehouseToStaff">
     <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="0..1" />
     <End Role="tb_ImportWarehouse" Type="Self.tb_ImportWarehouse" Multiplicity="*" />
@@ -887,6 +899,10 @@
     </AssociationSet>
     <AssociationSet Name="ImportWarehouseDetailToImportWarehouse" Association="Self.ImportWarehouseDetailToImportWarehouse">
       <End Role="tb_ImportWarehouse" EntitySet="tb_ImportWarehouse" />
+      <End Role="tb_ImportWarehouseDetail" EntitySet="tb_ImportWarehouseDetail" />
+    </AssociationSet>
+    <AssociationSet Name="ImportWarehouseDetailToProductdtail" Association="Self.ImportWarehouseDetailToProductdtail">
+      <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
       <End Role="tb_ImportWarehouseDetail" EntitySet="tb_ImportWarehouseDetail" />
     </AssociationSet>
     <AssociationSet Name="ImportWarehouseToStaff" Association="Self.ImportWarehouseToStaff">

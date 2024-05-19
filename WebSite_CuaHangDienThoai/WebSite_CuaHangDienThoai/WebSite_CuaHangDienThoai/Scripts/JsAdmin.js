@@ -85,6 +85,83 @@
         });
 
     });
+
+
+    $('body').on('input', '.Quantity', function (e) {
+        var productId = $(this).attr('id');
+        var newQuantity = $(this).val();
+       
+        if (newQuantity <= 0) {
+            Swal.fire({
+                title: "Ban có muốn bỏ sản phẩm này",
+                text: "",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Đồng ý"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/admin/WareHouseImports/Delete',
+                        type: 'POST',
+                        data: { id: productId },
+                        success: function (rs) {
+                            if (rs.Success) {
+                                if (rs.Code == 1) {
+                                    $('#checkout_items').html(rs.Count);
+                                    LoadList();
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: "top-end",
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.onmouseenter = Swal.stopTimer;
+                                            toast.onmouseleave = Swal.resumeTimer;
+                                        }
+                                    });
+
+                                    Toast.fire({
+                                        icon: "success",
+                                        title: "Xoá thành công"
+                                    });
+                                }
+                            }
+                        }
+                    });
+
+
+
+
+                }
+            });
+        }
+        else {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/WareHouseImport/UpdateQuanTity',
+                data: {
+                    id: productId,
+                    quantity: newQuantity
+                },
+                success: function (result) {
+                    console.log(result);
+                    if (result.Success) {
+                        console.log('Cập nhật số lượng thành công');
+                    } else {
+                        console.log('Có lỗi xảy ra: ' + result.msg);
+                    }
+                },
+                error: function (error) {
+                    console.log('Lỗi Ajax: ' + error.statusText);
+                }
+            });
+
+        }
+
+    });
 });
 
 function LoadList() {

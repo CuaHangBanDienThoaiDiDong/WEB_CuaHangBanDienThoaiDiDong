@@ -17,7 +17,9 @@
                     <th>Tên sản phẩm</th>
                     <th>Màu</th>
                     <th>Loại sản phẩm</th>
-                    <th>Hãng</th>
+                    @*<th>Giá nhập</th>*@
+                    <th>Số lượng</th>
+
                     <th>Dung lượng</th>
                     <th></th>
                 </tr>
@@ -34,6 +36,18 @@
                         foreach (var item in Model)
                         {
                             byte[] strImg = null;
+
+                            var Capacity = "";
+
+                            string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
+
+                            int[] nguongDungLuong = new int[] { 999, 1999 };
+
+                            int index = Array.FindIndex(nguongDungLuong, capacity =>item.Capacity > capacity);
+
+                            Capacity = index != -1 ? dungLuongOptions[index] : item.Capacity + " Gb";
+
+
 
 
                             if (item.ProductDetailImg != null)
@@ -57,8 +71,17 @@
                                 <td class="text-center"><a href="/admin/Products/Detail/@item.ProductDetailId" style="color:black"> @item.ProductName</a></td>
                                 <td class="text-center">@item.Color</td>
                                 <td>@item.Category</td>
-                                <td>@item.Company</td>
-                                <td>@item.Capacity</td>
+                                @*<td>
+                                    @Common.FormatNumber(item.Price)
+                                </td>*@
+                                <td>
+                                    <form class="form-inline">
+                                        <input type="number" class="form-control Quantity " style="width:40%" id="@item.ProductDetailId" value="@item.Quantity" />
+
+                                    </form>
+                                </td>
+
+                                <td>@Capacity</td>
                                 <td>
                                     <button class="red_button btn-danger add_to_cart_button  border-0 btn-0 btnDelete" data-id="@item.ProductDetailId">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">

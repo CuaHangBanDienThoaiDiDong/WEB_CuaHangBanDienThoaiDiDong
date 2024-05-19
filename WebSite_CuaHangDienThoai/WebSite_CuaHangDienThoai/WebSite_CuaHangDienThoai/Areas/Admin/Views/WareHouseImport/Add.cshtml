@@ -57,14 +57,11 @@
 @section  scripts{
     <script>
         $(document).ready(function () {
-            // Khi thay đổi giá trị của dropdown list nhà cung cấp
             $("#listSupplier").change(function () {
-                // Lấy ID của nhà cung cấp được chọn
                 var idSupplier = $(this).val();
-
-                // Gửi yêu cầu AJAX đến action Partial_Supplier trong controller WareHouseImportController
+        console.log("okkkk")
                 $.ajax({
-                    url: '/WareHouseImport/Partial_Supplier', // Đường dẫn đến action trong controller
+                    url: '/admin/WareHouseImport/Partial_Supplier', 
                     type: 'GET', 
                     data: { id: idSupplier }, 
                     success: function (response) {
@@ -81,7 +78,7 @@
                 });
             });
         });
-
+       
        
     </script>
     }

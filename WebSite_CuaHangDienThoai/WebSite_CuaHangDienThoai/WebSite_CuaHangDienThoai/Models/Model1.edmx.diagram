@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a2d53b6596f9457c869074f0fb962e2f" Name="Diagram1">
+      <Diagram DiagramId="a2d53b6596f9457c869074f0fb962e2f" Name="Diagram1" ZoomLevel="109">
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.Districts" Width="1.5" PointX="3" PointY="9" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.Provinces" Width="1.5" PointX="0.75" PointY="9.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
@@ -50,7 +50,16 @@
         <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.RoletoFunction" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.StafftoFunction" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.ImportWarehouseDetailToImportWarehouse" ManuallyRouted="false" />
-        <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.ImportWarehouseToStaff" ManuallyRouted="false" />
+        <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.ImportWarehouseToStaff" ManuallyRouted="true" >
+          <ConnectorPoint PointX="11.25" PointY="10.90625" />
+          <ConnectorPoint PointX="11.541666666666666" PointY="10.90625" />
+          <ConnectorPoint PointX="11.708333333333334" PointY="10.90625" />
+          <ConnectorPoint PointX="12.4875" PointY="10.90625" />
+          <ConnectorPoint PointX="12.4875" PointY="10.343749973922968" />
+          <ConnectorPoint PointX="13.7625" PointY="10.343749973922968" />
+          <ConnectorPoint PointX="13.7625" PointY="10.90625" />
+          <ConnectorPoint PointX="15" PointY="10.90625" />
+        </AssociationConnector>
         <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.ImportWarehouseToSupplier" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.ImportWarehousetoWarehouse" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.OrderDetailtoOrder" ManuallyRouted="false" />
@@ -70,6 +79,7 @@
         <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.StafftoStore" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.StoretoWards" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.WarehousetoStore" ManuallyRouted="false" />
+        <AssociationConnector Association="CUAHANGDIENTHOAI_newModel.ImportWarehouseDetailToProductdtail" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

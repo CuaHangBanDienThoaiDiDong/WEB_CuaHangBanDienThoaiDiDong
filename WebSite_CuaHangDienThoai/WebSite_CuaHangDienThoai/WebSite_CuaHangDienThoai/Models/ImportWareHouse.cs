@@ -22,7 +22,7 @@ namespace WebSite_CuaHangDienThoai.Models
 
             if (checkSanPham != null)
             {
-                checkSanPham.SoLuong = SoLuong;
+                checkSanPham.Quantity = 0;
               
             }
             else
@@ -38,6 +38,30 @@ namespace WebSite_CuaHangDienThoai.Models
                 Items.Remove(checkSanPham);
             }
         }
+
+        public void UpQuantity(int id, int SoLuong)
+        {
+            var checkSanPham = Items.SingleOrDefault(x => x.ProductDetailId == id);
+            if (checkSanPham != null)
+            {
+                checkSanPham.Quantity = SoLuong;
+                //checkSanPham.PriceTotal = checkSanPham.Price * checkSanPham.SoLuong;
+            }
+        }
+        public decimal GetPriceTotal()
+        {
+            return Items.Sum(x => x.PriceTotal);
+        }
+        public int GetTongSoLuong()
+        {
+            return Items.Sum(x => x.Quantity);
+        }
+        public void ClearImport()
+        {
+            Items.Clear();
+        }
+
+
     }
 
     public class ImportWareHouseItem
@@ -54,9 +78,10 @@ namespace WebSite_CuaHangDienThoai.Models
       
         public int SupplierId { get; set; }
 
+        public decimal Price { get; set; }
+        public decimal PriceTotal { get; set; }
 
-
-        public int SoLuong { get; set; }
+        public int Quantity { get; set; }
      
 
     }

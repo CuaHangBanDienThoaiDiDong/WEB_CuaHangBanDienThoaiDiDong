@@ -129,6 +129,7 @@
     <Property Name="QuanTity" Type="Int32" />
     <Property Name="ImportWarehouseId" Type="Int32" />
     <NavigationProperty Name="tb_ImportWarehouse" Relationship="Self.ImportWarehouseDetailToImportWarehouse" FromRole="tb_ImportWarehouseDetail" ToRole="tb_ImportWarehouse" />
+    <NavigationProperty Name="tb_ProductDetail" Relationship="CUAHANGDIENTHOAI_newModel.ImportWarehouseDetailToProductdtail" FromRole="tb_ImportWarehouseDetail" ToRole="tb_ProductDetail" />
   </EntityType>
   <EntityType Name="tb_Order">
     <Key>
@@ -225,6 +226,7 @@
     <NavigationProperty Name="tb_ProductDetailImage" Relationship="Self.ProductDetailImageToProductDetail" FromRole="tb_ProductDetail" ToRole="tb_ProductDetailImage" />
     <NavigationProperty Name="tb_Products" Relationship="Self.ProductDetaiToProducts" FromRole="tb_ProductDetail" ToRole="tb_Products" />
     <NavigationProperty Name="tb_Review" Relationship="Self.ReviewDetailtoProductDetai" FromRole="tb_ProductDetail" ToRole="tb_Review" />
+    <NavigationProperty Name="tb_ImportWarehouseDetail" Relationship="CUAHANGDIENTHOAI_newModel.ImportWarehouseDetailToProductdtail" FromRole="tb_ProductDetail" ToRole="tb_ImportWarehouseDetail" />
   </EntityType>
   <EntityType Name="tb_ProductDetailImage">
     <Key>
@@ -1069,5 +1071,21 @@
       <End Role="tb_Store" EntitySet="tb_Store" />
       <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
     </AssociationSet>
+    <AssociationSet Name="ImportWarehouseDetailToProductdtail" Association="CUAHANGDIENTHOAI_newModel.ImportWarehouseDetailToProductdtail">
+      <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
+      <End Role="tb_ImportWarehouseDetail" EntitySet="tb_ImportWarehouseDetail" />
+    </AssociationSet>
   </EntityContainer>
+  <Association Name="ImportWarehouseDetailToProductdtail">
+    <End Type="CUAHANGDIENTHOAI_newModel.tb_ProductDetail" Role="tb_ProductDetail" Multiplicity="0..1" />
+    <End Type="CUAHANGDIENTHOAI_newModel.tb_ImportWarehouseDetail" Role="tb_ImportWarehouseDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_ProductDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Principal>
+      <Dependent Role="tb_ImportWarehouseDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

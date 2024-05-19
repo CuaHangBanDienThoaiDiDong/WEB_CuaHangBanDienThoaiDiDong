@@ -72,11 +72,11 @@
 
                     Toast.fire({
                         icon: "success",
-                        title: "Thêm sản phẩm thành công"
+                        title: "Nhập kho thành công"
                     });
                     setTimeout(function () {
-                        location.href = "/admin/Products/index";
-                    }, 5000);
+                        location.href = "/admin/WareHouseImport/index";
+                    }, 3000);
                 } else {
                 }
             }
@@ -84,36 +84,44 @@
                 if (res.Code == -2) {
                     Swal.fire({
                         icon: "error",
-                        title: "Không thể bỏ trống...",
-                        text: "Vui lòng điền đầy đủ thông tin",
+                        title: "Lỗi kết nối máy chủ...",
+                        text: "Lỗi không tìm thấy nhân viên",
                     });
                 }
                 if (res.Code == -3) {
                     Swal.fire({
                         icon: "warning",
-                        title: "Sản phẩm đã tồn tại...",
-                        text: "Cấu hình này đã có dữ liệu",
+                        title: "Danh sách rỗng...",
+                        text: "Không có sản phẩm",
                     });
                 }
                 if (res.Code == -4) {
                     Swal.fire({
                         icon: "warning",
-                        title: "Lỗi máy chủ...",
-                        text: "Không tìm thấy dữ liệu nhân viên",
+                        title: "Không tìm thấy nhà cung cấp...",
+                        text: "Vui lòng chọn nhà cung cấp",
                     });
                 }
                 if (res.Code == -5) {
                     Swal.fire({
                         icon: "info",
-                        title: "Lỗi hình ảnh...",
-                        text: "Vui lòng chọn ảnh cho sản phẩm ",
+                        title: "Vui lòng nhâp...",
+                        text: "Số lượng không đủ điều kiện",
+                    });
+                    $.ajax({
+                        url: '/admin/WareHouseImport/Partail_ListProduct',
+                        type: 'GET',
+                        success: function (rs) {
+                            $('#load_data').html(rs);
+                        }
+
                     });
                 }
                 if (res.Code == -6) {
                     Swal.fire({
                         icon: "warning",
                         title: "Lỗi tìm...",
-                        text: "Đơn hàng lặp lại 2 lần ",
+                        text: "Không tồn tại kho",
                     });
                 }
             }
@@ -133,7 +141,7 @@
             @using (Html.BeginForm("Add", "WareHouseImport", FormMethod.Post, new { }))
             {
                 <div class="card-title">
-                    Thông tin nhập kho  <label for="exampleInputEmail1">Danh sách nhà cung cấp</label>
+                    Thông tin nhập kho <label for="exampleInputEmail1">Danh sách nhà cung cấp</label>
                     @Html.DropDownListFor(x => x.Supplierid, ViewBag.Supplier as SelectList, "-Danh sách nhà cung cấp-", new { @class = "form-control", @placeholder = "Mã sản phẩm", @id = "listSupplier" })
                     @Html.ValidationMessageFor(x => x.Supplierid, null, new { @class = "text-danger" })
                 </div>
@@ -152,9 +160,32 @@
             }
         </div>
         <div class="card-body" id="load_data">
-            <button class="btn btn-success addListPhieuNhap">
-                Lưu kho
-            </button>
+
+            @Html.Action("Partail_ListProduct", "WareHouseImport")
+
+
+
+
+
+            
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8 text-center">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block">
+                            Thêm vào kho
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-plus" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7" />
+                                <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z" />
+                                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
         </div>
     </div>
 }

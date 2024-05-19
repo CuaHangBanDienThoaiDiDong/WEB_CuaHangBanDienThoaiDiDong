@@ -20,5 +20,6 @@ namespace WebSite_CuaHangDienThoai.Models
         public Nullable<int> ImportWarehouseId { get; set; }
     
         public virtual tb_ImportWarehouse tb_ImportWarehouse { get; set; }
+        public virtual tb_ProductDetail tb_ProductDetail { get; set; }
     }
 }

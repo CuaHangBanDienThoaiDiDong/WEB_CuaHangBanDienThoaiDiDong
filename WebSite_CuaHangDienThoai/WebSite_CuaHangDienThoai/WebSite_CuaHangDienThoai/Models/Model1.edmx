@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CUAHANGDIENTHOAI_newModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CUAHANGDIENTHOAI_newModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Districts">
           <Key>
             <PropertyRef Name="idDistricts" />
@@ -504,6 +504,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="ImportWarehouseDetailToProductdtail">
+          <End Role="tb_ProductDetail" Type="Self.tb_ProductDetail" Multiplicity="0..1" />
+          <End Role="tb_ImportWarehouseDetail" Type="Self.tb_ImportWarehouseDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Principal>
+            <Dependent Role="tb_ImportWarehouseDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="ImportWarehouseToStaff">
           <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="0..1" />
           <End Role="tb_ImportWarehouse" Type="Self.tb_ImportWarehouse" Multiplicity="*" />
@@ -894,6 +906,10 @@
             <End Role="tb_ImportWarehouse" EntitySet="tb_ImportWarehouse" />
             <End Role="tb_ImportWarehouseDetail" EntitySet="tb_ImportWarehouseDetail" />
           </AssociationSet>
+          <AssociationSet Name="ImportWarehouseDetailToProductdtail" Association="Self.ImportWarehouseDetailToProductdtail">
+            <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
+            <End Role="tb_ImportWarehouseDetail" EntitySet="tb_ImportWarehouseDetail" />
+          </AssociationSet>
           <AssociationSet Name="ImportWarehouseToStaff" Association="Self.ImportWarehouseToStaff">
             <End Role="tb_Staff" EntitySet="tb_Staff" />
             <End Role="tb_ImportWarehouse" EntitySet="tb_ImportWarehouse" />
@@ -1003,8 +1019,7 @@
             <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CUAHANGDIENTHOAI_newModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1137,6 +1152,7 @@
           <Property Name="QuanTity" Type="Int32" />
           <Property Name="ImportWarehouseId" Type="Int32" />
           <NavigationProperty Name="tb_ImportWarehouse" Relationship="Self.ImportWarehouseDetailToImportWarehouse" FromRole="tb_ImportWarehouseDetail" ToRole="tb_ImportWarehouse" />
+          <NavigationProperty Name="tb_ProductDetail" Relationship="CUAHANGDIENTHOAI_newModel.ImportWarehouseDetailToProductdtail" FromRole="tb_ImportWarehouseDetail" ToRole="tb_ProductDetail" />
         </EntityType>
         <EntityType Name="tb_Order">
           <Key>
@@ -1233,6 +1249,7 @@
           <NavigationProperty Name="tb_ProductDetailImage" Relationship="Self.ProductDetailImageToProductDetail" FromRole="tb_ProductDetail" ToRole="tb_ProductDetailImage" />
           <NavigationProperty Name="tb_Products" Relationship="Self.ProductDetaiToProducts" FromRole="tb_ProductDetail" ToRole="tb_Products" />
           <NavigationProperty Name="tb_Review" Relationship="Self.ReviewDetailtoProductDetai" FromRole="tb_ProductDetail" ToRole="tb_Review" />
+          <NavigationProperty Name="tb_ImportWarehouseDetail" Relationship="CUAHANGDIENTHOAI_newModel.ImportWarehouseDetailToProductdtail" FromRole="tb_ProductDetail" ToRole="tb_ImportWarehouseDetail" />
         </EntityType>
         <EntityType Name="tb_ProductDetailImage">
           <Key>
@@ -2077,7 +2094,23 @@
             <End Role="tb_Store" EntitySet="tb_Store" />
             <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
           </AssociationSet>
+          <AssociationSet Name="ImportWarehouseDetailToProductdtail" Association="CUAHANGDIENTHOAI_newModel.ImportWarehouseDetailToProductdtail">
+            <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
+            <End Role="tb_ImportWarehouseDetail" EntitySet="tb_ImportWarehouseDetail" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="ImportWarehouseDetailToProductdtail">
+          <End Type="CUAHANGDIENTHOAI_newModel.tb_ProductDetail" Role="tb_ProductDetail" Multiplicity="0..1" />
+          <End Type="CUAHANGDIENTHOAI_newModel.tb_ImportWarehouseDetail" Role="tb_ImportWarehouseDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Principal>
+            <Dependent Role="tb_ImportWarehouseDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
