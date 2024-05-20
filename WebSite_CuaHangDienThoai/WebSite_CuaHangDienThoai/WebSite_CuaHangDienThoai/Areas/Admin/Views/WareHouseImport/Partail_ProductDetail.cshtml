@@ -47,6 +47,17 @@
                                 foreach (var item in Model)
                                 {
                                     byte[] strImg = null;
+
+                                    var Capacity = "";
+
+                                    string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
+
+                                    int[] nguongDungLuong = new int[] { 999, 1999 };
+
+                                    int index = Array.FindIndex(nguongDungLuong, capacity => item.Capacity > capacity);
+
+                                    Capacity = index != -1 ? dungLuongOptions[index] : item.Capacity + " Gb";
+
                                     var CheckImage = item.tb_Products.tb_ProductImage.SingleOrDefault(x => x.IsDefault == true);
 
                                     if (CheckImage != null)
@@ -71,7 +82,7 @@
                                         <td>@item.Color</td>
                                         <td>@item.tb_Products.tb_ProductCategory.Title</td>
                                         <td>@item.tb_Products.tb_ProductCompany.Title</td>
-                                        <td>@item.Capacity</td>
+                                        <td>@Capacity</td>
                                         <td> <button class="red_button btn-success add_to_cart_button  border-0 btn-0 btnAddList" data-id="@item.ProductDetailId">
                                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-plus-fill" viewBox="0 0 16 16">
                                                      <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m6.5-11a.5.5 0 0 0-1 0V6H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V7H10a.5.5 0 0 0 0-1H8.5z" />

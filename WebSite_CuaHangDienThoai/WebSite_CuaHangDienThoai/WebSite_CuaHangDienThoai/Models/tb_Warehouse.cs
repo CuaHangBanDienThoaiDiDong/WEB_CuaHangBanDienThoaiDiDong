@@ -19,6 +19,7 @@ namespace WebSite_CuaHangDienThoai.Models
         {
             this.tb_ExportWareHouse = new HashSet<tb_ExportWareHouse>();
             this.tb_ImportWarehouse = new HashSet<tb_ImportWarehouse>();
+            this.tb_WarehouseDetail = new HashSet<tb_WarehouseDetail>();
         }
     
         public int WarehouseId { get; set; }
@@ -33,5 +34,7 @@ namespace WebSite_CuaHangDienThoai.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_ImportWarehouse> tb_ImportWarehouse { get; set; }
         public virtual tb_Store tb_Store { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_WarehouseDetail> tb_WarehouseDetail { get; set; }
     }
 }

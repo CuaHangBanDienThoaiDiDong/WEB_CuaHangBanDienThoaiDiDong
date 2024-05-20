@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="CUAHANGDIENTHOAI_newModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="Districts">
     <Key>
       <PropertyRef Name="idDistricts" />
@@ -382,6 +382,15 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="Modifeby" Type="nvarchar(max)" />
     <Property Name="StoreId" Type="int" />
+  </EntityType>
+  <EntityType Name="tb_WarehouseDetail">
+    <Key>
+      <PropertyRef Name="WarehouseDetailId" />
+    </Key>
+    <Property Name="WarehouseDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductDetailId" Type="int" />
+    <Property Name="QuanTity" Type="int" />
+    <Property Name="WarehouseId" Type="int" />
   </EntityType>
   <EntityType Name="Wards">
     <Key>
@@ -823,6 +832,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="WarehouseDetailetoProductDetail">
+    <End Role="tb_ProductDetail" Type="Self.tb_ProductDetail" Multiplicity="0..1" />
+    <End Role="tb_WarehouseDetail" Type="Self.tb_WarehouseDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_ProductDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Principal>
+      <Dependent Role="tb_WarehouseDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="WarehouseDetailetoWarehouse">
+    <End Role="tb_Warehouse" Type="Self.tb_Warehouse" Multiplicity="0..1" />
+    <End Role="tb_WarehouseDetail" Type="Self.tb_WarehouseDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Warehouse">
+        <PropertyRef Name="WarehouseId" />
+      </Principal>
+      <Dependent Role="tb_WarehouseDetail">
+        <PropertyRef Name="WarehouseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="WarehousetoStore">
     <End Role="tb_Store" Type="Self.tb_Store" Multiplicity="0..1" />
     <End Role="tb_Warehouse" Type="Self.tb_Warehouse" Multiplicity="*" />
@@ -835,7 +868,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="CUAHANGDIENTHOAI_newModelStoreContainer">
+  <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
     <EntitySet Name="Districts" EntityType="Self.Districts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Provinces" EntityType="Self.Provinces" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
@@ -864,6 +897,7 @@
     <EntitySet Name="tb_Supplier" EntityType="Self.tb_Supplier" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Voucher" EntityType="Self.tb_Voucher" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Warehouse" EntityType="Self.tb_Warehouse" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_WarehouseDetail" EntityType="Self.tb_WarehouseDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Wards" EntityType="Self.Wards" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="CartItemtoCart" Association="Self.CartItemtoCart">
       <End Role="tb_Cart" EntitySet="tb_Cart" />
@@ -1008,6 +1042,14 @@
     <AssociationSet Name="VouchertoOrder" Association="Self.VouchertoOrder">
       <End Role="tb_Order" EntitySet="tb_Order" />
       <End Role="tb_Voucher" EntitySet="tb_Voucher" />
+    </AssociationSet>
+    <AssociationSet Name="WarehouseDetailetoProductDetail" Association="Self.WarehouseDetailetoProductDetail">
+      <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
+      <End Role="tb_WarehouseDetail" EntitySet="tb_WarehouseDetail" />
+    </AssociationSet>
+    <AssociationSet Name="WarehouseDetailetoWarehouse" Association="Self.WarehouseDetailetoWarehouse">
+      <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
+      <End Role="tb_WarehouseDetail" EntitySet="tb_WarehouseDetail" />
     </AssociationSet>
     <AssociationSet Name="WarehousetoStore" Association="Self.WarehousetoStore">
       <End Role="tb_Store" EntitySet="tb_Store" />

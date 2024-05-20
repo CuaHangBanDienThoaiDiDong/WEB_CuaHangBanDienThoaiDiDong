@@ -50,7 +50,16 @@
 
             return true;
         }
+        function LoadList() {
+            $.ajax({
+                url: '/admin/WareHouseImport/Partail_ListProduct',
+                type: 'GET',
+                success: function (rs) {
+                    $('#load_data').html(rs);
+                }
 
+            });
+        }
         function OnBeginCO() {
             $('#btnRegister').attr("disabled", "disabled");
         }
@@ -100,6 +109,7 @@
                         icon: "warning",
                         title: "Không tìm thấy nhà cung cấp...",
                         text: "Vui lòng chọn nhà cung cấp",
+
                     });
                 }
                 if (res.Code == -5) {
@@ -122,6 +132,20 @@
                         icon: "warning",
                         title: "Lỗi tìm...",
                         text: "Không tồn tại kho",
+                    });
+                }
+                if (res.Code == -8) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi kho...",
+                        text: "Lưu kho thất bại",
+                    });
+                }
+                if (res.Code == -7) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi phiếu nhập...",
+                        text: "Lưu phiếu nhập thất bại",
                     });
                 }
             }
@@ -167,7 +191,7 @@
 
 
 
-            
+
         </div>
         <div class="card-footer">
             <div class="row">
@@ -188,4 +212,16 @@
             </div>
         </div>
     </div>
+}
+@section  scripts{
+    <script>
+        $(document).ready(function () {
+          
+           
+
+        });
+      
+
+
+    </script>
 }

@@ -57,28 +57,39 @@
 @section  scripts{
     <script>
         $(document).ready(function () {
+            LoadList();
             $("#listSupplier").change(function () {
                 var idSupplier = $(this).val();
-        console.log("okkkk")
-                $.ajax({
-                    url: '/admin/WareHouseImport/Partial_Supplier', 
-                    type: 'GET', 
-                    data: { id: idSupplier }, 
-                    success: function (response) {
-                        
-                        $('#load_data_Supplier').html(response);
-                    },
-                    error: function (xhr, status, error) {
-                        // Xử lý lỗi nếu có
-                        console.error("Error: " + status + " - " + error);
-                        console.error(xhr.responseText);
-                        // Hiển thị thông báo lỗi cho người dùng
-                        alert('Đã xảy ra lỗi khi tải thông tin nhà cung cấp: ' + xhr.responseText);
-                    }
-                });
+                if (idSupplier && idSupplier !== "-Chọn nhà cung cấp-") { 
+                    $.ajax({
+                        url: '/admin/WareHouseImport/Partial_Supplier',
+                        type: 'GET',
+                        data: { id: idSupplier },
+                        success: function (response) {
+                            $('#load_data_Supplier').html(response);
+                        },
+                        error: function (xhr, status, error) {
+                            // Xử lý lỗi nếu có
+                            console.error("Error: " + status + " - " + error);
+                            console.error(xhr.responseText);
+                            alert('Đã xảy ra lỗi khi tải thông tin nhà cung cấp: ' + xhr.responseText);
+                        }
+                    });
+                }
             });
+
         });
-       
+        function LoadList() {
+            $.ajax({
+                url: '/admin/WareHouseImport/Partail_ListProduct',
+                type: 'GET',
+                success: function (rs) {
+                    $('#load_data').html(rs);
+                }
+
+            });
+        }
+
        
     </script>
     }

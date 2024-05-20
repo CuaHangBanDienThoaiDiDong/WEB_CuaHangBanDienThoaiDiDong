@@ -1,0 +1,71 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ImportWarehouseDetail>
+
+<h4 class="text-center">Thông tin sản phẩm</h4>
+<small>Số lượng sản phẩm: @ViewBag.Count</small>
+@if (Model != null && Model.Any())
+{
+    <div style="overflow-x:auto;">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Hình ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Màu</th>
+                    <th>Loại sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Dung lượng</th>
+                  
+                </tr>
+            </thead>
+            <tbody>
+                @if(Model!=null){
+                    var i = 1;
+                    foreach (var item in Model)
+                    {
+                        byte[] strImg = null;
+                        string Capacity = "";
+
+                        var checkImg = item.tb_ProductDetail.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault == true);
+
+                        string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
+                        int[] nguongDungLuong = new int[] { 999, 1999 };
+
+                        int index = Array.FindIndex(nguongDungLuong, capacity => item.tb_ProductDetail.Capacity > capacity);
+                        Capacity = index != -1 ? dungLuongOptions[index] : item.tb_ProductDetail.Capacity + " Gb";
+
+                        if (checkImg != null)
+                        {
+                            strImg = checkImg.Image;
+                        }
+
+                        string imgSrc = strImg != null && strImg.Length > 0 ? $"data:image;base64,{Convert.ToBase64String(strImg)}" : "";
+
+                        <tr class="text-center opacity-100" id="trow_@item.ProductDetailId">
+                            <td class="text-center">@i</td>
+                            <td class="text-center">
+                                <img class="imgproduct" data-id="@item.ProductDetailId" src="@imgSrc" width="50" />
+                            </td>
+                            <td class="text-center"><a href="/admin/Products/Detail/@item.ProductDetailId" style="color:black"> @item.tb_ProductDetail.tb_Products.Title</a></td>
+                            <td class="text-center">@item.tb_ProductDetail.Color</td>
+                            <td>@item.tb_ProductDetail.tb_Products.tb_ProductCategory.Title</td>
+                            <td>
+                                <form class="form-inline">
+                                    <input type="number" class="form-control Quantity" style="width:40%" id="@item.ProductDetailId" value="@item.QuanTity" />
+                                </form>
+                            </td>
+                            <td>@Capacity</td>
+                            
+                        </tr>
+
+                        i++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p class="text-danger">Không tìm thấy bảng ghi nào 123 !!!</p>
+}

@@ -18,10 +18,11 @@ namespace WebSite_CuaHangDienThoai.Models
         public tb_ProductDetail()
         {
             this.tb_CartItem = new HashSet<tb_CartItem>();
+            this.tb_ImportWarehouseDetail = new HashSet<tb_ImportWarehouseDetail>();
             this.tb_OrderDetail = new HashSet<tb_OrderDetail>();
             this.tb_ProductDetailImage = new HashSet<tb_ProductDetailImage>();
             this.tb_Review = new HashSet<tb_Review>();
-            this.tb_ImportWarehouseDetail = new HashSet<tb_ImportWarehouseDetail>();
+            this.tb_WarehouseDetail = new HashSet<tb_WarehouseDetail>();
         }
     
         public int ProductDetailId { get; set; }
@@ -39,6 +40,8 @@ namespace WebSite_CuaHangDienThoai.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_CartItem> tb_CartItem { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_ImportWarehouseDetail> tb_ImportWarehouseDetail { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_OrderDetail> tb_OrderDetail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_ProductDetailImage> tb_ProductDetailImage { get; set; }
@@ -46,6 +49,6 @@ namespace WebSite_CuaHangDienThoai.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_Review> tb_Review { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tb_ImportWarehouseDetail> tb_ImportWarehouseDetail { get; set; }
+        public virtual ICollection<tb_WarehouseDetail> tb_WarehouseDetail { get; set; }
     }
 }

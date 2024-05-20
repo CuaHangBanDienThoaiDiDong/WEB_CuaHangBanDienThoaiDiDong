@@ -1,7 +1,7 @@
-﻿@model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
+﻿@model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_ImportWarehouse>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = " Dách Dòng Sản Phẩm";
+    ViewBag.Title = " Phiếu nhập ";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -65,16 +65,11 @@
                     <tr class="text-center">
                         <th><input type="checkbox" id="SelectAll" /></th>
                         <th>STT</th>
-                        <th>Hình ảnh</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Màu</th>
-                        <th>Số lượng</th>
-                        <th>Loại sản phẩm</th>
-                        <th>Hãng</th>
-                        <th>Dung lượng</th>
-
-
-
+                        <th>Mã</th>
+                        <th>Tên kho</th>
+                        <th>Nhà cung cấp</th>
+                        <th>Người nhận</th>
+                        <th>Ngày nhận</th>
                         <th>Tác vụ</th>
 
 
@@ -93,51 +88,31 @@
                                 //var checkQuantity = item.tb_ImportWarehouse.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId);
 
 
-                                byte[] strImg = null;
-                                var CheckImage = item.tb_Products.tb_ProductImage.SingleOrDefault(x => x.IsDefault == true);
-
-                                if (CheckImage != null)
-                                {
-                                    strImg = CheckImage.Image;
-                                }
-
-                                string imgSrc = "";
-                                if (strImg != null && strImg.Length > 0)
-                                {
-                                    string base64String = Convert.ToBase64String(strImg);
-                                    imgSrc = $"data:image;base64,{base64String}";
-                                }
-
-
                                
-                                    <tr class="text-center opacity-100 " id="trow_@item.ProductsId">
-                                        <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
-                                        <td>@i</td>
-                                        <td>
-                                            <img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" />
-                                        </td>
-                                        <td> <a href="/admin/Products/Detail/@item.ProductsId" style="color:black"> @item.tb_Products.Title</a>  </td>
-                                        <td>
-                                            @item.Color
-                                        </td>
-                                        <td>
-                                            @Html.Action("Partial_QuantityProductDtail", "WareHouseImport", new { id = item.ProductDetailId })
-                                        </td>
-                                        <td>@item.tb_Products.tb_ProductCategory.Title</td>
-                                        <td>
-                                            @item.tb_Products.tb_ProductCompany.Title
-                                        </td>
-                                        <td>
-                                            @item.Capacity
-                                        </td>
 
 
-                                        <td>
-                                            <a href="/admin/Products/Detail/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Xem</a>
-                                            <a href="/admin/Products/Edit/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Sửa</a>
-                                        </td>
-                                    </tr>
-                               
+
+                                <tr class="text-center opacity-100 " id="trow_@item.ImportWarehouseId">
+                                    <td><input type="checkbox" class="cbkItem" value="@item.ImportWarehouseId" /></td>
+                                    <td>@i</td>
+                                    
+                                    <td> <a href="/admin/Products/Detail/@item.ImportWarehouseId" style="color:black"> @item.ImportWarehouseId</a>  </td>
+                                    <td>
+                                        @item.tb_Warehouse.tb_Store.Location
+                                    </td>
+                                    <td>
+                                       @item.tb_Supplier.Name
+                                    </td>
+                                    <td>@item.CreatedBy</td>
+                                    <td>
+                                        @*@item.CreateDate.ToString("dd/MM/yyyy")*@
+                                    </td>
+                                    <td>
+                                        <a href="/admin/WareHouseImport/Details/@item.ImportWarehouseId" data-id="@item.ImportWarehouseId" class="btn btn-sm btn-primary ">Xem</a>
+                                        <a href="/admin/WareHouseImport/Edit/@item.ImportWarehouseId" data-id="@item.ImportWarehouseId" class="btn btn-sm btn-primary ">Sửa</a>
+                                    </td>
+                                </tr>
+
 
                                 i++;
                             }

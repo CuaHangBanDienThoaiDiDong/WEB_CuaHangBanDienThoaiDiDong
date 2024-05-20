@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+    LoadList();
     $('body').on('click', '.btnAddList', function (e) {
         e.preventDefault();
         var id = $(this).data('id');

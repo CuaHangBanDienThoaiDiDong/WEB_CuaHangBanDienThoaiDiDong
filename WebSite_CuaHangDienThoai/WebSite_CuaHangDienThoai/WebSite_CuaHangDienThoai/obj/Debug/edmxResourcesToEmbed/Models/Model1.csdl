@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="CUAHANGDIENTHOAI_newModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+<Schema Namespace="CUAHANGDIENTHOAIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityType Name="Districts">
     <Key>
       <PropertyRef Name="idDistricts" />
@@ -129,7 +129,7 @@
     <Property Name="QuanTity" Type="Int32" />
     <Property Name="ImportWarehouseId" Type="Int32" />
     <NavigationProperty Name="tb_ImportWarehouse" Relationship="Self.ImportWarehouseDetailToImportWarehouse" FromRole="tb_ImportWarehouseDetail" ToRole="tb_ImportWarehouse" />
-    <NavigationProperty Name="tb_ProductDetail" Relationship="CUAHANGDIENTHOAI_newModel.ImportWarehouseDetailToProductdtail" FromRole="tb_ImportWarehouseDetail" ToRole="tb_ProductDetail" />
+    <NavigationProperty Name="tb_ProductDetail" Relationship="Self.ImportWarehouseDetailToProductdtail" FromRole="tb_ImportWarehouseDetail" ToRole="tb_ProductDetail" />
   </EntityType>
   <EntityType Name="tb_Order">
     <Key>
@@ -222,11 +222,12 @@
     <Property Name="Capacity" Type="Int32" />
     <Property Name="ProductsId" Type="Int32" />
     <NavigationProperty Name="tb_CartItem" Relationship="Self.CartItemtoProducdetai" FromRole="tb_ProductDetail" ToRole="tb_CartItem" />
+    <NavigationProperty Name="tb_ImportWarehouseDetail" Relationship="Self.ImportWarehouseDetailToProductdtail" FromRole="tb_ProductDetail" ToRole="tb_ImportWarehouseDetail" />
     <NavigationProperty Name="tb_OrderDetail" Relationship="Self.OrderDetailtoProductDetai" FromRole="tb_ProductDetail" ToRole="tb_OrderDetail" />
     <NavigationProperty Name="tb_ProductDetailImage" Relationship="Self.ProductDetailImageToProductDetail" FromRole="tb_ProductDetail" ToRole="tb_ProductDetailImage" />
     <NavigationProperty Name="tb_Products" Relationship="Self.ProductDetaiToProducts" FromRole="tb_ProductDetail" ToRole="tb_Products" />
     <NavigationProperty Name="tb_Review" Relationship="Self.ReviewDetailtoProductDetai" FromRole="tb_ProductDetail" ToRole="tb_Review" />
-    <NavigationProperty Name="tb_ImportWarehouseDetail" Relationship="CUAHANGDIENTHOAI_newModel.ImportWarehouseDetailToProductdtail" FromRole="tb_ProductDetail" ToRole="tb_ImportWarehouseDetail" />
+    <NavigationProperty Name="tb_WarehouseDetail" Relationship="Self.WarehouseDetailetoProductDetail" FromRole="tb_ProductDetail" ToRole="tb_WarehouseDetail" />
   </EntityType>
   <EntityType Name="tb_ProductDetailImage">
     <Key>
@@ -454,6 +455,18 @@
     <NavigationProperty Name="tb_ExportWareHouse" Relationship="Self.ExportWareHousetoWareHouse" FromRole="tb_Warehouse" ToRole="tb_ExportWareHouse" />
     <NavigationProperty Name="tb_ImportWarehouse" Relationship="Self.ImportWarehousetoWarehouse" FromRole="tb_Warehouse" ToRole="tb_ImportWarehouse" />
     <NavigationProperty Name="tb_Store" Relationship="Self.WarehousetoStore" FromRole="tb_Warehouse" ToRole="tb_Store" />
+    <NavigationProperty Name="tb_WarehouseDetail" Relationship="Self.WarehouseDetailetoWarehouse" FromRole="tb_Warehouse" ToRole="tb_WarehouseDetail" />
+  </EntityType>
+  <EntityType Name="tb_WarehouseDetail">
+    <Key>
+      <PropertyRef Name="WarehouseDetailId" />
+    </Key>
+    <Property Name="WarehouseDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductDetailId" Type="Int32" />
+    <Property Name="QuanTity" Type="Int32" />
+    <Property Name="WarehouseId" Type="Int32" />
+    <NavigationProperty Name="tb_ProductDetail" Relationship="Self.WarehouseDetailetoProductDetail" FromRole="tb_WarehouseDetail" ToRole="tb_ProductDetail" />
+    <NavigationProperty Name="tb_Warehouse" Relationship="Self.WarehouseDetailetoWarehouse" FromRole="tb_WarehouseDetail" ToRole="tb_Warehouse" />
   </EntityType>
   <EntityType Name="Wards">
     <Key>
@@ -693,6 +706,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="ImportWarehouseDetailToProductdtail">
+    <End Role="tb_ProductDetail" Type="Self.tb_ProductDetail" Multiplicity="0..1" />
+    <End Role="tb_ImportWarehouseDetail" Type="Self.tb_ImportWarehouseDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_ProductDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Principal>
+      <Dependent Role="tb_ImportWarehouseDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="OrderDetailtoOrder">
     <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="0..1" />
     <End Role="tb_OrderDetail" Type="Self.tb_OrderDetail" Multiplicity="*" />
@@ -801,6 +826,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="WarehouseDetailetoProductDetail">
+    <End Role="tb_ProductDetail" Type="Self.tb_ProductDetail" Multiplicity="0..1" />
+    <End Role="tb_WarehouseDetail" Type="Self.tb_WarehouseDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_ProductDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Principal>
+      <Dependent Role="tb_WarehouseDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="ProductstoProductImage">
     <End Role="tb_Products" Type="Self.tb_Products" Multiplicity="1" />
     <End Role="tb_ProductImage" Type="Self.tb_ProductImage" Multiplicity="*" />
@@ -897,6 +934,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="WarehouseDetailetoWarehouse">
+    <End Role="tb_Warehouse" Type="Self.tb_Warehouse" Multiplicity="0..1" />
+    <End Role="tb_WarehouseDetail" Type="Self.tb_WarehouseDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Warehouse">
+        <PropertyRef Name="WarehouseId" />
+      </Principal>
+      <Dependent Role="tb_WarehouseDetail">
+        <PropertyRef Name="WarehouseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="CUAHANGDIENTHOAIEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Districts" EntityType="Self.Districts" />
     <EntitySet Name="Provinces" EntityType="Self.Provinces" />
@@ -926,6 +975,7 @@
     <EntitySet Name="tb_Supplier" EntityType="Self.tb_Supplier" />
     <EntitySet Name="tb_Voucher" EntityType="Self.tb_Voucher" />
     <EntitySet Name="tb_Warehouse" EntityType="Self.tb_Warehouse" />
+    <EntitySet Name="tb_WarehouseDetail" EntityType="Self.tb_WarehouseDetail" />
     <EntitySet Name="Wards" EntityType="Self.Wards" />
     <AssociationSet Name="FK__Districts__idPro__656C112C" Association="Self.FK__Districts__idPro__656C112C">
       <End Role="Provinces" EntitySet="Provinces" />
@@ -1003,6 +1053,10 @@
       <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
       <End Role="tb_ImportWarehouse" EntitySet="tb_ImportWarehouse" />
     </AssociationSet>
+    <AssociationSet Name="ImportWarehouseDetailToProductdtail" Association="Self.ImportWarehouseDetailToProductdtail">
+      <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
+      <End Role="tb_ImportWarehouseDetail" EntitySet="tb_ImportWarehouseDetail" />
+    </AssociationSet>
     <AssociationSet Name="OrderDetailtoOrder" Association="Self.OrderDetailtoOrder">
       <End Role="tb_Order" EntitySet="tb_Order" />
       <End Role="tb_OrderDetail" EntitySet="tb_OrderDetail" />
@@ -1039,6 +1093,10 @@
       <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
       <End Role="tb_Review" EntitySet="tb_Review" />
     </AssociationSet>
+    <AssociationSet Name="WarehouseDetailetoProductDetail" Association="Self.WarehouseDetailetoProductDetail">
+      <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
+      <End Role="tb_WarehouseDetail" EntitySet="tb_WarehouseDetail" />
+    </AssociationSet>
     <AssociationSet Name="ProductstoProductImage" Association="Self.ProductstoProductImage">
       <End Role="tb_Products" EntitySet="tb_Products" />
       <End Role="tb_ProductImage" EntitySet="tb_ProductImage" />
@@ -1071,21 +1129,9 @@
       <End Role="tb_Store" EntitySet="tb_Store" />
       <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
     </AssociationSet>
-    <AssociationSet Name="ImportWarehouseDetailToProductdtail" Association="CUAHANGDIENTHOAI_newModel.ImportWarehouseDetailToProductdtail">
-      <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
-      <End Role="tb_ImportWarehouseDetail" EntitySet="tb_ImportWarehouseDetail" />
+    <AssociationSet Name="WarehouseDetailetoWarehouse" Association="Self.WarehouseDetailetoWarehouse">
+      <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
+      <End Role="tb_WarehouseDetail" EntitySet="tb_WarehouseDetail" />
     </AssociationSet>
   </EntityContainer>
-  <Association Name="ImportWarehouseDetailToProductdtail">
-    <End Type="CUAHANGDIENTHOAI_newModel.tb_ProductDetail" Role="tb_ProductDetail" Multiplicity="0..1" />
-    <End Type="CUAHANGDIENTHOAI_newModel.tb_ImportWarehouseDetail" Role="tb_ImportWarehouseDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tb_ProductDetail">
-        <PropertyRef Name="ProductDetailId" />
-      </Principal>
-      <Dependent Role="tb_ImportWarehouseDetail">
-        <PropertyRef Name="ProductDetailId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>

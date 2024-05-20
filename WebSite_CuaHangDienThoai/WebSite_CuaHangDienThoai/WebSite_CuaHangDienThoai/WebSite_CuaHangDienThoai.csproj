@@ -3694,13 +3694,6 @@
     <Content Include="Areas\Admin\Views\WareHouseImport\Partial_QuantityProductDtail.cshtml" />
     <Content Include="Areas\Admin\Views\WareHouseImport\Add.cshtml" />
     <Content Include="Areas\Admin\Views\WareHouseImport\Partail_ProductDetail.cshtml" />
-    <EntityDeploy Include="Models\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Admin\Views\WareHouseImport\Partail_PhieuNhapKho.cshtml" />
     <Content Include="Areas\Admin\Views\Supplier\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Supplier\Partial_AddSupplier.cshtml" />
@@ -3709,6 +3702,19 @@
     <Content Include="Areas\Admin\Views\Supplier\Details.cshtml" />
     <Content Include="Areas\Admin\Views\WareHouseImport\Partail_ListProduct.cshtml" />
     <Content Include="Areas\Admin\Views\WareHouseImport\_SupplierDetails.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\ListProduct.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\Eidt.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\Partail_ListProductForEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\Partail_ListProductForDetail.cshtml" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
@@ -4099,6 +4105,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tb_Warehouse.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tb_WarehouseDetail.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Token\Admin\Admin_Add_Staff_ToKen.cs" />
