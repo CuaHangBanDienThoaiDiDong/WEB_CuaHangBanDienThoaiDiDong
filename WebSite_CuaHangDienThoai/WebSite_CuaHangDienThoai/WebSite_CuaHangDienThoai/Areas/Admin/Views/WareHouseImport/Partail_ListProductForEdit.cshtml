@@ -73,7 +73,7 @@
                                 <td class="text-center"><a href="/admin/Products/Detail/@item.ProductDetailId" style="color:black"> @item.tb_ProductDetail.tb_Products.Title</a></td>
                                 <td class="text-center">
 
-                                    <input type="number" class="form-control  Update_Quantity_For_Edit " style="width:100%" id="@item.ProductDetailId" data-importwarehouseid="@item.ImportWarehouseDetailId" data-idWareHouse="@item.tb_ImportWarehouse.tb_Warehouse.WarehouseId" value="@item.QuanTity" />
+                                    <input type="number" class="form-control  Update_Quantity_For_Edit " style="width:100%" id="@item.ProductDetailId"data-importwarehousedid="@item.tb_ImportWarehouse.ImportWarehouseId" data-importwarehousedetailid="@item.ImportWarehouseDetailId"data-idWareHouse="@item.tb_ImportWarehouse.tb_Warehouse.WarehouseId"    value="@item.QuanTity" />
 
                                 </td>
                                 <td class="text-center">@item.tb_ProductDetail.Color</td>

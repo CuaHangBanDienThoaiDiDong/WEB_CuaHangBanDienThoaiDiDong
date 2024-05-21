@@ -105,7 +105,7 @@
                                     </td>
                                     <td>@item.CreatedBy</td>
                                     <td>
-                                        @*@item.CreateDate.ToString("dd/MM/yyyy")*@
+                                        @(item.CreateDate.HasValue ? item.CreateDate.Value.ToString("dd/MM/yyyy") : "Không có dữ liệu")
                                     </td>
                                     <td>
                                         <a href="/admin/WareHouseImport/Details/@item.ImportWarehouseId" data-id="@item.ImportWarehouseId" class="btn btn-sm btn-primary ">Xem</a>

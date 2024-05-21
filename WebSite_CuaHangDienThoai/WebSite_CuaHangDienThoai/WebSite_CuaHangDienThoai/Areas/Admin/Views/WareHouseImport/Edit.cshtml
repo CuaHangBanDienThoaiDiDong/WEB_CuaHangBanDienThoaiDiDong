@@ -4,16 +4,21 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 <div class="card">
-    <div class="card-header">
-        @using (Html.BeginForm("Add", "WareHouseImport", FormMethod.Post, new { }))
-        {
+    @using (Html.BeginForm("Edit", "WareHouseImport", FormMethod.Post, new { }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(x => x.ImportWarehouseId)
+        @*@Html.HiddenFor(x => x.CreateDate*@
+        <div class="card-header">
+
             <div class="card-title">
                 Thông tin nhập kho <label for="exampleInputEmail1">Danh sách nhà cung cấp</label>
 
                 @*@Html.DropDownListFor(x => x.SupplierId, ViewBag.Supplier as SelectList, "-Chọn danh mục sản phẩm-", new { @class = "form-control", @placeholder = "Mã mã phẩm" })
                     @Html.ValidationMessageFor(x => x.SupplierId, null, new { @class = "text-danger" })*@
                 <div class="col-md-10">
-                    @Html.DropDownListFor(model => model.SupplierId, (SelectList)ViewBag.SupplierList, "-Chọn nhà cung cấp-", new { @class = "form-control", @placeholder = "Mã sản phẩm" ,@id = "listSupplier" })
+                    @Html.DropDownListFor(model => model.SupplierId, (SelectList)ViewBag.SupplierList, "-Chọn nhà cung cấp-", new { @class = "form-control", @placeholder = "Mã sản phẩm", @id = "listSupplier" })
                     @Html.ValidationMessageFor(model => model.SupplierId, "", new { @class = "text-danger" })
                 </div>
 
@@ -33,35 +38,99 @@
                     </div>
                 </div>
             </div>
-        }
-    </div>
-    <div class="card-body" id="">
-        @Html.Action("Partail_ListProductForEdit", "WareHouseImport", new {id=Model.ImportWarehouseId})
 
-
-
-
-
-
-    </div>
-    <div class="card-footer">
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8 text-center">
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success btn-block">
-                        Thêm vào kho
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-plus" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7" />
-                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z" />
-                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-2"></div>
         </div>
-    </div>
+        <div class="card-body" id="">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <p> Thông tin nhận hàng</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <span><label for="exampleInputEmail1">Tạo phiếu bởi:</label>@Model.CreatedBy</span>
+                                <div style="display:none">
+                                    @Html.TextBoxFor(x => x.CreatedBy, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                    @Html.ValidationMessageFor(x => x.CreatedBy, null, new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <span><label for="exampleInputEmail1">Nhận hàng:</label>@Model.tb_Staff.NameStaff</span>
+                                <div style="display:none">
+                                    @Html.TextBoxFor(x => x.StaffId, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                    @Html.ValidationMessageFor(x => x.StaffId, null, new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <span><label for="exampleInputEmail1">Kho hàng:</label>@Model.tb_Warehouse.tb_Store.Location</span>
+                                <div style="display:none">
+                                    @Html.TextBoxFor(x => x.WarehouseId, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                    @Html.ValidationMessageFor(x => x.StaffId, null, new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <span><label for="exampleInputEmail1">Tạo phiếu bởi:</label>@Model.CreatedBy</span>
+                                <div style="display:none">
+                                    @Html.TextBoxFor(x => x.CreatedBy, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                    @Html.ValidationMessageFor(x => x.CreatedBy, null, new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <span><label for="exampleInputEmail1">Ngày nhận hàng:</label> @(Model.CreateDate.HasValue ? Model.CreateDate.Value.ToString("dd/MM/yyyy") : "Không có dữ liệu")<</span>
+                                <div style="display:none">
+                                    @Html.TextBoxFor(x => x.CreateDate, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                    @Html.ValidationMessageFor(x => x.CreateDate, null, new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+                        </div>
+                       
+                    </div>
+                   
+                    </div>
+            </div>
+
+
+
+
+
+
+
+            @Html.Action("Partail_ListProductForEdit", "WareHouseImport", new { id = Model.ImportWarehouseId })
+
+
+
+
+
+
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8 text-center">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success btn-edit-phieu-nhap">
+                                Lưu Lại
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-plus" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7" />
+                                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z" />
+                                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z" />
+                                </svg>
+                            </button>
+                            <a href="/admin/WareHouseImport/" class="btn btn-danger">Quay lại</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    }
 </div>
 
 @section  scripts{
@@ -86,76 +155,172 @@
                     });
                 }
             });
+            // Sự kiện click cho nút "Lưu Lại"
+            $('.btn-edit-phieu-nhap').click(function (event) {
+                event.preventDefault(); // Ngăn chặn hành động submit mặc định
 
+                // Lấy dữ liệu form
+                var form = $(this).closest('form');
+                var formData = form.serialize();
 
+                // Gửi AJAX để lưu thông tin nhập kho
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        if (response.Success) {
+                            // Nếu lưu thông tin nhập kho thành công, tiếp tục cập nhật số lượng sản phẩm
+                            $('.Update_Quantity_For_Edit').each(function () {
+                                var newQuantity = $(this).val();
+                                var productDetailId = $(this).attr('id');
+                                var importWarehouseDetailId = $(this).data('importwarehousedetailid');
+                                var importWarehouseId = $(this).data('importwarehousedid');
+                                var idWareHouse = $(this).data('idwarehouse');
 
-            // Sự kiện thay đổi giá trị số lượng
-            // Sự kiện thay đổi giá trị số lượng
-            $('.Update_Quantity_For_Edit').change(function () {
-                var newQuantity = $(this).val();
-                var productDetailId = $(this).attr('id');
-                var importWarehouseId = $(this).data('importwarehouseid');
-                var idWareHouse = $(this).data('idWareHouse');
-
-                Swal.fire({
-                    title: "Bạn có chắc chắn?",
-                    text: "Bạn muốn cập nhật số lượng này!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Đồng ý!",
-                    cancelButtonText: "Hủy"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: '/admin/WareHouseImport/UpdateQuanTityForEdit',
-                            type: 'POST',
-                            data: {
-                                id: productDetailId,
-                                ImportWareHouseDetailId: importWarehouseId,
-                                IdWareHouse: idWareHouse,
-                                quantity: newQuantity
-                            },
-                            success: function (res) {
-                                if (res.Success) {
+                                if (newQuantity !== $(this).data('original-value')) {
                                     Swal.fire({
-                                        icon: "success",
-                                        title: "Cập nhật số lượng thành công"
-                                    });
-                                    setTimeout(function () {
-                                        location.reload();
-                                    }, 2000);
-                                } else {
-                                    Swal.fire({
-                                        icon: "error",
-                                        title: "Có lỗi xảy ra khi cập nhật số lượng",
-                                        text: "Có lỗi xảy ra khi cập nhật số lượng."
+                                        title: "Bạn có chắc chắn?",
+                                        text: "Bạn muốn cập nhật số lượng này!",
+                                        icon: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#3085d6",
+                                        cancelButtonColor: "#d33",
+                                        confirmButtonText: "Đồng ý!",
+                                        cancelButtonText: "Hủy"
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            $.ajax({
+                                                url: '/admin/WareHouseImport/UpdateQuanTityForEdit',
+                                                type: 'POST',
+                                                data: {
+                                                    id: productDetailId,
+                                                    ImportWareHouseDetailId: importWarehouseDetailId,
+                                                    ImportWareHouseId: importWarehouseId,
+                                                    IdWareHouse: idWareHouse,
+                                                    quantity: newQuantity
+                                                },
+                                                success: function (res) {
+                                                    if (res.Success) {
+                                                        Swal.fire({
+                                                            icon: "success",
+                                                            title: "Cập nhật số lượng thành công"
+                                                        });
+                                                        setTimeout(function () {
+                                                            location.reload();
+                                                        }, 2000);
+                                                    } else {
+                                                        Swal.fire({
+                                                            icon: "error",
+                                                            title: "Có lỗi xảy ra khi cập nhật số lượng",
+                                                            text: "Mã lỗi: " + res.Code
+                                                        });
+                                                    }
+                                                },
+                                                error: function (xhr, status, error) {
+                                                    console.error("Error: " + status + " - " + error);
+                                                    console.error(xhr.responseText);
+                                                    Swal.fire({
+                                                        icon: "error",
+                                                        title: "Lỗi",
+                                                        text: 'Đã xảy ra lỗi khi cập nhật số lượng: ' + xhr.responseText,
+                                                    });
+                                                }
+                                            });
+                                        } else {
+                                            // Nếu người dùng hủy, hãy khôi phục giá trị ban đầu của số lượng
+                                            $(this).val($(this).data('original-value'));
+                                        }
                                     });
                                 }
-                            },
-                            error: function (xhr, status, error) {
-                                console.error("Error: " + status + " - " + error);
-                                console.error(xhr.responseText);
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Lỗi",
-                                    text: 'Đã xảy ra lỗi khi cập nhật số lượng: ' + xhr.responseText,
-                                });
-                            }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi",
+                                text: response.Message,
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error: " + status + " - " + error);
+                        console.error(xhr.responseText);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi",
+                            text: 'Đã xảy ra lỗi khi lưu thông tin nhập kho: ' + xhr.responseText,
                         });
-                    } else {
-                        // Nếu người dùng hủy, hãy khôi phục giá trị ban đầu của số lượng
-                        $(this).val($(this).data('original-value'));
                     }
                 });
             });
 
 
-            // Lưu trữ giá trị ban đầu của số lượng khi trang tải
-            $('.Update_Quantity_For_Edit').each(function () {
-                $(this).data('original-value', $(this).val());
-            });
+            //$('.Update_Quantity_For_Edit').each(function () {
+            //    $(this).data('original-value', $(this).val());
+            //});
+
+            //$('.Update_Quantity_For_Edit').change(function () {
+            //    var newQuantity = $(this).val();
+            //    var productDetailId = $(this).attr('id');
+            //    var importWarehouseDetailId = $(this).data('importwarehousedetailid');
+            //    var importWarehouseId = $(this).data('importwarehousedid');
+            //    var idWareHouse = $(this).data('idwarehouse');
+
+            //    Swal.fire({
+            //        title: "Bạn có chắc chắn?",
+            //        text: "Bạn muốn cập nhật số lượng này!",
+            //        icon: "warning",
+            //        showCancelButton: true,
+            //        confirmButtonColor: "#3085d6",
+            //        cancelButtonColor: "#d33",
+            //        confirmButtonText: "Đồng ý!",
+            //        cancelButtonText: "Hủy"
+            //    }).then((result) => {
+            //        if (result.isConfirmed) {
+            //            $.ajax({
+            //                url: '/admin/WareHouseImport/UpdateQuanTityForEdit',
+            //                type: 'POST',
+            //                data: {
+            //                    id: productDetailId,
+            //                    ImportWareHouseDetailId: importWarehouseDetailId,
+            //                    ImportWareHouseId: importWarehouseId,
+            //                    IdWareHouse: idWareHouse,
+            //                    quantity: newQuantity
+            //                },
+            //                success: function (res) {
+            //                    if (res.Success) {
+            //                        Swal.fire({
+            //                            icon: "success",
+            //                            title: "Cập nhật số lượng thành công"
+            //                        });
+            //                        setTimeout(function () {
+            //                            location.reload();
+            //                        }, 2000);
+            //                    } else {
+            //                        Swal.fire({
+            //                            icon: "error",
+            //                            title: "Có lỗi xảy ra khi cập nhật số lượng",
+            //                            text: "Mã lỗi: " + res.Code
+            //                        });
+            //                    }
+            //                },
+            //                error: function (xhr, status, error) {
+            //                    console.error("Error: " + status + " - " + error);
+            //                    console.error(xhr.responseText);
+            //                    Swal.fire({
+            //                        icon: "error",
+            //                        title: "Lỗi",
+            //                        text: 'Đã xảy ra lỗi khi cập nhật số lượng: ' + xhr.responseText,
+            //                    });
+            //                }
+            //            });
+            //        } else {
+            //            // Nếu người dùng hủy, hãy khôi phục giá trị ban đầu của số lượng
+            //            $(this).val($(this).data('original-value'));
+            //        }
+            //    });
+            //});
+
 
          
 

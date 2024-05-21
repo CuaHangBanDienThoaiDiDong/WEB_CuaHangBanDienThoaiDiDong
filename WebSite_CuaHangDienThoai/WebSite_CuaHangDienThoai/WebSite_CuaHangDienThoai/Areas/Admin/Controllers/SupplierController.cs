@@ -120,6 +120,15 @@ model.Name = req.Name;
             return View(items);
 
         }
+        public ActionResult Partail_DanhSachPhieu(int id) 
+        {
+            var item =db.tb_ImportWarehouse.Where(x=>x.SupplierId==id).ToList();
+            if(item != null) 
+            {
+                return PartialView(item);   
+            }
+            return PartialView();   
+        }
 
 
 

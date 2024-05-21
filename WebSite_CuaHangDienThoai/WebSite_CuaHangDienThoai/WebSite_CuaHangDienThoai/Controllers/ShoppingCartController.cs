@@ -378,34 +378,33 @@ namespace WebSite_CuaHangDienThoai.Controllers
                         {
 
                             bool isTransactionSuccessful = false;///goc
-                  
-                          
 
 
-                            // dang chua xuat so luong
-                            //foreach (var item in cart.Items)
-                            //{
-                            //    var checkQuantityPro = db.tb_ProductDetail.Find(item.ProductDetailId);
 
-                            //    if (checkQuantityPro != null)
-                            //    {
-                            //        if (checkQuantityPro.Quan >= item.SoLuong)
-                            //        {
-                            //            checkQuantityPro.Quantity -= item.SoLuong;
 
-                            //            DeleteCartSucces(idKhach, item.ProductDetailId);
+                            foreach (var item in cart.Items)
+                            {
+                                var checkQuantityWareHouse = db.tb_ImportWarehouseDetail.Find(item.ProductDetailId);
 
-                            //            db.Entry(checkQuantityPro).State = System.Data.Entity.EntityState.Modified;
-                            //            db.SaveChanges();
-                            //            isTransactionSuccessful = true;
-                            //        }
-                            //        else
-                            //        {
-                            //            ViewBag.error = "Số lượng sản phẩm không đủ";
-                            //            code = new { Success = false, Code = -7, Url = "" };//Số lượng sản phẩm hiện không đủ 
-                            //        }
-                            //    }
-                            //}
+                                if (checkQuantityWareHouse != null)
+                                {
+                                    if (checkQuantityWareHouse.QuanTity >= item.SoLuong)
+                                    {
+                                        checkQuantityWareHouse.QuanTity -= item.SoLuong;
+
+                                        DeleteCartSucces(idKhach, item.ProductDetailId);
+
+                                        db.Entry(checkQuantityWareHouse).State = System.Data.Entity.EntityState.Modified;
+                                        db.SaveChanges();
+                                        isTransactionSuccessful = true;
+                                    }
+                                    else
+                                    {
+                                        ViewBag.error = "Số lượng sản phẩm không đủ";
+                                        code = new { Success = false, Code = -7, Url = "" };//Số lượng sản phẩm hiện không đủ 
+                                    }
+                                }
+                            }
 
 
                             if (isTransactionSuccessful)
@@ -416,10 +415,6 @@ namespace WebSite_CuaHangDienThoai.Controllers
                                 order.Address = inforKhachHang.Loaction;
                                 order.Email = inforKhachHang.Email;
                                 order.typeOrder = false;
-
-
-
-
 
                                 cart.Items.ForEach(row => order.tb_OrderDetail.Add(new tb_OrderDetail
                                 {
@@ -475,7 +470,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                                 contentCustomer = contentCustomer.Replace("{{DiaChiNhanHang}}", order.Address);
                                 contentCustomer = contentCustomer.Replace("{{ThanhTien}}", WebSite_CuaHangDienThoai.Common.Common.FormatNumber(thanhTien, 0));
                                 contentCustomer = contentCustomer.Replace("{{TongTien}}", WebSite_CuaHangDienThoai.Common.Common.FormatNumber(tongTien, 0));
-                                WebSite_CuaHangDienThoai.Common.Common.SendMail("ShopOnline", "Đơn hàng #" + order.Code, contentCustomer.ToString(), inforKhachHang.Email);
+                                WebSite_CuaHangDienThoai.Common.Common.SendMail("LTDMiniStore", "Đơn hàng #" + order.Code, contentCustomer.ToString(), inforKhachHang.Email);
 
                                 string contentAdmin = System.IO.File.ReadAllText(Server.MapPath("~/Content/templates/send1.html"));
                                 contentAdmin = contentAdmin.Replace("{{MaDon}}", order.Code);
@@ -487,7 +482,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                                 contentAdmin = contentAdmin.Replace("{{DiaChiNhanHang}}", order.Address);
                                 contentAdmin = contentAdmin.Replace("{{ThanhTien}}", WebSite_CuaHangDienThoai.Common.Common.FormatNumber(thanhTien, 0));
                                 contentAdmin = contentAdmin.Replace("{{TongTien}}", WebSite_CuaHangDienThoai.Common.Common.FormatNumber(tongTien, 0));
-                                WebSite_CuaHangDienThoai.Common.Common.SendMail("ShopOnline", "Đơn hàng mới #" + order.Code, contentAdmin.ToString(), ConfigurationManager.AppSettings["EmailAdmin"]);
+                                WebSite_CuaHangDienThoai.Common.Common.SendMail("LTDMiniStore", "Đơn hàng mới #" + order.Code, contentAdmin.ToString(), ConfigurationManager.AppSettings["EmailAdmin"]);
                                 cart.ClearCart();
                                 code = new { Success = true, Code = req.TypePayment, Url = "" };
                                 //if (req.TypePayment == 2)
@@ -517,7 +512,73 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
+        //#region/* Thanh toán vnpay*/
+        //public string UrlPayment(int TypePaymentVN, string orderCode)
+        //{
+        //    var urlPayment = "";
+        //    var order = db.tb_Order.FirstOrDefault(x => x.Code == orderCode);
+        //    //Get Config Info
+        //    string vnp_Returnurl = ConfigurationManager.AppSettings["vnp_Returnurl"]; //URL nhan ket qua tra ve 
+        //    string vnp_Url = ConfigurationManager.AppSettings["vnp_Url"]; //URL thanh toan cua VNPAY 
+        //    string vnp_TmnCode = ConfigurationManager.AppSettings["vnp_TmnCode"]; //Ma định danh merchant kết nối (Terminal Id)
+        //    string vnp_HashSecret = ConfigurationManager.AppSettings["vnp_HashSecret"]; //Secret Key
 
+        //    //Build URL for VNPAY
+        //    //VnPayLibrary vnpay = new VnPayLibrary();
+        //    //var Price = (long)order.TotalAmount * 100;
+        //    //vnpay.AddRequestData("vnp_Version", VnPayLibrary.VERSION);
+        //    vnpay.AddRequestData("vnp_Command", "pay");
+        //    vnpay.AddRequestData("vnp_TmnCode", vnp_TmnCode);
+        //    vnpay.AddRequestData("vnp_Amount", Price.ToString()); //Số tiền thanh toán. Số tiền không mang các ký tự phân tách thập phân, phần nghìn, ký tự tiền tệ. Để gửi số tiền thanh toán là 100,000 VND (một trăm nghìn VNĐ) thì merchant cần nhân thêm 100 lần (khử phần thập phân), sau đó gửi sang VNPAY là: 10000000
+        //    if (TypePaymentVN == 1)
+        //    {
+        //        vnpay.AddRequestData("vnp_BankCode", "VNPAYQR");
+        //    }
+        //    else if (TypePaymentVN == 2)
+        //    {
+        //        vnpay.AddRequestData("vnp_BankCode", "VNBANK");
+        //    }
+        //    else if (TypePaymentVN == 3)
+        //    {
+        //        vnpay.AddRequestData("vnp_BankCode", "INTCARD");
+        //    }
+
+        //    vnpay.AddRequestData("vnp_CreateDate", order.CreatedDate.ToString("yyyyMMddHHmmss"));
+        //    vnpay.AddRequestData("vnp_CurrCode", "VND");
+        //    vnpay.AddRequestData("vnp_IpAddr", Utils.GetIpAddress());
+        //    vnpay.AddRequestData("vnp_Locale", "vn");
+        //    vnpay.AddRequestData("vnp_OrderInfo", "Thanh toán đơn hàng :" + order.Code);
+        //    vnpay.AddRequestData("vnp_OrderType", "other"); //default value: other
+
+        //    vnpay.AddRequestData("vnp_ReturnUrl", vnp_Returnurl);
+        //    vnpay.AddRequestData("vnp_TxnRef", order.Code); // Mã tham chiếu của giao dịch tại hệ thống của merchant. Mã này là duy nhất dùng để phân biệt các đơn hàng gửi sang VNPAY. Không được trùng lặp trong ngày
+
+        //    //Add Params of 2.1.0 Version
+        //    //Billing
+
+        //    urlPayment = vnpay.CreateRequestUrl(vnp_Url, vnp_HashSecret);
+        //    //log.InfoFormat("VNPAY URL: {0}", paymentUrl);
+        //    return urlPayment;
+        //}
+        //#endregion
+
+        private void DeleteCartSucces(int idKhachHang, int productId)
+        {
+            if (Session["CustomerId"] != null)
+            {
+                int idKhach = (int)Session["CustomerId"];
+                var checkCart = db.tb_Cart.FirstOrDefault(x => x.CustomerId == idKhach);
+                if (checkCart != null)
+                {
+                    var checkItemCart = db.tb_CartItem.SingleOrDefault(x => x.CartId == checkCart.CartId && x.ProductDetailId == productId);
+                    if (checkItemCart != null)
+                    {
+                        db.tb_CartItem.Remove(checkItemCart);
+                        db.SaveChanges();
+                    }
+                }
+            }
+        }
 
 
         public ActionResult ShowCount()

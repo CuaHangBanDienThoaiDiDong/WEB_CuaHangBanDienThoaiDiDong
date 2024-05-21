@@ -38,7 +38,7 @@
         });
 
     });
-    $('body').on('click', '.btnDelete', function (e) {
+    $('body').on('click', '.btnDeleteNhapKhoSanpham', function (e) {
         e.preventDefault();
         var id = $(this).data('id');
 
@@ -104,7 +104,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '/admin/WareHouseImports/Delete',
+                        url: '/admin/WareHouseImport/Delete',
                         type: 'POST',
                         data: { id: productId },
                         success: function (rs) {

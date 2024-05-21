@@ -26,6 +26,7 @@
                     <span><b>Địa chỉ:</b> @Model.tb_Supplier.Location</span>
                     <br />
                     <span><b>Điện thoại:</b> @Model.tb_Supplier.Phone</span>
+                    <span><b>Ngày nhận:</b> @(Model.CreateDate.HasValue ? Model.CreateDate.Value.ToString("dd/MM/yyyy") : "Không có dữ liệu")</span>
                 </div>
             </div>
         

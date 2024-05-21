@@ -86,10 +86,10 @@
 
     <div class="card">
         <div class="card-header">
-             <h3 class="card-title">Danh sách phiếu nhập của nhà cung cấp</h3>
+            <h3 class="card-title text-center">Danh sách phiếu nhập của nhà cung cấp</h3>
         </div>
-        <p> Chưa có </p>
-        @*@Html.Action("Partial_DetailProduct", "ProductDetail", new { id = Model.ProductsId })*@
+     
+        @Html.Action("Partail_DanhSachPhieu", "Supplier", new { id = Model.SupplierId })
         @*@Html.Action("test", "ProductDetail", new {id=Model.ProductsId})*@
     </div>
 </section>

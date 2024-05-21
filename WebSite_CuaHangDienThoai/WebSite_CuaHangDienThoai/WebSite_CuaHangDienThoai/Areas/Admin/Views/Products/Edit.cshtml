@@ -77,7 +77,7 @@
                                             @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
                                             @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
                                         </div>
-                                        <div class="form-group "style="display:none">
+                                        <div class="form-group " style="display:none">
                                             <label for="exampleInputEmail1">Alias</label>
                                             @Html.TextBoxFor(x => x.Alias, new { @class = "form-control", @placeholder = "Alias" })
                                             @Html.ValidationMessageFor(x => x.Alias, null, new { @class = "text-danger" })
@@ -100,42 +100,14 @@
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Mô tả</label>
                                             @*@Html.TextAreaFor(x => x.Description, new { @class = "form-control", @placeholder = "Mã mã phẩm" })
-                @Html.ValidationMessageFor(x => x.Description, null, new { @class = "text-danger" })*@
+                                                @Html.ValidationMessageFor(x => x.Description, null, new { @class = "text-danger" })*@
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Chi tiết sản phẩm</label>
                                             @*@Html.TextAreaFor(x => x.Detail, new { @class = "form-control", @id = "txtDetail" })
-                @Html.ValidationMessageFor(x => x.Detail, null, new { @class = "text-danger" })*@
+                                                @Html.ValidationMessageFor(x => x.Detail, null, new { @class = "text-danger" })*@
                                         </div>
-                                        @*<div class="row">
-                <div class="col-3">
 
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Giá</label>
-                        <input type="text" name="demoPrice" id="demoPrice" value="@Model.Price" class="form-control auto" data-a-dec="," data-a-sep=".">
-                        @Html.HiddenFor(x => x.Price, new { @class = "", @placeholder = "Giá" })
-                        @Html.ValidationMessageFor(x => x.Price, null, new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Giá khuyến mãi</label>
-                        <input type="text" name="demoPriceSale" id="demoPriceSale" value="@Model.PriceSale" class="form-control auto">
-                        @Html.HiddenFor(x => x.PriceSale, new { @class = "form-control", @placeholder = "Khuyến mãi" })
-                        @Html.ValidationMessageFor(x => x.PriceSale, null, new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Giá nhập</label>
-                        <input type="text" name="demoOriginalPrice" id="demoOriginalPrice" value="@Model.OrigianlPrice" class="form-control auto">
-                        @Html.HiddenFor(x => x.OrigianlPrice, new { @class = "form-control", @placeholder = "Giá nhập" })
-                        @Html.ValidationMessageFor(x => x.OrigianlPrice, null, new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>*@
                                         <div class="row">
                                             <div class="col-3">
                                                 <div class="form-group">
@@ -192,7 +164,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                
+
                                                                 i++;
                                                             }
                                                         }
@@ -212,23 +184,23 @@
                                             <div class="form-group row">
                                                 <label for="inputName" class="col-sm-2 col-form-label">SEO Title</label>
                                                 @*<div class="col-sm-10">
-                        @Html.TextBoxFor(x => x.SeoTitle, new { @class = "form-control", @placeholder = "SeoTitle" })
-                        @Html.ValidationMessageFor(x => x.SeoTitle, null, new { @class = "text-danger" })
-                    </div>*@
+                                                        @Html.TextBoxFor(x => x.SeoTitle, new { @class = "form-control", @placeholder = "SeoTitle" })
+                                                        @Html.ValidationMessageFor(x => x.SeoTitle, null, new { @class = "text-danger" })
+                                                    </div>*@
                                             </div>
                                             <div class="form-group row">
                                                 <label for="inputEmail" class="col-sm-2 col-form-label">SeoKeywords</label>
                                                 @*<div class="col-sm-10">
-                        @Html.TextBoxFor(x => x.SeoKeywords., new { @class = "form-control", @placeholder = "SeoKeywords" })
-                        @Html.ValidationMessageFor(x => x.SeoKeywords, null, new { @class = "text-danger" })
-                    </div>*@
+                                                        @Html.TextBoxFor(x => x.SeoKeywords., new { @class = "form-control", @placeholder = "SeoKeywords" })
+                                                        @Html.ValidationMessageFor(x => x.SeoKeywords, null, new { @class = "text-danger" })
+                                                    </div>*@
                                             </div>
                                             <div class="form-group row">
                                                 <label for="inputName2" class="col-sm-2 col-form-label">SeoDescription</label>
                                                 @*<div class="col-sm-10">
-                        @Html.TextBoxFor(x => x.SeoDescription, new { @class = "form-control", @placeholder = "SeoDescription" })
-                        @Html.ValidationMessageFor(x => x.SeoDescription, null, new { @class = "text-danger" })
-                    </div>*@
+                                                        @Html.TextBoxFor(x => x.SeoDescription, new { @class = "form-control", @placeholder = "SeoDescription" })
+                                                        @Html.ValidationMessageFor(x => x.SeoDescription, null, new { @class = "text-danger" })
+                                                    </div>*@
                                             </div>
 
                                         </form>
@@ -293,7 +265,7 @@
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1">GPS:</label>
                                                     @*@Html.TextAreaFor(x => x.GPS, new { @class = "form-control", @id = "txtDetail" })
-                        @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })*@
+                                                        @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })*@
                                                     @Html.TextBoxFor(x => x.GPS, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
                                                     @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })
                                                 </div>
@@ -341,7 +313,7 @@
                                                 <div class="col-6">
                                                     <label for="exampleInputEmail1">Công nghệ pin:</label>
                                                     @*@Html.TextAreaFor(x => x.CongNghePin, new { @class = "form-control", @id = "txtDetail" })
-                        @Html.ValidationMessageFor(x => x.CongNghePin, null, new { @class = "text-danger" })*@
+                                                        @Html.ValidationMessageFor(x => x.CongNghePin, null, new { @class = "text-danger" })*@
                                                     @Html.TextBoxFor(x => x.BatteryTechnology, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
                                                     @Html.ValidationMessageFor(x => x.BatteryTechnology, null, new { @class = "text-danger" })
                                                 </div>
@@ -383,109 +355,121 @@
 
 
 @section  scripts{
-    <script>
-        $(document).ready(function () {
-            $('.auto').autoNumeric('init');
-            $('#demoPrice').bind('blur focusout keypress keyup', function () {
-                var demoGet = $('#demoPrice').autoNumeric('get');
-                $('#Price').val(demoGet);
-                $('#Price').autoNumeric('set', demoGet);
-            });
-            $('#demoPriceSale').bind('blur focusout keypress keyup', function () {
-                var demoGet = $('#demoPriceSale').autoNumeric('get');
-                $('#PriceSale').val(demoGet);
-                $('#PriceSale').autoNumeric('set', demoGet);
-            });
-            $('#demoOriginalPrice').bind('blur focusout keypress keyup', function () {
-                var demoGet = $('#demoOriginalPrice').autoNumeric('get');
-                $('#OrigianlPrice').val(demoGet);
-                $('#OrigianlPrice').autoNumeric('set', demoGet);
-            });
-            //CKEDITOR.replace('txtDetail', {
-            //    customConfig: '/content/ckeditor/config.js',
-            //    extraAllowedContent: 'span',
-            //});
 
-            $('body').on('click', '.btnXoaAnh', function () {
-                var conf = confirm('Bạn có muốn xóa ảnh này không?');
-                if (conf === true) {
-                    var _id = $(this).data('id');
-                    $('#trow_' + _id).fadeTo('fast', 0.5, function () {
-                        $(this).slideUp('fast', function () { $(this).remove(); });
-                    });
-                    var temp = $('#tCurrentId').val();
-                    var currentId = parseInt(temp) - 1;
-                    $('#tCurrentId').val(currentId);
-                }
-            });
-            CKEDITOR.replace('txtDetail', {
-                customConfig: '/content/ckeditor/config.js',
-                extraAllowedContent: 'span',
-            });
-        });
-       
-        //Start Update hinh ảnh 
-        $('#iTaiAnh').click(function () {
-            // Lấy ProductsId từ data attribute
-            var productsId = $(this).data('producid');
-            // Mở CKFinder
-            BrowseServer(productsId);
-        });
+        <script>
+            $(document).ready(function () {
+                $('.auto').autoNumeric('init');
+                $('#demoPrice').bind('blur focusout keypress keyup', function () {
+                    var demoGet = $('#demoPrice').autoNumeric('get');
+                    $('#Price').val(demoGet);
+                    $('#Price').autoNumeric('set', demoGet);
+                });
+                $('#demoPriceSale').bind('blur focusout keypress keyup', function () {
+                    var demoGet = $('#demoPriceSale').autoNumeric('get');
+                    $('#PriceSale').val(demoGet);
+                    $('#PriceSale').autoNumeric('set', demoGet);
+                });
+                $('#demoOriginalPrice').bind('blur focusout keypress keyup', function () {
+                    var demoGet = $('#demoOriginalPrice').autoNumeric('get');
+                    $('#OrigianlPrice').val(demoGet);
+                    $('#OrigianlPrice').autoNumeric('set', demoGet);
+                });
 
-        // Hàm JavaScript để mở CKFinder và xử lý ảnh đã chọn
-        function BrowseServer(productsId) {
-            var finder = new CKFinder();
-            finder.selectActionFunction = function (fileUrl) {
-                // Sau khi chọn ảnh, gửi yêu cầu cập nhật đường dẫn ảnh mới
-                updateProductImage(productsId, fileUrl);
-            };
-            finder.popup();
-        }
-        function updateProductImage(productsId, newImageUrl) {
-            // Gửi yêu cầu POST đến action UpdateImage trong controller
-            $.ajax({
-                type: "POST",
-                url: "/Product/UpdateImage",
-                data: { productsId: productsId, newImageUrl: newImageUrl },
-                success: function (response) {
-                    // Xử lý phản hồi từ server sau khi cập nhật thành công hoặc thất bại
-                    if (response.success) {
-                        alert(response.message);
-                        // Cập nhật giao diện nếu cần
-                    } else {
-                        alert(response.message);
+                $('body').on('click', '.btnXoaAnh', function () {
+                    var conf = confirm('Bạn có muốn xóa ảnh này không?');
+                    if (conf === true) {
+                        var _id = $(this).data('id');
+                        $('#trow_' + _id).fadeTo('fast', 0.5, function () {
+                            $(this).slideUp('fast', function () { $(this).remove(); });
+                        });
+                        var temp = $('#tCurrentId').val();
+                        var currentId = parseInt(temp) - 1;
+                        $('#tCurrentId').val(currentId);
                     }
-                },
-                error: function () {
-                    alert('Đã xảy ra lỗi khi gửi yêu cầu cập nhật ảnh');
-                }
-            });
-        }
-       // End Update hinh ảnh 
-        function addImageProduct(url) {
-            var temp = $('#tCurrentId').val();
-            var currentId = parseInt(temp) + 1;
-            var str = "";
-            if (currentId == 1) {
-                str += `<tr id="trow_${currentId}">
-                                    <td class="text-center">${currentId}</td>
-                                    <td class="text-center"><img width="80" src="${url}" /> <input type='hidden' value="${url}" name="Images"/></td>
-                                    <td class="text-center"><input type="radio" name="rDefault" value="${currentId}" checked="checked"/></td>
-                                    <td class="text-center"><a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a></td>
-                                    </tr>`;
-            }
-            else {
-                str += `<tr id="trow_${currentId}">
-                                    <td class="text-center">${currentId}</td>
-                                    <td class="text-center"><img width="80" src="${url}" /> <input type='hidden' value="${url}" name="Images"/></td>
-                                    <td class="text-center"><input type="radio" name="rDefault" value="${currentId}"/></td>
-                                    <td class="text-center"><a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a></td>
-                                    </tr>`;
-            }
-            $('#tbHtml').append(str);
-            $('#tCurrentId').val(currentId);
-           
-        }
+                });
+                CKEDITOR.replace('txtDetail', {
+                    customConfig: '/content/ckeditor/config.js',
+                    extraAllowedContent: 'span',
+                });
 
-    </script>
-}
+                // Bắt sự kiện nút Lưu lại
+                $('#saveButton').click(function () {
+                    var images = [];
+                    var rDefault = [];
+
+                    $('#tbHtml tr').each(function (index) {
+                        var imgSrc = $(this).find('img').attr('src');
+                        images.push(imgSrc);
+
+                        if ($(this).find('input[type="radio"]').is(':checked')) {
+                            rDefault.push(index + 1);
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/admin/Product/AddImage",
+                        data: {
+                            productsId: $('#ProductsId').val(),
+                            Images: images,
+                            rDefault: rDefault
+                        },
+                        traditional: true,
+                        success: function (response) {
+                            alert(response.message);
+                            if (response.success) {
+                                location.reload();
+                            }
+                        },
+                        error: function () {
+                            alert('Đã xảy ra lỗi khi gửi yêu cầu thêm ảnh');
+                        }
+                    });
+                });
+            });
+
+            // Hàm để mở CKFinder và thêm ảnh mới
+            function BrowseServer(productsId) {
+                var finder = new CKFinder();
+                finder.selectActionFunction = function (fileUrl) {
+                    addImageProduct(fileUrl);
+                };
+                finder.popup();
+            }
+
+            function addImageProduct(url) {
+                var currentId = $('#tbHtml tr').length + 1;
+                var str = `
+                        <tr id="trow_${currentId}">
+                            <td class="text-center">${currentId}</td>
+                            <td class="text-center"><img width="80" src="${url}" /> <input type='hidden' value="${url}" name="Images"/></td>
+                            <td class="text-center"><input type="radio" name="rDefault" value="${currentId}" ${currentId === 1 ? 'checked="checked"' : ''}/></td>
+                            <td class="text-center"><a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a></td>
+                        </tr>`;
+                $('#tbHtml').append(str);
+                $('#tCurrentId').val(currentId);
+            }
+
+            // Hàm JavaScript để cập nhật hình ảnh sản phẩm
+            function updateProductImage(productsId, newImageUrl) {
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/Product/UpdateImage",
+                    data: {
+                        productsId: productsId,
+                        newImageUrl: newImageUrl
+                    },
+                    success: function (response) {
+                        alert(response.message);
+                        if (response.success) {
+                            location.reload();
+                        }
+                    },
+                    error: function () {
+                        alert('Đã xảy ra lỗi khi gửi yêu cầu cập nhật ảnh');
+                    }
+                });
+            }
+        </script>
+    }
+

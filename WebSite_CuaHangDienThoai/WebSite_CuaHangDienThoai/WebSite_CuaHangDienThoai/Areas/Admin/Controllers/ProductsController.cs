@@ -106,6 +106,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                             };
 
                                             db.tb_ProductImage.Add(productImage);
+                                            db.SaveChanges();   
                                         }
                                         catch (System.IO.IOException ex)
                                         {
@@ -230,7 +231,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 model.IsHot = false;
                 model.ModifiedDate = DateTime.Now;
                 model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
-                db.tb_Products.Add(model);
+                //db.tb_Products.Add(model);
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("index");
@@ -238,32 +239,34 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             return View(model);
 
         }
+        [HttpPost]
+        public ActionResult UpdateImage(int productsId, string newImageUrl, int imageIndex, bool isDefault)
+        {
+            try
+            {
+                // Tìm tb_ProductImage tương ứng với ProductsId và imageIndex
+                var productImage = db.tb_ProductImage.FirstOrDefault(pi => pi.ProductsId == productsId && pi.ProductImageId == imageIndex);
 
-        //[HttpPost]
-        //public ActionResult UpdateImage(int productsId, string newImageUrl)
-        //{
-        //    try
-        //    {
-        //        // Tìm tb_ProductImage tương ứng với ProductsId
-        //        var productImage = db.tb_ProductImage.FirstOrDefault(pi => pi.ProductsId == productsId);
+                // Nếu tồn tại tb_ProductImage, cập nhật đường dẫn ảnh mới
+                if (productImage != null)
+                {
+                    productImage.Image = System.IO.File.ReadAllBytes(Server.MapPath(newImageUrl));
+                    productImage.IsDefault = isDefault;
+                    db.SaveChanges();
+                    return Json(new { success = true, message = "Cập nhật ảnh thành công" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Không tìm thấy ảnh để cập nhật" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message });
+            }
+        }
 
-        //        // Nếu tồn tại tb_ProductImage, cập nhật đường dẫn ảnh mới
-        //        if (productImage != null)
-        //        {
-        //            productImage.Image = newImageUrl;
-        //            db.SaveChanges();
-        //            return Json(new { success = true, message = "Cập nhật ảnh thành công" });
-        //        }
-        //        else
-        //        {
-        //            return Json(new { success = false, message = "Không tìm thấy ảnh để cập nhật" });
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message });
-        //    }
-        //}
+
         //public ActionResult Edit(tb_Products model)
         //{
         //    if (ModelState.IsValid)
