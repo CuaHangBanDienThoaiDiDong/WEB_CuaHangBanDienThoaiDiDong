@@ -88,41 +88,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                         {
                             if (ModelState.IsValid)
                             {
-                                if (Images != null && Images.Count > 0)
-                                {
-                                    for (int i = 0; i < Images.Count; i++)
-                                    {
-                                        try
-                                        {
-                                            byte[] imageBytes = System.IO.File.ReadAllBytes(Server.MapPath(Images[i]));
-
-                                            bool isDefault = (i + 1 == rDefault[0]);
-
-                                            tb_ProductImage productImage = new tb_ProductImage
-                                            {
-                                                ProductsId = model.ProductsId,
-                                                Image = imageBytes,
-                                                IsDefault = isDefault
-                                            };
-
-                                            db.tb_ProductImage.Add(productImage);
-                                            db.SaveChanges();   
-                                        }
-                                        catch (System.IO.IOException ex)
-                                        {
-                                            code = new { Success = false, Code = -5, Url = "" };
-                                        }
-                                        catch (System.UnauthorizedAccessException ex)
-                                        {
-                                            code = new { Success = false, Code = -5, Url = "" };
-                                        }
-                                        catch (System.Exception ex)
-                                        {
-                                            code = new { Success = false, Code = -5, Url = "" };
-                                        }
-                                    }
-
-                                }
+                               
 
                                 var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
                                 model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
@@ -159,6 +125,51 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                 }
                                 db.tb_Products.Add(model);
                                 db.SaveChanges();
+
+
+
+
+                                if (Images != null && Images.Count > 0)
+                                {
+                                    for (int i = 0; i < Images.Count; i++)
+                                    {
+                                        try
+                                        {
+                                            byte[] imageBytes = System.IO.File.ReadAllBytes(Server.MapPath(Images[i]));
+
+                                            bool isDefault = (i + 1 == rDefault[0]);
+
+                                            tb_ProductImage productImage = new tb_ProductImage
+                                            {
+                                                ProductsId = model.ProductsId,
+                                                Image = imageBytes,
+                                                IsDefault = isDefault
+                                            };
+
+                                            db.tb_ProductImage.Add(productImage);
+                                            db.SaveChanges();
+                                        }
+                                        catch (System.IO.IOException ex)
+                                        {
+                                            code = new { Success = false, Code = -5, Url = "" };
+                                        }
+                                        catch (System.UnauthorizedAccessException ex)
+                                        {
+                                            code = new { Success = false, Code = -5, Url = "" };
+                                        }
+                                        catch (System.Exception ex)
+                                        {
+                                            code = new { Success = false, Code = -5, Url = "" };
+                                        }
+                                    }
+
+                                }
+                               
+
+
+
+
+
                                 code = new { Success = true, Code = 1, Url = "" };
                             }
                         }
@@ -239,26 +250,51 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             return View(model);
 
         }
+        //[HttpPost]
+        //public ActionResult AddImage(int productsId, string imageUrl, bool isDefault)
+        //{
+        //    try
+        //    {
+        //        // Tạo một tb_ProductImage mới
+        //        var newImage = new tb_ProductImage
+        //        {
+        //            ProductsId = productsId,
+        //            Image = imageUrl,
+        //            IsDefault = isDefault
+        //        };
+
+        //        // Lưu vào cơ sở dữ liệu
+        //        db.tb_ProductImage.Add(newImage);
+        //        db.SaveChanges();
+
+        //        return Json(new { success = true, message = "Thêm ảnh thành công" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message });
+        //    }
+        //}
+
         [HttpPost]
-        public ActionResult UpdateImage(int productsId, string newImageUrl, int imageIndex, bool isDefault)
+        public ActionResult UpdateImage(int productsId,int productImgId , string imageUrl, bool isDefault)
         {
             try
             {
-                // Tìm tb_ProductImage tương ứng với ProductsId và imageIndex
-                var productImage = db.tb_ProductImage.FirstOrDefault(pi => pi.ProductsId == productsId && pi.ProductImageId == imageIndex);
+                byte[] imageBytes = System.IO.File.ReadAllBytes(Server.MapPath(imageUrl));
+                var productImage = db.tb_ProductImage.FirstOrDefault(pi => pi.ProductsId == productsId && pi.ProductImageId== productImgId);
 
-                // Nếu tồn tại tb_ProductImage, cập nhật đường dẫn ảnh mới
-                if (productImage != null)
-                {
-                    productImage.Image = System.IO.File.ReadAllBytes(Server.MapPath(newImageUrl));
-                    productImage.IsDefault = isDefault;
-                    db.SaveChanges();
-                    return Json(new { success = true, message = "Cập nhật ảnh thành công" });
-                }
-                else
+                // Nếu không tìm thấy ảnh
+                if (productImage == null)
                 {
                     return Json(new { success = false, message = "Không tìm thấy ảnh để cập nhật" });
                 }
+
+                productImage.Image = imageBytes;    
+                productImage.IsDefault = isDefault;
+                db.Entry(productImage).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                return Json(new { success = true, message = "Cập nhật ảnh thành công" });
             }
             catch (Exception ex)
             {
@@ -267,29 +303,78 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
 
 
-        //public ActionResult Edit(tb_Products model)
+
+  
+        [HttpPost]
+  
+        public ActionResult AddImg(tb_Products model, List<string> Images, List<int> rDefault, int productsId)
+        {
+            var code = new { Success = true, Code = 1, Url = "" };
+
+            if (Images != null && Images.Count > 0)
+            {
+                for (int i = 0; i < Images.Count; i++)
+                {
+                    try
+                    {
+                        byte[] imageBytes = System.IO.File.ReadAllBytes(Server.MapPath(Images[i]));
+                        bool isDefault = (i + 1 == rDefault[0]);
+
+                        tb_ProductImage productImage = new tb_ProductImage
+                        {
+                            ProductsId = productsId,
+                            Image = imageBytes,
+                            IsDefault = isDefault
+                        };
+
+                        db.tb_ProductImage.Add(productImage);
+                        db.SaveChanges();
+                    }
+                    catch (System.IO.IOException)
+                    {
+                        code = new { Success = false, Code = -5, Url = "" };
+                    }
+                    catch (System.UnauthorizedAccessException)
+                    {
+                        code = new { Success = false, Code = -5, Url = "" };
+                    }
+                    catch (System.Exception)
+                    {
+                        code = new { Success = false, Code = -5, Url = "" };
+                    }
+                }
+            }
+
+            return Json(code);
+        }
+
+
+
+
+        //[HttpPost]
+        //public ActionResult DeleteImage(int productsId, string imageUrl)
         //{
-        //    if (ModelState.IsValid)
+        //    try
         //    {
-
-        //        tb_Staff nvSession = (tb_Staff)Session["user"];
-        //        var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
-        //        model.Modifeby = checkStaff.NameStaff + "-" + checkStaff.Code;
-        //        model.IsActive = false;
-        //        model.IsHome = false;
-        //        model.IsFeature = false;
-        //        model.IsSale = false;
-        //        model.IsHot = false;
-        //        model.ModifiedDate = DateTime.Now;
-        //        model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
-        //        db.tb_Products.Add(model);
-        //        db.Entry(model).State = System.Data.Entity.EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("index");
+        //        // Tìm và xóa ảnh sản phẩm
+        //        var productImage = db.tb_ProductImage.FirstOrDefault(pi => pi.ProductsId == productsId && pi.ImageUrl == imageUrl);
+        //        if (productImage != null)
+        //        {
+        //            db.tb_ProductImage.Remove(productImage);
+        //            db.SaveChanges();
+        //            return Json(new { success = true, message = "Xóa ảnh thành công" });
+        //        }
+        //        else
+        //        {
+        //            return Json(new { success = false, message = "Không tìm thấy ảnh để xóa" });
+        //        }
         //    }
-        //    return View(model);
-
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message });
+        //    }
         //}
+
 
 
 

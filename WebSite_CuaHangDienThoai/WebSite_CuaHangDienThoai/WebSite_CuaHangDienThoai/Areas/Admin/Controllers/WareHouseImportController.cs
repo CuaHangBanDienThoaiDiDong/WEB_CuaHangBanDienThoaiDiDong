@@ -24,6 +24,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
+               
                 IEnumerable<tb_ImportWarehouse> items = db.tb_ImportWarehouse.OrderByDescending(x => x.ImportWarehouseId);
                 if (items != null)
                 {
