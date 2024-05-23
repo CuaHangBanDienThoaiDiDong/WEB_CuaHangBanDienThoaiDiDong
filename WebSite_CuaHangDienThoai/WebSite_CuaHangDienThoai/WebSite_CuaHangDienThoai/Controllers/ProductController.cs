@@ -16,7 +16,8 @@ namespace WebSite_CuaHangDienThoai.Controllers
         CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
         public ActionResult Index(int? page)
         {
-            IEnumerable<tb_Products> items = db.tb_Products.Where(x => x.IsActive==true).OrderByDescending(x => x.ProductsId );
+            //IEnumerable<tb_Products> items = db.tb_Products.Where(x => x.IsActive==true).OrderByDescending(x => x.ProductsId );
+            IEnumerable<tb_Products> items = db.tb_Products.Where(x => x.IsActive==true).ToList();
             if (items != null)
             {
 
@@ -45,8 +46,8 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         public ActionResult Search(string key)
         {
-            var products = db.tb_Products.Where(p => p.Alias.Contains(key)).ToList();
-            int count = db.tb_Products.Where(p => p.Alias.Contains(key)).Count();
+            var products = db.tb_Products.Where(p => p.Title.Contains(key)).ToList();
+            int count = db.tb_Products.Where(p => p.Title.Contains(key)).Count();
             ViewBag.Total = count;
             ViewBag.SearchString = key;
             return View(products);
@@ -60,7 +61,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
 
-                var products = db.tb_Products.Where(p => p.Alias.Contains(searchString)).Take(5).ToList();
+                var products = db.tb_Products.Where(p => p.Title.Contains(searchString)).Take(5).ToList();
                 ViewBag.products = products;
                 return PartialView(products);
             }
@@ -326,14 +327,13 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
-
         //Start lấy các hãng cho mỗi danh mục 
         public ActionResult Partial_GetUniqueCompanyTitlesForCategory(int categoryId, string alias, string categoryTitle)
         {
             using (var db = new CUAHANGDIENTHOAIEntities()) // Thay "YourDbContext" bằng tên DbContext của bạn
             {
                 var uniqueCompanyData = (from p in db.tb_Products
-                                         where p.ProductCategoryId == categoryId && p.IsActive==true
+                                         where p.ProductCategoryId == categoryId && p.IsActive == true
                                          group p by p.ProductCompanyId into g
                                          select new UniqueCompanyTitlesViewModel
                                          {

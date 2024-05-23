@@ -10,6 +10,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public string CompanyTitles { get; set; }
         public int CompanyIds { get; set; }
         public int ProductCount { get; set; }
+        public int ProductDetailCount { get; set; } 
 
     }
 }

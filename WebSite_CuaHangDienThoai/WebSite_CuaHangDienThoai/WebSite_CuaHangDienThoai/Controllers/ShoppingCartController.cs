@@ -19,17 +19,15 @@ namespace WebSite_CuaHangDienThoai.Controllers
             {
                 int idKhach = (int)Session["CustomerId"];
 
-                var checkIdCart = db.tb_Cart.SingleOrDefault(x => x.CustomerId == idKhach);
+                var checkIdCart = db.tb_Cart.FirstOrDefault(x => x.CustomerId == idKhach);
 
                 if (checkIdCart != null)
                 {
                     int checkId = checkIdCart.CartId;
 
-                    var cartItem = db.tb_CartItem.Where(row => row.CartId == checkId);
-                    if (cartItem != null && cartItem.Any())
-                    {
-                        ViewBag.Cart = cartItem;
-                    }
+                    var item = db.tb_Cart.Find(checkId);
+                    ViewBag.item = item;
+                    return View(item);
 
                 }
             }
@@ -41,26 +39,25 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return View();
         }
 
-        public ActionResult Partial_ItemCart()
+        public ActionResult Partial_ItemCart(int id)
         {
 
             if (Session["CustomerId"] != null)
             {
-                int idKhach = (int)Session["CustomerId"];
-                //tb_Cart sessCart = (tb_Cart)idKhach;
-                var checkIdCart = db.tb_Cart.FirstOrDefault(x => x.CustomerId == idKhach);
-                if (checkIdCart != null)
+                var checkCart = db.tb_Cart.FirstOrDefault(x => x.CartId == id);
+                if (checkCart != null) 
                 {
-                    int checkId = checkIdCart.CartId;
-
-                    var cartItem = db.tb_CartItem.OrderByDescending(row => row.CartId == checkId);
-                    return PartialView(cartItem);
+                    var cartItem = db.tb_CartItem.Where(row => row.CartId== checkCart.CartId).OrderByDescending(x=>x.CartItem).ToList();
+                    if (cartItem != null)
+                    {
+                        ViewBag.Count=cartItem.Count;   
+                        return PartialView(cartItem);
+                    }
+                    else
+                    {
+                        return PartialView();
+                    }
                 }
-                else
-                {
-
-                }
-
             }
             return PartialView();
         }
@@ -87,7 +84,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
                 int idKhach = (int)Session["CustomerId"];
 
-                var checkIdCart = db.tb_Cart.SingleOrDefault(x => x.CustomerId == idKhach);
+                var checkIdCart = db.tb_Cart.FirstOrDefault(x => x.CustomerId == idKhach);
 
                 if (checkIdCart != null)
                 {
@@ -106,14 +103,16 @@ namespace WebSite_CuaHangDienThoai.Controllers
                         var productDetail = db.tb_ProductDetail.Find(id);
                         if (productDetail != null)
                         {
+                           
                             tb_CartItem cartitem = new tb_CartItem
                             {
                                 CartId = checkId,
                                 ProductDetailId = productDetail.ProductDetailId,
                                 Quantity = soluong,
+                               
                                 Price = (decimal)productDetail.Price,
-                                TemPrice = (decimal)productDetail.Price * soluong,
-                                PriceTotal = (decimal)productDetail.Price
+                                TemPrice = (decimal)productDetail.PriceSale,
+                                PriceTotal = (decimal)productDetail.Price * soluong
                             };
                             db.tb_CartItem.Add(cartitem);
                             db.SaveChanges();
@@ -384,7 +383,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
                             foreach (var item in cart.Items)
                             {
-                                var checkQuantityWareHouse = db.tb_ImportWarehouseDetail.Find(item.ProductDetailId);
+                                var checkQuantityWareHouse = db.tb_WarehouseDetail.Find(item.ProductDetailId);
 
                                 if (checkQuantityWareHouse != null)
                                 {

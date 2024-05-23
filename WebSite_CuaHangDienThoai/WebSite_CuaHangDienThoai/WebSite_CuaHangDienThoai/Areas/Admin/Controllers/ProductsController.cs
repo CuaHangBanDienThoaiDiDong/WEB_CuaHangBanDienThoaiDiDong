@@ -32,6 +32,9 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     }
                     var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
                     items = items.ToPagedList(pageIndex, pageSize);
+                    var products = db.tb_Products.ToList();
+
+                    ViewBag.Count = products.Count;
                     ViewBag.PageSize = pageSize;
                     ViewBag.Page = page;
                     return View(items);
@@ -81,7 +84,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
                     string alias = model.Title.Trim() + "" + ProductCategory.Title.Trim() + "" + ProductCompany.Title.Trim();
 
-                    var checkTitle = db.tb_Products.SingleOrDefault(r => r.Title == req.Title && r.Alias == alias && r.ProductCategoryId == req.ProductCategoryId && r.ProductCompanyId == req.ProductCompanyId);
+                    var checkTitle = db.tb_Products.FirstOrDefault(r => r.Title == req.Title && r.ProductCategoryId == req.ProductCategoryId && r.ProductCompanyId == req.ProductCompanyId);
                     if (checkTitle == null)
                     {
                         if (Images != null)

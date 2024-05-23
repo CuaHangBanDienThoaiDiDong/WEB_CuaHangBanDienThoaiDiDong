@@ -1,0 +1,69 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_OrderDetail>
+
+<div class="card-header">
+    <h3>
+        Danh sách sản phẩm
+    </h3>
+    <br />
+    <span><label>Số lượng sản phẩm :</label>@ViewBag.Count </span>
+</div>
+<div class="card-body">
+
+    @if (Model != null && Model.Any())
+    {
+
+
+        int i = 1;
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th class="text-center">STT</th>
+                    <th class="border-gray-200 text-center" scope="col">Tên sản phẩm</th>
+                    <th class="border-gray-200 text-center" scope="col">Dung lượng</th>
+                    <th class="border-gray-200 text-center" scope="col">Màu</th>
+                    <th class="border-gray-200 text-center" scope="col">Giá</th>
+                    <th class="border-gray-200 text-center" scope="col">Số lượng</th>
+                    <th class="border-gray-200 text-center" scope="col">Tổng tiền</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+
+                    var Capacity = "";
+
+                    string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
+
+                    int[] nguongDungLuong = new int[] { 999, 1999 };
+
+                    int index = Array.FindIndex(nguongDungLuong, capacity => item.tb_ProductDetail.Capacity > capacity);
+
+                    Capacity = index != -1 ? dungLuongOptions[index] : item.tb_ProductDetail.Capacity + " Gb";
+
+                    <tr>
+                        <td class="text-center">@i</td>
+                        <td class="text-center">@item.tb_ProductDetail.tb_Products.Title</td>
+                        <td class="text-center">@Capacity</td>
+                        <td class="text-center">@item.tb_ProductDetail.Color</td>
+                        <td class="text-center">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price)</td>
+                        <td class="text-center">@item.Quantity</td>
+                        <td class="text-center">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price * item.Quantity, 0)</td>
+
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+
+
+
+
+
+
+    }
+</div>
+<div class="card-footer">
+
+</div>
