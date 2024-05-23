@@ -120,7 +120,7 @@
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" id="SelectAll" /></th>
-                                            <th>STT</th>
+                                           
                                          
                                             <th>Thông tin sản phẩm</th>
                                             @*<th>Loại sản phẩm</th>
@@ -144,7 +144,7 @@
 
 
 
-                                            var i = 0;
+                                          
 
 
 
@@ -172,13 +172,10 @@
 
                                                 }
                                                 <td><input type="checkbox" class="cbkItem" data-id="@item.ProductDetailId" /></td>
-                                                <td>
-                                                    @(i+1)
-                                                </td>
+                                              
                                                
                                                 <td>
                                                     <div class="row gy-3 mb-4">
-
                                                         <div class="col-lg-5">
                                                           
                                                             <div class="me-lg-5">
@@ -194,7 +191,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
+                                                        <div class="col-lg-2 col-sm-5 col-5 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
                                                             <div class="">
                                                                 <form class="form-inline">
                                                                     <input type="number" class="form-control Quantity" id="@item.ProductDetailId" style="width:80px" value="@item.Quantity" />
@@ -219,7 +216,7 @@
                                                         </div>
                                                         <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
                                                             <div class="float-md-end">
-                                                                <a href="#" data-id="@item.ProductDetailId" class="btn btn-light border px-2 icon-hover-primary btnDelete"><i class="fas fa-heart fa-lg px-1 text-secondary"></i></a>
+                                                                @*<a href="#" data-id="@item.ProductDetailId" class="btn btn-light border px-2 icon-hover-primary btnDelete"><i class="fas fa-heart fa-lg px-1 text-secondary"></i></a>*@
                                                       
                                                                 <a href="#"  data-id="@item.ProductDetailId" class="btn btn-light border text-danger icon-hover-danger btnDelete"> Xóa</a>
                                                             </div>
@@ -229,7 +226,6 @@
                                                 @*<td>@WSite_ShowRoom_CtyThoiTrang.Common.Common.FormatNumber(item.) vnđ</td>*@
                                             
                                             </tr>
-                                            i++;
                                            
 
                                         }

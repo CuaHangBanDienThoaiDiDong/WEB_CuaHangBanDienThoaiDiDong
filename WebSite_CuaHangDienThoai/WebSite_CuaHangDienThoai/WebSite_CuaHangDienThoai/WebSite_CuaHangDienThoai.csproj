@@ -3721,6 +3721,9 @@
     <Content Include="Areas\Admin\Views\Order\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\Order\Detail_SanPham.cshtml" />
     <Content Include="Areas\Admin\Views\Order\OrderExportToday.cshtml" />
+    <Content Include="Areas\Admin\Views\Role\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Role\Partial_AddRole.cshtml" />
+    <Content Include="Areas\Admin\Views\Role\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
@@ -3984,6 +3987,7 @@
     <Compile Include="Areas\Admin\Controllers\ProductDetailImageController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProvincesVNController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RoleController.cs" />
     <Compile Include="Areas\Admin\Controllers\StaffController.cs" />
     <Compile Include="Areas\Admin\Controllers\StoreController.cs" />
     <Compile Include="Areas\Admin\Controllers\SupplierController.cs" />
@@ -4004,9 +4008,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Admin_TokenFunction.cs" />
     <Compile Include="Models\Admin_TokenImportWareHouse.cs" />
     <Compile Include="Models\Admin_TokenProductDetail.cs" />
     <Compile Include="Models\Admin_TokenProducts.cs" />
+    <Compile Include="Models\Admin_TokenRole.cs" />
     <Compile Include="Models\Admin_TokenStore.cs" />
     <Compile Include="Models\Admin_TokenSupplier.cs" />
     <Compile Include="Models\Common\Filter.cs" />
@@ -4209,13 +4215,14 @@
     <Content Include="Views\Product\Partial_GetUniqueCompanyTitlesForCategory.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Product\ProductsByCompany.cshtml" />
-    <Content Include="Views\ShoppingCart\CheckOut.cshtml" />
     <Content Include="Views\ShoppingCart\Partial_ThongTinKhach.cshtml" />
     <Content Include="Views\ShoppingCart\Partial_ChiTietSanPhamMua.cshtml" />
-    <Content Include="Views\ShoppingCart\Partial_CheckOut.cshtml" />
     <Content Include="Views\ProvincesVN\Partial_Provinces.cshtml" />
     <Content Include="Views\ProvincesVN\Partial_Districts.cshtml" />
     <Content Include="Views\ProvincesVN\Partial_Wards.cshtml" />
+    <Content Include="Views\ShoppingCart\CheckOutSucces.cshtml" />
+    <Content Include="Views\ShoppingCart\CheckOut.cshtml" />
+    <Content Include="Views\ShoppingCart\Partial_CheckOut.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

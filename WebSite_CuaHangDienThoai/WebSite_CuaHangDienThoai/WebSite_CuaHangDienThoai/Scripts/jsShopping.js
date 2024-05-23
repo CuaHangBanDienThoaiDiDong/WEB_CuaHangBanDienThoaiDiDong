@@ -391,6 +391,7 @@ function sendAjaxRequest(selectedProductIds) {
             if (result.Success) {
                 console.log('Đặt hàng thành công');
                 window.location.href = '/thanh-toan ';
+               
             } else {
                 if (result.code == -2) {
 
@@ -547,7 +548,6 @@ function ShowCount() {
         }
     });
 }
-functiom
 
 
 function LoadCart() {

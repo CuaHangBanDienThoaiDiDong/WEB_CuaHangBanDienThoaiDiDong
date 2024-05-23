@@ -197,13 +197,13 @@
             <ul class="list-sg-search">
                 @foreach (var item in Model)
                 {
-                    var strImg = "";
+
                     var img = item.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
                     var checkDetail = item.tb_ProductDetailImage.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId);
 
                     var Capacity = "";
 
-                
+
                     string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
 
                     int[] nguongDungLuong = new int[] { 999, 1999 };
@@ -212,9 +212,19 @@
 
                     Capacity = index != -1 ? dungLuongOptions[index] : item.Capacity + " Gb";
 
-                    if (img != null)
+                    byte[] strImg = null;
+                    var CheckImage = item.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault == true);
+
+                    if (CheckImage != null)
                     {
-                        strImg = img.Image;
+                        strImg = CheckImage.Image;
+                    }
+
+                    string imgSrc = "";
+                    if (strImg != null && strImg.Length > 0)
+                    {
+                        string base64String = Convert.ToBase64String(strImg);
+                        imgSrc = $"data:image;base64,{base64String}";
                     }
 
                     if (checkDetail != null && img != null)
@@ -224,7 +234,7 @@
 
                             <a href="/chi-tiet/@item.tb_Products.Alias-p@(item.ProductsId)" class="main-contain" data-s="TwoPriceDetail" data-site="16" data-pro="3" data-cache="True" data-name="iPhone 13" data-id="250258" data-brand="iPhone (Apple)" data-cate="iPhone" data-box="BoxHome">
                                 <div class="img-search">
-                                    <img src="@strImg" alt="@item.tb_Products @Capacity">
+                                    <img src="@imgSrc" alt="@item.tb_Products @Capacity">
                                 </div>
                                 <div class="text-img">
                                     <span>@item.tb_Products.Title @Capacity @item.Color </span>
