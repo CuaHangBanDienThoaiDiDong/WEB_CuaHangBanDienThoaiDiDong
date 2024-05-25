@@ -144,60 +144,72 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
 
 
-
-
         public ActionResult Edit(int? id)
         {
-
             // Kiểm tra xem người dùng đã đăng nhập chưa
             if (Session["user"] == null)
             {
                 return RedirectToAction("DangNhap", "Account");
             }
-            else
-            {
-                var item = db.tb_Store.Find(id);
-                ViewBag.SelectedProvince = item.idProvinces;
-                ViewBag.SelectedDistrict = item.idDistricts;
-                ViewBag.SelectedWard = item.idWards;
-                ViewBag.Provinces = new SelectList(db.Provinces.ToList(), "idProvinces", "name");
-                ViewBag.Districts = new SelectList(db.Districts.Where(d => d.idProvinces == item.idProvinces).ToList(), "idDistricts", "name");
-                ViewBag.Wards = new SelectList(db.Wards.Where(w => w.idDistricts == item.idDistricts).ToList(), "idWards", "name");
 
-                if (item == null)
-                {
-                  
-                    return RedirectToAction("Index", "Store");
-                }
-                return View(item);
+            var item = db.tb_Store.Find(id);
+            if (item == null)
+            {
+                return RedirectToAction("Index", "Store");
             }
 
+            ViewBag.SelectedProvince = item.idProvinces;
+            ViewBag.SelectedDistrict = item.idDistricts;
+            ViewBag.SelectedWard = item.idWards;
+            ViewBag.Provinces = new SelectList(db.Provinces.ToList(), "idProvinces", "name", item.idProvinces);
+            ViewBag.Districts = new SelectList(db.Districts.Where(d => d.idProvinces == item.idProvinces).ToList(), "idDistricts", "name", item.idDistricts);
+            ViewBag.Wards = new SelectList(db.Wards.Where(w => w.idDistricts == item.idDistricts).ToList(), "idWards", "name", item.idWards);
 
+            return View(item);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(tb_Store model)
         {
             if (ModelState.IsValid)
             {
-
                 tb_Staff nvSession = (tb_Staff)Session["user"];
                 var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
-               
-                model.IsStatus = false;
-               
-                model.ModifiedDate = DateTime.Now;
-                model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Location);
-                db.tb_Store.Add(model);
-                db.Entry(model).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
-                TempData["SuccessMessage"] = "Thêm cửa hàng thành công."; // Thông báo thành công
 
-                return RedirectToAction("Index");
+                if (checkStaff == null)
+                {
+                    return RedirectToAction("DangNhap", "Account");
+                }
+
+                //if (checkStaff.Permission != 1)
+                //{
+                //    return RedirectToAction("PermissionDenied", "Home");
+                //}
+
+                var existingStore = db.tb_Store.Find(model.StoreId);
+                if (existingStore != null)
+                {
+                    existingStore.Location = model.Location;
+                    existingStore.idProvinces = model.idProvinces;
+                    existingStore.idDistricts = model.idDistricts;
+                    existingStore.idWards = model.idWards;
+                    existingStore.ModifiedDate = DateTime.Now;
+
+                    db.SaveChanges();
+                    TempData["SuccessMessage"] = "Cập nhật cửa hàng thành công.";
+                    return RedirectToAction("Index");
+                }
             }
-            return View(model);
 
+            // Lấy lại danh sách Tỉnh/Thành phố, Quận/Huyện, Phường/Xã nếu có lỗi
+            ViewBag.Provinces = new SelectList(db.Provinces.ToList(), "idProvinces", "name", model.idProvinces);
+            ViewBag.Districts = new SelectList(db.Districts.Where(d => d.idProvinces == model.idProvinces).ToList(), "idDistricts", "name", model.idDistricts);
+            ViewBag.Wards = new SelectList(db.Wards.Where(w => w.idDistricts == model.idDistricts).ToList(), "idWards", "name", model.idWards);
+
+            return View(model);
         }
+
 
 
 

@@ -25,13 +25,17 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
-
+        public ActionResult ProFile(int id) 
+        {
+         
+            var item = db.tb_Customer.Find(id); 
+            return View(item);
+        }    
 
         public ActionResult Login()
         {
             return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(string msnv, string PhoneNumber, string password)
@@ -62,15 +66,54 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
                 else
                 {
-                    ViewBag.error = "Không tồn tại tài khoản";
+                    ViewBag.nonAccount = "Không tồn tại tài khoản";
                     //return RedirectToAction("Register", "Account");
                 }
             }
 
             return View();
         }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Login(string msnv, string PhoneNumber, string password)
+        //{
+        //    var code = new { Success = false, Code = -1, Url = "" };
+        //    if (ModelState.IsValid)
+        //    {
+        //        var f_password = MaHoaPass(password);
+        //        var data = db.tb_Customer.Where(s => s.PhoneNumber.Equals(PhoneNumber) && s.Password.Equals(f_password)).ToList();
+        //        if (data.Count > 0 /*&& dataNhanVien.Count == 0*/)
+        //        {
+        //            var checkClock = db.tb_Customer.FirstOrDefault(s => s.PhoneNumber == PhoneNumber && s.Clock == false);
+        //            if (checkClock != null)
+        //            {
+        //                Session["Client"] = data;
+        //                Session["CustomerName"] = checkClock.CustomerName;
+        //                Session["CustomerId"] = checkClock.CustomerId;
+        //                Session["Email"] = checkClock.Email;
+        //                Session["PhoneNumber"] = checkClock.PhoneNumber;
+        //                Session["img"] = checkClock.Image;
+        //                code = new { Success = true, Code = 1, Url = "" };
+        //            }
+        //            else
+        //            {
+        //                ViewBag.error = "Tài khoản bị đã khóa";
+        //                code = new { Success = false, Code = -3, Url = "" };
+        //            }
 
-    
+        //        }
+
+        //        else
+        //        {
+        //            //ViewBag.error = "Không tồn tại tài khoản";
+        //            code = new { Success = false, Code = -4, Url = "" };// Không tồn tại tài khoản
+        //        }
+        //    }
+
+        //    return Json(code);
+        //}
+
+
         public ActionResult LogOut()
         {
             Session.Clear();
@@ -143,7 +186,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(tb_Customer _khachhang    )
+        public ActionResult Register(tb_Customer _khachhang)
         {
             if (ModelState.IsValid)
             {
@@ -156,15 +199,10 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     {
                         _khachhang.Password = MaHoaPass(_khachhang.Password);
                         _khachhang.NumberofPurchases = 1;
-                        _khachhang.Clock=false;
-                        //_khachhang.
+                        _khachhang.Clock = false;
 
                         db.Configuration.ValidateOnSaveEnabled = false;
-
                         db.tb_Customer.Add(_khachhang);
-                       
-                       
-
                         db.SaveChanges();
 
                         return RedirectToAction("Login", "Account");
@@ -176,9 +214,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                         checkPhone.Birthday = _khachhang.Birthday;
                         checkPhone.Loaction = _khachhang.Loaction;
 
-
                         db.tb_Customer.Add(checkPhone);
-
                         db.Entry(checkPhone).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
 
@@ -187,11 +223,14 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 }
                 else
                 {
-                    ViewBag.error = "Email đã tồn tại";
-                    return RedirectToAction("Login", "Account");
+                    // Trả về thông báo lỗi khi email đã tồn tại
+                    ModelState.AddModelError("", "Email đã tồn tại");
+                    return View(_khachhang);
                 }
             }
-            return View();
+
+            // Trả về view với dữ liệu đang nhập và thông báo lỗi nếu dữ liệu không hợp lệ
+            return View(_khachhang);
         }
 
 

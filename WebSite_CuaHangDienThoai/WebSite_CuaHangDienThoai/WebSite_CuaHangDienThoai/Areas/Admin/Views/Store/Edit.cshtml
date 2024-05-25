@@ -63,7 +63,6 @@
                             <div class="card-header p-2">
                                 <ul class="nav nav-pills">
                                     <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
-                                
                                 </ul>
                             </div><!-- /.card-header -->
                             <div class="card-body">
@@ -87,6 +86,7 @@
                                                 <div class="col-4">
                                                     <label for="ddlProvinces">Danh mục Tỉnh/Thành phố</label>
                                                     @Html.DropDownListFor(x => x.idProvinces, ViewBag.Provinces as SelectList, "-Chọn danh mục Tỉnh/Thành phố-", new { @class = "form-control", @id = "ddlProvinces" })
+
                                                     @Html.ValidationMessageFor(x => x.idProvinces, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-4">
@@ -100,19 +100,14 @@
                                                     @Html.ValidationMessageFor(x => x.idWards, null, new { @class = "text-danger" })
                                                 </div>
                                             </div>
-
-
                                         </div>
-
                                     </div>
-
-
                                 </div>
                                 <!-- /.tab-content -->
                             </div><!-- /.card-body -->
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success">Lưu Lại</button>
-                                <a href="/admin/products" class="btn btn-danger">Quay lại</a>
+                                <a href="/admin/store" class="btn btn-danger">Quay lại</a>
                             </div>
                         </div> <!-- /.card -->
                     }

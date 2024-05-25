@@ -18,13 +18,13 @@
     @*====================Start Bootstrap Banner====================*@
 
     <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-    <link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-    <link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
-    <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
-    <link rel="stylesheet" type="text/css" href="styles/responsive.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link href="~/Content/assets/styles/main_styles.css" rel="stylesheet" />
+   
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/responsive.css">
     <link href="~/Content/Banner/style.css" rel="stylesheet" />
-
     @*====================Start CSS LayOUT====================*@
     <link href="~/Content/LayOut/StyleSheet3.css" rel="stylesheet" />
 
@@ -51,19 +51,21 @@
         }
 
         .search-form {
-            display: block; 
+            display: block;
         }
+
         .search-suggestions {
             position: absolute;
             background-color: white;
             border: 1px solid #ccc;
             z-index: 999;
             width: 92%;
-            top: 100%; 
-            left: 0; 
+            top: 100%;
+            left: 0;
             border-bottom-left-radius: 25px;
             border-bottom-right-radius: 25px
         }
+
         .bg-sg {
             position: fixed;
             top: 0;
@@ -75,9 +77,11 @@
             z-index: 9998;
             display: none;
         }
+
         .swal2-container-custom {
             z-index: 999999 !important;
         }
+
         .swal2-container {
             z-index: 999999 !important;
         }
@@ -89,8 +93,6 @@
             left: 50% !important;
             transform: translate(-50%, -50%) !important;
         }
-
-
     </style>
 </head>
 <body>
@@ -119,29 +121,29 @@
                                 @*Currency / Language / My Account*@
 
                                 @*<li class="currency">
-                                    <a href="#">
-                                        usd
-                                        <i class="fa fa-angle-down"></i>
-                                    </a>
-                                    <ul class="currency_selection">
-                                        <li><a href="#">cad</a></li>
-                                        <li><a href="#">aud</a></li>
-                                        <li><a href="#">eur</a></li>
-                                        <li><a href="#">gbp</a></li>
-                                    </ul>
-                                </li>*@
+                                        <a href="#">
+                                            usd
+                                            <i class="fa fa-angle-down"></i>
+                                        </a>
+                                        <ul class="currency_selection">
+                                            <li><a href="#">cad</a></li>
+                                            <li><a href="#">aud</a></li>
+                                            <li><a href="#">eur</a></li>
+                                            <li><a href="#">gbp</a></li>
+                                        </ul>
+                                    </li>*@
                                 @*<li class="language">
-                                    <a href="#">
-                                        English
-                                        <i class="fa fa-angle-down"></i>
-                                    </a>
-                                    <ul class="language_selection">
-                                        <li><a href="#">French</a></li>
-                                        <li><a href="#">Italian</a></li>
-                                        <li><a href="#">German</a></li>
-                                        <li><a href="#">Spanish</a></li>
-                                    </ul>
-                                </li>*@
+                                        <a href="#">
+                                            English
+                                            <i class="fa fa-angle-down"></i>
+                                        </a>
+                                        <ul class="language_selection">
+                                            <li><a href="#">French</a></li>
+                                            <li><a href="#">Italian</a></li>
+                                            <li><a href="#">German</a></li>
+                                            <li><a href="#">Spanish</a></li>
+                                        </ul>
+                                    </li>*@
                                 <li class="account" style="width:auto">
                                     @if (Session["Client"] != null)
                                     {
@@ -158,7 +160,7 @@
                                     else
                                     {
                                         <a href="#">
-                                            Tài Khoản 
+                                            Tài Khoản
                                             <i class="fa fa-angle-down"></i>
                                         </a>
                                         <ul class="account_selection" style="width:auto">
@@ -168,7 +170,7 @@
                                     }
 
 
-                                   
+
                                 </li>
                             </ul>
                         </div>
@@ -234,25 +236,25 @@
                                 <li class="  nav-item">
 
                                     @*<div class="search-form"  style="">
-                            <form id="search-form">
+                                            <form id="search-form">
 
-                                <div class="row">
-                                    <div class="col-12 ">
-                                        <div class="row no-gutters">
+                                                <div class="row">
+                                                    <div class="col-12 ">
+                                                        <div class="row no-gutters">
 
-                                            <div class="col-lg-8 col-md-6 col-sm-12 p-0">
-                                                <input type="text" placeholder="Tìm kiếm sản phẩm..." class="form-control" id="search" name="search">
-                                            </div>
-                                            <div class="col-lg-1 col-md-3 col-sm-12 p-0 ">
-                                                <button type="submit" class="btn btn-base">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>*@
+                                                            <div class="col-lg-8 col-md-6 col-sm-12 p-0">
+                                                                <input type="text" placeholder="Tìm kiếm sản phẩm..." class="form-control" id="search" name="search">
+                                                            </div>
+                                                            <div class="col-lg-1 col-md-3 col-sm-12 p-0 ">
+                                                                <button type="submit" class="btn btn-base">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>*@
                                     <a class="nav-link rounded-5" data-widget="navbar-search" href="#" role="button" style="background-color: #2f3033;">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:white" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
@@ -265,7 +267,7 @@
 
                                 @if (Session["Client"] != null)
                                 {
-                                    <li class="account" style="color: white; background-color: #101010; margin-right: 20px; width: auto">
+                                    <li class="account" style="color: white; background-color: #101010; width: auto">
 
                                         <a href="#" style="color:white ;width:auto; background-color: #101010;">
                                             @*<img src="~/Content/clients/dist/img/user2-160x160.jpg" class="img-circle elevation-2 w-25 rounded-5" alt="User Image">*@
@@ -275,23 +277,35 @@
 
 
                                         </a>
-                                        <ul class="account_selection" style="width: auto">
-                                            <li style="width: 100% ;"><small><a href="~/Account/LogOut" style="width: auto;margin-top:-100px">
-                                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"style="color:black" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
-                                                                                     <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
-                                                                                     <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
-                                                                                 </svg>
-                                                
-                                                
-                                                
-                                                Đăng xuất</a></small></li>
+                                        <ul class="account_selection" style="width: 150px; display: flex; flex-direction: column;">
+                                            <li style="width: 100%; display: flex;">
+                                                <small>
+                                                    <a href="~/Account/LogOut" style="width: auto;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:black" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
+                                                            <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
+                                                        </svg>
+                                                        Đăng xuất
+                                                    </a>
+                                                    @{
+                                                        int idKhach = (int)Session["CustomerId"];
+                                                        <a href="/tai-khoan/p@(idKhach)" style="width: auto;">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:black" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
+                                                                <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
+                                                            </svg>
+                                                            Tài khoản
+                                                        </a>
+                                                    }
 
+                                                </small>
+                                            </li>
                                         </ul>
                                     </li>
                                     <li class="checkout ">
 
                                         <a href="/Gio-hang" style="background-color: #2f3033;">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"style="color:white"  fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:white" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
                                                 <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
                                             </svg>
                                             <span id="checkout_items" class="checkout_items">0</span>
@@ -325,7 +339,7 @@
 
 
                                 @*<li><a href="#"><i class="fa fa-search" aria-hidden="true" style="color:white"></i></a></li>
-                    <li><a href="#"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a></li>*@
+                                    <li><a href="#"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a></li>*@
 
                             </ul>
                             <div class="hamburger_container">
@@ -360,28 +374,28 @@
                                     </form>
                                     <div class="col-lg-12 text-right nav-search   search-suggestions" style="display: block">
                                         @*<div class="row ">
-                                            <div class="col-lg-12 search-suggestions" style="display: block;">
-                                               
+                                                <div class="col-lg-12 search-suggestions" style="display: block;">
 
-                                            </div>
 
-                                        </div>*@
+                                                </div>
+
+                                            </div>*@
                                     </div>
 
 
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
-                   
+
 
 
 
                 </div>
             </div>
         </div>
-      
+
 
     </header>
 
@@ -395,29 +409,29 @@
         <div class="hamburger_menu_content text-right">
             <ul class="menu_top_nav">
                 @*<li class="menu_item has-children">
-                    <a href="#">
-                        usd
-                        <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="menu_selection">
-                        <li><a href="#">cad</a></li>
-                        <li><a href="#">aud</a></li>
-                        <li><a href="#">eur</a></li>
-                        <li><a href="#">gbp</a></li>
-                    </ul>
-                </li>*@
+                        <a href="#">
+                            usd
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="menu_selection">
+                            <li><a href="#">cad</a></li>
+                            <li><a href="#">aud</a></li>
+                            <li><a href="#">eur</a></li>
+                            <li><a href="#">gbp</a></li>
+                        </ul>
+                    </li>*@
                 @*<li class="  has-children">
-                    <a href="#">
-                        English132
-                        <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="menu_selection">
-                        <li><a href="#">French</a></li>
-                        <li><a href="#">Italian</a></li>
-                        <li><a href="#">German</a></li>
-                        <li><a href="#">Spanish</a></li>
-                    </ul>
-                </li>*@
+                        <a href="#">
+                            English132
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="menu_selection">
+                            <li><a href="#">French</a></li>
+                            <li><a href="#">Italian</a></li>
+                            <li><a href="#">German</a></li>
+                            <li><a href="#">Spanish</a></li>
+                        </ul>
+                    </li>*@
                 <li class="menu_item has-children">
                     @if (Session["Client"] != null)
                     {
@@ -493,7 +507,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="footer_social d-flex flex-row align-items-center justify-content-lg-end justify-content-center">
-                                <div class=""style="margin-top:10px">
+                                <div class="" style="margin-top:10px">
                                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.0673478727094!2d106.62609067589514!3d10.806153889344392!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752be27d8b4f4d%3A0x92dcba2950430867!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBDw7RuZyBUaMawxqFuZyBUUC4gSOG7kyBDaMOtIE1pbmggKEhVSVQp!5e0!3m2!1svi!2s!4v1716385652268!5m2!1svi!2s" width="450" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
                                 </div>
@@ -502,7 +516,7 @@
                     </div>
                 </div>
             </div>
-           
+
         </div>
     </footer>
 
@@ -539,7 +553,7 @@
                 navSearch.style.display = "block"; // Hiển thị nav-search
                 bg.style.display = "block"; // Hiển thị nav-search
                 // Áp dụng hiệu ứng mờ mờ khi hiển thị nav-search
-              
+
             });
 
             searchButtonSearch.addEventListener("click", function (event) {
@@ -547,8 +561,8 @@
                 navMain.style.display = "block"; // Hiển thị nav-main
                 navSearch.style.display = "none"; // Ẩn nav-search
                 bg.style.display = "none"; // Ẩn nav-search
-             
-              
+
+
             });
 
 
@@ -573,20 +587,25 @@
             });
 
             searchBar.addEventListener("focus", function () {
-                searchSuggestions.style.display = "block"; 
+                searchSuggestions.style.display = "block";
                 navSearch.style.filter = "blur(8px)";
                 navSearch.style.backdropFilter = "blur(8px)";
             });
 
         });
 
-      
+
 
     </script>
 
 
 
     @*====================Start JS Temp====================*@
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
     @*====================Start JS Temp====================*@
     <script src="~/Content/assets/js/jquery-3.2.1.min.js"></script>
@@ -596,12 +615,18 @@
     <script src="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
     <script src="~/Content/assets/plugins/easing/easing.js"></script>
     <script src="~/Content/assets/js/custom.js"></script>
+
+
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <!---SweetAlter-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
 
     @*====================Start JS Temp Tesst====================*@
 
     <script src="~/Scripts/Client/js/LayOut.js"></script>
+    <script src="~/Scripts/JsShoppingCart.js"></script>
 
     @*====================End JS Temp Tesst====================*@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -1,6 +1,6 @@
 ﻿
-@model WebSite_CuaHangDienThoai.Models.Token.Admin.Admin_TokenFunction
-@using (Ajax.BeginForm("Add", "Products", new AjaxOptions
+@model WebSite_CuaHangDienThoai.Models.Admin_TokenFunction
+@using (Ajax.BeginForm("Add", "Function", new AjaxOptions
 {
     HttpMethod = "POST",
     UpdateTargetId = "load_data",
@@ -106,7 +106,7 @@
                 if (res.Code == -3) {
                     Swal.fire({
                         icon: "warning",
-                        title: "Sản phẩm đã tồn tại...",
+                        title: "Chức năng đã tồn tại...",
                         text: "Dữ liệu này đã có bảng ghi",
                         /*footer: '<a href="#">Bạn có muốn cập nhật lại số lượng?</a>'*/
                     });
@@ -166,9 +166,9 @@
                                 <ul class="nav nav-pills">
                                     <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
                                     @*<li class="nav-item"><a class="nav-link" href="#infor" data-toggle="tab">Thông số kỹ thuật</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Hình ảnh</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Hình ảnh</a></li>
 
-                                    <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">SEO</a></li>*@
+                                        <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">SEO</a></li>*@
                                 </ul>
                             </div><!-- /.card-header -->
                             <div class="card-body">
@@ -177,19 +177,16 @@
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Tên chức năng</label>
 
-                                            <input type="text" name="Title" id="Title" required class="form-control" autocomplete="off" placeholder="Tên chức năng" />
+                                            <input type="text" name="Name" id="Name" required class="form-control" autocomplete="off" placeholder="Tên chức năng" />
                                             @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
-                                            @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
+                                            @Html.ValidationMessageFor(x => x.Name, null, new { @class = "text-danger" })
                                         </div>
-                                      
 
-                                       
+
+
                                     </div>
                                     <!-- /.tab-pane -->
-                                   
                                     <!-- /.tab-pane infor -->
-
-                                 
                                     <!-- /.tab-pane -->
                                 </div>
                                 <!-- /.tab-content -->

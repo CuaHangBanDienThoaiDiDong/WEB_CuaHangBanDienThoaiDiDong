@@ -44,6 +44,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public Nullable<System.DateTime> SuccessDate { get; set; }
         public Nullable<int> CustomerId { get; set; }
     
+        public virtual tb_Customer tb_Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_ExportWareHouse> tb_ExportWareHouse { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

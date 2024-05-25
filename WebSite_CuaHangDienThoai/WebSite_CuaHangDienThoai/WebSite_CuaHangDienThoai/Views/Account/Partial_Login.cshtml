@@ -86,7 +86,7 @@
 
                     Toast.fire({
                         icon: "success",
-                        title: "Thêm sản phẩm  thành công"
+                        title: "Đăng nhập thành công"
                     });
                     location.href = "/admin/Products/index";
 
@@ -106,17 +106,17 @@
                 if (res.Code == -3) {
                     Swal.fire({
                         icon: "warning",
-                        title: "Sản phẩm đã tồn tại...",
-                        text: "Cấu hình này đã có dữ liệu",
-                        footer: '<a href="#">Bạn có muốn cập nhật lại số lượng?</a>'
+                        title: "Tài khoản gặp sự số...",
+                        text: "Tài khoản bị đã khóa",
+                      /*  footer: '<a href="#">Bạn có muốn cập nhật lại số lượng?</a>'*/
                     });
                 }
                 if (res.Code == -4) {
                     Swal.fire({
                         icon: "question",
-                        title: "Lỗi thêm nhân viên...",
+                        title: "Tài khoản chưa đăng ký...",
                         text: "Không thấy chức năng cho nhân viên mới ",
-                        footer: '<a href="#">Why do I have this issue?</a>'
+                        footer: '<a href="/dang-ky">Đăng ký tại !</a>'
                     });
 
                 }
@@ -181,6 +181,7 @@
             <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                 @*<input class="input100" type="text" name="email" placeholder="Email">*@
                 @Html.TextBoxFor(m => m.SDT, "", new { @class = "form-control input100", @placeholder = "Nhập Số Điện Thoại Của Bạn" })
+                @Html.ValidationMessageFor(x => x.SDT, null, new { @class = "text-danger" })
                 <span class="focus-input100"></span>
                 <span class="symbol-input100">
                     <i class="fa fa-envelope" aria-hidden="true"></i>
@@ -189,6 +190,7 @@
 
             <div class="wrap-input100 validate-input" data-validate="Password is required">
                 @Html.PasswordFor(m => m.Password, new { @class = "form-control input100", @placeholder = "Mật khẩu" })
+                @Html.ValidationMessageFor(x => x.Password, null, new { @class = "text-danger" })
                 @*<input class="input100" type="password" name="pass" placeholder="Password" id="password-field">*@
                 <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                 <span class="focus-input100"></span>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,8 +12,10 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
     {
         // GET: Admin/Role
         CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
+
+
             if (Session["user"] == null)
             {
                 return RedirectToAction("DangNhap", "Account");
@@ -20,18 +23,53 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             else
             {
 
-                tb_Staff nvSession = (tb_Staff)Session["user"];
-                var check = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
-                if (check == null)
+
+                if (Session["user"] == null)
                 {
-                    return RedirectToAction("NonRole", "HomePage");
+                    return RedirectToAction("DangNhap", "Account");
                 }
                 else
                 {
-                    var item = db.tb_Function.ToList();
-                    return View(item);
-                }
 
+                    tb_Staff nvSession = (tb_Staff)Session["user"];
+                    var check = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
+                    if (check == null)
+                    {
+                        return RedirectToAction("NonRole", "HomePage");
+                    }
+                    else
+                    {
+                        IEnumerable<tb_Role> items = db.tb_Role.OrderByDescending(x => x.StaffId);
+                        if (items != null)
+                        {
+                            var pageSize = 10;
+                            if (page == null)
+                            {
+                                page = 1;
+                            }
+                            var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+                            items = items.ToPagedList(pageIndex, pageSize);
+                            var products = db.tb_Products.ToList();
+
+                            ViewBag.Count = products.Count;
+                            ViewBag.PageSize = pageSize;
+                            ViewBag.Page = page;
+                            return View(items);
+                        }
+                        else
+                        {
+                            ViewBag.txt = "Không tồn tại chức năng";
+                            return View();
+                        }
+
+                    }
+
+                }
+             
+
+
+              
+               
             }
 
         }

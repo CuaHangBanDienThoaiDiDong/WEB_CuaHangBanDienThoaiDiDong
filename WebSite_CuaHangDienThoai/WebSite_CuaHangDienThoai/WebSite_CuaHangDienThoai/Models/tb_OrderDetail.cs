@@ -20,10 +20,8 @@ namespace WebSite_CuaHangDienThoai.Models
         public Nullable<int> CartItem { get; set; }
         public Nullable<bool> DamagedProduct { get; set; }
         public Nullable<int> OrderId { get; set; }
-        public Nullable<int> CustomerId { get; set; }
         public Nullable<int> ProductDetailId { get; set; }
     
-        public virtual tb_Customer tb_Customer { get; set; }
         public virtual tb_Order tb_Order { get; set; }
         public virtual tb_ProductDetail tb_ProductDetail { get; set; }
     }

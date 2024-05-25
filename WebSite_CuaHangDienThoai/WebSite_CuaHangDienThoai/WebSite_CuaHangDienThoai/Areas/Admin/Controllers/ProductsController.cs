@@ -94,7 +94,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                
 
                                 var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
-                                model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
+                                model.CreatedBy = checkStaff.NameStaff.Trim() ;
                                 model.CreatedDate = DateTime.Now;
                                 model.ModifiedDate = DateTime.Now;
                                 model.IsActive = req.IsActive;
@@ -109,7 +109,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                 model.BatteryCapacity = req.DungLuongPin;
                                 model.OperatingSystem = req.HeDieuHanh.Trim();
                                 model.MobileNetwork = req.MangDiDong.Trim();
-                                model.Sim = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Sim.Trim());
+                                model.Sim = req.Sim.Trim();
                                 model.Wifi = req.Wifi.Trim();
                                 model.GPS = req.GPS.Trim();
                                 model.Bluetooth = req.Bluetooth.Trim();
@@ -255,7 +255,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
         //[HttpPost]
         //public ActionResult AddImage(int productsId, string imageUrl, bool isDefault)
-        //{
+        //{vvvvvvvvvv
+        //{vvvvvvvvvv
         //    try
         //    {
         //        // Tạo một tb_ProductImage mới

@@ -390,7 +390,8 @@ function sendAjaxRequest(selectedProductIds) {
             // Xử lý kết quả từ server nếu cần
             if (result.Success) {
                 console.log('Đặt hàng thành công');
-                window.location.href = '/thanh-toan ';
+                /*window.location.href = '/thanh-toan';*/
+                window.location.href = '/thanh-toan';
                
             } else {
                 if (result.code == -2) {
@@ -426,12 +427,12 @@ function selectFirstButtonAndLoadPrice() {
 
   
     var productDetailId = firstButton.data('id');
-
+    
    
     firstButton.addClass('selected');
     loadPriceForByCapcityColor(productDetailId);
 }
-//End lấy nút màu đầu tiên trong Partail_ColorByProductsId cho trnag detail
+//End lấy nút màu đầu tiên trong Partail_ColorByProductsId cho trnag detaila
 //load giá tiền theo màu và dung lượng
 function loadPriceForByCapcityColor(productDetailId) {
     $.ajax({
@@ -553,6 +554,7 @@ function ShowCount() {
 function LoadCart() {
     $.ajax({
         url: '/shoppingcart/Partial_ItemCart',
+
         type: 'GET',
         success: function (rs) {
             $('#load_data').html(rs);

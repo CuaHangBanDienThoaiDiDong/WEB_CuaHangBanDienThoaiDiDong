@@ -21,7 +21,15 @@ namespace WebSite_CuaHangDienThoai.Models
             if (checkSanPham != null)
             {
                 checkSanPham.SoLuong = SoLuong;
-                checkSanPham.PriceTotal = checkSanPham.Price * checkSanPham.SoLuong;
+                if (checkSanPham.PriceSale > 0)
+                {
+                    checkSanPham.PriceTotal = checkSanPham.PriceSale * checkSanPham.SoLuong;
+                }
+                else 
+                {
+                    checkSanPham.PriceTotal = checkSanPham.Price * checkSanPham.SoLuong;
+                }
+               
             }
             else
             {
@@ -76,6 +84,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public byte[] ProductImg { get; set; }
         public int SoLuong { get; set; }
         public decimal Price { get; set; }
+        public decimal PriceSale { get; set; }
         public decimal PriceTotal { get; set; }
 
         public string Color { get; set; }

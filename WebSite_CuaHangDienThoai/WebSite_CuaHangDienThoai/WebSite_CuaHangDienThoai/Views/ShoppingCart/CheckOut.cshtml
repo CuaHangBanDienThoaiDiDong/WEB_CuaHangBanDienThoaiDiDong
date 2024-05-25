@@ -13,7 +13,56 @@
 
 <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_styles.css">
 <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_responsive.css">
-<div class="container ">
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-9 loadListProCheckOut">
+            @Html.Action("Partial_ChiTietSanPhamMua", "ShoppingCart")
+        </div>
+
+
+
+
+        <div class="col-lg-3">
+            @Html.Action("Partial_CheckOut", "ShoppingCart")
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<div class="container ">
     <div class="row">
         <div class="col product_section clearfix">
 
@@ -26,10 +75,10 @@
             </div>
 
 
-            @if (ViewBag.Cart != null)
-            {
+            if (ViewBag.Cart != null)
+            {-->
                 <!-- Main Content -->
-                <div class="row">
+                <!--<div class="row">
 
                     <div class="col-md-12 text-center">
                         <h1 class="">Thanh toán</h1>
@@ -40,14 +89,14 @@
                 <hr />
                 <div class="row">
                     <div class="col-md-6">
-                        @Html.Action("Partial_CheckOut", "ShoppingCart")
+                        Html.Action("Partial_CheckOut", "ShoppingCart")
                         <hr />
 
                     </div>
 
                     <div class="col-md-6">
 
-                        @*@Html.Action("Partial_purchaselist", "TestCart")*@
+                        <div id="show_error" class="error"></div>
                     </div>
                 </div>
 
@@ -60,9 +109,11 @@
             }
         </div>
     </div>
-</div>
+</div>-->
 
 @section scripts{
+    <!---SweetAlter-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
     <script src="~/Content/assets/js/categories_custom.js"></script>
     <script>
         function OnFailure(rs) {
@@ -110,5 +161,80 @@
             //    }
             //});
         });
+
+
+
+
+
+        $(document).ready(function () {
+            LoadListProCheckOut();
+
+            $(".btndeleteCheckOut").click(function (e) {
+                e.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+                alert("RTHuan");
+                // Lấy ProductDetailId từ thuộc tính dữ liệu (data)
+                var productId = $(this).data("id");
+
+                Swal.fire({
+                    title: "Bạn có chắc?",
+                    text: "Muốn xóa sản phẩn này!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Xóa !"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/DeleteCartItem/DeleteCartItem',
+                            type: 'POST',
+                            data: { id: productId },
+                            success: function (rs) {
+                                if (rs.Success) {
+                                    if (rs.Code == 1) {
+                                        LoadListProCheckOut
+                                        const Toast = Swal.mixin({
+                                            toast: true,
+                                            position: "top-end",
+                                            showConfirmButton: false,
+                                            timer: 3000,
+                                            timerProgressBar: true,
+                                            didOpen: (toast) => {
+                                                toast.onmouseenter = Swal.stopTimer;
+                                                toast.onmouseleave = Swal.resumeTimer;
+                                            }
+                                        });
+
+                                        Toast.fire({
+                                            icon: "success",
+                                            title: "Xoá thành công"
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+
+            });
+
+
+        });
+
+        function LoadListProCheckOut() {
+            $.ajax({
+                url: '/shoppingcart/Partial_ChiTietSanPhamMua',
+
+                type: 'GET',
+                success: function (rs) {
+                    $('.loadListProCheckOut').html(rs);
+                }
+            });
+        }
+
+
+
+
+
     </script>
 }

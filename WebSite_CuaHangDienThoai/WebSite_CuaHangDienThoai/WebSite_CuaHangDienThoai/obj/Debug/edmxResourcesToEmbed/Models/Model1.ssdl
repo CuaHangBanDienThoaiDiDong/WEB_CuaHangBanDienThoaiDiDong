@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="CUAHANGDIENTHOAI_newModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="Districts">
     <Key>
       <PropertyRef Name="idDistricts" />
@@ -142,7 +142,6 @@
     <Property Name="CartItem" Type="int" />
     <Property Name="DamagedProduct" Type="bit" />
     <Property Name="OrderId" Type="int" />
-    <Property Name="CustomerId" Type="int" />
     <Property Name="ProductDetailId" Type="int" />
   </EntityType>
   <EntityType Name="tb_ProductCategory">
@@ -556,18 +555,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="OrderDetailtKhachHang">
-    <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="0..1" />
-    <End Role="tb_OrderDetail" Type="Self.tb_OrderDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tb_Customer">
-        <PropertyRef Name="CustomerId" />
-      </Principal>
-      <Dependent Role="tb_OrderDetail">
-        <PropertyRef Name="CustomerId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="OrderDetailtoOrder">
     <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="0..1" />
     <End Role="tb_OrderDetail" Type="Self.tb_OrderDetail" Multiplicity="*" />
@@ -589,6 +576,18 @@
       </Principal>
       <Dependent Role="tb_OrderDetail">
         <PropertyRef Name="ProductDetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="OrdertKhachHang">
+    <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="0..1" />
+    <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Customer">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="tb_Order">
+        <PropertyRef Name="CustomerId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -868,7 +867,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
+  <EntityContainer Name="CUAHANGDIENTHOAI_newModelStoreContainer">
     <EntitySet Name="Districts" EntityType="Self.Districts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Provinces" EntityType="Self.Provinces" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
@@ -951,10 +950,6 @@
       <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
       <End Role="tb_ImportWarehouse" EntitySet="tb_ImportWarehouse" />
     </AssociationSet>
-    <AssociationSet Name="OrderDetailtKhachHang" Association="Self.OrderDetailtKhachHang">
-      <End Role="tb_Customer" EntitySet="tb_Customer" />
-      <End Role="tb_OrderDetail" EntitySet="tb_OrderDetail" />
-    </AssociationSet>
     <AssociationSet Name="OrderDetailtoOrder" Association="Self.OrderDetailtoOrder">
       <End Role="tb_Order" EntitySet="tb_Order" />
       <End Role="tb_OrderDetail" EntitySet="tb_OrderDetail" />
@@ -962,6 +957,10 @@
     <AssociationSet Name="OrderDetailtoProductDetai" Association="Self.OrderDetailtoProductDetai">
       <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
       <End Role="tb_OrderDetail" EntitySet="tb_OrderDetail" />
+    </AssociationSet>
+    <AssociationSet Name="OrdertKhachHang" Association="Self.OrdertKhachHang">
+      <End Role="tb_Customer" EntitySet="tb_Customer" />
+      <End Role="tb_Order" EntitySet="tb_Order" />
     </AssociationSet>
     <AssociationSet Name="ProductCompanytoProductDetai" Association="Self.ProductCompanytoProductDetai">
       <End Role="tb_ProductCompany" EntitySet="tb_ProductCompany" />

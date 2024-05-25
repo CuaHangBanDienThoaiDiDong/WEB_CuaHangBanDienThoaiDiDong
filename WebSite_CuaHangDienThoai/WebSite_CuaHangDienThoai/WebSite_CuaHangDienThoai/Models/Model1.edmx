@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="CUAHANGDIENTHOAI_newModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Districts">
           <Key>
             <PropertyRef Name="idDistricts" />
@@ -147,7 +147,6 @@
           <Property Name="CartItem" Type="int" />
           <Property Name="DamagedProduct" Type="bit" />
           <Property Name="OrderId" Type="int" />
-          <Property Name="CustomerId" Type="int" />
           <Property Name="ProductDetailId" Type="int" />
         </EntityType>
         <EntityType Name="tb_ProductCategory">
@@ -561,18 +560,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="OrderDetailtKhachHang">
-          <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="0..1" />
-          <End Role="tb_OrderDetail" Type="Self.tb_OrderDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tb_Customer">
-              <PropertyRef Name="CustomerId" />
-            </Principal>
-            <Dependent Role="tb_OrderDetail">
-              <PropertyRef Name="CustomerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="OrderDetailtoOrder">
           <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="0..1" />
           <End Role="tb_OrderDetail" Type="Self.tb_OrderDetail" Multiplicity="*" />
@@ -594,6 +581,18 @@
             </Principal>
             <Dependent Role="tb_OrderDetail">
               <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OrdertKhachHang">
+          <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="0..1" />
+          <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="tb_Order">
+              <PropertyRef Name="CustomerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -873,7 +872,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
+        <EntityContainer Name="CUAHANGDIENTHOAI_newModelStoreContainer">
           <EntitySet Name="Districts" EntityType="Self.Districts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Provinces" EntityType="Self.Provinces" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
@@ -956,10 +955,6 @@
             <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
             <End Role="tb_ImportWarehouse" EntitySet="tb_ImportWarehouse" />
           </AssociationSet>
-          <AssociationSet Name="OrderDetailtKhachHang" Association="Self.OrderDetailtKhachHang">
-            <End Role="tb_Customer" EntitySet="tb_Customer" />
-            <End Role="tb_OrderDetail" EntitySet="tb_OrderDetail" />
-          </AssociationSet>
           <AssociationSet Name="OrderDetailtoOrder" Association="Self.OrderDetailtoOrder">
             <End Role="tb_Order" EntitySet="tb_Order" />
             <End Role="tb_OrderDetail" EntitySet="tb_OrderDetail" />
@@ -967,6 +962,10 @@
           <AssociationSet Name="OrderDetailtoProductDetai" Association="Self.OrderDetailtoProductDetai">
             <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
             <End Role="tb_OrderDetail" EntitySet="tb_OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="OrdertKhachHang" Association="Self.OrdertKhachHang">
+            <End Role="tb_Customer" EntitySet="tb_Customer" />
+            <End Role="tb_Order" EntitySet="tb_Order" />
           </AssociationSet>
           <AssociationSet Name="ProductCompanytoProductDetai" Association="Self.ProductCompanytoProductDetai">
             <End Role="tb_ProductCompany" EntitySet="tb_ProductCompany" />
@@ -1065,7 +1064,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="CUAHANGDIENTHOAIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="CUAHANGDIENTHOAI_newModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Districts">
           <Key>
             <PropertyRef Name="idDistricts" />
@@ -1135,7 +1134,7 @@
           <Property Name="Code" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="Clock" Type="Boolean" />
           <NavigationProperty Name="tb_Cart" Relationship="Self.GioHangtoKhachHang" FromRole="tb_Customer" ToRole="tb_Cart" />
-          <NavigationProperty Name="tb_OrderDetail" Relationship="Self.OrderDetailtKhachHang" FromRole="tb_Customer" ToRole="tb_OrderDetail" />
+          <NavigationProperty Name="tb_Order" Relationship="Self.OrdertKhachHang" FromRole="tb_Customer" ToRole="tb_Order" />
           <NavigationProperty Name="tb_Return" Relationship="Self.ReturntoKhachHang" FromRole="tb_Customer" ToRole="tb_Return" />
           <NavigationProperty Name="tb_ReviewDetail" Relationship="Self.ReviewDetailtoKhachHang" FromRole="tb_Customer" ToRole="tb_ReviewDetail" />
         </EntityType>
@@ -1221,6 +1220,7 @@
           <Property Name="Success" Type="Boolean" />
           <Property Name="SuccessDate" Type="DateTime" Precision="3" />
           <Property Name="CustomerId" Type="Int32" />
+          <NavigationProperty Name="tb_Customer" Relationship="Self.OrdertKhachHang" FromRole="tb_Order" ToRole="tb_Customer" />
           <NavigationProperty Name="tb_ExportWareHouse" Relationship="Self.ExportWareHousetoOrder" FromRole="tb_Order" ToRole="tb_ExportWareHouse" />
           <NavigationProperty Name="tb_OrderDetail" Relationship="Self.OrderDetailtoOrder" FromRole="tb_Order" ToRole="tb_OrderDetail" />
           <NavigationProperty Name="tb_Return" Relationship="Self.ReturntoOrder" FromRole="tb_Order" ToRole="tb_Return" />
@@ -1236,9 +1236,7 @@
           <Property Name="CartItem" Type="Int32" />
           <Property Name="DamagedProduct" Type="Boolean" />
           <Property Name="OrderId" Type="Int32" />
-          <Property Name="CustomerId" Type="Int32" />
           <Property Name="ProductDetailId" Type="Int32" />
-          <NavigationProperty Name="tb_Customer" Relationship="Self.OrderDetailtKhachHang" FromRole="tb_OrderDetail" ToRole="tb_Customer" />
           <NavigationProperty Name="tb_Order" Relationship="Self.OrderDetailtoOrder" FromRole="tb_OrderDetail" ToRole="tb_Order" />
           <NavigationProperty Name="tb_ProductDetail" Relationship="Self.OrderDetailtoProductDetai" FromRole="tb_OrderDetail" ToRole="tb_ProductDetail" />
         </EntityType>
@@ -1628,14 +1626,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="OrderDetailtKhachHang">
+        <Association Name="OrdertKhachHang">
           <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="0..1" />
-          <End Role="tb_OrderDetail" Type="Self.tb_OrderDetail" Multiplicity="*" />
+          <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tb_Customer">
               <PropertyRef Name="CustomerId" />
             </Principal>
-            <Dependent Role="tb_OrderDetail">
+            <Dependent Role="tb_Order">
               <PropertyRef Name="CustomerId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2071,9 +2069,9 @@
             <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
             <End Role="tb_CartItem" EntitySet="tb_CartItem" />
           </AssociationSet>
-          <AssociationSet Name="OrderDetailtKhachHang" Association="Self.OrderDetailtKhachHang">
+          <AssociationSet Name="OrdertKhachHang" Association="Self.OrdertKhachHang">
             <End Role="tb_Customer" EntitySet="tb_Customer" />
-            <End Role="tb_OrderDetail" EntitySet="tb_OrderDetail" />
+            <End Role="tb_Order" EntitySet="tb_Order" />
           </AssociationSet>
           <AssociationSet Name="ReturntoKhachHang" Association="Self.ReturntoKhachHang">
             <End Role="tb_Customer" EntitySet="tb_Customer" />
@@ -2205,9 +2203,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="CUAHANGDIENTHOAIModelStoreContainer" CdmEntityContainer="CUAHANGDIENTHOAIEntities">
+        <EntityContainerMapping StorageEntityContainer="CUAHANGDIENTHOAI_newModelStoreContainer" CdmEntityContainer="CUAHANGDIENTHOAIEntities">
           <EntitySetMapping Name="Districts">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Districts">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.Districts">
               <MappingFragment StoreEntitySet="Districts">
                 <ScalarProperty Name="idDistricts" ColumnName="idDistricts" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -2216,7 +2214,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Provinces">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Provinces">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.Provinces">
               <MappingFragment StoreEntitySet="Provinces">
                 <ScalarProperty Name="idProvinces" ColumnName="idProvinces" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -2224,7 +2222,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.sysdiagrams">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.sysdiagrams">
               <MappingFragment StoreEntitySet="sysdiagrams">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="principal_id" ColumnName="principal_id" />
@@ -2235,7 +2233,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_Cart">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Cart">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_Cart">
               <MappingFragment StoreEntitySet="tb_Cart">
                 <ScalarProperty Name="CartId" ColumnName="CartId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
@@ -2243,7 +2241,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_CartItem">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_CartItem">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_CartItem">
               <MappingFragment StoreEntitySet="tb_CartItem">
                 <ScalarProperty Name="CartItem" ColumnName="CartItem" />
                 <ScalarProperty Name="CartId" ColumnName="CartId" />
@@ -2256,7 +2254,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_Customer">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Customer">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_Customer">
               <MappingFragment StoreEntitySet="tb_Customer">
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
@@ -2273,7 +2271,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_ExportWareHouse">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_ExportWareHouse">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_ExportWareHouse">
               <MappingFragment StoreEntitySet="tb_ExportWareHouse">
                 <ScalarProperty Name="ExportWareHouseId" ColumnName="ExportWareHouseId" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -2287,7 +2285,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_Function">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Function">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_Function">
               <MappingFragment StoreEntitySet="tb_Function">
                 <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
                 <ScalarProperty Name="TitLe" ColumnName="TitLe" />
@@ -2300,7 +2298,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_ImportWarehouse">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_ImportWarehouse">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_ImportWarehouse">
               <MappingFragment StoreEntitySet="tb_ImportWarehouse">
                 <ScalarProperty Name="ImportWarehouseId" ColumnName="ImportWarehouseId" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -2314,7 +2312,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_ImportWarehouseDetail">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_ImportWarehouseDetail">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_ImportWarehouseDetail">
               <MappingFragment StoreEntitySet="tb_ImportWarehouseDetail">
                 <ScalarProperty Name="ImportWarehouseDetailId" ColumnName="ImportWarehouseDetailId" />
                 <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
@@ -2324,7 +2322,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_Order">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Order">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_Order">
               <MappingFragment StoreEntitySet="tb_Order">
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
@@ -2350,7 +2348,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_OrderDetail">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_OrderDetail">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_OrderDetail">
               <MappingFragment StoreEntitySet="tb_OrderDetail">
                 <ScalarProperty Name="OrderDetailId" ColumnName="OrderDetailId" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
@@ -2358,13 +2356,12 @@
                 <ScalarProperty Name="CartItem" ColumnName="CartItem" />
                 <ScalarProperty Name="DamagedProduct" ColumnName="DamagedProduct" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_ProductCategory">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_ProductCategory">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_ProductCategory">
               <MappingFragment StoreEntitySet="tb_ProductCategory">
                 <ScalarProperty Name="ProductCategoryId" ColumnName="ProductCategoryId" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -2380,7 +2377,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_ProductCompany">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_ProductCompany">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_ProductCompany">
               <MappingFragment StoreEntitySet="tb_ProductCompany">
                 <ScalarProperty Name="ProductCompanyId" ColumnName="ProductCompanyId" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -2394,7 +2391,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_ProductDetail">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_ProductDetail">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_ProductDetail">
               <MappingFragment StoreEntitySet="tb_ProductDetail">
                 <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -2411,7 +2408,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_ProductDetailImage">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_ProductDetailImage">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_ProductDetailImage">
               <MappingFragment StoreEntitySet="tb_ProductDetailImage">
                 <ScalarProperty Name="ProductImageId" ColumnName="ProductImageId" />
                 <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
@@ -2421,7 +2418,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_ProductImage">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_ProductImage">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_ProductImage">
               <MappingFragment StoreEntitySet="tb_ProductImage">
                 <ScalarProperty Name="ProductImageId" ColumnName="ProductImageId" />
                 <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
@@ -2431,7 +2428,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_Products">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Products">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_Products">
               <MappingFragment StoreEntitySet="tb_Products">
                 <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -2473,7 +2470,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_Return">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Return">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_Return">
               <MappingFragment StoreEntitySet="tb_Return">
                 <ScalarProperty Name="ReturnId" ColumnName="ReturnId" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
@@ -2486,7 +2483,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_ReturnDetail">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_ReturnDetail">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_ReturnDetail">
               <MappingFragment StoreEntitySet="tb_ReturnDetail">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ReturnId" ColumnName="ReturnId" />
@@ -2497,7 +2494,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_Review">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Review">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_Review">
               <MappingFragment StoreEntitySet="tb_Review">
                 <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -2509,7 +2506,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_ReviewDetail">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_ReviewDetail">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_ReviewDetail">
               <MappingFragment StoreEntitySet="tb_ReviewDetail">
                 <ScalarProperty Name="ReviewDetailId" ColumnName="ReviewDetailId" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -2523,7 +2520,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_Role">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Role">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_Role">
               <MappingFragment StoreEntitySet="tb_Role">
                 <ScalarProperty Name="StaffId" ColumnName="StaffId" />
                 <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
@@ -2532,7 +2529,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_Staff">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Staff">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_Staff">
               <MappingFragment StoreEntitySet="tb_Staff">
                 <ScalarProperty Name="StaffId" ColumnName="StaffId" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
@@ -2558,7 +2555,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_Store">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Store">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_Store">
               <MappingFragment StoreEntitySet="tb_Store">
                 <ScalarProperty Name="StoreId" ColumnName="StoreId" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -2577,7 +2574,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_Supplier">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Supplier">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_Supplier">
               <MappingFragment StoreEntitySet="tb_Supplier">
                 <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -2587,7 +2584,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_Voucher">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Voucher">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_Voucher">
               <MappingFragment StoreEntitySet="tb_Voucher">
                 <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
@@ -2605,7 +2602,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_Warehouse">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Warehouse">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_Warehouse">
               <MappingFragment StoreEntitySet="tb_Warehouse">
                 <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -2617,7 +2614,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tb_WarehouseDetail">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_WarehouseDetail">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_WarehouseDetail">
               <MappingFragment StoreEntitySet="tb_WarehouseDetail">
                 <ScalarProperty Name="WarehouseDetailId" ColumnName="WarehouseDetailId" />
                 <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
@@ -2627,7 +2624,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Wards">
-            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Wards">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.Wards">
               <MappingFragment StoreEntitySet="Wards">
                 <ScalarProperty Name="idWards" ColumnName="idWards" />
                 <ScalarProperty Name="name" ColumnName="name" />
