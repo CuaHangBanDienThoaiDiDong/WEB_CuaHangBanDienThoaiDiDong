@@ -91,6 +91,58 @@
     });
     //End Hiện thị gợi ý sản phẩm
 
+    //start ap ma giam gia
+    $(document).ready(function () {
+        var typingTimer; 
+        var doneTypingInterval = 2500; 
+        $("#voucherCode").on("input", function () {
+            clearTimeout(typingTimer); // Xóa timeout 
+
+            var voucherCode = $(this).val().trim();
+            if (voucherCode.length >= 5) { 
+                typingTimer = setTimeout(function () {
+                    $.ajax({
+                        url: '/ShoppingCart/GetVoucher',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: { Code: voucherCode },
+                        success: function (voucher) {
+                            if (voucher.length > 0) {
+                                showVoucherInfo(voucher[0].Title, voucher[0].CreatedBy, voucher[0].CreatedDate);
+                            
+                            } else {
+                                $(".loadVoucher").html("<p>Không tìm thấy mã giảm giá</p>");
+                            }
+                        },
+                        error: function () {
+                            console.log("Lỗi khi gửi yêu cầu kiểm tra mã giảm giá.");
+                        }
+                    });
+                }, doneTypingInterval);
+            }
+        });
+
+        function showVoucherInfo(title, createdBy, createdDate) {
+            var voucherInfo = "<p>Mã giảm giá :" + title + "</p>"; // Hiển thị tiêu đề của mã giảm giá từ SQL Server
+            voucherInfo += "<p>Người tạo: " + createdBy + "</p>"; // Hiển thị thông tin người tạo
+            voucherInfo += "<p>Ngày tạo: " + createdDate + "</p>"; // Hiển thị thông tin ngày tạo
+            $(".loadVoucher").html(voucherInfo); 
+        }
+
+        $("#voucherForm").submit(function (event) {
+            event.preventDefault();
+            applyVoucher(); 
+        });
+        $("#voucherCode").keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                applyVoucher();
+                return false;
+            }
+        });
+
+    });
+    //End ap ma giam gia
 
     /* Start Tim kim san pham */
     $(document).ready(function () {

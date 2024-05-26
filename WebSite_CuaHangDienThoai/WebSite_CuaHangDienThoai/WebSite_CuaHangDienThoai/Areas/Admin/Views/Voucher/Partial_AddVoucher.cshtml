@@ -13,55 +13,93 @@
     <script>
 
         function validateForm() {
-            //var sdt = document.getElementById('Name').value.trim();
-            //var tenKhachHang = document.getElementById('SDT').value.trim();
-            //var email = document.getElementById('CCCD').value.trim();
-            var OrigianlPrice = document.getElementById('OrigianlPrice').value.trim();
-            var Price = document.getElementById('Price').value.trim();
-            var confirmPassword = document.getElementById('Title').value.trim();
+            var title = $('#Title').val().trim();
+            var quantity = $('#Quantity').val().trim();
+            var percentPriceReduction = $('#PercentPriceReduction').val().trim();
+            var usedDate = new Date($('#UsedDate').val().trim()); // Chuyển đổi giá trị ngày thành đối tượng Date
+            var modifiedDate = new Date($('#ModifiedDate').val().trim()); // Chuyển đổi giá trị ngày thành đối tượng Date
+            var currentDate = new Date(); // Lấy ngày hiện tại
+            var isEmpty = false;
 
-
-            if (!confirmPassword) {
-
-                Swal.fire({
-                    icon: "error",
-                    title: "Lỗi tìm...",
-                    text: "Vui lòng điền đầy đủ thông tin.",
-                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
-                });
-                return false;
-
+            // Kiểm tra từng ô nhập và đánh dấu ô nhập không hợp lệ nếu rỗng
+            if (!title) {
+                isEmpty = true;
+                $('#Title').addClass('is-invalid');
+            } else {
+                $('#Title').removeClass('is-invalid');
             }
 
-            if (Price < OrigianlPrice) {
+            if (!quantity) {
+                isEmpty = true;
+                $('#Quantity').addClass('is-invalid');
+            } else {
+                $('#Quantity').removeClass('is-invalid');
+            }
+
+            if (!percentPriceReduction) {
+                isEmpty = true;
+                $('#PercentPriceReduction').addClass('is-invalid');
                 Swal.fire({
-                    icon: "error",
-                    title: "Lỗi giá bán...",
-                    text: "Giá bán không hợp lý.",
-                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Vui lòng nhập phần trăm giảm giá.',
+                });
+            } else if (parseFloat(percentPriceReduction) > 50) {
+                // Nếu percentPriceReduction lớn hơn 50, hiển thị thông báo và đánh dấu ô nhập không hợp lệ
+                isEmpty = true;
+                $('#PercentPriceReduction').addClass('is-invalid');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Phần trăm giảm giá không được lớn hơn 50.',
+                });
+            } else {
+                $('#PercentPriceReduction').removeClass('is-invalid');
+            }
+
+            if (!usedDate || usedDate < currentDate) {
+                isEmpty = true;
+                $('#UsedDate').addClass('is-invalid');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Ngày bắt đầu chương trình Voucher không được nhỏ hơn ngày hiện tại.',
+                });
+            } else {
+                $('#UsedDate').removeClass('is-invalid');
+            }
+
+            if (!modifiedDate) {
+                isEmpty = true;
+                $('#ModifiedDate').addClass('is-invalid');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Vui lòng chọn ngày kết thúc chương trình Voucher.',
+                });
+            } else if (modifiedDate <= usedDate) {
+                isEmpty = true;
+                $('#ModifiedDate').addClass('is-invalid');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Ngày kết thúc chương trình Voucher không được nhỏ hơn hoặc bằng ngày bắt đầu.',
+                });
+            } else {
+                $('#ModifiedDate').removeClass('is-invalid');
+            }
+
+            // Hiển thị thông báo nếu có ô nhập rỗng
+            if (isEmpty) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Vui lòng điền đầy đủ thông tin.',
                 });
                 return false;
             }
-
-
-            if (password !== confirmPassword) {
-
-                Swal.fire({
-                    icon: "warning",
-                    title: "Lỗi tìm...",
-                    text: "Mật khẩu và xác nhận mật khẩu không khớp.",
-                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
-                });
-                return false;
-                return false;
-            }
-
-
 
             return true;
-        }
-        function OnFailure() {
-
         }
 
         function OnBeginCO() {
@@ -213,12 +251,17 @@
                                 <div class="row">
                                     <div class="col-2"></div>
                                     <div class="col-8 text-center">
-                                        <button type="submit" class="btn btn-success col-8">
-                                            Thêm mới
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-ticket-perforated-fill" viewBox="0 0 16 16">
-                                                <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zm4-1v1h1v-1zm1 3v-1H4v1zm7 0v-1h-1v1zm-1-2h1v-1h-1zm-6 3H4v1h1zm7 1v-1h-1v1zm-7 1H4v1h1zm7 1v-1h-1v1zm-8 1v1h1v-1zm7 1h1v-1h-1z" />
-                                            </svg>
+                                        <button type="button" onclick="if(validateForm()) $('#myForm').submit();" class="btn btn-success col-8">
+                                            
+                                                <h5>
+                                                    Thêm mới  @*<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-ticket-perforated-fill" viewBox="0 0 16 16">
+                                                        <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zm4-1v1h1v-1zm1 3v-1H4v1zm7 0v-1h-1v1zm-1-2h1v-1h-1zm-6 3H4v1h1zm7 1v-1h-1v1zm-7 1H4v1h1zm7 1v-1h-1v1zm-8 1v1h1v-1zm7 1h1v-1h-1z" />
+                                                    </svg>*@
+                                                </h5>
+                                               
+                                           
                                         </button>
+
 
                                     </div>
                                     <div class="col-2"></div>

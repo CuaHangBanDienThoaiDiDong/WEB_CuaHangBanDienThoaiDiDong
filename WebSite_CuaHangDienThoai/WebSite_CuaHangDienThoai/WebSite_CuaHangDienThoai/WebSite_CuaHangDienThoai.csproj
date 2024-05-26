@@ -4245,6 +4245,7 @@
     <Content Include="Views\ShoppingCart\Cartnull.cshtml" />
     <Content Include="Views\ShoppingCart\CheckOutSuccess.cshtml" />
     <Content Include="Views\ShoppingCart\Partial_TotalPriceCheckOut.cshtml" />
+    <Content Include="Views\ShoppingCart\Partial_Voucher.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

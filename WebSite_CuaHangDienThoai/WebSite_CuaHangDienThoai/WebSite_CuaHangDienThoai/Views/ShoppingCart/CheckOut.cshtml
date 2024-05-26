@@ -62,10 +62,6 @@
         }
 
         $(document).ready(function () {
-
-
-
-            /*LoadListProCheckOut();*/
             $('.TypePaymentVN').on('change', function () {
                 if ($(this).prop('checked')) {
                     $('.TypePaymentVN').not(this).prop('checked', false);
@@ -79,68 +75,64 @@
                     $('#load_form_payment').show();
                 }
             });
-            //LoadListProCheckOut();
-            //function LoadListProCheckOut() {
-            //    $.ajax({
-            //        url: '/ShoppingCart/Partial_ChiTietSanPhamMua',
-            //        type: 'GET',
-            //        success: function (rs) {
-            //            $('.loadListProCheckOut').html(rs);
-            //            attachDeleteHandlers(); // Gán lại sự kiện click sau khi tải lại danh sách sản phẩm
-            //        },
-            //        error: function (xhr, status, error) {
-            //            console.log(xhr.responseText);
-            //        }
-            //    });
-            //}
+            $("#searchString").on("input", function () {
+                var inputValue = $(this).val().trim();
+                if (inputValue !== "") {
+                    searchProduct(inputValue);
+                }
+            });
 
-            //$('.btndeleteCheckOut').on('click', function (e) {
-            //    e.preventDefault();
-            //    var productId = $(this).data("id");
+            // Hàm để gửi yêu cầu kiểm tra mã giảm giá khi người dùng nhấn nút "Áp dụng"
+            function applyVoucher() {
+                var voucherCode = $("#voucherCode").val(); // Lấy mã giảm giá từ trường nhập
 
-            //    Swal.fire({
-            //        title: "Bạn có chắc?",
-            //        text: "Muốn xóa sản phẩm này!",
-            //        icon: "warning",
-            //        showCancelButton: true,
-            //        confirmButtonColor: "#3085d6",
-            //        cancelButtonColor: "#d33",
-            //        confirmButtonText: "Xóa!"
-            //    }).then((result) => {
-            //        if (result.isConfirmed) {
-            //            $.ajax({
-            //                url: '/ShoppingCart/DeleteCartItem',
-            //                type: 'POST',
-            //                data: { id: productId },
-            //                success: function (rs) {
-            //                    if (rs.Success) {
-            //                        if (rs.Code == 1) {
-            //                            LoadListProCheckOut();
+                // Kiểm tra nếu mã giảm giá không trống
+                if (voucherCode.trim() !== "") {
+                    $.ajax({
+                        url: '/ShoppingCart/GetVoucher',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: { Code: voucherCode },
+                        success: function (voucher) {
+                            // Kiểm tra nếu có mã giảm giá trả về từ server
+                            if (voucher.length > 0) {
+                                // Thực thi hàm hiển thị thông tin mã giảm giá
+                                showVoucherInfo(voucher[0].Title);
+                            } else {
+                                $(".loadVoucher").html("<p>Không tìm thấy mã giảm giá</p>");
+                            }
+                        },
+                        error: function () {
+                            console.log("Lỗi khi gửi yêu cầu kiểm tra mã giảm giá.");
+                        }
+                    });
+                }
+            }
 
-            //                            // Sử dụng SweetAlert2 để hiển thị thông báo
-            //                            Swal.fire({
-            //                                toast: true,
-            //                                position: 'top-end',
-            //                                icon: 'success',
-            //                                title: 'Xóa thành công',
-            //                                showConfirmButton: false,
-            //                                timer: 3000,
-            //                                timerProgressBar: true,
-            //                                didOpen: (toast) => {
-            //                                    toast.addEventListener('mouseenter', Swal.stopTimer);
-            //                                    toast.addEventListener('mouseleave', Swal.resumeTimer);
-            //                                }
-            //                            });
-            //                        }
-            //                    }
-            //                },
-            //                error: function (xhr, status, error) {
-            //                    console.log(xhr.responseText);
-            //                }
-            //            });
-            //        }
-            //    });
-            //});
+            // Hàm hiển thị thông tin mã giảm giá
+            function showVoucherInfo(title) {
+                var voucherInfo = "<p>Mã giảm giá: " + title + "</p>"; // Hiển thị tiêu đề của mã giảm giá
+                // Nếu cần hiển thị các thông tin khác về mã giảm giá, bạn có thể thêm vào đây
+                $(".loadVoucher").html(voucherInfo); // Hiển thị thông tin mã giảm giá trong phần tử loadVoucher
+            }
+
+            // Gắn sự kiện submit cho form chứa trường nhập mã giảm giá
+            $("#voucherForm").submit(function (event) {
+                event.preventDefault(); // Ngăn chặn form gửi đi
+
+                applyVoucher(); // Gọi hàm để kiểm tra mã giảm giá
+            });
+
+            // Đảm bảo rằng khi người dùng nhấn Enter trong trường nhập mã giảm giá, form không gửi đi
+            $("#voucherCode").keydown(function (event) {
+                if (event.keyCode == 13) {
+                    event.preventDefault();
+                    applyVoucher();
+                    return false;
+                }
+            });
+
         });
+
     </script>
 }

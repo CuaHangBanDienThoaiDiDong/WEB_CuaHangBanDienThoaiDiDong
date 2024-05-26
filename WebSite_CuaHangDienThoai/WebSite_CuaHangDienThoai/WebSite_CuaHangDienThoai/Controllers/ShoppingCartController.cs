@@ -299,11 +299,11 @@ namespace WebSite_CuaHangDienThoai.Controllers
                                         item.PriceSale = (decimal)checkSanPham.PriceSale;
                                         item.PriceTotal = item.SoLuong * item.PriceSale;
                                     }
-                                    else 
+                                    else
                                     {
                                         item.PriceTotal = item.SoLuong * item.Price;
                                     }
-                                   
+
 
                                     cart.AddToCart(item, cartItem.Quantity);
                                 }
@@ -441,7 +441,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 return RedirectToAction("Cartnull");
             }
         }
-        public ActionResult Partial_TotalPriceCheckOut() 
+        public ActionResult Partial_TotalPriceCheckOut()
         {
 
             ShoppingCart cart = (ShoppingCart)Session["Cart"];
@@ -457,7 +457,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return PartialView();
         }
 
-        public ActionResult CheckOutSuccess() 
+        public ActionResult CheckOutSuccess()
         {
             return View();
         }
@@ -720,10 +720,38 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 }
             }
         }
-        public ActionResult CheckOutSucces() 
+        public ActionResult CheckOutSucces()
         {
             return View();
         }
+
+
+
+
+
+        public ActionResult Partial_Voucher() 
+        {
+            return PartialView();   
+        }
+
+
+        [HttpGet]
+        public JsonResult GetVoucher(string Code)
+        {
+            var voucher = db.tb_Voucher
+                .Where(d => d.Code == Code.Trim())
+                .Select(d => new
+                {
+                    d.VoucherId,
+                    d.Title,
+                    d.CreatedBy, d.CreatedDate,
+                    d.ModifiedDate
+                })
+                .ToList();
+            return Json(voucher, JsonRequestBehavior.AllowGet);
+        }
+
+
 
         //ShoppingCartList
         [HttpPost]

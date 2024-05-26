@@ -132,38 +132,53 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
         public ActionResult Details(int id) 
         {
-            var item =db.tb_Voucher.Find(id);
-            if (item != null) 
+            if (Session["user"] == null)
             {
-                return View(item);
-            }   
-            return View();
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                var item = db.tb_Voucher.Find(id);
+                if (item != null)
+                {
+                    return View(item);
+                }
+                return View();
+            }
+               
         }
 
-        public class EditVoucherViewModel
-        {
-            public int VoucherId { get; set; }
-            public string Title { get; set; }
-            public DateTime? UsedDate { get; set; }
-            public DateTime? ModifiedDate { get; set; }
-            // Thêm các thuộc tính khác của model tại đây
-        }
+       
 
         public ActionResult Edit(int id)
         {
-            var item = db.tb_Voucher.Find(id);
-            if (item != null)
+
+            if (Session["user"] == null)
             {
-                var viewModel = new EditVoucherViewModel
-                {
-                    VoucherId = item.VoucherId,
-                    Title = item.Title,
-                    UsedDate = item.UsedDate,
-                    ModifiedDate = item.ModifiedDate
-                };
-                return View(viewModel);
+                return RedirectToAction("DangNhap", "Account");
             }
-            return View();
+            else
+            {
+                var item = db.tb_Voucher.Find(id);
+                if (item != null)
+                {
+                    var viewModel = new EditVoucherViewModel
+                    {
+                        VoucherId = item.VoucherId,
+                        Title = item.Title,
+                        UsedDate = item.UsedDate,
+                        ModifiedDate = item.ModifiedDate,
+                        Code = item.Code,
+                        CreatedBy = item.CreatedBy,
+                        CreatedDate = item.CreatedDate,
+                        PhanTramGiaGiam = (int)item.PercentPriceReduction,
+                        Quantity = (int)item.Quantity,
+                    };
+                    return View(viewModel);
+                }
+                return View();
+            }
+           
         }
 
         [HttpPost]
@@ -175,9 +190,18 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 var item = db.tb_Voucher.Find(viewModel.VoucherId);
                 if (item != null)
                 {
+                    item.Code = viewModel.Code;
+                    item.PercentPriceReduction = viewModel.PhanTramGiaGiam;
+
                     item.Title = viewModel.Title;
+                   item.CreatedBy = viewModel.CreatedBy;    
+                    item.CreatedDate = viewModel.CreatedDate;   
                     item.UsedDate = viewModel.UsedDate;
                     item.ModifiedDate = viewModel.ModifiedDate;
+                    item.Quantity=viewModel.Quantity;   
+
+
+
 
                     db.Entry(item).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();

@@ -30,6 +30,7 @@
             var congNghePin = document.getElementById('CongNghePin').value.trim();
             var hoTroSac = document.getElementById('HoTroSac').value.trim();
 
+            // Kiểm tra các ô input để đảm bảo đã nhập đầy đủ thông tin
             if (title === '' || heDieuHanh === '' || tocDoCPU === '' || mangDiDong === '' || sim === '' ||
                 wifi === '' || gps === '' || bluetooth === '' || congKetNoi === '' || jackTaiNghe === '' ||
                 loaiPin === '' || hoTroSac === '' || congNghePin === '') {
@@ -42,10 +43,8 @@
                 return false;
             }
 
-
-            var title = document.getElementById('Title').value.trim();
+            // Kiểm tra ô input 'Title' và hiển thị thông báo nếu trống
             var titleError = document.getElementById('titleError');
-
             if (!title) {
                 titleError.style.display = 'block'; // Hiển thị thông báo nếu ô input trống
                 return false;
@@ -53,13 +52,9 @@
                 titleError.style.display = 'none'; // Ẩn thông báo nếu ô input không trống
             }
 
-
-
-
-
-
             return true;
         }
+
 
 
 
@@ -439,8 +434,7 @@
                                 <div class="col-md-2"></div>
                                 <div class="col-md-8 text-center">
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-success btn-block" onclick="return validateInputs()">Thêm mới</button>
-
+                                        <button type="button" onclick="if(validateForm()) $('#myForm').submit();" class="btn btn-success col-8">Thêm mới</button>
                                     </div>
                                 </div>
                                 <div class="col-md-2"></div>
