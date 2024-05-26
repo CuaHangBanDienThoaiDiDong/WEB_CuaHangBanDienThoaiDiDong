@@ -391,10 +391,11 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
                         if (cart != null)
                         {
-                            if (!ProcessCartItems(cart, idKhach))
+                            var insufficientItems = ProcessCartItems(cart, idKhach);
+                            if (insufficientItems.Any())
                             {
-                                code = new { Success = false, Code = -2, Url = "" }; // Mã lỗi cho số lượng không đủ
-                                return Json(code);
+                                //code = new { Success = false, Code = -2, Url = "" }; // Mã lỗi cho số lượng không đủ
+                                return Json(new { Success = false, Code = -2, InsufficientItems = insufficientItems });
                             }
 
                             var order = CreateOrder(cart, inforKhachHang, req.TypePayment);
@@ -569,13 +570,12 @@ namespace WebSite_CuaHangDienThoai.Controllers
             //var a = UrlPayment(0, "DH64050");
             return View();
         }
-        
 
 
-
-
-        private bool ProcessCartItems(ShoppingCart cart, int customerId)
+        private List<ShoppingCartItem> ProcessCartItems(ShoppingCart cart, int customerId)
         {
+            List<ShoppingCartItem> insufficientItems = new List<ShoppingCartItem>();
+
             foreach (var item in cart.Items)
             {
                 var warehouseDetail = db.tb_WarehouseDetail.Find(item.ProductDetailId);
@@ -588,12 +588,36 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 }
                 else
                 {
-                    ViewBag.error = "Số lượng sản phẩm không đủ";
-                    return false; // Quantity not sufficient
+                    // Nếu số lượng không đủ, thêm sản phẩm vào danh sách không đủ số lượng
+                    insufficientItems.Add(item);
                 }
             }
-            return true;
+
+            return insufficientItems; // Trả về danh sách sản phẩm không đủ số lượng
         }
+
+
+
+        //private bool ProcessCartItems(ShoppingCart cart, int customerId)
+        //{
+        //    foreach (var item in cart.Items)
+        //    {
+        //        var warehouseDetail = db.tb_WarehouseDetail.Find(item.ProductDetailId);
+        //        if (warehouseDetail != null && warehouseDetail.QuanTity >= item.SoLuong)
+        //        {
+        //            warehouseDetail.QuanTity -= item.SoLuong;
+        //            DeleteCartSucces(customerId, item.ProductDetailId);
+        //            db.Entry(warehouseDetail).State = System.Data.Entity.EntityState.Modified;
+        //            db.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            ViewBag.error = "Số lượng sản phẩm không đủ";
+        //            return false; // Quantity not sufficient
+        //        }
+        //    }
+        //    return true;
+        //}
 
         private tb_Order CreateOrder(ShoppingCart cart, tb_Customer customerInfo, int typePayment)
         {
@@ -705,18 +729,16 @@ namespace WebSite_CuaHangDienThoai.Controllers
         [HttpPost]
         public ActionResult DeleteCartItem(int id)
         {
-
-             var code = new { Success = false, msg = "", code = -1 };
-        ShoppingCart cart = (ShoppingCart)Session["Cart"];
+            var code = new { Success = false, Code = -1, Url = "" };
+            ShoppingCart cart = (ShoppingCart)Session["Cart"];
             if (cart != null)
             {
-                
                 cart.Remove(id);
-                code = new { Success = true, msg = "", code = 1 };
+                Session["Cart"] = cart; // Cập nhật lại session
+                code = new { Success = true, Code = 1, Url = "" };
             }
             return Json(code);
         }
-
 
 
 

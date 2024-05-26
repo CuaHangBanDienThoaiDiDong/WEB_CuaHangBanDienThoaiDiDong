@@ -394,7 +394,19 @@
           <ScalarProperty Name="UsedBy" ColumnName="UsedBy" />
           <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_VoucherDetail">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_VoucherDetail">
+        <MappingFragment StoreEntitySet="tb_VoucherDetail">
+          <ScalarProperty Name="VoucherDetailId" ColumnName="VoucherDetailId" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="UsedBy" ColumnName="UsedBy" />
+          <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
           <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

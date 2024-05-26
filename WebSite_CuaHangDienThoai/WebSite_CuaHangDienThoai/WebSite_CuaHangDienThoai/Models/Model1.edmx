@@ -374,7 +374,18 @@
           <Property Name="UsedBy" Type="nvarchar" MaxLength="250" />
           <Property Name="UsedDate" Type="datetime" />
           <Property Name="Quantity" Type="int" />
+        </EntityType>
+        <EntityType Name="tb_VoucherDetail">
+          <Key>
+            <PropertyRef Name="VoucherDetailId" />
+          </Key>
+          <Property Name="VoucherDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UsedBy" Type="nvarchar" MaxLength="250" />
+          <Property Name="UsedDate" Type="datetime" />
           <Property Name="OrderId" Type="int" />
+          <Property Name="VoucherId" Type="int" />
         </EntityType>
         <EntityType Name="tb_Warehouse">
           <Key>
@@ -824,15 +835,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="VouchertoOrder">
+        <Association Name="VoucherDetailtoOrder">
           <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="0..1" />
-          <End Role="tb_Voucher" Type="Self.tb_Voucher" Multiplicity="*" />
+          <End Role="tb_VoucherDetail" Type="Self.tb_VoucherDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tb_Order">
               <PropertyRef Name="OrderId" />
             </Principal>
-            <Dependent Role="tb_Voucher">
+            <Dependent Role="tb_VoucherDetail">
               <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="VoucherDetailtoVoucher">
+          <End Role="tb_Voucher" Type="Self.tb_Voucher" Multiplicity="0..1" />
+          <End Role="tb_VoucherDetail" Type="Self.tb_VoucherDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Voucher">
+              <PropertyRef Name="VoucherId" />
+            </Principal>
+            <Dependent Role="tb_VoucherDetail">
+              <PropertyRef Name="VoucherId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -900,6 +923,7 @@
           <EntitySet Name="tb_Store" EntityType="Self.tb_Store" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_Supplier" EntityType="Self.tb_Supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_Voucher" EntityType="Self.tb_Voucher" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_VoucherDetail" EntityType="Self.tb_VoucherDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_Warehouse" EntityType="Self.tb_Warehouse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_WarehouseDetail" EntityType="Self.tb_WarehouseDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Wards" EntityType="Self.Wards" Schema="dbo" store:Type="Tables" />
@@ -1043,9 +1067,13 @@
             <End Role="Wards" EntitySet="Wards" />
             <End Role="tb_Store" EntitySet="tb_Store" />
           </AssociationSet>
-          <AssociationSet Name="VouchertoOrder" Association="Self.VouchertoOrder">
+          <AssociationSet Name="VoucherDetailtoOrder" Association="Self.VoucherDetailtoOrder">
             <End Role="tb_Order" EntitySet="tb_Order" />
+            <End Role="tb_VoucherDetail" EntitySet="tb_VoucherDetail" />
+          </AssociationSet>
+          <AssociationSet Name="VoucherDetailtoVoucher" Association="Self.VoucherDetailtoVoucher">
             <End Role="tb_Voucher" EntitySet="tb_Voucher" />
+            <End Role="tb_VoucherDetail" EntitySet="tb_VoucherDetail" />
           </AssociationSet>
           <AssociationSet Name="WarehouseDetailetoProductDetail" Association="Self.WarehouseDetailetoProductDetail">
             <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
@@ -1224,7 +1252,7 @@
           <NavigationProperty Name="tb_ExportWareHouse" Relationship="Self.ExportWareHousetoOrder" FromRole="tb_Order" ToRole="tb_ExportWareHouse" />
           <NavigationProperty Name="tb_OrderDetail" Relationship="Self.OrderDetailtoOrder" FromRole="tb_Order" ToRole="tb_OrderDetail" />
           <NavigationProperty Name="tb_Return" Relationship="Self.ReturntoOrder" FromRole="tb_Order" ToRole="tb_Return" />
-          <NavigationProperty Name="tb_Voucher" Relationship="Self.VouchertoOrder" FromRole="tb_Order" ToRole="tb_Voucher" />
+          <NavigationProperty Name="tb_VoucherDetail" Relationship="Self.VoucherDetailtoOrder" FromRole="tb_Order" ToRole="tb_VoucherDetail" />
         </EntityType>
         <EntityType Name="tb_OrderDetail">
           <Key>
@@ -1503,8 +1531,21 @@
           <Property Name="UsedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="UsedDate" Type="DateTime" Precision="3" />
           <Property Name="Quantity" Type="Int32" />
+          <NavigationProperty Name="tb_VoucherDetail" Relationship="Self.VoucherDetailtoVoucher" FromRole="tb_Voucher" ToRole="tb_VoucherDetail" />
+        </EntityType>
+        <EntityType Name="tb_VoucherDetail">
+          <Key>
+            <PropertyRef Name="VoucherDetailId" />
+          </Key>
+          <Property Name="VoucherDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="UsedDate" Type="DateTime" Precision="3" />
           <Property Name="OrderId" Type="Int32" />
-          <NavigationProperty Name="tb_Order" Relationship="Self.VouchertoOrder" FromRole="tb_Voucher" ToRole="tb_Order" />
+          <Property Name="VoucherId" Type="Int32" />
+          <NavigationProperty Name="tb_Order" Relationship="Self.VoucherDetailtoOrder" FromRole="tb_VoucherDetail" ToRole="tb_Order" />
+          <NavigationProperty Name="tb_Voucher" Relationship="Self.VoucherDetailtoVoucher" FromRole="tb_VoucherDetail" ToRole="tb_Voucher" />
         </EntityType>
         <EntityType Name="tb_Warehouse">
           <Key>
@@ -1806,14 +1847,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="VouchertoOrder">
+        <Association Name="VoucherDetailtoOrder">
           <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="0..1" />
-          <End Role="tb_Voucher" Type="Self.tb_Voucher" Multiplicity="*" />
+          <End Role="tb_VoucherDetail" Type="Self.tb_VoucherDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tb_Order">
               <PropertyRef Name="OrderId" />
             </Principal>
-            <Dependent Role="tb_Voucher">
+            <Dependent Role="tb_VoucherDetail">
               <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1998,6 +2039,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="VoucherDetailtoVoucher">
+          <End Role="tb_Voucher" Type="Self.tb_Voucher" Multiplicity="0..1" />
+          <End Role="tb_VoucherDetail" Type="Self.tb_VoucherDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Voucher">
+              <PropertyRef Name="VoucherId" />
+            </Principal>
+            <Dependent Role="tb_VoucherDetail">
+              <PropertyRef Name="VoucherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="WarehouseDetailetoWarehouse">
           <End Role="tb_Warehouse" Type="Self.tb_Warehouse" Multiplicity="0..1" />
           <End Role="tb_WarehouseDetail" Type="Self.tb_WarehouseDetail" Multiplicity="*" />
@@ -2038,6 +2091,7 @@
           <EntitySet Name="tb_Store" EntityType="Self.tb_Store" />
           <EntitySet Name="tb_Supplier" EntityType="Self.tb_Supplier" />
           <EntitySet Name="tb_Voucher" EntityType="Self.tb_Voucher" />
+          <EntitySet Name="tb_VoucherDetail" EntityType="Self.tb_VoucherDetail" />
           <EntitySet Name="tb_Warehouse" EntityType="Self.tb_Warehouse" />
           <EntitySet Name="tb_WarehouseDetail" EntityType="Self.tb_WarehouseDetail" />
           <EntitySet Name="Wards" EntityType="Self.Wards" />
@@ -2129,9 +2183,9 @@
             <End Role="tb_Order" EntitySet="tb_Order" />
             <End Role="tb_Return" EntitySet="tb_Return" />
           </AssociationSet>
-          <AssociationSet Name="VouchertoOrder" Association="Self.VouchertoOrder">
+          <AssociationSet Name="VoucherDetailtoOrder" Association="Self.VoucherDetailtoOrder">
             <End Role="tb_Order" EntitySet="tb_Order" />
-            <End Role="tb_Voucher" EntitySet="tb_Voucher" />
+            <End Role="tb_VoucherDetail" EntitySet="tb_VoucherDetail" />
           </AssociationSet>
           <AssociationSet Name="OrderDetailtoProductDetai" Association="Self.OrderDetailtoProductDetai">
             <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
@@ -2192,6 +2246,10 @@
           <AssociationSet Name="WarehousetoStore" Association="Self.WarehousetoStore">
             <End Role="tb_Store" EntitySet="tb_Store" />
             <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
+          </AssociationSet>
+          <AssociationSet Name="VoucherDetailtoVoucher" Association="Self.VoucherDetailtoVoucher">
+            <End Role="tb_Voucher" EntitySet="tb_Voucher" />
+            <End Role="tb_VoucherDetail" EntitySet="tb_VoucherDetail" />
           </AssociationSet>
           <AssociationSet Name="WarehouseDetailetoWarehouse" Association="Self.WarehouseDetailetoWarehouse">
             <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
@@ -2597,7 +2655,19 @@
                 <ScalarProperty Name="UsedBy" ColumnName="UsedBy" />
                 <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_VoucherDetail">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_newModel.tb_VoucherDetail">
+              <MappingFragment StoreEntitySet="tb_VoucherDetail">
+                <ScalarProperty Name="VoucherDetailId" ColumnName="VoucherDetailId" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UsedBy" ColumnName="UsedBy" />
+                <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

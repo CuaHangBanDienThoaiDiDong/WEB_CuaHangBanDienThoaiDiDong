@@ -1,0 +1,73 @@
+﻿@model EditVoucherViewModel
+@{
+    ViewBag.Title = "Chỉnh sửa voucher " + Model.Title;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Cập nhật voucher</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">voucher</a></li>
+                    <li class="breadcrumb-item active">Cập nhật</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Thông tin Cập nhật</h3>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-horizontal">
+                    @Html.HiddenFor(model => model.VoucherId)
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Tiêu đề Voucher</label>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Ngày bắt đầu chương trình Voucher</label>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.UsedDate, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local" })
+                            @Html.ValidationMessageFor(model => model.UsedDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Ngày kết thúc chương trình Voucher</label>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.ModifiedDate, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local" })
+                            @Html.ValidationMessageFor(model => model.ModifiedDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Lưu" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer"></div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+</section>

@@ -52,6 +52,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public virtual DbSet<tb_Store> tb_Store { get; set; }
         public virtual DbSet<tb_Supplier> tb_Supplier { get; set; }
         public virtual DbSet<tb_Voucher> tb_Voucher { get; set; }
+        public virtual DbSet<tb_VoucherDetail> tb_VoucherDetail { get; set; }
         public virtual DbSet<tb_Warehouse> tb_Warehouse { get; set; }
         public virtual DbSet<tb_WarehouseDetail> tb_WarehouseDetail { get; set; }
         public virtual DbSet<Wards> Wards { get; set; }

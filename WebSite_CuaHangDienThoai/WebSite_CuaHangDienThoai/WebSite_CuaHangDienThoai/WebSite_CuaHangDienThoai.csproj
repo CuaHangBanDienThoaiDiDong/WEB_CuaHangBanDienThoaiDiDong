@@ -3721,6 +3721,9 @@
     <Content Include="Areas\Admin\Views\Role\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Function\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Function\Partial_SatffOfFuntion.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\Partial_AddVoucher.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\Index.cshtml" />
     <EntityDeploy Include="Models\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
@@ -3728,6 +3731,8 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\Voucher\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
@@ -3978,6 +3983,7 @@
     <Content Include="Views\Shared\_LayoutPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
@@ -3996,6 +4002,7 @@
     <Compile Include="Areas\Admin\Controllers\StaffController.cs" />
     <Compile Include="Areas\Admin\Controllers\StoreController.cs" />
     <Compile Include="Areas\Admin\Controllers\SupplierController.cs" />
+    <Compile Include="Areas\Admin\Controllers\VoucherController.cs" />
     <Compile Include="Areas\Admin\Controllers\WareHouseController.cs" />
     <Compile Include="Areas\Admin\Controllers\WareHouseImportController.cs" />
     <Compile Include="Common\Common.cs" />
@@ -4020,11 +4027,13 @@
     <Compile Include="Models\Admin_TokenRole.cs" />
     <Compile Include="Models\Admin_TokenStore.cs" />
     <Compile Include="Models\Admin_TokenSupplier.cs" />
+    <Compile Include="Models\Admin_TokenVoucher.cs" />
     <Compile Include="Models\Common\Filter.cs" />
     <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\Districts.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EditVoucherViewModel.cs" />
     <Compile Include="Models\ImportWareHouse.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
@@ -4121,6 +4130,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tb_Voucher.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tb_VoucherDetail.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tb_Warehouse.cs">
@@ -4246,6 +4258,7 @@
     <Folder Include="Areas\Admin\Views\AccountClient\" />
     <Folder Include="Areas\Admin\Views\HomePaeg\" />
     <Folder Include="Areas\Admin\Views\ProductDetailImage\" />
+    <Folder Include="Models\NewFolder1\" />
     <Folder Include="Uploads\flash\" />
     <Folder Include="Uploads\images\Products\DongHoThongMinh\" />
     <Folder Include="Uploads\_thumbs\Images\setting\" />

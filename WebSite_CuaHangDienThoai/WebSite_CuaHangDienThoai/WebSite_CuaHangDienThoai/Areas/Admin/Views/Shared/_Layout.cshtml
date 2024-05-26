@@ -40,6 +40,9 @@
     <!---SweetAlter-->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.min.css" rel="stylesheet">
 
+
+    <script src="~/Content/assets/js/jquery-3.2.1.min.js"></script>
+
 </head>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -199,7 +202,7 @@
                         }
                         else
                         {
-                           @Html.ActionLink( "DangNhap", "Account")
+                            @Html.ActionLink("DangNhap", "Account")
                         }
 
                     </div>
@@ -274,9 +277,10 @@
     <!--<-->@*script src="~/Scripts/jquery-3.7.1.js"></script>
         <script src="~/Scripts/jquery-3.7.1.min.js"></script>*@
 
-<script src="~/Scripts/JsAdmin.js"></script>
+    <script src="~/Scripts/JsAdmin.js"></script>
 
-
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 
@@ -291,7 +295,7 @@
     @*<script src="~/Content/ckeditor/ckeditor/ckeditor.js"></script>
         <script src="~/Content/ckfinder/ckfinder/ckfinder.js"></script>*@
     @*<script src="~/CKFinderScripts/ckfinder.js"></script>*@
-<script src="~/Content/ckfinder/ckfinder.js"></script>
+    <script src="~/Content/ckfinder/ckfinder.js"></script>
     @*<script src="~/Content/ckeditor/ckeditor.js"></script>
         <script src="~/Content/ckfinder/ckfinder/ckfinder.js"></script>*@
     @RenderSection("scripts", required: false)
