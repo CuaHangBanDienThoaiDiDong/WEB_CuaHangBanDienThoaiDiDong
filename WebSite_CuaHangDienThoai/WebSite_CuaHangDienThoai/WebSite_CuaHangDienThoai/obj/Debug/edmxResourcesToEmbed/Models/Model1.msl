@@ -407,6 +407,8 @@
           <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
           <ScalarProperty Name="OrderId" ColumnName="OrderId" />
           <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

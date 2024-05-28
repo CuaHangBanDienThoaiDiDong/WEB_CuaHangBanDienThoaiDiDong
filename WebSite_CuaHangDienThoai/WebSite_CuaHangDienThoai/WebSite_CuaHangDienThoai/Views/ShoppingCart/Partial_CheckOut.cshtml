@@ -106,33 +106,20 @@
 
 
 
-    <div class="card mb-3 border shadow-0">
-           <!-- <div class="card-body">
-               <form id="voucherForm" action="/ControllerName/CheckVoucher" method="post">
-                    <div class="form-group">
-                        <label class="form-label"> Bạn có mã giảm giá ?</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control border"name="voucherCode" id="voucherCode" placeholder="Mã giảm giá" />
-                            <button class="btn btn-light border">Áp dụng</button>
-                        </div>
-                    </div>
-                </form>
-                <div class="loadVoucher">
-                    <p>Thun</p>
-                </div>
-            </div>-->
-        @Html.Action("Partial_Voucher","ShoppingCart")
-        </div>
-        <hr />
+    <div class="card mb-3 border shadow-0" id="partialVoucherContainer">
 
-        <div class="loadPice">
-            @Html.Action("Partial_TotalPriceCheckOut", "ShoppingCart")
-        </div>
+        @Html.Action("Partial_Voucher", "ShoppingCart")
+    </div>
+    <hr />
+
+    <div class="loadPice">
+        @Html.Action("Partial_TotalPriceCheckOut", "ShoppingCart")
+    </div>
 
 
-  
 
-   
+
+
 
 
 
@@ -149,28 +136,35 @@
     <div class="form-group" id="load_form_payment" style="display:none;">
         <h4> <label>Chọn phương thức thanh toán:</label><br /></h4>
         <h5>Cách 1: Chuyển hướng sang VNPAY chọn phương thức thanh toán</h5>
-        <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="0" checked /> Cổng thanh toán VNPAYQR </label>
+        <label>
+
+            <input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="0" checked /><img src="~/images/Logo/Logo-VNPAY-QR-1.png" style=" width:80px;height:15px" /> Cổng thanh toán VNPAYQR
+
+        </label>
         <h5>Cách 2: Tách phương thức thanh toán tại site của Merchant</h5>
         <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="1" /> Thanh toán qua ứng dụng hỗ trợ VNPAYQR </label><br />
         <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="2" /> ATM-Tài khoản ngân hàng nội địa </label><br />
         <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="3" /> Thanh toán qua thẻ quốc tế </label><br />
     </div>
 
-    <div class="form-group"  id="load_send"></div>
+    <div class="form-group" id="load_send"></div>
     <div class="form-group" style="padding-top:10px">
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8 text-center">
                 <div class="form-group">
 
-                    <button type="submit" class="btn btn-success btn-checkout col-8" id="btnCheckOut">Đặt hàng</button>
+                    <button type="submit" class="btn btn-success btn-checkout col-8" id="btnCheckOut" >Đặt hàng</button>
                 </div>
             </div>
             <div class="col-md-2"></div>
         </div>
-      
-       
+
+
 
     </div>
 
 }
+
+
+

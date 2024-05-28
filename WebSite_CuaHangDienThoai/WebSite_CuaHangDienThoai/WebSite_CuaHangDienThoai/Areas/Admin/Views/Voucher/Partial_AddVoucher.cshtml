@@ -12,6 +12,90 @@
 {
     <script>
 
+       
+
+        function OnBeginCO() {
+            $('#btnRegister').attr("disabled", "disabled");
+        }
+
+
+
+        function OnSuccessCO(res) {
+            if (res.Success) {
+                if (res.Code == 1) {
+
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "success",
+                        title: "Thêm voucher thành công"
+                    });
+                    location.href = "/admin/Voucher/index";
+
+                } else {
+                }
+            }
+            else {
+                if (res.Code == -2) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Không thể bỏ trống...",
+                        text: "Vui lòng điền tên tiêu đề",
+                        /* footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+
+                }
+                if (res.Code == -3) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Danh mục đã tồn tại...",
+                        text: "Tên đã tồn tại",
+                        /*footer: '<a href="#">Bạn có muốn cập nhật lại số lượng?</a>'*/
+                    });
+                }
+                if (res.Code == -4) {
+                    Swal.fire({
+                        icon: "question",
+                        title: "Không tìm thấy ảnh...",
+                        text: "Chọn ảnh đại diện ",
+                        /*  footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+
+                }
+
+            }
+
+        }
+        $(document).ready(function () {
+            $('#myForm').submit(function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của form
+                if (validateForm()) {
+                    var formData = $(this).serialize(); // Lấy dữ liệu từ biểu mẫu
+                    $.ajax({
+                        url: '/Voucher/Add',
+                        type: 'POST',
+                        data: formData,
+                        success: function (res) {
+                            OnSuccessCO(res); // Gọi hàm xử lý phản hồi
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
         function validateForm() {
             var title = $('#Title').val().trim();
             var quantity = $('#Quantity').val().trim();
@@ -101,72 +185,6 @@
 
             return true;
         }
-
-        function OnBeginCO() {
-            $('#btnRegister').attr("disabled", "disabled");
-        }
-
-
-
-        function OnSuccessCO(res) {
-            if (res.Success) {
-                if (res.Code == 1) {
-
-
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
-                        }
-                    });
-
-                    Toast.fire({
-                        icon: "success",
-                        title: "Thêm voucher thành công"
-                    });
-                    location.href = "/admin/Voucher/index";
-
-                } else {
-                }
-            }
-            else {
-                if (res.Code == -2) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Không thể bỏ trống...",
-                        text: "Vui lòng điền tên tiêu đề",
-                        /* footer: '<a href="#">Why do I have this issue?</a>'*/
-                    });
-
-                }
-                if (res.Code == -3) {
-                    Swal.fire({
-                        icon: "warning",
-                        title: "Danh mục đã tồn tại...",
-                        text: "Tên đã tồn tại",
-                        /*footer: '<a href="#">Bạn có muốn cập nhật lại số lượng?</a>'*/
-                    });
-                }
-                if (res.Code == -4) {
-                    Swal.fire({
-                        icon: "question",
-                        title: "Không tìm thấy ảnh...",
-                        text: "Chọn ảnh đại diện ",
-                        /*  footer: '<a href="#">Why do I have this issue?</a>'*/
-                    });
-
-                }
-
-            }
-
-        }
-
-
 
 
 

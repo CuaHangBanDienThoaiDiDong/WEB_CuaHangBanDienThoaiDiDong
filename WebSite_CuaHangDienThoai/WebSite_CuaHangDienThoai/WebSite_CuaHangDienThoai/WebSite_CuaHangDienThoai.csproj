@@ -3318,6 +3318,8 @@
     <Content Include="images\icon\goiy-1_1.jpg" />
     <Content Include="images\Logo\50x50-1-100x100-1.png" />
     <Content Include="images\Logo\logo-iphone-220x48.png" />
+    <Content Include="images\Logo\Logo-VNPAY-QR-1.png" />
+    <Content Include="images\Logo\LogoWeb.jpg" />
     <Content Include="images\Logo\OPPO42-b_5.jpg" />
     <Content Include="images\Logo\samsungnew-220x48-1.png" />
     <Content Include="images\Logo\vivo-logo-220-220x48-3.png" />
@@ -3724,6 +3726,8 @@
     <Content Include="Areas\Admin\Views\Voucher\Partial_AddVoucher.cshtml" />
     <Content Include="Areas\Admin\Views\Voucher\Add.cshtml" />
     <Content Include="Areas\Admin\Views\Voucher\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\Edit.cshtml" />
     <EntityDeploy Include="Models\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
@@ -3731,8 +3735,7 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
-    <Content Include="Areas\Admin\Views\Voucher\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\Voucher\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\Partail_VoucherDetail.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />

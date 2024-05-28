@@ -82,56 +82,7 @@
                 }
             });
 
-            // Hàm để gửi yêu cầu kiểm tra mã giảm giá khi người dùng nhấn nút "Áp dụng"
-            function applyVoucher() {
-                var voucherCode = $("#voucherCode").val(); // Lấy mã giảm giá từ trường nhập
-
-                // Kiểm tra nếu mã giảm giá không trống
-                if (voucherCode.trim() !== "") {
-                    $.ajax({
-                        url: '/ShoppingCart/GetVoucher',
-                        type: 'GET',
-                        dataType: 'json',
-                        data: { Code: voucherCode },
-                        success: function (voucher) {
-                            // Kiểm tra nếu có mã giảm giá trả về từ server
-                            if (voucher.length > 0) {
-                                // Thực thi hàm hiển thị thông tin mã giảm giá
-                                showVoucherInfo(voucher[0].Title);
-                            } else {
-                                $(".loadVoucher").html("<p>Không tìm thấy mã giảm giá</p>");
-                            }
-                        },
-                        error: function () {
-                            console.log("Lỗi khi gửi yêu cầu kiểm tra mã giảm giá.");
-                        }
-                    });
-                }
-            }
-
-            // Hàm hiển thị thông tin mã giảm giá
-            function showVoucherInfo(title) {
-                var voucherInfo = "<p>Mã giảm giá: " + title + "</p>"; // Hiển thị tiêu đề của mã giảm giá
-                // Nếu cần hiển thị các thông tin khác về mã giảm giá, bạn có thể thêm vào đây
-                $(".loadVoucher").html(voucherInfo); // Hiển thị thông tin mã giảm giá trong phần tử loadVoucher
-            }
-
-            // Gắn sự kiện submit cho form chứa trường nhập mã giảm giá
-            $("#voucherForm").submit(function (event) {
-                event.preventDefault(); // Ngăn chặn form gửi đi
-
-                applyVoucher(); // Gọi hàm để kiểm tra mã giảm giá
-            });
-
-            // Đảm bảo rằng khi người dùng nhấn Enter trong trường nhập mã giảm giá, form không gửi đi
-            $("#voucherCode").keydown(function (event) {
-                if (event.keyCode == 13) {
-                    event.preventDefault();
-                    applyVoucher();
-                    return false;
-                }
-            });
-
+          
         });
 
     </script>

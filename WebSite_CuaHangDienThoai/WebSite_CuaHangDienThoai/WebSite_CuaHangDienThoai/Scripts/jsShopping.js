@@ -94,7 +94,7 @@
     //start ap ma giam gia
     $(document).ready(function () {
         var typingTimer; 
-        var doneTypingInterval = 2500; 
+        var doneTypingInterval = 1500; 
         $("#voucherCode").on("input", function () {
             clearTimeout(typingTimer); // Xóa timeout 
 
@@ -108,7 +108,7 @@
                         data: { Code: voucherCode },
                         success: function (voucher) {
                             if (voucher.length > 0) {
-                                showVoucherInfo(voucher[0].Title, voucher[0].CreatedBy, voucher[0].CreatedDate);
+                                showVoucherInfo(voucher[0].Title, voucher[0].CreatedBy, voucher[0].CreatedDate, voucher[0].PercentPriceReduction);
                             
                             } else {
                                 $(".loadVoucher").html("<p>Không tìm thấy mã giảm giá</p>");
@@ -122,17 +122,33 @@
             }
         });
 
-        function showVoucherInfo(title, createdBy, createdDate) {
-            var voucherInfo = "<p>Mã giảm giá :" + title + "</p>"; // Hiển thị tiêu đề của mã giảm giá từ SQL Server
-            voucherInfo += "<p>Người tạo: " + createdBy + "</p>"; // Hiển thị thông tin người tạo
-            voucherInfo += "<p>Ngày tạo: " + createdDate + "</p>"; // Hiển thị thông tin ngày tạo
-            $(".loadVoucher").html(voucherInfo); 
+        //function showVoucherInfo(title, createdBy, createdDate, percentPriceReduction) {
+        //    var voucherInfo = "<p>Mã giảm giá :" + title + "</p>";
+        //    voucherInfo += "<p>Người tạo: " + createdBy + "</p>";
+        //    voucherInfo += "<p>Ngày tạo: " + createdDate + "</p>";
+        //    voucherInfo += "<p>Chương trình giảm : " + percentPriceReduction + " % /đơn hàng </p>"; // Hiển thị thông tin ngày tạo
+        //    voucherInfo += "<p>Chương trình giảm : " + percentPriceReduction + " % /đơn hàng </p>"; // Hiển thị thông tin ngày tạo
+        //    $(".loadVoucher").html(voucherInfo);
+        //}
+
+
+
+
+        function showVoucherInfo(title, createdBy, createdDate, percentPriceReduction) {
+            var voucherInfo = `
+            <div class="d-flex justify-content-between">
+            <p class="mb-2">Chương trình giảm:</p>
+            <p class="mb-2 text-success">${percentPriceReduction}% /đơn hàng</p>
+        </div>
+            `;
+            $(".loadVoucher").html(voucherInfo);
         }
 
-        $("#voucherForm").submit(function (event) {
-            event.preventDefault();
-            applyVoucher(); 
-        });
+
+        //$("#voucherForm").submit(function (event) {
+        //    event.preventDefault();
+        //    applyVoucher(); 
+        //});
         $("#voucherCode").keydown(function (event) {
             if (event.keyCode == 13) {
                 event.preventDefault();
@@ -323,26 +339,108 @@
     $('body').on('input', '.Quantity', function (e) {
         var productId = $(this).attr('id');
         var newQuantity = $(this).val();
+        if (newQuantity <= 0) {
 
-        $.ajax({
-            type: 'POST',
-            url: '/ShoppingCart/UpdateQuantity',
-            data: {
-                id: productId,
-                quantity: newQuantity
-            },
-            success: function (result) {
-                console.log(result);
-                if (result.Success) {
-                    console.log('Cập nhật số lượng thành công');
-                } else {
-                    console.log('Có lỗi xảy ra: ' + result.msg);
+            Swal.fire({
+                title: "Bạn muốn xoá?",
+                text: "Bạn muốn xoá sản phẩm ra khỏi giỏ hàng!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Đồng ý, xoá!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/ShoppingCart/Delete',
+                        type: 'POST',
+                        data: { id: productId },
+                        success: function (rs) {
+                            if (rs.Success) {
+                                if (rs.Code == 1) {
+                                    LoadCart();
+                                    ShowCount();
+                                    /*alert("Xóa thành công");*/
+                                    Swal.fire({
+                                        position: "top-end",
+                                        icon: "success",
+                                        title: "Xoá sản phẩm thành công",
+                                        showConfirmButton: false,
+                                        timer: 1100,
+                                        customClass: {
+                                            container: 'swal2-container-custom',
+                                            popup: 'swal2-popup-custom'
+                                        }
+                                    });
+                                }
+                            } else {
+                                if (rs.Code == -1) {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Lỗi",
+                                        text: "Lỗi hệ thống máy chủ",
+                                        footer: '<a href="/dang-nhap">Quay về đăng nhập?</a>'
+                                    });
+                                }
+                                if (rs.Code == -2) {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Lỗi",
+                                        text: "Lỗi hệ thống máy chủ",
+                                        footer: '<a href="/dang-nhap">Quay về đăng nhập?</a>'
+                                    });
+                                }
+                                if (rs.Code == -3) {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Giỏ hàng bị lỗi",
+                                        text: "Sản phẩm không tồn tại trong giỏ hàng",
+                                        footer: '<a href="/gio-hang">Quay về giỏ hàng?</a>',
+                                        customClass: {
+                                            container: 'swal2-container-custom',
+                                            popup: 'swal2-popup-custom'
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi",
+                                text: "Lỗi khi kết nối đến máy chủ",
+                                footer: '<a href="/dang-nhap">Quay về đăng nhập?</a>'
+                            });
+                        }
+                    });
                 }
-            },
-            error: function (error) {
-                console.log('Lỗi Ajax: ' + error.statusText);
-            }
-        });
+                else {
+                    LoadCart();
+                }
+            });
+        }
+        else  {
+            $.ajax({
+                type: 'POST',
+                url: '/ShoppingCart/UpdateQuantity',
+                data: {
+                    id: productId,
+                    quantity: newQuantity
+                },
+                success: function (result) {
+                    console.log(result);
+                    if (result.Success) {
+                        console.log('Cập nhật số lượng thành công');
+                    } else {
+                        console.log('Có lỗi xảy ra: ' + result.msg);
+                    }
+                },
+                error: function (error) {
+                    console.log('Lỗi Ajax: ' + error.statusText);
+                }
+            });
+        }
+       
     });
 
     //End btn cập nhập số lượng trong giỏ hàng

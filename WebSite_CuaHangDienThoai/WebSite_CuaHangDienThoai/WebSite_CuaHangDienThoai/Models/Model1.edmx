@@ -386,6 +386,8 @@
           <Property Name="UsedDate" Type="datetime" />
           <Property Name="OrderId" Type="int" />
           <Property Name="VoucherId" Type="int" />
+          <Property Name="Code" Type="char" MaxLength="60" />
+          <Property Name="Status" Type="bit" />
         </EntityType>
         <EntityType Name="tb_Warehouse">
           <Key>
@@ -855,7 +857,7 @@
               <PropertyRef Name="VoucherId" />
             </Principal>
             <Dependent Role="tb_VoucherDetail">
-              <PropertyRef Name="VoucherId" />
+              <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1544,6 +1546,8 @@
           <Property Name="UsedDate" Type="DateTime" Precision="3" />
           <Property Name="OrderId" Type="Int32" />
           <Property Name="VoucherId" Type="Int32" />
+          <Property Name="Code" Type="String" MaxLength="60" FixedLength="true" Unicode="false" />
+          <Property Name="Status" Type="Boolean" />
           <NavigationProperty Name="tb_Order" Relationship="Self.VoucherDetailtoOrder" FromRole="tb_VoucherDetail" ToRole="tb_Order" />
           <NavigationProperty Name="tb_Voucher" Relationship="Self.VoucherDetailtoVoucher" FromRole="tb_VoucherDetail" ToRole="tb_Voucher" />
         </EntityType>
@@ -2047,7 +2051,7 @@
               <PropertyRef Name="VoucherId" />
             </Principal>
             <Dependent Role="tb_VoucherDetail">
-              <PropertyRef Name="VoucherId" />
+              <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2668,6 +2672,8 @@
                 <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -21,6 +21,8 @@ namespace WebSite_CuaHangDienThoai.Models
         public Nullable<System.DateTime> UsedDate { get; set; }
         public Nullable<int> OrderId { get; set; }
         public Nullable<int> VoucherId { get; set; }
+        public string Code { get; set; }
+        public Nullable<bool> Status { get; set; }
     
         public virtual tb_Order tb_Order { get; set; }
         public virtual tb_Voucher tb_Voucher { get; set; }

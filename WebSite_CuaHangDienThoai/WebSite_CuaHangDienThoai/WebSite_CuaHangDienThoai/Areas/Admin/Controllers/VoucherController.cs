@@ -76,6 +76,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
 
         }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Add(tb_Voucher model, Admin_TokenVoucher req)
@@ -90,20 +92,44 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
                     if (model.Title != null)
                     {
-                        string randomString = GenerateRandomString(10);
+                        string randomString = GenerateRandomString(3);
                         tb_Staff nvSession = (tb_Staff)Session["user"];
                         var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
                         model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
                         //model.Code = randomString;
-                        model.Code = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Title);
+                        model.Code = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Title.Trim());
 
 
-                        model.Title = req.Title;
+                        model.Title = req.Title.Trim();
                         model.CreatedDate = req.UsedDate;
                         model.ModifiedDate = Convert.ToDateTime(req.ModifiedDate); //Ngay keyt thuc
                         model.UsedDate = Convert.ToDateTime(req.UsedDate);//Ngay bát dau
                         db.tb_Voucher.Add(model);
                         db.SaveChanges();
+
+
+
+
+                        for (int i = 0; i < model.Quantity; i++)
+                        {
+                            var voucherDetail = new tb_VoucherDetail();
+                            string randomString123 = GenerateRandomString(4);
+                            string codedetail = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Title.Trim() + randomString123);
+                            voucherDetail.Code = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(codedetail);
+                            voucherDetail.CreatedBy = model.CreatedBy;
+                            voucherDetail.CreatedDate = model.CreatedDate;
+                            voucherDetail.UsedBy = model.UsedBy;
+                            voucherDetail.UsedDate = model.UsedDate;
+                            voucherDetail.VoucherId = model.VoucherId;
+                            voucherDetail.Status = false;
+
+                            
+                            db.tb_VoucherDetail.Add(voucherDetail);
+                        }
+
+                      
+                        db.SaveChanges();
+
                         code = new { Success = true, Code = 1, Url = "" };
                     }
                     else
@@ -129,6 +155,17 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             return Json(code);
         }
 
+
+        public ActionResult Partail_VoucherDetail(int id )
+        {
+            var item = db.tb_VoucherDetail.Where(x => x.VoucherId == id);
+            if (item != null) 
+            {
+               ViewBag.Count = item.Count();
+                return PartialView(item);
+            }
+            return PartialView();   
+        }
 
         public ActionResult Details(int id) 
         {

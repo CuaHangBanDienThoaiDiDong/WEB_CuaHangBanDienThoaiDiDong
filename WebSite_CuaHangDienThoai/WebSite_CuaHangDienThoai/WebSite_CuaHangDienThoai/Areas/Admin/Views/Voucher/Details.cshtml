@@ -75,14 +75,19 @@
                             @Model.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm")
                         }
                     </span>
-                   
+                    <br />
+                    <span>
+                        <b>Phần trăm giảm đơn hàng</b>
+                        @Model.PercentPriceReduction %
+                    </span>
+
                 </div>
             </div>
 
         </div>
         <div class="card-body" id="">
 
-            @*@Html.Action("Partail_ListProductForDetail", "WareHouseImport", new { id = Model.ImportWarehouseId })*@
+            @Html.Action("Partail_VoucherDetail", "Voucher", new { id = Model.VoucherId })
         </div>
         <div class="card-footer">
             <div class="row">

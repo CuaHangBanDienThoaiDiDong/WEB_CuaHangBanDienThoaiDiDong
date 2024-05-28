@@ -596,29 +596,6 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return insufficientItems; // Trả về danh sách sản phẩm không đủ số lượng
         }
 
-
-
-        //private bool ProcessCartItems(ShoppingCart cart, int customerId)
-        //{
-        //    foreach (var item in cart.Items)
-        //    {
-        //        var warehouseDetail = db.tb_WarehouseDetail.Find(item.ProductDetailId);
-        //        if (warehouseDetail != null && warehouseDetail.QuanTity >= item.SoLuong)
-        //        {
-        //            warehouseDetail.QuanTity -= item.SoLuong;
-        //            DeleteCartSucces(customerId, item.ProductDetailId);
-        //            db.Entry(warehouseDetail).State = System.Data.Entity.EntityState.Modified;
-        //            db.SaveChanges();
-        //        }
-        //        else
-        //        {
-        //            ViewBag.error = "Số lượng sản phẩm không đủ";
-        //            return false; // Quantity not sufficient
-        //        }
-        //    }
-        //    return true;
-        //}
-
         private tb_Order CreateOrder(ShoppingCart cart, tb_Customer customerInfo, int typePayment)
         {
             var order = new tb_Order
@@ -738,14 +715,15 @@ namespace WebSite_CuaHangDienThoai.Controllers
         [HttpGet]
         public JsonResult GetVoucher(string Code)
         {
-            var voucher = db.tb_Voucher
+            var voucher = db.tb_VoucherDetail
                 .Where(d => d.Code == Code.Trim())
                 .Select(d => new
                 {
                     d.VoucherId,
-                    d.Title,
+                    d.tb_Voucher.Title,
                     d.CreatedBy, d.CreatedDate,
-                    d.ModifiedDate
+                    d.tb_Voucher.ModifiedDate,
+                    d.tb_Voucher.PercentPriceReduction ,
                 })
                 .ToList();
             return Json(voucher, JsonRequestBehavior.AllowGet);
@@ -753,7 +731,16 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
-        //ShoppingCartList
+        //ShoppingCartList 
+        [HttpPost]
+        public ActionResult UpdateTotalPriceShoppingCartItem()
+        {
+            var code = new { Success = false, Code = -1, Url = "" };
+            return Json(code);
+        }
+
+
+
         [HttpPost]
         public ActionResult DeleteCartItem(int id)
         {
@@ -769,9 +756,17 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
-
-
-
+        [HttpPost]
+        public ActionResult UpdateQuantityCartItem(int id, int quantity)
+        {
+            ShoppingCart cart = (ShoppingCart)Session["Cart"];
+            if (cart != null)
+            {
+                cart.UpSoLuong(id, quantity);
+                return Json(new { Success = true });
+            }
+            return Json(new { Success = false });
+        }
 
 
 

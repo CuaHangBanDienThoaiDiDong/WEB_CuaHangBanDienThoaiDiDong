@@ -61,7 +61,25 @@
         function OnBeginCO() {
             $('#btnRegister').attr("disabled", "disabled");
         }
-
+        $(document).ready(function () {
+            $('#myForm').submit(function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của form
+                if (validateForm()) {
+                    var formData = $(this).serialize(); // Lấy dữ liệu từ biểu mẫu
+                    $.ajax({
+                        url: '/Products/Add',
+                        type: 'POST',
+                        data: formData,
+                        success: function (res) {
+                            OnSuccessCO(res); // Gọi hàm xử lý phản hồi
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        }); 
 
 
         function OnSuccessCO(res) {

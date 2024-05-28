@@ -381,6 +381,8 @@
     <Property Name="UsedDate" Type="datetime" />
     <Property Name="OrderId" Type="int" />
     <Property Name="VoucherId" Type="int" />
+    <Property Name="Code" Type="char" MaxLength="60" />
+    <Property Name="Status" Type="bit" />
   </EntityType>
   <EntityType Name="tb_Warehouse">
     <Key>
@@ -850,7 +852,7 @@
         <PropertyRef Name="VoucherId" />
       </Principal>
       <Dependent Role="tb_VoucherDetail">
-        <PropertyRef Name="VoucherId" />
+        <PropertyRef Name="OrderId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
