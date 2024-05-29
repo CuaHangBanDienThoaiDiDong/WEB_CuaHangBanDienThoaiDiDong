@@ -210,6 +210,21 @@
         });
     }
 
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
     // Gọi hàm LoadListProCheckOut để tải danh sách sản phẩm khi trang được tải
     LoadListProCheckOut();
     LoadListPriceCheckOut();
@@ -223,8 +238,5 @@
 
 
 });
-
-
-
 
 

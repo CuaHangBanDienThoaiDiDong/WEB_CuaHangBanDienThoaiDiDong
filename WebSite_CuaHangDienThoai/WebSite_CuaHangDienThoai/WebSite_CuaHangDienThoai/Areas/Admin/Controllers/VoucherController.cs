@@ -76,8 +76,6 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
 
         }
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Add(tb_Voucher model, Admin_TokenVoucher req)
@@ -88,58 +86,39 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 var title = db.tb_ProductCompany.FirstOrDefault(r => r.Title == req.Title);
                 if (title == null)
                 {
-
-
                     if (model.Title != null)
                     {
                         string randomString = GenerateRandomString(3);
                         tb_Staff nvSession = (tb_Staff)Session["user"];
                         var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
                         model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
-                        //model.Code = randomString;
                         model.Code = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Title.Trim());
-
-
                         model.Title = req.Title.Trim();
                         model.CreatedDate = req.UsedDate;
-                        model.ModifiedDate = Convert.ToDateTime(req.ModifiedDate); //Ngay keyt thuc
-                        model.UsedDate = Convert.ToDateTime(req.UsedDate);//Ngay bát dau
+                        model.ModifiedDate = Convert.ToDateTime(req.ModifiedDate);
+                        model.UsedDate = Convert.ToDateTime(req.UsedDate);
                         db.tb_Voucher.Add(model);
                         db.SaveChanges();
 
-
-
-
-                        for (int i = 0; i < model.Quantity; i++)
+                        var result = AddVoucherDetails(model, req);
+                        if (result)
                         {
-                            var voucherDetail = new tb_VoucherDetail();
-                            string randomString123 = GenerateRandomString(4);
-                            string codedetail = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Title.Trim() + randomString123);
-                            voucherDetail.Code = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(codedetail);
-                            voucherDetail.CreatedBy = model.CreatedBy;
-                            voucherDetail.CreatedDate = model.CreatedDate;
-                            voucherDetail.UsedBy = model.UsedBy;
-                            voucherDetail.UsedDate = model.UsedDate;
-                            voucherDetail.VoucherId = model.VoucherId;
-                            voucherDetail.Status = false;
-
-                            
-                            db.tb_VoucherDetail.Add(voucherDetail);
+                            code = new { Success = true, Code = 1, Url = "" };
                         }
-
-                      
-                        db.SaveChanges();
-
-                        code = new { Success = true, Code = 1, Url = "" };
+                        else
+                        {
+                            // Rollback the voucher creation
+                            db.tb_Voucher.Remove(model);
+                            db.SaveChanges();
+                            ViewBag.txt = "Có lỗi xảy ra khi lưu voucher details. Vui lòng thử lại sau.";
+                            return View();
+                        }
                     }
                     else
                     {
                         ViewBag.txt = "Vui lòng nhập thông tin";
                         return View();
                     }
-
-
-
                 }
                 else
                 {
@@ -154,6 +133,111 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             return Json(code);
         }
+
+        private bool AddVoucherDetails(tb_Voucher model, Admin_TokenVoucher req)
+        {
+            try
+            {
+                for (int i = 0; i < model.Quantity; i++)
+                {
+                    var voucherDetail = new tb_VoucherDetail();
+                    string randomString123 = GenerateRandomString(4);
+                    string codedetail = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Title.Trim() + randomString123);
+                    voucherDetail.Code = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(codedetail);
+                    voucherDetail.CreatedBy = model.CreatedBy;
+                    voucherDetail.CreatedDate = model.CreatedDate;
+                    voucherDetail.UsedBy = model.UsedBy;
+                    voucherDetail.UsedDate = model.UsedDate;
+                    voucherDetail.VoucherId = model.VoucherId;
+                    voucherDetail.Status = false;
+
+                    db.tb_VoucherDetail.Add(voucherDetail);
+                }
+
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (if logging is set up)
+                return false;
+            }
+        }
+
+        //public ActionResult Add(tb_Voucher model, Admin_TokenVoucher req)
+        //{
+        //    var code = new { Success = false, Code = -1, Url = "" };
+        //    if (req.Title != null)
+        //    {
+        //        var title = db.tb_ProductCompany.FirstOrDefault(r => r.Title == req.Title);
+        //        if (title == null)
+        //        {
+
+
+        //            if (model.Title != null)
+        //            {
+        //                string randomString = GenerateRandomString(3);
+        //                tb_Staff nvSession = (tb_Staff)Session["user"];
+        //                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
+        //                model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
+        //                //model.Code = randomString;
+        //                model.Code = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Title.Trim());
+
+
+        //                model.Title = req.Title.Trim();
+        //                model.CreatedDate = req.UsedDate;
+        //                model.ModifiedDate = Convert.ToDateTime(req.ModifiedDate); //Ngay keyt thuc
+        //                model.UsedDate = Convert.ToDateTime(req.UsedDate);//Ngay bát dau
+        //                db.tb_Voucher.Add(model);
+        //                db.SaveChanges();
+
+
+
+
+        //                for (int i = 0; i < model.Quantity; i++)
+        //                {
+        //                    var voucherDetail = new tb_VoucherDetail();
+        //                    string randomString123 = GenerateRandomString(4);
+        //                    string codedetail = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Title.Trim() + randomString123);
+        //                    voucherDetail.Code = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(codedetail);
+        //                    voucherDetail.CreatedBy = model.CreatedBy;
+        //                    voucherDetail.CreatedDate = model.CreatedDate;
+        //                    voucherDetail.UsedBy = model.UsedBy;
+        //                    voucherDetail.UsedDate = model.UsedDate;
+        //                    voucherDetail.VoucherId = model.VoucherId;
+        //                    voucherDetail.Status = false;
+
+
+        //                    db.tb_VoucherDetail.Add(voucherDetail);
+        //                }
+
+
+        //                db.SaveChanges();
+
+        //                code = new { Success = true, Code = 1, Url = "" };
+        //            }
+        //            else
+        //            {
+        //                ViewBag.txt = "Vui lòng nhập thông tin";
+        //                return View();
+        //            }
+
+
+
+        //        }
+        //        else
+        //        {
+        //            // Tên đã tồn tại
+        //            code = new { Success = false, Code = -3, Url = "" };
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // Vui lòng điền tên tiêu đề
+        //        code = new { Success = false, Code = -2, Url = "" };
+        //    }
+        //    return Json(code);
+        //}
 
 
         public ActionResult Partail_VoucherDetail(int id )

@@ -93,13 +93,14 @@
 
     //start ap ma giam gia
     $(document).ready(function () {
-        var typingTimer; 
-        var doneTypingInterval = 1500; 
+        var typingTimer;
+        var doneTypingInterval = 1500;
+
         $("#voucherCode").on("input", function () {
-            clearTimeout(typingTimer); // Xóa timeout 
+            clearTimeout(typingTimer); // Xóa timeout
 
             var voucherCode = $(this).val().trim();
-            if (voucherCode.length >= 5) { 
+            if (voucherCode.length >= 5) {
                 typingTimer = setTimeout(function () {
                     $.ajax({
                         url: '/ShoppingCart/GetVoucher',
@@ -108,10 +109,15 @@
                         data: { Code: voucherCode },
                         success: function (voucher) {
                             if (voucher.length > 0) {
-                                showVoucherInfo(voucher[0].Title, voucher[0].CreatedBy, voucher[0].CreatedDate, voucher[0].PercentPriceReduction);
-                            
+                                var percentPriceReduction = voucher[0].PercentPriceReduction;
+                                showVoucherInfo(voucher[0].Title, voucher[0].CreatedBy, voucher[0].CreatedDate, percentPriceReduction);
+
+                                $(".btnApllyVoucher").removeClass("d-none").attr("data-percent", percentPriceReduction).attr("data-code", voucherCode);
+                                $(".btnRemoveVoucher").removeClass("d-none");
                             } else {
                                 $(".loadVoucher").html("<p>Không tìm thấy mã giảm giá</p>");
+                                $(".btnApllyVoucher").addClass("d-none").attr("data-percent", "0");
+                                $(".btnRemoveVoucher").addClass("d-none");
                             }
                         },
                         error: function () {
@@ -122,33 +128,95 @@
             }
         });
 
-        //function showVoucherInfo(title, createdBy, createdDate, percentPriceReduction) {
-        //    var voucherInfo = "<p>Mã giảm giá :" + title + "</p>";
-        //    voucherInfo += "<p>Người tạo: " + createdBy + "</p>";
-        //    voucherInfo += "<p>Ngày tạo: " + createdDate + "</p>";
-        //    voucherInfo += "<p>Chương trình giảm : " + percentPriceReduction + " % /đơn hàng </p>"; // Hiển thị thông tin ngày tạo
-        //    voucherInfo += "<p>Chương trình giảm : " + percentPriceReduction + " % /đơn hàng </p>"; // Hiển thị thông tin ngày tạo
-        //    $(".loadVoucher").html(voucherInfo);
-        //}
-
-
-
-
         function showVoucherInfo(title, createdBy, createdDate, percentPriceReduction) {
             var voucherInfo = `
-            <div class="d-flex justify-content-between">
-            <p class="mb-2">Chương trình giảm:</p>
-            <p class="mb-2 text-success">${percentPriceReduction}% /đơn hàng</p>
-        </div>
-            `;
+          <div class="d-flex justify-content-between">
+              <p class="mb-2">Chương trình giảm: ${title}</p>
+              <p class="mb-2 text-success">${percentPriceReduction}% /đơn hàng</p>
+          </div>
+      `;
             $(".loadVoucher").html(voucherInfo);
         }
 
+        function updatePriceWithDiscount(percentPriceReduction,code ) {
+            $.ajax({
+                url: '/ShoppingCart/UpdateTotalPriceShoppingCartItem',
+                type: 'POST',
+                data: { PercentPriceReduction: percentPriceReduction, Code: code },
+                success: function (data) {
+                    if (data.Success) {
+                        LoadListPriceCheckOut();
+                        LoadListProCheckOut();
+                    } else {
+                        console.log("Lỗi khi cập nhật giá mục trong giỏ hàng.");
+                    }
+                },
+                error: function () {
+                    console.log("Lỗi khi gửi yêu cầu cập nhật giá mục trong giỏ hàng.");
+                }
+            });
+        }
 
-        //$("#voucherForm").submit(function (event) {
-        //    event.preventDefault();
-        //    applyVoucher(); 
-        //});
+        function removeVoucher() {
+            $.ajax({
+                url: '/ShoppingCart/RemoveVoucher',
+                type: 'POST',
+                success: function (data) {
+                    if (data.Success) {
+                        LoadListPriceCheckOut();
+                        LoadListProCheckOut();
+                        $(".loadVoucher").html("<p>Không có mã giảm giá</p>");
+                        $(".btnApllyVoucher").addClass("d-none").attr("data-percent", "0");
+                        $(".btnRemoveVoucher").addClass("d-none");
+                        $("#voucherCode").val('');
+                    } else {
+                        console.log("Lỗi khi xóa mã giảm giá.");
+                    }
+                },
+                error: function () {
+                    console.log("Lỗi khi gửi yêu cầu xóa mã giảm giá.");
+                }
+            });
+        }
+
+        $(".btnApllyVoucher").on("click", function () {
+            var percentPriceReduction = $(this).attr("data-percent");
+            var code = $(this).attr("data-code");
+            updatePriceWithDiscount(percentPriceReduction, code);
+        });
+
+        $(".btnRemoveVoucher").on("click", function () {
+            removeVoucher();
+        });
+
+        function LoadListProCheckOut() {
+            $.ajax({
+                url: '/ShoppingCart/Partial_ChiTietSanPhamMua',
+                type: 'GET',
+                success: function (rs) {
+                    $('.loadListProCheckOut').html(rs);
+                    attachDeleteHandlers(); // Gán lại sự kiện click sau khi tải lại danh sách sản phẩm
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function LoadListPriceCheckOut() {
+            $.ajax({
+                url: '/ShoppingCart/Partial_TotalPriceCheckOut',
+                type: 'GET',
+                success: function (rs) {
+                    $('.loadPice').html(rs);
+                    attachDeleteHandlers(); // Gán lại sự kiện click sau khi tải lại danh sách sản phẩm
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
         $("#voucherCode").keydown(function (event) {
             if (event.keyCode == 13) {
                 event.preventDefault();
@@ -156,8 +224,16 @@
                 return false;
             }
         });
-
     });
+
+
+
+
+
+
+
+
+
     //End ap ma giam gia
 
     /* Start Tim kim san pham */

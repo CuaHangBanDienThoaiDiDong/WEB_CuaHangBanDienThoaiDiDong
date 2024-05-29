@@ -11,6 +11,10 @@ using WebSite_CuaHangDienThoai.Models.Token.Client;
 using WebSite_CuaHangDienThoai.Models.Payment;
 using Newtonsoft.Json;
 using WebSite_CuaHangDienThoai.Models.Token.Admin;
+using ImageProcessor.Processors;
+using DynamicData.Kernel;
+using System.Data.Entity;
+using System.Data.SqlClient;
 
 namespace WebSite_CuaHangDienThoai.Controllers
 {
@@ -355,7 +359,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
-
+        public static int Oderid;
 
 
         public ActionResult CheckOut()
@@ -377,9 +381,10 @@ namespace WebSite_CuaHangDienThoai.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CheckOut(OrderViewVNPay req, tb_Products model)
         {
+            var code = new { Success = false, Code = -1, Url = "" };
             try
             {
-                var code = new { Success = false, Code = -1, Url = "" };
+                
 
                 if (ModelState.IsValid)
                 {
@@ -408,6 +413,16 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
                             db.tb_Order.Add(order);
                             db.SaveChanges();
+                            int Oder = order.OrderId;
+
+                            foreach (var item in cart.Items)
+                            {
+
+                               
+                                //UpdateVoucherDetail(item.Code, Oder, inforKhachHang);
+                            }
+
+
 
                             SendConfirmationEmails(cart, order, inforKhachHang);
                             cart.ClearCart();
@@ -436,26 +451,16 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
                 return Json(code);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return RedirectToAction("Cartnull");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.InnerException.Message); // Lấy chi tiết từ ngoại lệ bên trong
+                code = new { Success = false, Code = -10, Url = "" };
+                return Json(code);
+
             }
         }
-        public ActionResult Partial_TotalPriceCheckOut()
-        {
-
-            ShoppingCart cart = (ShoppingCart)Session["Cart"];
-            decimal totalPrice = 0;
-
-            if (cart != null && cart.Items.Any())
-            {
-                totalPrice = cart.GetPriceTotal();
-            }
-
-            ViewBag.TotalPrice = totalPrice;
-
-            return PartialView();
-        }
+     
 
         public ActionResult CheckOutSuccess()
         {
@@ -572,6 +577,11 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
+       
+
+
+
+
         private List<ShoppingCartItem> ProcessCartItems(ShoppingCart cart, int customerId)
         {
             List<ShoppingCartItem> insufficientItems = new List<ShoppingCartItem>();
@@ -605,27 +615,101 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 Address = customerInfo.Loaction,
                 Email = customerInfo.Email,
                 typeOrder = false,
-                TotalAmount = cart.Items.Sum(x => x.Price * x.SoLuong),
                 TypePayment = typePayment,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
                 Confirm = false,
-
                 Status = null,
                 typeReturn = false,
                 Success = false,
-                Code = GenerateOrderCode()
+                Code = GenerateOrderCode(),
+                CustomerId = customerInfo.CustomerId,
             };
+       
 
+          
+            decimal totalAmount = 0;
+            int totalQuantity = 0;
+            foreach (var item in cart.Items)
+            {
+               
+                if (item.PercentPriceReduction.HasValue && item.PercentPriceReduction.Value > 0)
+                {
+                    totalAmount += item.PriceTotal; 
+
+                  
+
+                }
+                else
+                {
+                    totalAmount += item.PriceTotal;
+                }
+                totalQuantity += item.SoLuong;
+            }
+
+           
+            order.TotalAmount = totalAmount;
+            order.Quantity = totalQuantity;
+
+            // Thêm các chi tiết đơn hàng
             cart.Items.ForEach(row => order.tb_OrderDetail.Add(new tb_OrderDetail
             {
                 ProductDetailId = row.ProductDetailId,
                 Quantity = row.SoLuong,
-                Price = row.Price,
+                Price = row.PriceTotal 
             }));
 
             return order;
         }
+
+
+
+        //Hàm kiểm tra và áp dụng mã giảm giá từ voucher
+        //  private void UpdateVoucherDetail(string voucherCode, int orderId, tb_Customer customerInfo)
+        //  {
+        //      try
+        //      {
+        //          // Truy vấn dữ liệu từ bảng tb_VoucherDetail kèm theo dữ liệu từ bảng tb_Voucher
+        //          var voucherDetail = db.tb_VoucherDetail
+        //.Include(vd => vd.tb_Voucher)
+        //.FirstOrDefault(vd => vd.Code == voucherCode && vd.Status == false);
+
+        //          if (voucherDetail != null)
+        //          {
+        //              // Kiểm tra xem voucherDetail có chứa dữ liệu từ bảng tb_Voucher hay không
+
+        //                  // Cập nhật thông tin cho voucherDetail
+        //                  voucherDetail.OrderId = orderId;
+        //                  voucherDetail.Status = true;
+        //                  voucherDetail.UsedDate = DateTime.Now;
+        //                  voucherDetail.UsedBy = customerInfo.CustomerName;
+        //                  voucherDetail.CreatedDate = DateTime.Now;
+
+        //                  // Cập nhật bảng tb_VoucherDetail trong cơ sở dữ liệu
+        //                  db.Entry(voucherDetail).State = System.Data.Entity.EntityState.Modified;
+        //                  db.SaveChanges();
+
+        //          }
+        //          else
+        //          {
+        //              Console.WriteLine("Voucher detail not found or already used.");
+        //          }
+        //      }
+        //      catch (Exception ex)
+        //      {
+        //          Console.WriteLine(ex.Message);
+        //          if (ex.InnerException != null)
+        //          {
+        //              Console.WriteLine(ex.InnerException.Message);
+        //          }
+        //      }
+        //  }
+
+
+ 
+
+
+
 
         private string GenerateOrderCode()
         {
@@ -715,45 +799,128 @@ namespace WebSite_CuaHangDienThoai.Controllers
         [HttpGet]
         public JsonResult GetVoucher(string Code)
         {
-            var voucher = db.tb_VoucherDetail
-                .Where(d => d.Code == Code.Trim())
-                .Select(d => new
-                {
-                    d.VoucherId,
-                    d.tb_Voucher.Title,
-                    d.CreatedBy, d.CreatedDate,
-                    d.tb_Voucher.ModifiedDate,
-                    d.tb_Voucher.PercentPriceReduction ,
-                })
-                .ToList();
+            var voucher = (from chiTiet in db.tb_VoucherDetail
+                           join voucherDetail in db.tb_Voucher on chiTiet.VoucherId equals voucherDetail.VoucherId
+                           where chiTiet.Code.Trim() == Code.Trim()
+                           select new
+                           {
+                               voucherDetail.PercentPriceReduction, // PhanTramGiam
+                               voucherDetail.Title,
+                               voucherDetail.CreatedBy,
+                               voucherDetail.CreatedDate,
+                               voucherDetail.ModifiedDate,
+                               voucherDetail.UsedBy,
+                               voucherDetail.UsedDate,
+                               voucherDetail.Quantity
+                           }).ToList();
+          
+
+
             return Json(voucher, JsonRequestBehavior.AllowGet);
         }
 
 
 
+
+        
+
         //ShoppingCartList 
-        [HttpPost]
-        public ActionResult UpdateTotalPriceShoppingCartItem()
+
+        //cap nhạt lai tong tien khi cí voucher
+
+
+        public ActionResult Partial_TotalPriceCheckOut()
         {
-            var code = new { Success = false, Code = -1, Url = "" };
-            return Json(code);
+
+            ShoppingCart cart = (ShoppingCart)Session["Cart"];
+            decimal totalPrice = 0;
+            decimal save = 0;
+
+            if (cart != null && cart.Items.Any())
+            {
+                foreach (var item in cart.Items) {
+                    if (item.OriginalPriceTotal.HasValue)
+                    {
+                        save += (decimal)item.OriginalPriceTotal.Value-(decimal)item.PriceTotal ;
+                        ViewBag.Save = save;
+                    }
+                }
+               
+
+
+                totalPrice = cart.GetPriceTotal();
+            }
+
+            ViewBag.TotalPrice = totalPrice;
+           
+            return PartialView();
         }
 
-
-
         [HttpPost]
-        public ActionResult DeleteCartItem(int id)
+        public ActionResult UpdateTotalPriceShoppingCartItem(int PercentPriceReduction ,string Code  )
         {
             var code = new { Success = false, Code = -1, Url = "" };
             ShoppingCart cart = (ShoppingCart)Session["Cart"];
             if (cart != null)
             {
-                cart.Remove(id);
+                foreach (var item in cart.Items)
+                {
+                    // Lưu giá trị gốc nếu chưa lưu
+                    if (!item.OriginalPriceTotal.HasValue)
+                    {
+                        item.OriginalPriceTotal = item.PriceTotal;
+                    }
+
+                    // Áp dụng giảm giá
+                    item.PercentPriceReduction = PercentPriceReduction;
+                    decimal discountAmount = item.PriceTotal * PercentPriceReduction / 100;
+                    item.PriceTotal -= discountAmount;
+                    item.Code = Code;
+                }
+
                 Session["Cart"] = cart; // Cập nhật lại session
                 code = new { Success = true, Code = 1, Url = "" };
             }
             return Json(code);
         }
+
+        [HttpPost]
+        public ActionResult RemoveVoucher()
+        {
+            var code = new { Success = false, Code = -1, Url = "" };
+            ShoppingCart cart = (ShoppingCart)Session["Cart"];
+            if (cart != null)
+            {
+                foreach (var item in cart.Items)
+                {
+                    if (item.OriginalPriceTotal.HasValue)
+                    {
+                        item.PriceTotal = item.OriginalPriceTotal.Value;
+                        item.OriginalPriceTotal = null;
+                        item.PercentPriceReduction = null;
+                    }
+                }
+
+                Session["Cart"] = cart; // Cập nhật lại session
+                code = new { Success = true, Code = 1, Url = "" };
+            }
+            return Json(code);
+        }
+
+        [HttpPost]
+            public ActionResult DeleteCartItem(int id)
+            {
+                var code = new { Success = false, Code = -1, Url = "" };
+                ShoppingCart cart = (ShoppingCart)Session["Cart"];
+                if (cart != null)
+                {
+               
+                    cart.Remove(id);
+                    Session["Cart"] = cart; // Cập nhật lại session
+                    code = new { Success = true, Code = 1, Url = "" };
+                }
+                return Json(code);
+            }
 
 
         [HttpPost]

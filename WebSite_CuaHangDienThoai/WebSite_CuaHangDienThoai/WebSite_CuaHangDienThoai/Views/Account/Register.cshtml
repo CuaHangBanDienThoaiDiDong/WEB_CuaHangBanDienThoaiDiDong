@@ -30,7 +30,24 @@
             return false;
 
         }
+        if (!/[!#$%^&*()_+{}\[\]:;<>,.?/~]/.test(password)) { 
+        Swal.fire({
+            icon: "warning",
+            title: "Lỗi tìm...",
+            text: "Mật khẩu phải chứa ít nhất một ký tự đặc biệt.",
+        });
+        return false;
+    }
 
+    // Kiểm tra xem mật khẩu có chứa ít nhất một ký tự in hoa không
+    if (!/[A-Z]/.test(password)) { // Kiểm tra mật khẩu có chứa ký tự in hoa hay không
+        Swal.fire({
+            icon: "warning",
+            title: "Lỗi tìm...",
+            text: "Mật khẩu phải chứa ít nhất một ký tự in hoa.",
+        });
+        return false;
+    }
 
         if (password !== confirmPassword) {
 
@@ -92,74 +109,79 @@
                     @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { onsubmit = "return validateForm();" }))
                     {
                         @Html.AntiForgeryToken()
-
-                        <div class="form-horizontal">
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="form-group">
-                                <span>Số Điện Thoại *</span>
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Số Điện Thoại" } })
-                                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <spanp>Họ Tên *</spanp>
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Tên Của Bạn " } })
-                                    @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <span>Địa Chỉ Email *</span>
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Email" } })
-                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <span> Mật Khẩu *</span>
-                                <div class="col-md-10 d-flex">
-                                    <input type="password" id="Password" name="Password" class="form-control" autocomplete="new-password" placeholder="Nhập Mật Khẩu" />
-                                    <button type="button" class="btn btn-success" onclick="togglePasswordVisibility('Password', 'togglePasswordBtn')"><i class="far fa-eye"></i></button>
-                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <span> Nhập lại mật khẩu * </span>
-                                <div class="col-md-10 d-flex">
-                                    <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Nhập Lại Mật Khẩu" />
-                                    <button type="button" class="btn btn-success" onclick="togglePasswordVisibility('ConfirmPassword', 'toggleConfirmPasswordBtn')"><i class="far fa-eye"></i></button>
-                                    @Html.ValidationMessage("ConfirmPassword", "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-
-
-
-                            <div class="form-group">
-                                <span>Địa Chỉ *</span>
-
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Loaction, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Địa Chỉ Của Bạn" } })
-                                    @Html.ValidationMessageFor(model => model.Loaction, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <hr />
-                            <div class="form-group text-center">
-                                <div class="col-md-offset-2 col-md-10 pt-3">
-                                    <input type="submit" name="submit" class="btn rounded-5 fw-bold " style="width: 200px; background: #57b846  ; color:white" value="ĐĂNG KÝ">
-                                    <p class="text-center">
-                                        Bạn đã có tài khoản?<span>
-                                            <a class="nav-link text-danger" href="/Account/Login">Đăng nhập ngay</a>
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
-
+                        
+                    <div class="form-horizontal">
+                        @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+                        <div class="text-danger">
+                            @Html.ValidationMessage("", "", new { @class = "text-danger" })
                         </div>
+
+                        <div class="form-group">
+                            <span>Số Điện Thoại *</span>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Số Điện Thoại" } })
+                                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <spanp>Họ Tên *</spanp>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Tên Của Bạn " } })
+                                @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <span>Địa Chỉ Email *</span>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Email" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <span> Mật Khẩu *</span>
+                            <div class="col-md-10 d-flex">
+                                <input type="password" id="Password" name="Password" class="form-control" autocomplete="new-password" placeholder="Nhập Mật Khẩu" />
+                                <button type="button" class="btn btn-success" onclick="togglePasswordVisibility('Password', 'togglePasswordBtn')"><i class="far fa-eye"></i></button>
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <span> Nhập lại mật khẩu * </span>
+                            <div class="col-md-10 d-flex">
+                                <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Nhập Lại Mật Khẩu" />
+                                <button type="button" class="btn btn-success" onclick="togglePasswordVisibility('ConfirmPassword', 'toggleConfirmPasswordBtn')"><i class="far fa-eye"></i></button>
+                                @Html.ValidationMessage("ConfirmPassword", "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="form-group">
+                            <span>Địa Chỉ *</span>
+
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Loaction, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Địa Chỉ Của Bạn" } })
+                                @Html.ValidationMessageFor(model => model.Loaction, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group text-center">
+                            <div class="col-md-offset-2 col-md-10 pt-3">
+                                <input type="submit" name="submit" class="btn rounded-5 fw-bold " style="width: 200px; background: #57b846  ; color:white" value="ĐĂNG KÝ">
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                <p class="text-center">
+                                    Bạn đã có tài khoản?<span>
+                                        <a class="nav-link text-danger" href="/Account/Login">Đăng nhập ngay</a>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
                     }
                 </div>
             </div>

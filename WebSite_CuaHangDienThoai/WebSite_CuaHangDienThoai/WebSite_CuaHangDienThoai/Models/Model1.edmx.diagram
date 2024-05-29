@@ -32,7 +32,7 @@
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.tb_Store" Width="1.5" PointX="6" PointY="28.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.tb_Supplier" Width="1.5" PointX="6" PointY="41.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.tb_Voucher" Width="1.5" PointX="5.25" PointY="44.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.tb_VoucherDetail" Width="1.5" PointX="7.5" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.tb_VoucherDetail" Width="3.375" PointX="7.5" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.tb_Warehouse" Width="1.5" PointX="8.25" PointY="29.375" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.tb_WarehouseDetail" Width="1.5" PointX="10.5" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.Wards" Width="1.5" PointX="3.75" PointY="31.375" IsExpanded="true" />

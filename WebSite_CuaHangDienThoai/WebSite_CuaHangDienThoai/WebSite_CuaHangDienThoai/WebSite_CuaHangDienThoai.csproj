@@ -3320,6 +3320,8 @@
     <Content Include="images\Logo\logo-iphone-220x48.png" />
     <Content Include="images\Logo\Logo-VNPAY-QR-1.png" />
     <Content Include="images\Logo\LogoWeb.jpg" />
+    <Content Include="images\Logo\LogoWeb.png" />
+    <Content Include="images\Logo\LogoWebpng.png" />
     <Content Include="images\Logo\OPPO42-b_5.jpg" />
     <Content Include="images\Logo\samsungnew-220x48-1.png" />
     <Content Include="images\Logo\vivo-logo-220-220x48-3.png" />
@@ -4002,6 +4004,7 @@
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProvincesVNController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SellerController.cs" />
     <Compile Include="Areas\Admin\Controllers\StaffController.cs" />
     <Compile Include="Areas\Admin\Controllers\StoreController.cs" />
     <Compile Include="Areas\Admin\Controllers\SupplierController.cs" />
@@ -4262,6 +4265,7 @@
     <Folder Include="Areas\Admin\Views\AccountClient\" />
     <Folder Include="Areas\Admin\Views\HomePaeg\" />
     <Folder Include="Areas\Admin\Views\ProductDetailImage\" />
+    <Folder Include="Areas\Admin\Views\Seller\" />
     <Folder Include="Models\NewFolder1\" />
     <Folder Include="Uploads\flash\" />
     <Folder Include="Uploads\images\Products\DongHoThongMinh\" />
