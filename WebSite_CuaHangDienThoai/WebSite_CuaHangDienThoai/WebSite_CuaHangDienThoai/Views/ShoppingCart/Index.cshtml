@@ -24,13 +24,42 @@
     <div class="row " style="">
         <div class=" d-flex ">
 
-            <span><a href="/Trang-chu">Trang chủ</a></span>/@ViewBag.Titles
+            <span><a href="/Trang-chu">Trang chủ</a></span>
+            <span><a href="/Trang-chu">Trang chủ</a></span>
 
         </div>
         <div id="load_data">
             @if (ViewBag.item != null)
             {
                 @Html.Action("Partial_ItemCart", "Shoppingcart")
+
+
+            }
+            else
+            {
+                <div class="row pt-2" style="width: 100%;">
+
+                    <div class="col-md-12" style="display: flex; justify-content: center; align-items: center; " >
+                        <img src="//theme.hstatic.net/200000420363/1001162486/14/empty_cart.png?v=240" alt="Không có sản phẩm nào trong giỏ hàng của bạn">
+
+
+
+                        <h5>Tiếp tục mua hàng <a href="/san-pham">Cửa hàng</a></h5>
+
+                    </div>
+                </div>
+                <br />
+                <div class="row pt-2" style="width: 100%;">
+
+                    <div class="col-md-12" style="display: flex; justify-content: center; align-items: center; ">
+
+
+                        <span>Bạn chưa có sản phẩm nào. Vui long quay lại trang <a href="/san-pham" class="text-danger">sản phẩm</a> để mua hàng.</span>
+
+                      
+
+                    </div>
+                </div>
 
                 
             }
@@ -39,7 +68,7 @@
 
     </div>
     <div class="row">
-        @if (ViewBag.item != null)
+        @if (ViewBag.item == null)
         {
             <div class="col-md-1"></div>
             <div class="col-md-10 text-center">

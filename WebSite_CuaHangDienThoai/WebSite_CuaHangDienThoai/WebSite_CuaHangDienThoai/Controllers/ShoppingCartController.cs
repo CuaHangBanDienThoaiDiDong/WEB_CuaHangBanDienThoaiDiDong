@@ -36,7 +36,8 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     int checkId = checkIdCart.CartId;
 
                     var item = db.tb_Cart.Find(checkId);
-                    ViewBag.item = item;
+                    ViewBag.item = item.CustomerId;
+                  
                     return View(item);
 
                 }

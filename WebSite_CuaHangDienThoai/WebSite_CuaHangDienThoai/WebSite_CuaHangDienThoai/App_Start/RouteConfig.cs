@@ -7,8 +7,15 @@ namespace WebSite_CuaHangDienThoai
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
-
+            
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            //// Thonmg tin khách hang
+            routes.MapRoute(
+                name: "Muahnangthnahcong",
+                url: "mua-hang-thanh-cong",
+                defaults: new { controller = "ShoppingCart", action = "CheckOutSucces", id = UrlParameter.Optional },
+                namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+            );
             //// Thonmg tin khách hang
             routes.MapRoute(
                 name: "Taikhoankhachhang",

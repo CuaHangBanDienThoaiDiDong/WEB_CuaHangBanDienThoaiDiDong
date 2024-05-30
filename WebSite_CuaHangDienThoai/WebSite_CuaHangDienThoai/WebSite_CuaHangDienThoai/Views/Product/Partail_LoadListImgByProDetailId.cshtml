@@ -2,169 +2,195 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
 <style>
     .carousel-inner {
-        width: 100%; /* Thiết lập chiều rộng */
-        height: 100%; /* Thiết lập chiều cao */
-        overflow: hidden; /* Ẩn phần nội dung vượt ra khỏi phần tử cha */
+        width: 80%;
+        height: 80%;
+        overflow: hidden;
     }
 
-    .carousel-item img {
-        width: 100%; /* Thiết lập chiều rộng ảnh */
-        height: auto; /* Chiều cao tự động điều chỉnh để duy trì tỷ lệ */
-        object-fit: contain; /* Hiển thị ảnh mà không bị kéo căng hoặc biến dạng */
+    .mainCarousel {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .loadanh {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        .loadanh img {
+            max-width: 80%;
+            max-height: 80%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+    .allImage {
+        max-width: 80%;
+        max-height:80%;
+    }
+
+    .allImageitem img {
+        width: 80%;
+        height: 80%;
+        object-fit: cover;
+        
+       
+    }
+
+    .allImageitem {
+        max-width: 80%;
+    }
+
+    .carousel-container {
+        margin-bottom: 30px;
+    }
+
+    .thumbnail-carousel-container {
+        display: flex;
+        justify-content: center;
+    }
+
+
+    .carousel-control-prev, .carousel-control-next {
+        font-size: 20rem; /* Điều chỉnh kích thước của biểu tượng nút điều hướng */
+     
     }
 </style>
-@if (Model.Any() && Model != null)
-{
-    <div class="">
-        <div class="row">
-            <div class="col-md-12">
-                <div id="carouselExampleControls" class="carousel slide d-flex justify-content-center align-items-center owl-carousel" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }))
-                        {
-                            byte[] strImg = null;
 
-
-                            if (@item.Value.Image != null)
-                            {
-                                strImg = @item.Value.Image;
-                            }
-
-                            string imgSrc = "";
-                            if (strImg != null && strImg.Length > 0)
-                            {
-                                string base64String = Convert.ToBase64String(strImg);
-                                imgSrc = $"data:image;base64,{base64String}";
-                            }
-
-
-                            <div class="carousel-item @(item.Index == 0 ? "active" : "")">
-                            <img src="@imgSrc" class="d-block mx-auto" style="width: 80%; height: 80%; object-fit: contain;" alt="@item.Value.tb_ProductDetail.tb_Products.Title">
+<div class="container">
+    <!-- Bootstrap Carousel Section -->
+    <div class="row" style="margin-top:10px">
+        <div class="col-md-12">
+            <div class="carousel-container">
+                <div class="mainCarousel">
+                    <div class="row pt-2" style="width: 100%;">
+                        <div class="col-md-1 d-flex align-items-center">
+                            <button id="prevBtn" class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="loadanh">
                             </div>
-                        }
+                        </div>
+                        <div class="col-md-1 d-flex align-items-center">
+                            <button id="nextBtn" class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
                 </div>
-            </div>
-        </div>
-        <br />
-        <div class="row">
-            <div class="col d-flex justify-content-center align-items-center">
-                <a href="#">
-                    Xem tất cả hình
-                </a>
-                <div class="Soluong"> </div>
             </div>
         </div>
     </div>
 
-
-
-
-
-
-    <!--<div class="g-4 my-5 mx-auto" style="width: 100%; height: 100%;">
-        <div class="owl-carousel owl-theme">
-            foreach (var item in Model-->@*.Select((value, index) => new { Value = value, Index = index })*@
-            <!--)
+    <!-- Thumbnail Carousel Section -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="thumbnail-carousel-container">
+                <div id="thumbnailCarousel" class="allImage owl-carousel owl-theme">
+                    @foreach (var item in Model)
                     {
-                        <div class="item">
-                            <img src="item.Image" class="d-block mx-auto" style="width: 80%; height: 80%" alt="...">
+                        byte[] strImg = item.Image;
+                        string imgSrc = "";
+                        if (strImg != null && strImg.Length > 0)
+                        {
+                            string base64String = Convert.ToBase64String(strImg);
+                            imgSrc = $"data:image;base64,{base64String}";
+                        }
+                        <div class="allImageitem">
+                            <img src="@imgSrc" alt="@item.tb_ProductDetail.tb_Products.Title">
                         </div>
                     }
                 </div>
-
-            </div>-->
-        }
-        else
-        {
-            <p class="text-danger">Lỗi tải hình ảnh</p>
-        }
-
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="~/Scripts/owl_carousel/owl.carousel.js"></script>
-
-
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <script>
-    //$(document).ready(function () {
-    //    var owl = $(".carousel-inner");
-    //    owl.owlCarousel({
-    //        loop: false,
-    //        margin: 10,
-    //        items: 1, // Chỉ hiển thị một ảnh mỗi lần
-    //        nav: true,
-    //        dots: false,
-    //        mouseDrag: true,
-    //        touchDrag: true,
-    //        onChanged: updateCounter
-    //    });
+    $(document).ready(function () {
+        // Hàm khởi tạo thumbnail carousel
+        function initThumbnailCarousel() {
+            $("#thumbnailCarousel").owlCarousel({
+                items: 5, // Hiển thị 5 ảnh cùng một lúc
+                loop: true,
+                margin: 10,
+                nav: false, // Tắt nút điều hướng
+                dots: false,
+                responsive: {
+                    0: {
+                        items: 1 // Trong màn hình nhỏ, chỉ hiển thị 1 ảnh
+                    },
+                    600: {
+                        items: 3 // Trong màn hình vừa, hiển thị 3 ảnh
+                    },
+                    1000: {
+                        items: 5 // Trong màn hình lớn, hiển thị 5 ảnh
+                    }
+                },
 
-    //    function updateCounter(event) {
-    //        // Lấy chỉ số của ảnh hiện tại (base 0)
-    //        var currentIndex = event.item.index;
-    //        // Lấy tổng số ảnh
-    //        var totalItems = event.item.count;
-    //        // Cập nhật số thứ tự của ảnh hiện tại
-    //        $(".Soluong").text("(" + (currentIndex + 1) + "/" + totalItems + ")");
-    //    }
+                onInitialized: function (event) {
+                    updateCenterImage();
+                    updateOpacity();
+                }
+            });
 
-    //    // Thêm sự kiện click cho nút điều hướng trước
-    //    $(".carousel-control-prev").click(function () {
-    //        owl.trigger('prev.owl.carousel');
-    //    });
+            
+            $("#thumbnailCarousel").on("changed.owl.carousel", function (event) {
+                updateCenterImage(); 
+                updateOpacity();
+            });
+        }
 
-    //    // Thêm sự kiện click cho nút điều hướng tiếp theo
-    //    $(".carousel-control-next").click(function () {
-    //        owl.trigger('next.owl.carousel');
-    //    });
-    //});
+       
+        function updateCenterImage() {
+            var visibleItems = $("#thumbnailCarousel .owl-item.active"); 
+            var centerIndex = Math.floor(visibleItems.length / 2); 
+            var centerItem = visibleItems.eq(centerIndex); 
+            var centerImgSrc = centerItem.find("img").attr("src"); 
+            $(".loadanh").html("<img src='" + centerImgSrc + "' alt='Center Image'>"); 
 
+        // Hàm cập nhật opacity của allImageitem
+        function updateOpacity() {
+            $("#thumbnailCarousel .allImageitem img").each(function () {
+                var imgSrc = $(this).attr("src"); 
+                if (imgSrc === $(".loadanh img").attr("src")) {
+                    $(this).parent().css("opacity", "1"); 
+                } else {
+                    $(this).parent().css("opacity", "0.2"); 
+                }
+            });
+        }
+        $("#prevBtn").click(function () {
+            $("#thumbnailCarousel").trigger('prev.owl.carousel');
+        });
 
+        $("#nextBtn").click(function () {
+            $("#thumbnailCarousel").trigger('next.owl.carousel');
+        });
 
-    //$(document).ready(function () {
-    //    $('#carouselExampleControls').carousel();
+        initThumbnailCarousel(); // Gọi hàm khởi tạo thumbnail carousel
+    });
 
-    //    $('.carousel-inner').on('mousedown', function (event) {
-    //        isDragging = true;
-    //        startPosition = event.clientX;
-    //    });
-
-    //    $(document).on('mousemove', function (event) {
-    //        if (isDragging) {
-    //            var currentPosition = event.clientX;
-    //            if (currentPosition < startPosition) {
-    //                $('#carouselExampleControls').carousel('next'); // Chuyển đến slide tiếp theo
-    //            } else if (currentPosition > startPosition) {
-    //                $('#carouselExampleControls').carousel('prev'); // Chuyển đến slide trước đó
-    //            }
-    //            isDragging = false;
-    //        }
-    //    });
-
-    //    $(document).on('mouseup', function () {
-    //        isDragging = false;
-    //    });
-    //});
-
-    //$(document).ready(function () {
-    //    $(".owl-carousel").owlCarousel({
-    //        loop: false, // Không lặp lại sau khi cuộn hết
-    //        margin: 10, // Khoảng cách giữa các mục
-
-    //        items: 1 // Chỉ hiển thị một mục mỗi lần
-    //    });
-    //});
 
 </script>

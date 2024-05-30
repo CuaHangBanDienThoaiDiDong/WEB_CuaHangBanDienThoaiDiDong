@@ -117,7 +117,15 @@
                     <div class="col-md-6 text-right">
                         <div class="top_nav_right">
                             <ul class="top_nav_menu">
-
+                                <li class="currency"></li>
+                                <li class="currency"></li>
+                                <li class="currency"></li>
+                                <li class="currency"></li>
+                                <li class="currency"></li>
+                                <li class="currency"></li>
+                                <li class="currency"></li>
+                                <li class="currency"></li>
+                                <li class="currency"></li>
                                 @*Currency / Language / My Account*@
 
                                 @*<li class="currency">
@@ -236,25 +244,25 @@
                                 <li class="  nav-item">
 
                                     @*<div class="search-form"  style="">
-                                            <form id="search-form">
+                <form id="search-form">
 
-                                                <div class="row">
-                                                    <div class="col-12 ">
-                                                        <div class="row no-gutters">
+                    <div class="row">
+                        <div class="col-12 ">
+                            <div class="row no-gutters">
 
-                                                            <div class="col-lg-8 col-md-6 col-sm-12 p-0">
-                                                                <input type="text" placeholder="Tìm kiếm sản phẩm..." class="form-control" id="search" name="search">
-                                                            </div>
-                                                            <div class="col-lg-1 col-md-3 col-sm-12 p-0 ">
-                                                                <button type="submit" class="btn btn-base">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>*@
+                                <div class="col-lg-8 col-md-6 col-sm-12 p-0">
+                                    <input type="text" placeholder="Tìm kiếm sản phẩm..." class="form-control" id="search" name="search">
+                                </div>
+                                <div class="col-lg-1 col-md-3 col-sm-12 p-0 ">
+                                    <button type="submit" class="btn btn-base">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>*@
                                     <a class="nav-link rounded-5" data-widget="navbar-search" href="#" role="button" style="background-color: #2f3033;">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:white" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
@@ -267,42 +275,45 @@
 
                                 @if (Session["Client"] != null)
                                 {
-                                    <li class="account" style="color: white; background-color: #101010; width: auto">
+                                    <li class="account" style="color: white; background-color: #101010; width: auto; position: relative;">
 
-                                        <a href="#" style="color:white ;width:auto; background-color: #101010;">
+                                        <a href="#" style="color:white; width:auto; background-color: #101010;">
                                             @*<img src="~/Content/clients/dist/img/user2-160x160.jpg" class="img-circle elevation-2 w-25 rounded-5" alt="User Image">*@
                                             @*<img src="@Session["CustomerName"]" class="img-circle elevation-2 w-25 rounded-5" alt="User Image">*@
-                                            @Session["CustomerName"]
+                                            @*@Session["CustomerName"]*@
 
-
+                                            <img src="~/Uploads/images/Products/apple-watch-s9-41mm-vien-nhom-day-silicone-1.jpg" style="width: 45px; height: 70px; border-radius: 50%; object-fit: cover;" />
 
                                         </a>
-                                        <ul class="account_selection" style="width: 150px; display: flex; flex-direction: column;">
-                                            <li style="width: 100%; display: flex;">
+
+                                        <ul class="account_selection" style="position: absolute; top: 100%; left: 60%; transform: translateX(-50%); width: 150px; display: flex; flex-direction: column; align-items: center; background-color: white; padding: 10px; border-radius: 5px;">
+                                            <li style="width: 100%; display: flex; justify-content: center;">
                                                 <small>
-                                                    <a href="~/Account/LogOut" style="width: auto;">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:black" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                                                    @{
+                                                        int idKhach = (int)Session["CustomerId"];
+                                                    }
+                                                    <a href="/tai-khoan/p@(idKhach)" style="color: black; width: 100%;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
+                                                            <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
+                                                        </svg>
+                                                        @Session["CustomerName"]
+                                                    </a>
+                                                    <a href="~/Account/LogOut" style="color: black; width: 100%;">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                                                             <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
                                                             <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
                                                         </svg>
                                                         Đăng xuất
                                                     </a>
-                                                    @{
-                                                        int idKhach = (int)Session["CustomerId"];
-                                                        <a href="/tai-khoan/p@(idKhach)" style="width: auto;">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:black" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
-                                                                <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
-                                                                <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
-                                                            </svg>
-                                                            Tài khoản
-                                                        </a>
-                                                    }
 
                                                 </small>
                                             </li>
                                         </ul>
                                     </li>
-                                    <li class="checkout ">
+
+
+                                    <li class="checkout " style="margin-left:10px">
 
                                         <a href="/Gio-hang" style="background-color: #2f3033;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:white" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
@@ -339,7 +350,7 @@
 
 
                                 @*<li><a href="#"><i class="fa fa-search" aria-hidden="true" style="color:white"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a></li>*@
+        <li><a href="#"><i class="fa fa-user" aria-hidden="true" style="color:white"></i></a></li>*@
 
                             </ul>
                             <div class="hamburger_container">

@@ -1,43 +1,12 @@
-﻿<script>
-    //function validateForm() {
-    //    var sdt = document.getElementById('PhoneNumber').value.trim();
-    //    var password = document.getElementById('Password').value.trim();
-
-    //    if (!sdt || !password) {
-    //        Swal.fire({
-    //            icon: "error",
-    //            title: "Lỗi đăng nhập...",
-    //            text: "Vui lòng điền đầy đủ thông tin!",
-    //            timer: 3000 // Thời gian hiển thị trong 3 giây
-    //        });
-    //        return false; // Trả về false để ngăn chặn việc reload trang
-    //    }
-    //    return true;
-    //}
-
-</script>
-@model WebSite_CuaHangDienThoai.Models.tb_Customer
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Customer
 @{
     ViewBag.Title = "Đăng nhập";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
-<!--===============================================================================================-->
-
-<!--===============================================================================================-->
-
-
-<!--===============================================================================================-->
-<!--===============================================================================================-->
 <link rel="stylesheet" type="text/css" href="~/Scripts/Client/vendor/animate/animate.css">
-<!--===============================================================================================-->
 <link rel="stylesheet" type="text/css" href="~/Scripts/Client/vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
 <link rel="stylesheet" type="text/css" href="~/Scripts/Client/vendor/select2/select2.min.css">
-<!--===============================================================================================-->
-
 <link href="~/Content/Css/Client/LoginClient.css" rel="stylesheet" />
-<!--===============================================================================================-->
-
 
 <br />
 <br />
@@ -45,28 +14,18 @@
 <div class="limiter">
     <div class="container-login100">
         <div class="wrap-login100">
-
-
-
             <div class="row">
                 <div class="col-5"></div>
-
             </div>
-
             <div class="login100-pic js-tilt" data-tilt>
-                <img src="~/Uploads/images/SanPham/iphone-15-1-4.jpg" @*class="w-100"*@ style="width:80%;height:auto" />
+                <img src="~/Uploads/images/SanPham/iphone-15-1-4.jpg" style="width:80%;height:auto" />
             </div>
-
-
-
-            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { onsubmit = " validateForm();" }))
+            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { onsubmit = "return validateForm();" }))
             {
                 @Html.AntiForgeryToken()
-                @*@Html.ValidationSummary(true)*@
                 <form class="login100-form validate-form">
                     <span class="login100-form-title">
-                        <h2>   Đăng nhập</h2>
-
+                        <h2>Đăng nhập</h2>
                     </span>
                     <div>
                         @if (ViewBag.error != null)
@@ -76,9 +35,11 @@
                             </p>
                         }
                     </div>
+                    <div class="text-danger">
+                        @Html.ValidationMessage("", "", new { @class = "text-danger" })
+                    </div>
                     <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                        @*<input class="input100" type="text" name="email" placeholder="Email">*@
-                        @Html.TextBoxFor(m => m.PhoneNumber, "", new { @class = "form-control input100", @placeholder = "Nhập Số Điện Thoại Của Bạn", id = "PhoneNumber" })
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control input100", @placeholder = "Nhập Số Điện Thoại Của Bạn", id = "PhoneNumber" })
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-envelope" aria-hidden="true"></i>
@@ -86,10 +47,8 @@
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        @*@Html.PasswordFor(m => m.Password, new { @class = "form-control input100", @placeholder = "Mật khẩu", id = "Password" })*@
                         <input class="input100" type="password" name="Password" placeholder="Password" id="Password">
-
-                        <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>@*password-field*@
+                        <span toggle="#Password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-lock" aria-hidden="true"></i>
@@ -97,10 +56,9 @@
                     </div>
 
                     <div class="container-login100-form-btn">
-                        <button class="login100-form-btn" type="button" onclick="checkLogin()">
+                        <button class="login100-form-btn" type="submit">
                             ĐĂNG NHẬP
                         </button>
-
                     </div>
 
                     <div class="text-center p-t-12">
@@ -119,74 +77,37 @@
                         </a>
                     </div>
                 </form>
-
-
             }
-
-
-            <script>
-                function checkLogin() {
-                    var username = document.getElementById('PhoneNumber').value.trim();
-                    var password = document.getElementById('Password').value.trim();
-
-                    if (!username || !password) {
-                        Swal.fire({
-                                    icon: "error",
-                                    title: "Lỗi đăng nhập...",
-                                    text: "Vui lòng điền đầy đủ thông tin!",
-                                    timer: 3000 // Thời gian hiển thị trong 3 giây
-                                });
-                        return false;
-                    }
-                }
-            </script>
         </div>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
-    (function ($) {
+    function validateForm() {
+        var phoneNumber = document.getElementById('PhoneNumber').value.trim();
+        var password = document.getElementById('Password').value.trim();
 
-        "use strict";
-
-        var fullHeight = function () {
-
-            $('.js-fullheight').css('height', $(window).height());
-            $(window).resize(function () {
-                $('.js-fullheight').css('height', $(window).height());
+        if (!phoneNumber || !password) {
+            Swal.fire({
+                icon: "error",
+                title: "Lỗi đăng nhập...",
+                text: "Vui lòng điền đầy đủ thông tin!",
+                timer: 3000,
+                showConfirmButton: false
             });
-
-        };
-        fullHeight();
-
-        $(".toggle-password").click(function () {
-
-            $(this).toggleClass("fa-eye fa-eye-slash");
-            var input = $($(this).attr("toggle"));
-            if (input.attr("type") == "password") {
-                input.attr("type", "text");
-            } else {
-                input.attr("type", "password");
-            }
-        });
-
-    })(jQuery);
-
-    function togglePasswordVisibility(inputId, buttonId) {
-        var passwordInput = document.getElementById(inputId);
-        var toggleButton = document.getElementById(buttonId);
-
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            toggleButton.textContent = "Ẩn mật khẩu";
-        } else {
-            passwordInput.type = "password";
-            toggleButton.textContent = "Hiện mật khẩu";
+            return false;
         }
+        return true;
     }
 
-
-
-
-
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector(".toggle-password").addEventListener("click", function () {
+            var passwordInput = document.querySelector("#Password");
+            var type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+            passwordInput.setAttribute("type", type);
+            this.classList.toggle("fa-eye");
+            this.classList.toggle("fa-eye-slash");
+        });
+    });
 </script>

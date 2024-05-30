@@ -59,14 +59,16 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     }
                     else
                     {
-                        ViewBag.error = "Tài khoản bị đã khóa";
+                        ModelState.AddModelError("", "Tài khoản đã bị khóa ");
                     }
 
                 }
 
                 else
                 {
-                    ViewBag.nonAccount = "Không tồn tại tài khoản";
+                    ModelState.AddModelError("", "Số điện thoại hoặc mật khẩu không đúng");
+
+                    return View();
                     //return RedirectToAction("Register", "Account");
                 }
             }
