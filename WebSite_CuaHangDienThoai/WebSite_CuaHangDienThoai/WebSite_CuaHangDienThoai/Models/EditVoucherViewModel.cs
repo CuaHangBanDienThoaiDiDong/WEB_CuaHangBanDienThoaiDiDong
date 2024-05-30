@@ -21,6 +21,7 @@ namespace WebSite_CuaHangDienThoai.Models
         [Required(ErrorMessage = "Vui lòng nhập số lượng.")]
         [Range(1, int.MaxValue, ErrorMessage = "Vui lòng nhập số lượng hợp lệ.")]
         public int Quantity { get; set; }
+        public int OriginalQuantity { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập phần trăm giảm giá.")]
         [Range(0, 100, ErrorMessage = "Vui lòng nhập số từ 0 đến 100.")]

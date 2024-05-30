@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using WebSite_CuaHangDienThoai.Models;
@@ -49,12 +50,18 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
         // Hàm tạo chuỗi ngẫu nhiên
-        private string GenerateRandomString(int length)
+        public string GenerateRandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            Random random = new Random();
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
+            var random = new Random();
+            var randomString = new StringBuilder(length);
+
+            for (int i = 0; i < length; i++)
+            {
+                randomString.Append(chars[random.Next(chars.Length)]);
+            }
+
+            return randomString.ToString();
         }
 
         public ActionResult Partial_AddVoucher()
@@ -140,18 +147,44 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             {
                 for (int i = 0; i < model.Quantity; i++)
                 {
-                    var voucherDetail = new tb_VoucherDetail();
-                    string randomString123 = GenerateRandomString(4);
-                    string codedetail = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Title.Trim() + randomString123);
-                    voucherDetail.Code = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(codedetail);
-                    voucherDetail.CreatedBy = model.CreatedBy;
-                    voucherDetail.CreatedDate = model.CreatedDate;
-                    voucherDetail.UsedBy = model.UsedBy;
-                    voucherDetail.UsedDate = model.UsedDate;
-                    voucherDetail.VoucherId = model.VoucherId;
-                    voucherDetail.Status = false;
 
-                    db.tb_VoucherDetail.Add(voucherDetail);
+
+                    while (true)
+                    {
+                        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                        var random = new Random();
+                        var randomString = new StringBuilder(3);
+
+                        for (int x = 0; x < 3; x++)
+                        {
+                            randomString.Append(chars[random.Next(chars.Length)]);
+                        }
+
+                        string randomString123 = randomString.ToString(); ;
+                        string combinedCode = req.Title.Trim() + randomString123;
+                        string filteredCode = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(combinedCode);
+
+                        var checkCode = db.tb_VoucherDetail.FirstOrDefault(x => x.Code == filteredCode);
+
+                        if (checkCode == null)
+                        {
+                            var voucherDetail = new tb_VoucherDetail();
+                            voucherDetail.Code = filteredCode;
+                            voucherDetail.CreatedBy = model.CreatedBy;
+                            voucherDetail.CreatedDate = model.CreatedDate;
+                           
+                            voucherDetail.UsedDate = model.UsedDate;
+                            voucherDetail.VoucherId = model.VoucherId;
+                            voucherDetail.Status = false;
+
+                            db.tb_VoucherDetail.Add(voucherDetail);
+                            db.SaveChanges(); 
+                            break; 
+                        }
+                    }
+
+
+
                 }
 
                 db.SaveChanges();
@@ -269,37 +302,65 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                
         }
 
-       
+
+
+        //public ActionResult Edit(int id)
+        //{
+
+        //    if (Session["user"] == null)
+        //    {
+        //        return RedirectToAction("DangNhap", "Account");
+        //    }
+        //    else
+        //    {
+        //        var item = db.tb_Voucher.Find(id);
+        //        if (item != null)
+        //        {
+        //            var viewModel = new EditVoucherViewModel
+        //            {
+        //                VoucherId = item.VoucherId,
+        //                Title = item.Title,
+        //                UsedDate = item.UsedDate,
+        //                ModifiedDate = item.ModifiedDate,
+        //                Code = item.Code,
+        //                CreatedBy = item.CreatedBy,
+        //                CreatedDate = item.CreatedDate,
+        //                PhanTramGiaGiam = (int)item.PercentPriceReduction,
+        //                Quantity = (int)item.Quantity,
+        //            };
+        //            return View(viewModel);
+        //        }
+        //        return View();
+        //    }
+
+        //}
+
+
 
         public ActionResult Edit(int id)
         {
-
-            if (Session["user"] == null)
+            var item = db.tb_Voucher.Find(id);
+            if (item != null)
             {
-                return RedirectToAction("DangNhap", "Account");
-            }
-            else
-            {
-                var item = db.tb_Voucher.Find(id);
-                if (item != null)
+                var viewModel = new EditVoucherViewModel
                 {
-                    var viewModel = new EditVoucherViewModel
-                    {
-                        VoucherId = item.VoucherId,
-                        Title = item.Title,
-                        UsedDate = item.UsedDate,
-                        ModifiedDate = item.ModifiedDate,
-                        Code = item.Code,
-                        CreatedBy = item.CreatedBy,
-                        CreatedDate = item.CreatedDate,
-                        PhanTramGiaGiam = (int)item.PercentPriceReduction,
-                        Quantity = (int)item.Quantity,
-                    };
-                    return View(viewModel);
-                }
-                return View();
+                    VoucherId = item.VoucherId,
+                    Title = item.Title,
+                    UsedDate = item.UsedDate,
+                    ModifiedDate = item.ModifiedDate,
+                    Code = item.Code,
+                    CreatedBy = item.CreatedBy,
+                    CreatedDate = item.CreatedDate,
+                    PhanTramGiaGiam = (int)item.PercentPriceReduction,
+                    Quantity = (int)item.Quantity,
+                    OriginalQuantity = (int)item.Quantity,
+                };
+
+              
+               
+                return View(viewModel);
             }
-           
+            return View();
         }
 
         [HttpPost]
@@ -319,13 +380,61 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     item.CreatedDate = viewModel.CreatedDate;   
                     item.UsedDate = viewModel.UsedDate;
                     item.ModifiedDate = viewModel.ModifiedDate;
-                    item.Quantity=viewModel.Quantity;   
-
-
-
+                    item.Quantity=viewModel.Quantity;
+                   
 
                     db.Entry(item).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
+
+                    if (viewModel.Quantity != viewModel.OriginalQuantity)
+                    {
+                        // Tính toán số lượng mới được thêm vào
+                        int quantityAdded = viewModel.Quantity -viewModel.OriginalQuantity   ;
+
+                        // Tạo mới các bản ghi trong tb_VoucherDetail và thêm vào cơ sở dữ liệu
+                        for (int i = 0; i < quantityAdded; i++)
+                        {
+                            while (true)
+                            {
+                                const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                                var random = new Random();
+                                var randomString = new StringBuilder(3);
+
+                                for (int x = 0; x < 3; x++)
+                                {
+                                    randomString.Append(chars[random.Next(chars.Length)]);
+                                }
+
+                                string randomString123 = randomString.ToString(); ;
+                                string combinedCode = viewModel.Title.Trim() + randomString123;
+                                string filteredCode = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(combinedCode);
+
+                                var checkCode = db.tb_VoucherDetail.FirstOrDefault(x => x.Code == filteredCode);
+
+                                if (checkCode == null)
+                                {
+                                    var voucherDetail = new tb_VoucherDetail();
+                                    voucherDetail.Code = filteredCode;
+                                    voucherDetail.CreatedBy = viewModel.CreatedBy;
+                                    voucherDetail.CreatedDate = viewModel.CreatedDate;
+                                    voucherDetail.VoucherId = viewModel.VoucherId;
+                                    voucherDetail.Status = false;
+
+                                    db.tb_VoucherDetail.Add(voucherDetail);
+                                    db.SaveChanges();
+                                    break;
+                                }
+                            }
+                        }
+
+                        var voucherDetailsToDelete = db.tb_VoucherDetail.Where(x => x.Status == false && x.OrderId == null && x.VoucherId == viewModel.VoucherId).ToList();
+                        db.tb_VoucherDetail.RemoveRange(voucherDetailsToDelete);
+                        db.SaveChanges();
+                    }
+
+
+
+
                     return RedirectToAction("Index");
                 }
             }

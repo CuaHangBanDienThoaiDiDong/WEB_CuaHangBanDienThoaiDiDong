@@ -416,12 +416,23 @@ namespace WebSite_CuaHangDienThoai.Controllers
                             db.SaveChanges();
                             int Oder = order.OrderId;
 
-                            foreach (var item in cart.Items)
-                            {
+                            //foreach (var item in cart.Items)
+                            //{
+                            //    if (item.PercentPriceReduction.HasValue && item.PercentPriceReduction.Value > 0)
+                            //    {
 
-                               
-                                //UpdateVoucherDetail(item.Code, Oder, inforKhachHang);
-                            }
+                            //        var checkCode = db.tb_VoucherDetail.FirstOrDefault(x => x.Code == item.Code);
+                            //        var checkVoucher = db.tb_Voucher.FirstOrDefault(x => x.VoucherId == checkCode.VoucherId);
+                            //        int id = checkVoucher.VoucherId;
+
+                            //        UpdateVoucherDetail(item.Code, id, Oder, inforKhachHang);
+                            //    }
+                            //    else 
+                            //    {
+                            //        break;
+                            //    }
+                                
+                            //}
 
 
 
@@ -461,7 +472,32 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
             }
         }
-     
+
+        //private void UpdateVoucherDetail(string code, int orderId, tb_Customer customer)
+        //{
+        //    // Tìm kiếm chi tiết voucher dựa trên mã code
+        //    var voucherDetail = db.tb_VoucherDetail.FirstOrDefault(v => v.Code == code);
+
+        //    if (voucherDetail != null)
+        //    {
+        //        if (voucherDetail.tb_Voucher == null)
+        //        {
+        //            Console.WriteLine("Voucher detail not found or already used.");
+        //        }
+        //        else 
+        //        {
+        //            voucherDetail.OrderId = orderId;
+        //            voucherDetail.UsedBy = customer.CustomerName; // Sử dụng tên khách hàng
+        //            voucherDetail.UsedDate = DateTime.Now; // Thời gian sử dụng voucher
+        //            voucherDetail.Status = true; // Đánh dấu voucher đã được sử dụng
+
+        //            // Lưu thay đổi vào cơ sở dữ liệu
+        //            db.SaveChanges();
+        //        }
+        //        // Cập nhật các trường thích hợp
+              
+        //    }
+        //}
 
         public ActionResult CheckOutSuccess()
         {
@@ -665,54 +701,59 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
-        //Hàm kiểm tra và áp dụng mã giảm giá từ voucher
-        //  private void UpdateVoucherDetail(string voucherCode, int orderId, tb_Customer customerInfo)
-        //  {
-        //      try
-        //      {
-        //          // Truy vấn dữ liệu từ bảng tb_VoucherDetail kèm theo dữ liệu từ bảng tb_Voucher
-        //          var voucherDetail = db.tb_VoucherDetail
-        //.Include(vd => vd.tb_Voucher)
-        //.FirstOrDefault(vd => vd.Code == voucherCode && vd.Status == false);
-
-        //          if (voucherDetail != null)
-        //          {
-        //              // Kiểm tra xem voucherDetail có chứa dữ liệu từ bảng tb_Voucher hay không
-
-        //                  // Cập nhật thông tin cho voucherDetail
-        //                  voucherDetail.OrderId = orderId;
-        //                  voucherDetail.Status = true;
-        //                  voucherDetail.UsedDate = DateTime.Now;
-        //                  voucherDetail.UsedBy = customerInfo.CustomerName;
-        //                  voucherDetail.CreatedDate = DateTime.Now;
-
-        //                  // Cập nhật bảng tb_VoucherDetail trong cơ sở dữ liệu
-        //                  db.Entry(voucherDetail).State = System.Data.Entity.EntityState.Modified;
-        //                  db.SaveChanges();
-
-        //          }
-        //          else
-        //          {
-        //              Console.WriteLine("Voucher detail not found or already used.");
-        //          }
-        //      }
-        //      catch (Exception ex)
-        //      {
-        //          Console.WriteLine(ex.Message);
-        //          if (ex.InnerException != null)
-        //          {
-        //              Console.WriteLine(ex.InnerException.Message);
-        //          }
-        //      }
-        //  }
 
 
- 
+private void UpdateVoucherDetail(string voucherCode,int voucherId, int orderId, tb_Customer customerInfo)
+    {
+        try
+        {
+            // Truy vấn dữ liệu từ bảng tb_VoucherDetail kèm theo dữ liệu từ bảng tb_Voucherx
+            var voucherDetail = db.tb_VoucherDetail
+                .Include(vd => vd.tb_Voucher)
+                .FirstOrDefault(vd => vd.Code == voucherCode && vd.Status == false &&vd.VoucherId== voucherId);
+
+            if (voucherDetail != null)
+            {
+                // Kiểm tra xem voucherDetail có chứa dữ liệu từ bảng tb_Voucher hay không
+                if (voucherDetail.tb_Voucher != null)
+                {
+                    // Cập nhật thông tin cho voucherDetail
+                    voucherDetail.OrderId = orderId;
+                    voucherDetail.Status = true;
+                    voucherDetail.UsedDate = DateTime.Now;
+                    voucherDetail.UsedBy = customerInfo.CustomerName;
+                    voucherDetail.CreatedDate = DateTime.Now;
+                        voucherDetail.VoucherId = voucherId;    
+                    // Cập nhật bảng tb_VoucherDetail trong cơ sở dữ liệu
+                    db.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine("Voucher detail not found or already used.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Voucher detail not found or already used.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            if (ex.InnerException != null)
+            {
+                Console.WriteLine(ex.InnerException.Message);
+            }
+        }
+    }
 
 
 
 
-        private string GenerateOrderCode()
+
+
+
+    private string GenerateOrderCode()
         {
             Random ran = new Random();
             return "DH" + string.Concat(Enumerable.Range(0, 5).Select(_ => ran.Next(0, 10)));

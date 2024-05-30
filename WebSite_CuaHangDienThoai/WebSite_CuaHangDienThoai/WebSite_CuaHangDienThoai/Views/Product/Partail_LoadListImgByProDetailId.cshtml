@@ -41,15 +41,13 @@
 
     .allImage {
         max-width: 80%;
-        max-height:80%;
+        max-height: 80%;
     }
 
     .allImageitem img {
         width: 80%;
         height: 80%;
         object-fit: cover;
-        
-       
     }
 
     .allImageitem {
@@ -68,7 +66,6 @@
 
     .carousel-control-prev, .carousel-control-next {
         font-size: 20rem; /* Điều chỉnh kích thước của biểu tượng nút điều hướng */
-     
     }
 </style>
 
@@ -155,32 +152,33 @@
                 }
             });
 
-            
             $("#thumbnailCarousel").on("changed.owl.carousel", function (event) {
-                updateCenterImage(); 
+                updateCenterImage();
                 updateOpacity();
             });
         }
 
-       
+        // Hàm cập nhật center image
         function updateCenterImage() {
-            var visibleItems = $("#thumbnailCarousel .owl-item.active"); 
-            var centerIndex = Math.floor(visibleItems.length / 2); 
-            var centerItem = visibleItems.eq(centerIndex); 
-            var centerImgSrc = centerItem.find("img").attr("src"); 
-            $(".loadanh").html("<img src='" + centerImgSrc + "' alt='Center Image'>"); 
+            var visibleItems = $("#thumbnailCarousel .owl-item.active");
+            var centerIndex = Math.floor(visibleItems.length / 2);
+            var centerItem = visibleItems.eq(centerIndex);
+            var centerImgSrc = centerItem.find("img").attr("src");
+            $(".loadanh").html("<img src='" + centerImgSrc + "' alt='Center Image'>");
+        }
 
         // Hàm cập nhật opacity của allImageitem
         function updateOpacity() {
             $("#thumbnailCarousel .allImageitem img").each(function () {
-                var imgSrc = $(this).attr("src"); 
+                var imgSrc = $(this).attr("src");
                 if (imgSrc === $(".loadanh img").attr("src")) {
-                    $(this).parent().css("opacity", "1"); 
+                    $(this).parent().css("opacity", "1");
                 } else {
-                    $(this).parent().css("opacity", "0.2"); 
+                    $(this).parent().css("opacity", "0.2");
                 }
             });
         }
+
         $("#prevBtn").click(function () {
             $("#thumbnailCarousel").trigger('prev.owl.carousel');
         });
@@ -191,6 +189,4 @@
 
         initThumbnailCarousel(); // Gọi hàm khởi tạo thumbnail carousel
     });
-
-
 </script>

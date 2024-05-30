@@ -31,87 +31,90 @@
             @using (Html.BeginForm())
             {
                 @Html.AntiForgeryToken()
-                <div class="form-horizontal">
-                    @Html.HiddenFor(model => model.VoucherId)
-                    @Html.HiddenFor(model => model.CreatedDate)
-                    @Html.HiddenFor(model => model.CreatedBy)
+            <div class="form-horizontal">
+                @Html.HiddenFor(model => model.VoucherId)
+                @Html.HiddenFor(model => model.CreatedDate)
+                @Html.HiddenFor(model => model.CreatedBy)
+                @Html.HiddenFor(model => model.OriginalQuantity)
+                @Html.HiddenFor(model => model.Code)
+  
 
-                    <div class="form-group">
-                        <label class="control-label col-md-12">Tiêu đề Voucher</label>
-                        <div class="col-md-10">
-                            @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-                        </div>
+                <div class="form-group">
+                    <label class="control-label col-md-12">Tiêu đề Voucher</label>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-12">Mã chung voucher Voucher</label>
-                        <div class="col-md-10">
-                            @Html.TextBoxFor(model => model.Code, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="control-label col-md-12">Ngày lập voucher</label>
-                                <div class="col-md-12">
-                                    @Model.CreatedDate.ToString("dd/MM/yyyy")
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <label class="control-label col-md-12">Người lập voucher</label>
-                                <div class="col-md-12">
-                                    @Model.CreatedBy
-                                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-12">Mã chung voucher Voucher</label>
+                    @*<div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Code, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                    </div>*@
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="control-label col-md-12">Ngày lập voucher</label>
+                            <div class="col-md-12">
+                                @Model.CreatedDate.ToString("dd/MM/yyyy")
                             </div>
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="control-label col-md-12">Số lượng Voucher</label>
-                                <div class="col-md-12">
-                                    @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control", type = "number", min = "0", max = "100", step = "1" })
-                                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
-                                </div>
+                        <div class="col-6">
+                            <label class="control-label col-md-12">Người lập voucher</label>
+                            <div class="col-md-12">
+                                @Model.CreatedBy
                             </div>
-                            <div class="col-6">
-                                <label class="control-label col-md-12">Phần trăm giảm \ Đơn hàng</label>
-                                <div class="col-md-12">
-                                    @Html.TextBoxFor(model => model.PhanTramGiaGiam, new { @class = "form-control", type = "number", min = "0", max = "100", step = "1" })
-                                    @Html.ValidationMessageFor(model => model.PhanTramGiaGiam, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="control-label col-md-12">Ngày bắt đầu chương trình Voucher</label>
-                                <div class="col-md-12">
-                                    @Html.TextBoxFor(model => model.UsedDate, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local" })
-                                    @Html.ValidationMessageFor(model => model.UsedDate, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <label class="control-label col-md-12">Ngày kết thúc chương trình Voucher</label>
-                                <div class="col-md-12">
-                                    @Html.TextBoxFor(model => model.ModifiedDate, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local" })
-                                    @Html.ValidationMessageFor(model => model.ModifiedDate, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group text-center">
-                        <div class="col-md-offset-2 col-md-10 text-center">
-                            <button type="submit" class="btn btn-success col-md-10" onclick="return validateDates()">Lưu</button>
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="control-label col-md-12">Số lượng Voucher</label>
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control", type = "number", min = "0", max = "100", step = "1" })
+                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label class="control-label col-md-12">Phần trăm giảm \ Đơn hàng</label>
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.PhanTramGiaGiam, new { @class = "form-control", type = "number", min = "0", max = "100", step = "1" })
+                                @Html.ValidationMessageFor(model => model.PhanTramGiaGiam, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="control-label col-md-12">Ngày bắt đầu chương trình Voucher</label>
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.UsedDate, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local" })
+                                @Html.ValidationMessageFor(model => model.UsedDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label class="control-label col-md-12">Ngày kết thúc chương trình Voucher</label>
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.ModifiedDate, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local" })
+                                @Html.ValidationMessageFor(model => model.ModifiedDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="col-md-offset-2 col-md-10 text-center">
+                        <button type="submit" class="btn btn-success col-md-10" onclick="return validateDates()">Lưu</button>
+                    </div>
+                </div>
+            </div>
             }
         </div>
         <!-- /.card-body -->
