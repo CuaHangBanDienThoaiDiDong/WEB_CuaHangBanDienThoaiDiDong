@@ -3553,7 +3553,6 @@
     <Content Include="Areas\Admin\Views\ProductCategory\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCompany\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCompany\Add.cshtml" />
-    <Content Include="Areas\Admin\Views\ProductCompany\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Add.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Partial_AddProduct.cshtml" />
@@ -3738,6 +3737,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
     <Content Include="Areas\Admin\Views\Voucher\Partail_VoucherDetail.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCompany\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />

@@ -37,7 +37,12 @@
                 @Html.HiddenFor(model => model.CreatedBy)
                 @Html.HiddenFor(model => model.OriginalQuantity)
                 @Html.HiddenFor(model => model.Code)
-  
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
 
                 <div class="form-group">
                     <label class="control-label col-md-12">Tiêu đề Voucher</label>
@@ -50,9 +55,9 @@
                 <div class="form-group">
                     <label class="control-label col-md-12">Mã chung voucher Voucher</label>
                     @*<div class="col-md-10">
-                        @Html.TextBoxFor(model => model.Code, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
-                    </div>*@
+                @Html.TextBoxFor(model => model.Code, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+            </div>*@
                 </div>
                 <div class="form-group">
                     <div class="row">

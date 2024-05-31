@@ -1,8 +1,10 @@
 ﻿@model WebSite_CuaHangDienThoai.Models.tb_ProductCompany
+
 @{
-    ViewBag.Title = "Chỉnh sửa  ";
+    ViewBag.Title = "Edit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+
 
 @section naviheader{
     <!-- Left navbar links -->
@@ -14,7 +16,7 @@
             <a href="/admin" class="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/news" class="nav-link">danh mục sản phẩm</a>
+            <a href="/admin/news" class="nav-link">danh mục hãng hãng hãng sản phẩm,</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
             <a href="#" class="nav-link">Cập nhật</a>
@@ -32,86 +34,117 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Cập nhật danh mục sản phẩm</h1>
+                <h1>Cập nhật danh mục hãng hãng hãng sản phẩm,</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">danh mục sản phẩm</a></li>
+                    <li class="breadcrumb-item"><a href="#">danh mục hãng hãng hãng sản phẩm,</a></li>
                     <li class="breadcrumb-item active">Cập nhật</li>
                 </ol>
             </div>
         </div>
     </div><!-- /.container-fluid -->
 </section>
-
-
-
-
 <section class="content">
-
-    <!-- Default box -->
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Thông tin Cập nhật</h3>
         </div>
         <div class="card-body">
-            <div class="bs-stepper-content">
-                @using (Html.BeginForm())
-                {
-                    @Html.AntiForgeryToken()
+            @using (Html.BeginForm("Edit", "ProductCompany", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
 
-                <div class="form-horizontal">
-                    <h4>tb_ProductCategory</h4>
-                    <hr />
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    @Html.HiddenFor(model => model.ProductCompanyId)
+            <div class="form-horizontal">
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+                @Html.HiddenFor(model => model.CreatedBy)
+                @Html.HiddenFor(model => model.ModifiedDate)
+                @Html.HiddenFor(model => model.ProductCompanyId)
+                @Html.HiddenFor(model => model.CreatedDate)
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                    <div class="form-group">
-                        <label for="exampleInputFile">Ảnh</label>
-                        <div class="input-group">
-                            <div class="custom-file">
-                                @Html.TextBoxFor(x => x.Icon, new { @id = "txtImage", @class = "form-control" })
+
+                <div class="row">
+                    <div class="col-lg-3">
+
+
+                        @if (Model.Icon != null)
+                        {
+                            <div class="form-group text-center">
+                                <img src="data:image;base64,@Convert.ToBase64String(Model.Icon)" alt="Current Image" />
                             </div>
-                            <div class="input-group-append">
-                                <input type="button" value="Tải ảnh" onclick="BrowseServer('txtImage');" />
+
+                            <div class="form-group text-center">
+                                <label for="exampleInputFile">Thay đổi </label>
+                                <input type="file" name="newImage" id="newImage" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <label for="exampleInputFile">Tải ảnh</label>
+                                <input type="file" name="newImage" id="newImage" />
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <label>Tên hãng</label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                    </div>
 
+                        <div class="form-group">
+                            <label>
+                                Tạo bởi
+                            </label>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @if (Model.Modifeby != null)
+                            {
+                                <label>Chỉnh sửa bởi</label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Modifeby, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Modifeby, "", new { @class = "text-danger" })
+                                </div>
+                            }
+                            else
+                            {
+                                <label>Chưa qua chỉnh sửa</label>
 
-                    <div class="form-group" style="display:none">
-                        @Html.LabelFor(model => model.CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.CreatedDate, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
+                            }
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Lưu" class="btn btn-default" />
-                        </div>
+
                     </div>
                 </div>
-                }
 
+
+
+
+
+
+
+                <div class="form-group text-center">
+                    <div class="col-md-12">
+                        <input type="submit" value="Lưu" class="btn btn-success col-md-10" />
+                    </div>
+                </div>
             </div>
-        </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
 
+            }
         </div>
-        <!-- /.card-footer-->
     </div>
-    <!-- /.card -->
+    
+  
 
+  
 </section>
 
 @section  scripts{

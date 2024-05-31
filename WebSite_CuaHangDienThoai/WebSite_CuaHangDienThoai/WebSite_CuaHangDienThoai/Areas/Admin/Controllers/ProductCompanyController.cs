@@ -1,6 +1,7 @@
 ﻿using PagedList;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -171,18 +172,56 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(tb_ProductCompany model)
+        public ActionResult Edit(tb_ProductCompany model, HttpPostedFileBase newImage)
         {
             if (ModelState.IsValid)
             {
-                model.ModifiedDate = DateTime.Now;
-                model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
-                db.tb_ProductCompany.Attach(model);
-                db.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                tb_ProductCompany existingProductCompany = db.tb_ProductCompany.Find(model.ProductCompanyId);
+                if (existingProductCompany == null)
+                {
+                    return HttpNotFound();
+                }
+
+                existingProductCompany.Title = model.Title;
+                existingProductCompany.ModifiedDate = DateTime.Now;
+                existingProductCompany.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
+
+                // Kiểm tra xem có hình ảnh mới được tải lên không
+                if (newImage != null && newImage.ContentLength > 0)
+                {
+                    // Xử lý hình ảnh mới
+                    byte[] imageData = null;
+                    using (var binaryReader = new BinaryReader(newImage.InputStream))
+                    {
+                        imageData = binaryReader.ReadBytes(newImage.ContentLength);
+                    }
+                    existingProductCompany.Icon = imageData;
+                }
+
                 db.SaveChanges();
-                return RedirectToAction("index");
+                return RedirectToAction("Index");
             }
-            return View();
+            return View(model);
         }
+
+
+
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(tb_ProductCompany model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+
+        //        model.ModifiedDate = DateTime.Now;
+        //        model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
+        //        db.tb_ProductCompany.Attach(model);
+        //        db.Entry(model).State = System.Data.Entity.EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("index");
+        //    }
+        //    return View();
+        //}
     }
 }
