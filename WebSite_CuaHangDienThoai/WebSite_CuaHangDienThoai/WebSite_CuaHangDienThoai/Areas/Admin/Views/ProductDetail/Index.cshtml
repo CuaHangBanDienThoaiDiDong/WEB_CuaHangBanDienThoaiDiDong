@@ -66,7 +66,6 @@
 
                         <th>Ram/Dung Lượng  </th>
                         <th>Màu</th>
-                        <th></th>
 
                         <th style="width:150px;"></th>
                     </tr>
@@ -81,12 +80,13 @@
                             {
 
 
+
                                 byte[] strImg = null;
+                                var CheckImage = item.tb_ProductDetailImage.SingleOrDefault(x => x.IsDefault == true);
 
-
-                                if (item.Image != null)
+                                if (CheckImage != null)
                                 {
-                                    strImg = item.Image;
+                                    strImg = CheckImage.Image;
                                 }
 
                                 string imgSrc = "";
@@ -95,15 +95,10 @@
                                     string base64String = Convert.ToBase64String(strImg);
                                     imgSrc = $"data:image;base64,{base64String}";
                                 }
-                                else
-                                {
-                                    <p>Không tồn tại</p>
-                                }
-
                                     <tr class="text-center" id="trow_@item.ProductsId">
                                         <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
                                         <td>@i</td>
-                                        <td><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" /></td>
+                                        <td style="width:20%"><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" style="width:50%" /></td>
                                         <td> <a href="/admin/Products/Detail/@item.ProductsId"> @item.Title</a>  </td>
                                         <td>@item.tb_Products.Title</td>
                                         <td>@item.tb_Products.tb_ProductCategory.Title</td>
@@ -149,12 +144,7 @@
                                 i++;
                             }
                         }
-                        else
-                        {
-                            <tr>
-                                <td colspan="4">Không có bản ghi nào!!!</td>
-                            </tr>
-                        }
+                       
                     </tbody>
 
                 }
@@ -169,12 +159,12 @@
 
             </table>
 
-            @*<div class="row">
+            <div class="row">
                     <div class="col-6"></div>
                     <div class="col-6" style="text-align:right;">
                         @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
                     </div>
-                </div>*@
+                </div>
 
         </div>
         <!-- /.card-body -->

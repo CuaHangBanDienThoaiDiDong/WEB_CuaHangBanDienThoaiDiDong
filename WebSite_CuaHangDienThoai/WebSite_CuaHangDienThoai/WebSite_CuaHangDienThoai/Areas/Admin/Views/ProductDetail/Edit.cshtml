@@ -1,9 +1,8 @@
 ﻿@model WebSite_CuaHangDienThoai.Models.tb_ProductDetail
 @{
-    ViewBag.Title = "Chỉnh sửa "+ViewBag.Title;
+    ViewBag.Title = "Chỉnh sửa " + ViewBag.Title;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-
 
 
 @section naviheader{
@@ -55,11 +54,12 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    @using (Html.BeginForm("Edit", "ProductDetail", FormMethod.Post, new { }))
+                    @using (Html.BeginForm("Edit", "ProductDetail", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
                         @Html.HiddenFor(x => x.ProductsId)
+                        @Html.HiddenFor(x => x.ProductDetailId)
 
                         <div class="card">
                             <div class="card-header p-2">
@@ -86,10 +86,19 @@
                                         <div class="row">
                                             <div class="col-4">
                                                 <div class="form-group">
-
+                                                    <label for="exampleInputEmail1">Màu sản phẩm</label>
+                                                    @Html.TextBoxFor(x => x.Color, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.ValidationMessageFor(x => x.Color, null, new { @class = "text-danger" })
                                                 </div>
                                             </div>
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Ram sản phẩm</label>
+                                                    @Html.TextBoxFor(x => x.Ram, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.ValidationMessageFor(x => x.Ram, null, new { @class = "text-danger" })
+                                                </div>
                                             </div>
+                                        </div>
 
                                         <div class="row">
                                             <div class="col-4">
@@ -154,36 +163,55 @@
                                                     var i = 0;
                                                     foreach (var item in Model.tb_ProductDetailImage)
                                                     {
-
-
-
-
-
                                                         <div class="row" id="trow_@item.ProductImageId">
-                                                            <div class="col-lg-4 mb-4">
-
+                                                            <div class="col-lg-12 mb-4">
                                                                 <div class="card h-100 border-start-lg border-start-primary">
                                                                     <div class="card-body">
-                                                                        <div class="image-container">
-                                                                            <img src="@item.Image" alt="Hình" class="w-25">
-                                                                            @*<button class="button-overlay" onclick="yourFunction()">Click Me</button>*@
-                                                                            @*<a href="#" class="btn btn-sm btn-danger btnDelete" data-id="@item.ProductImageId">Xóa ảnh</a>*@
+                                                                        <div class="image-container text-center">
+                                                                            <div class="row">
+                                                                                <div class="col-5">
+                                                                                    <div class="form-group text-center newImage mt-2">
+                                                                                        <label id="lbAnhCu_@item.ProductImageId" style="display:none">Ảnh cũ:</label>
+                                                                                        <img src="data:image;base64,@Convert.ToBase64String(item.Image)" alt="Hình" class="img-fluid" style="width: 60%;">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-2">
+                                                                                    <div class=" form-group text-center "id="muiTen_@item.ProductImageId" style="display: none ;justify-content: center; align-items: center; height: 100px; margin-top: 50%">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" style="color:greenyellow" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                                                                            <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708" />
+                                                                                            <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708" />
+                                                                                        </svg>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-5 d-flex justify-content-center align-items-center">
+                                                                                    <div class="form-group text-center newImage mt-2" >
+                                                                                        <label id="lbImagePreview_@item.ProductImageId"   style="display:none">Ảnh mới:</label>
+                                                                                        <img  id="newImagePreview_@item.ProductImageId"  src="#" alt="New Image Preview"style="display: none; width: 50%; height: 50%; " />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group text-center mt-2 anhMoi">
+                                                                                <label for="exampleInputFile_@item.ProductImageId" class="btn btn-primary">
+                                                                                    Thay đổi
+                                                                                    @*<input type="file" name="newImage" id="exampleInputFile_@item.ProductImageId"   accept="image/jpeg, image/png, image/gif" onchange="previewImage(event, '@item.ProductImageId')" style="display: none;" />*@
+                                                                                    @*<input type="file" name="newImage" id="exampleInputFile_@item.ProductImageId" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event, '@item.ProductImageId', '@item.ProductImageId')" style="display: none;" />*@
+                                                                                    <input type="file" name="newImage" id="exampleInputFile_@item.ProductImageId" data-product-id="@item.ProductImageId" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event, @item.ProductImageId)" style="display: none;" />
 
 
-                                                                            @if (Model.tb_ProductDetailImage.Count > 1)
+                                                                                </label>
+                                                                            </div>
+                                                                            @if (Model.tb_ProductDetailImage.Count > 1 && !item.IsDefault)
                                                                             {
                                                                                 <a href="#" data-id="@item.ProductImageId" class="btn btn-sm btn-danger btnDelete"><i class="fa fa-trash"></i></a>
                                                                             }
-
-
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                         </div>
-
                                                     }
+
+
                                                     i++;
                                                 }
 
@@ -191,7 +219,7 @@
 
 
 
-                                            
+
                                         </div>
                                     </div>
                                     <!-- /.tab-pane -->
@@ -223,22 +251,131 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 
     <script>
+        //function previewImage(event, id) {
+        //    var reader = new FileReader();
+
+
+        //    reader.onload = function () {
+        //        var output = document.getElementById('newImagePreview_' + id);
+        //        if (output) {
+        //            output.src = reader.result;
+        //            output.style.display = 'block';
+
+        //            var labelAnhCu = document.getElementById('lbAnhCu_' + id);
+        //            var muiTen = document.getElementById('muiTen_' + id);
+        //            var lbImagePreview = document.getElementById('lbImagePreview_' + id);
+        //            if (labelAnhCu && muiTen && lbImagePreview) {
+        //                labelAnhCu.style.display = 'block';
+        //                muiTen.style.display = 'block';
+        //                lbImagePreview.style.display = 'block';
+        //            } else {
+        //                console.error('Lõi lb.');
+        //            }
+        //        } else {
+        //            console.error('Looii anh ' + id + ' tim  de');
+        //        }
+        //    }
+        //    reader.readAsDataURL(event.target.files[0]);
+        //}
+
+
+        //function previewImage(event, id) {
+        //    var reader = new FileReader();
+        //    var productId = id.split('_')[1]; // Trích xuất ProductImageId từ id
+
+        //    reader.onload = function () {
+        //        var output = document.getElementById('newImagePreview_' + id);
+        //        if (output) {
+        //            output.src = reader.result;
+        //            output.style.display = 'block';
+
+        //            var labelAnhCu = document.getElementById('lbAnhCu_' + id);
+        //            var muiTen = document.getElementById('muiTen_' + id);
+        //            var lbImagePreview = document.getElementById('lbImagePreview_' + id);
+        //            if (labelAnhCu && muiTen && lbImagePreview) {
+        //                labelAnhCu.style.display = 'block';
+        //                muiTen.style.display = 'block';
+        //                lbImagePreview.style.display = 'block';
+        //            } else {
+        //                console.error('Lõi lb.');
+        //            }
+        //        } else {
+        //            console.error('Looii anh ' + id + ' tim  de');
+        //        }
+        //    }
+
+        //    reader.readAsDataURL(event.target.files[0]);
+
+        //    // Gán productId vào một trường ẩn trong biểu mẫu
+        //    var productIdInput = document.getElementById('productId');
+        //    if (productIdInput) {
+        //        productIdInput.value = productId;
+        //    } else {
+        //        console.error('Không tìm thấy trường productId trong biểu mẫu.');
+        //    }
+        //}
+        function previewImage(event, productId) {
+            var fileInput = event.target;
+            var reader = new FileReader();
+
+            reader.onload = function () {
+                var output = document.getElementById('newImagePreview_' + productId);
+                if (output) {
+                    output.src = reader.result;
+                    output.style.display = 'block';
+
+                    // Cập nhật các phần khác cần thiết dựa trên productId
+                    var labelAnhCu = document.getElementById('lbAnhCu_' + productId);
+                    var muiTen = document.getElementById('muiTen_' + productId);
+                    var lbImagePreview = document.getElementById('lbImagePreview_' + productId);
+                    if (labelAnhCu && muiTen && lbImagePreview) {
+                        labelAnhCu.style.display = 'block';
+                        muiTen.style.display = 'block';
+                        lbImagePreview.style.display = 'block';
+                    } else {
+                        console.error('Lỗi khi hiển thị phần khác.');
+                    }
+                } else {
+                    console.error('Không tìm thấy vùng hiển thị ảnh.');
+                }
+            };
+
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+
+
+
         $(document).ready(function () {
             $('body').on('click', '.btnDelete', function () {
                 var id = $(this).data('id');
-                var conf = confirm('ban có muốn xóa ảnh này không?');
-                if (conf === true) {
-                    $.ajax({
-                        url: '/admin/ProductDetailImage/DeleteImg',
-                        type: 'POST',
-                        data: { id: id },
-                        success: function (rs) {
-                            if (rs.success) {
-                                $('#trow_' + id).remove();
+
+
+                Swal.fire({
+                    title: "Bạn có chắc thao tác ?",
+                    text: "Bạn có muốn xóa ảnh này",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Chắc, xóa ngay!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/admin/ProductDetailImage/DeleteImg',
+                            type: 'POST',
+                            data: { id: id },
+                            success: function (rs) {
+                                if (rs.success) {
+                                    $('#trow_' + id).remove();
+                                }
                             }
-                        }
-                    });
-                }
+                        });
+                    }
+                });
+
+
+
+
             });
         });
 

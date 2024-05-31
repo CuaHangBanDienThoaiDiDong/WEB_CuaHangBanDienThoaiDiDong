@@ -157,6 +157,9 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Store");
             }
 
+            ViewBag.Location = item.Location;
+
+
             ViewBag.SelectedProvince = item.idProvinces;
             ViewBag.SelectedDistrict = item.idDistricts;
             ViewBag.SelectedWard = item.idWards;

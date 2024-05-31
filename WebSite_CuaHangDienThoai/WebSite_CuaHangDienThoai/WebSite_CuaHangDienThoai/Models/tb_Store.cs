@@ -12,8 +12,8 @@ namespace WebSite_CuaHangDienThoai.Models
     using System;
     using System.Collections.Generic;
 
-    //using System.ComponentModel.DataAnnotations;
-   
+    using System.ComponentModel.DataAnnotations;
+
     public partial class tb_Store
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -24,24 +24,24 @@ namespace WebSite_CuaHangDienThoai.Models
         }
     
         public int StoreId { get; set; }
-        //[Required(ErrorMessage = "Người tạo không được để trống")]
+        
         public string CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string Modifiedby { get; set; }
         public string Alias { get; set; }
-        //[Required(ErrorMessage = "Địa chỉ không được để trống")]
+        [Required(ErrorMessage = "Địa chỉ không được để trống")]
         public string Location { get; set; }
     
         public string City { get; set; }
 
         public string District { get; set; }
         public Nullable<bool> IsStatus { get; set; }
-        //[Required(ErrorMessage = "Tỉnh / thành  không được để trống")]
+        [Required(ErrorMessage = "Tỉnh / thành  không được để trống")]
         public Nullable<int> idProvinces { get; set; }
-        //[Required(ErrorMessage = "Quận / huyện không được để trống")]
+        [Required(ErrorMessage = "Quận / huyện không được để trống")]
         public Nullable<int> idDistricts { get; set; }
-        //[Required(ErrorMessage = "Phường / xã không được để trống")]
+        [Required(ErrorMessage = "Phường / xã không được để trống")]
         public Nullable<int> idWards { get; set; }
     
         public virtual Districts Districts { get; set; }
