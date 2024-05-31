@@ -53,7 +53,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    @using (Html.BeginForm("Edit", "Products", FormMethod.Post, new { }))
+                    @using (Html.BeginForm("Edit", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
@@ -100,12 +100,12 @@
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Mô tả</label>
                                             @*@Html.TextAreaFor(x => x.Description, new { @class = "form-control", @placeholder = "Mã mã phẩm" })
-                @Html.ValidationMessageFor(x => x.Description, null, new { @class = "text-danger" })*@
+                                                @Html.ValidationMessageFor(x => x.Description, null, new { @class = "text-danger" })*@
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Chi tiết sản phẩm</label>
                                             @*@Html.TextAreaFor(x => x.Detail, new { @class = "form-control", @id = "txtDetail" })
-                @Html.ValidationMessageFor(x => x.Detail, null, new { @class = "text-danger" })*@
+                                                @Html.ValidationMessageFor(x => x.Detail, null, new { @class = "text-danger" })*@
                                         </div>
 
                                         <div class="row">
@@ -122,43 +122,58 @@
                                     <!-- /.tab-Imge -->
                                     <div class="tab-pane" id="timeline">
                                         <div class="row">
-                                            <div class="col-md-12 text-right">
-                                                <input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />
+                                            <div class="col-md-12">
+                                                @*<input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />*@
+
+                                              
                                             </div>
                                             <div class="col-md-12">
                                                 <table class="table table-hover" id="tbAnhSanPham">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-center">#</th>
+                                                            <th class="text-center">STT</th>
                                                             <th class="text-center">Ảnh</th>
-                                                            <th class="text-center">Ảnh đại diện</th>
-                                                            <th class="text-center">Thao tác</th>
+                                                            <th class="text-center">Ảnh cập nhập</th>
+                                                            @*<th class="text-center">Thao tác</th>*@
                                                         </tr>
                                                     </thead>
                                                     <tbody id="tbHtml">
                                                         @if (Model.tb_ProductImage != null && Model.tb_ProductImage.Any())
                                                         {
-                                                            var i = 0;
+                                                            var i = 1;
                                                             foreach (var item in Model.tb_ProductImage)
                                                             {
                                                                 var imgSrc = item.Image != null ? "data:image;base64," + Convert.ToBase64String(item.Image) : "";
-                                                                <tr id="trow_@i">
+                                                                <tr>
                                                                     <td class="text-center">@i</td>
-                                                                    <td class="text-center">
-                                                                        <img width="80" src="@imgSrc" />
-                                                                        <input type='hidden' value="@imgSrc" name="Images" />
+                                                                    
+                                                                    <td class="text-center" style="width: 30%;">
+
+                                                                        <img src="data:image;base64,@Convert.ToBase64String(item.Image)" alt="Current Image" id="currentImage" style="width: 30%; height: 30%; " />
+                                                                       
+
                                                                     </td>
-                                                                    <td class="text-center">
-                                                                        <input type="radio" name="rDefault" value="@i" @(item.IsDefault ? "checked='checked'" : "") />
+                                                                    <td class="text-center" style="width: 30%;">
+
+                                                                        <div class="form-group text-center newImage">
+                                                                            <label>Ảnh mới:</label>
+                                                                            <img id="newImagePreview" src="#" alt="New Image Preview" style="display:none;width:50%;height:50%; " />
+                                                                        </div>
+                                                                        <div class="form-group text-center">
+                                                                            <label for="exampleInputFile">Thay đổi </label>
+                                                                            <input type="file" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)" />
+
+                                                                        </div>
+
                                                                     </td>
-                                                                    <td class="text-center">
-                                                                        <button class="btn btnCapNhapAnhh btn-primary" data-producid="@Model.ProductsId" data-idImg="@item.ProductImageId">Cập nhật ảnh</button>
-                                                                        <a href="#" data-id="@i" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a>
-                                                                    </td>
+
                                                                 </tr>
+
+                                                               
                                                                 i++;
                                                             }
                                                         }
+
                                                     </tbody>
                                                 </table>
                                                 <input type="hidden" id="tCurrentId" value="0" />
@@ -175,23 +190,23 @@
                                             <div class="form-group row">
                                                 <label for="inputName" class="col-sm-2 col-form-label">SEO Title</label>
                                                 @*<div class="col-sm-10">
-                        @Html.TextBoxFor(x => x.SeoTitle, new { @class = "form-control", @placeholder = "SeoTitle" })
-                        @Html.ValidationMessageFor(x => x.SeoTitle, null, new { @class = "text-danger" })
-                    </div>*@
+                                                        @Html.TextBoxFor(x => x.SeoTitle, new { @class = "form-control", @placeholder = "SeoTitle" })
+                                                        @Html.ValidationMessageFor(x => x.SeoTitle, null, new { @class = "text-danger" })
+                                                    </div>*@
                                             </div>
                                             <div class="form-group row">
                                                 <label for="inputEmail" class="col-sm-2 col-form-label">SeoKeywords</label>
                                                 @*<div class="col-sm-10">
-                        @Html.TextBoxFor(x => x.SeoKeywords., new { @class = "form-control", @placeholder = "SeoKeywords" })
-                        @Html.ValidationMessageFor(x => x.SeoKeywords, null, new { @class = "text-danger" })
-                    </div>*@
+                                                        @Html.TextBoxFor(x => x.SeoKeywords., new { @class = "form-control", @placeholder = "SeoKeywords" })
+                                                        @Html.ValidationMessageFor(x => x.SeoKeywords, null, new { @class = "text-danger" })
+                                                    </div>*@
                                             </div>
                                             <div class="form-group row">
                                                 <label for="inputName2" class="col-sm-2 col-form-label">SeoDescription</label>
                                                 @*<div class="col-sm-10">
-                        @Html.TextBoxFor(x => x.SeoDescription, new { @class = "form-control", @placeholder = "SeoDescription" })
-                        @Html.ValidationMessageFor(x => x.SeoDescription, null, new { @class = "text-danger" })
-                    </div>*@
+                                                        @Html.TextBoxFor(x => x.SeoDescription, new { @class = "form-control", @placeholder = "SeoDescription" })
+                                                        @Html.ValidationMessageFor(x => x.SeoDescription, null, new { @class = "text-danger" })
+                                                    </div>*@
                                             </div>
 
                                         </form>
@@ -256,7 +271,7 @@
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1">GPS:</label>
                                                     @*@Html.TextAreaFor(x => x.GPS, new { @class = "form-control", @id = "txtDetail" })
-                        @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })*@
+                                                        @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })*@
                                                     @Html.TextBoxFor(x => x.GPS, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
                                                     @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })
                                                 </div>
@@ -304,7 +319,7 @@
                                                 <div class="col-6">
                                                     <label for="exampleInputEmail1">Công nghệ pin:</label>
                                                     @*@Html.TextAreaFor(x => x.CongNghePin, new { @class = "form-control", @id = "txtDetail" })
-                        @Html.ValidationMessageFor(x => x.CongNghePin, null, new { @class = "text-danger" })*@
+                                                        @Html.ValidationMessageFor(x => x.CongNghePin, null, new { @class = "text-danger" })*@
                                                     @Html.TextBoxFor(x => x.BatteryTechnology, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
                                                     @Html.ValidationMessageFor(x => x.BatteryTechnology, null, new { @class = "text-danger" })
                                                 </div>
@@ -345,6 +360,18 @@
 
 @section scripts {
     <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('newImagePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+              
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+
         $(document).ready(function () {
             $('.auto').autoNumeric('init');
 
@@ -448,12 +475,12 @@
         function addImageProduct(url) {
             var currentId = $('#tbHtml tr').length + 1;
             var str = `
-        <tr id="trow_${currentId}">
-            <td class="text-center">${currentId}</td>
-            <td class="text-center"><img width="80" src="${url}" /> <input type='hidden' value="${url}" name="Images"/></td>
-            <td class="text-center"><input type="radio" name="rDefault" value="${currentId}" ${currentId === 1 ? 'checked="checked"' : ''}/></td>
-            <td class="text-center"><a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a></td>
-        </tr>`;
+            <tr id="trow_${currentId}">
+                <td class="text-center">${currentId}</td>
+                <td class="text-center"><img width="80" src="${url}" /> <input type='hidden' value="${url}" name="Images"/></td>
+                <td class="text-center"><input type="radio" name="rDefault" value="${currentId}" ${currentId === 1 ? 'checked="checked"' : ''}/></td>
+                <td class="text-center"><a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a></td>
+            </tr>`;
             $('#tbHtml').append(str);
             $('#tCurrentId').val(currentId);
         }

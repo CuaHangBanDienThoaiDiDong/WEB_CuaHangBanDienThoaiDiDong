@@ -2,6 +2,8 @@
 using PagedList;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -230,7 +232,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(tb_Products model)
+        public ActionResult Edit(tb_Products model, HttpPostedFileBase newImage) 
         {
             if (ModelState.IsValid)
             {
@@ -248,7 +250,46 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 //db.tb_Products.Add(model);
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("index");
+                // Handling image upload
+                if (newImage != null && newImage.ContentLength > 0)
+                {
+                    // Xử lý hình ảnh mới
+                    byte[] imageData = null;
+                    using (var binaryReader = new BinaryReader(newImage.InputStream))
+                    {
+                        imageData = binaryReader.ReadBytes(newImage.ContentLength);
+                    }
+
+                   
+                    var productImage = db.tb_ProductImage.FirstOrDefault(x => x.ProductsId == model.ProductsId);
+
+                    if (productImage != null)
+                    {
+                       
+                        productImage.Image = imageData;
+                        productImage.IsDefault = true;
+                        db.Entry(productImage).State = EntityState.Modified;
+                    }
+                    else
+                    {
+                        
+                        var newProductImage = new tb_ProductImage
+                        {
+                            ProductsId = model.ProductsId,
+                            Image = imageData,
+                            IsDefault = false 
+                        };
+                        db.tb_ProductImage.Add(newProductImage);
+                    }
+                    db.SaveChanges();
+                }
+
+
+
+              
+
+
+                    return RedirectToAction("index");
             }
             return View(model);
 

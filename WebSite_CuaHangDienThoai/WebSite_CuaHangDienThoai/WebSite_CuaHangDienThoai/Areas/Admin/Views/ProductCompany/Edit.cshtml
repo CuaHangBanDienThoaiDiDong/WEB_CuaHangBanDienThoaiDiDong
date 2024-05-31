@@ -34,11 +34,11 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Cập nhật danh mục hãng hãng hãng sản phẩm,</h1>
+                <h1>Cập nhật danh mục hãng sản phẩm,</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">danh mục hãng hãng hãng sản phẩm,</a></li>
+                    <li class="breadcrumb-item"><a href="#">danh mục hãng sản phẩm,</a></li>
                     <li class="breadcrumb-item active">Cập nhật</li>
                 </ol>
             </div>
@@ -55,113 +55,122 @@
             {
                 @Html.AntiForgeryToken()
 
-            <div class="form-horizontal">
+                <div class="form-horizontal">
 
-                @Html.HiddenFor(model => model.CreatedBy)
-                @Html.HiddenFor(model => model.ModifiedDate)
-                @Html.HiddenFor(model => model.ProductCompanyId)
-                @Html.HiddenFor(model => model.CreatedDate)
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-
-                <div class="row">
-                    <div class="col-lg-3">
+                    @Html.HiddenFor(model => model.CreatedBy)
+                    @Html.HiddenFor(model => model.ModifiedDate)
+                    @Html.HiddenFor(model => model.ProductCompanyId)
+                    @Html.HiddenFor(model => model.CreatedDate)
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-                        @if (Model.Icon != null)
-                        {
-                            <div class="form-group text-center">
-                                <img src="data:image;base64,@Convert.ToBase64String(Model.Icon)" alt="Current Image" />
-                            </div>
+                    <div class="row">
+                        <div class="col-lg-3">
 
-                            <div class="form-group text-center">
-                                <label for="exampleInputFile">Thay đổi </label>
-                                <input type="file" name="newImage" id="newImage" />
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="form-group">
-                                <label for="exampleInputFile">Tải ảnh</label>
-                                <input type="file" name="newImage" id="newImage" />
-                            </div>
-                        }
-                    </div>
-                    <div class="col-md-9">
-                        <div class="form-group">
-                            <label>Tên hãng</label>
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                Tạo bởi
-                            </label>
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @if (Model.Modifeby != null)
+                            @if (Model.Icon != null)
                             {
-                                <label>Chỉnh sửa bởi</label>
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Modifeby, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Modifeby, "", new { @class = "text-danger" })
+                                <div class="form-group text-center">
+                                    <img src="data:image;base64,@Convert.ToBase64String(Model.Icon)" alt="Current Image" id="currentImage" />
+                                </div>
+
+                                <div class="form-group text-center">
+                                    <label for="exampleInputFile">Thay đổi </label>
+                                    <input type="file" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)" />
+
+                                </div>
+
+                                <div class="form-group text-center newImage">
+                                    <label>Ảnh mới:</label>
+                                    <img id="newImagePreview" src="#" alt="New Image Preview" style="display:none;" />
                                 </div>
                             }
                             else
                             {
-                                <label>Chưa qua chỉnh sửa</label>
+                        <div class="form-group">
+                            <label for="exampleInputFile">Tải ảnh</label>
+                            <input type="file" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)" />
 
-                            }
                         </div>
 
+                                <div class="form-group text-center">
+                                    <label>Ảnh mới:</label>
+                                    <img id="newImagePreview" src="#" alt="New Image Preview" style="display:none;" />
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label>Tên hãng</label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    Tạo bởi
+                                </label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @if (Model.Modifeby != null)
+                                {
+                                    <label>Chỉnh sửa bởi</label>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Modifeby, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Modifeby, "", new { @class = "text-danger" })
+                                    </div>
+                                }
+                                else
+                                {
+                                    <label>Chưa qua chỉnh sửa</label>
+
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                    <div class="form-group text-center">
+                        <div class="col-md-12">
+                            <input type="submit" value="Lưu" class="btn btn-success col-md-10" />
+                        </div>
                     </div>
                 </div>
-
-
-
-
-
-
-
-                <div class="form-group text-center">
-                    <div class="col-md-12">
-                        <input type="submit" value="Lưu" class="btn btn-success col-md-10" />
-                    </div>
-                </div>
-            </div>
 
             }
         </div>
     </div>
-    
-  
 
-  
+
+
+
 </section>
 
-@section  scripts{
+@section scripts{
     <script>
-        $(document).ready(function () {
-            CKEDITOR.replace('txtDetail', {
-                customConfig: '/content/ckeditor/config.js',
-                extraAllowedContent: 'span',
-            });
-        });
-        function BrowseServer(field) {
-            var finder = new CKFinder();
-            finder.selectActionFunction = function (fileUrl) {
-                document.getElementById(field).value = fileUrl;
-            };
-            finder.popup();
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('newImagePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+                if (output != null) {
+                    newImage
+                }
+            }
+            reader.readAsDataURL(event.target.files[0]);
         }
-
     </script>
 }
