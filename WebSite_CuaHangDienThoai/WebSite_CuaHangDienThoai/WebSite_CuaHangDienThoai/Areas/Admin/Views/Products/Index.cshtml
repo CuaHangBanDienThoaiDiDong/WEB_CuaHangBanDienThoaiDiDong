@@ -52,223 +52,9 @@
                 <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
             </div>
         </div>
-        <div class="card-body">
-
-            <table class="table table-hover">
-                <thead>
-                    <tr class="text-center">
-                        <th><input type="checkbox" id="SelectAll" /></th>
-                        <th>STT</th>
-                        <th>Hình ảnh</th>
-                        <th>Dòng sản phẩm</th>
-                        <th>Loại sản phẩm</th>
-                        <th>Hãng</th>
-                        <th>Dung Lượng  </th>
-                        <th>Màu</th>
-                        <th>Hiển thị</th>
-                        <th>Trang chủ</th>
-                        <th>Hot</th>
-                        <th>Nổi bật</th>
-                        <th>Khuyến mãi</th>
-                        <th>Tác vụ</th>
-
-
-                        
-                    </tr>
-                </thead>
-                @if (ViewBag.txt == null)
-                {
-                    <tbody>
-                        @if (Model != null && Model.Any())
-                        {
-                            var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
-                            foreach (var item in Model)
-                            {
-                                var strCheckIsActive = item.IsActive.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
-                                var strCheckHome = item.IsHome.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
-                                var strCheckHot = item.IsHot.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
-                                var strCheckIsFeature = item.IsFeature.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
-                                var strCheckSale = item.IsSale.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
-
-
-
-                                var checkProductDetail = item.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == item.ProductsId);
-
-
-                                byte[] strImg = null;
-                                var CheckImage = item.tb_ProductImage.SingleOrDefault(x => x.IsDefault==true);
-
-                                if (CheckImage != null)
-                                {
-                                    strImg = CheckImage.Image;
-                                }
-
-                                string imgSrc = "";
-                                if (strImg != null && strImg.Length > 0)
-                                {
-                                    string base64String = Convert.ToBase64String(strImg);
-                                    imgSrc = $"data:image;base64,{base64String}";
-                                }
-
-
-                                if (item.IsActive == false)
-                                {
-                                    <tr class="text-center opacity-100 bg-gray-light" id="trow_@item.ProductsId">
-                                        <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
-                                        <td>@i</td>
-                                        <td>
-                                            <img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" />
-                                        </td>
-                                        <td>
-                                            <a href="/admin/Products/Detail/@item.ProductsId" class="text-black"> @item.Title</a>
-                                        </td>
-                                        <td>@item.tb_ProductCategory.Title</td>
-                                        <td>
-                                            @item.tb_ProductCompany.Title
-
-                                        </td>
-                                        <td>
-                                        </td>
-                                        <td>@*@item.CreatedBy.ToString("dd/MM/yyyy")*@</td>
-                                        <td class="text-center">
-                                            <a href='#' data-id="@item.ProductsId" class="btnIsActive">@Html.Raw(strCheckIsActive)</a>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href='#' data-id="@item.ProductsId" class="btnIsHome">@Html.Raw(strCheckHome)</a>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href='#' data-id="@item.ProductsId" class="btnIsHot">@Html.Raw(strCheckHot)</a>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href='#' data-id="@item.ProductsId" class="btnIsFeature">@Html.Raw(strCheckIsFeature)</a>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href='#' data-id="@item.ProductsId" class="btnIsSale">@Html.Raw(strCheckSale)</a>
-                                        </td>
-                                        <td>
-                                            @*<a href="/admin/Product/edit/@item.ProductId" class="btn btn-sm btn-primary">Sửa</a>
-                                                <a href="#" data-id="@item.ProductId" class="btn btn-sm btn-danger btnDelete">Xóa</a>*@
-
-                                            <a href="/admin/Products/Detail/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Xem</a>
-                                            <a href="/admin/Products/Edit/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Sửa</a>
-                                        </td>
-                                    </tr>
-                                }
-                                else
-                                {
-                    <tr class="text-center" id="trow_@item.ProductsId">
-                        <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
-                        <td>@i</td>
-                        <td><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" /></td>
-                        <td> <a href="/admin/Products/Detail/@item.ProductsId"  class="text-black"> @item.Title</a>  </td>
-                        <td>@item.tb_ProductCategory.Title</td>
-                        <td>
-                            @item.tb_ProductCompany.Title
-                            @*@Html.Action("Partail_ProductDetail", "Product", new { id = item.ProductId })*@
-                        </td>
-                        <td>
-                            @if (checkProductDetail == null)
-                            {
-                                <a href="/admin/ProductDetail/add/@item.ProductsId" class="text-black">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:orangered" fill="currentColor" class="bi bi-cone-striped" viewBox="0 0 16 16">
-                                        <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9s-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12m-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4s1.2-.036 1.725-.098m4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257z" />
-                                    </svg>
-                                </a>
-
-                            }
-                            else
-                            {
-                               <div class=" loadCapacity"></div>
-                                @Html.Action("Partial_CapacityByProductsId", "ProductDetail", new {id= item.ProductsId })
-                              
-                                <a href="/admin/ProductDetail/add/@item.ProductsId" style="margin-top:-20px">Thêm</a>
-
-                            }
-
-                        </td>
-                        <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
-
-
-                        @if (checkProductDetail != null)
-                        {
-
-
-
-
-                            <td class="text-center">
-                                <a href='#' data-id="@item.ProductsId" class="btnIsActive">@Html.Raw(strCheckIsActive)</a>
-                            </td>
-                            <td class="text-center">
-                                <a href='#' data-id="@item.ProductsId" class="btnIsHome">@Html.Raw(strCheckHome)</a>
-                            </td>
-                            <td class="text-center">
-                                <a href='#' data-id="@item.ProductsId" class="btnIsHot">@Html.Raw(strCheckHot)</a>
-                            </td>
-                            <td class="text-center">
-                                <a href='#' data-id="@item.ProductsId" class="btnIsFeature">@Html.Raw(strCheckIsFeature)</a>
-                            </td>
-                            <td class="text-center">
-                                <a href='#' data-id="@item.ProductsId" class="btnIsSale">@Html.Raw(strCheckSale)</a>
-                            </td>
-                        }
-                        else
-                        {
-                            <td class="text-center">
-                                <i class='fas fa-times text-danger'></i>
-                            </td>
-                            <td class="text-center">
-                                <i class='fas fa-times text-danger'></i>
-                            </td>
-                            <td class="text-center">
-                                <i class='fas fa-times text-danger'></i>
-                            </td>
-                            <td class="text-center">
-                                <i class='fas fa-times text-danger'></i>
-                            </td>
-                            <td class="text-center">
-                                <i class='fas fa-times text-danger'></i>
-                            </td>
-                            
-                        }
-
-                        <td>
-                         
-                            <a href="/admin/Products/Detail/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Xem</a>
-                            <a href="/admin/Products/Edit/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Sửa</a>
-                        </td>
-                    </tr>
-
-                                }
-
-                                i++;
-                            }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="4">Không có bản ghi nào!!!</td>
-                            </tr>
-                        }
-                    </tbody>
-
-                }
-                else
-                {
-                    <tbody>
-                        <tr class="text-center text-danger">
-                            <td>@ViewBag.txt</td>
-                        </tr>
-                    </tbody>
-                }
-
-            </table>
-
-            <div class="row">
-                    <div class="col-6"></div>
-                    <div class="col-6" style="text-align:right;">
-                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
-                    </div>
-                </div>
+        <div class="card-body loaddata">
+            @Html.Action("Partial_Index","Products")
+        
 
         </div>
         <!-- /.card-body -->
@@ -287,7 +73,10 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script>
         $(document).ready(function () {
-            //hiển thị form upload ảnh
+            
+            LoadCapti();
+
+
             $("#dialog").dialog({
                 autoOpen: false,
                 show: "fade",
@@ -476,6 +265,30 @@
                     }
                 });
             });
+
+            function LoadCapti() {
+                var productId = $('#loadCapacity').data('product-id');
+
+                $.ajax({
+                    url: '/ProductDetail/Partial_CapacityByProductsId',
+                    type: 'GET',
+                    data: { id: productId }, // Truyền ID vào request
+                    success: function (rs) {
+                        $('#loadCapacity').html(rs.Count);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
+
+
+
         });
+
+
+
+
+
     </script>
 }

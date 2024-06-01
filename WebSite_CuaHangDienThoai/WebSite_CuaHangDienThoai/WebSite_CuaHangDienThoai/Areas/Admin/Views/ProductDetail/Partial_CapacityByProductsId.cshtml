@@ -1,30 +1,4 @@
-﻿@*@model WebSite_CuaHangDienThoai.Models.tb_ProductDetail
-    @if (ViewBag == null)
-    {
-           var DungLuong = "";
-
-            if (Model.DungLuong > 999)
-            {
-                DungLuong = "1 Tb";
-            }
-            else if (Model.DungLuong > 1999)
-            {
-                DungLuong = "2 Tb";
-            }
-            else
-            {
-                DungLuong = Model.DungLuong + " Gb";
-            }
-            <span>
-                @DungLuong
-            </span>
-
-    }
-    else
-    {
-
-    }*@
-
+﻿
 
 @model List<WebSite_CuaHangDienThoai.Models.ProductDetailViewModel>
 
@@ -37,7 +11,7 @@
 @if (ViewBag.ProductsId != null)
 {
 
-    @if (Model != null)
+    if (Model != null)
     {
 
         <div class="row">

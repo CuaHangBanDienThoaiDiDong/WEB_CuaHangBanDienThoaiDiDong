@@ -1,0 +1,65 @@
+﻿
+@model PagedList.IPagedList<WebSite_CuaHangDienThoai.Models.tb_Customer>
+@using PagedList.Mvc
+
+
+    <div class="table-responsive">
+        <table class="table user-list">
+            <thead>
+                <tr class="text-center">
+                    <th><input type="checkbox" id="SelectAll" /></th>
+                    <th><span>STT</span></th>
+                    <th><span>Hình</span></th>
+                    <th><span>Tên khách hàng</span></th>
+                    <th class="text-center"><span>SĐT</span></th>
+
+                    <th><span>Khóa</span></th>
+                    <th>Chi tiết</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any() && Model != null)
+                {
+                    var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+                    foreach (var item in Model)
+                    {
+                        var strClock = item.Clock.GetValueOrDefault() ? "<i class=\"fas fa-lock\"></i>" : "<i class=\"fas fa-lock-open\"></i>";
+                        <tr id="trow_@item.CustomerId" class="text-center">
+
+                            <td><input type="checkbox" class="cbkItem" value="@item.CustomerId" /></td>
+                            <td>@i</td>
+                            <td class="text-center "style="width:100px">
+                                @*<img src="https://bootdey.com/img/Content/avatar/avatar1.png">*@
+                                <img src="~/images/icon/TUiNE.jpg" style="width: 100%; height: 50%" />
+                            </td>
+                            <td>
+                                @item.CustomerName
+                            </td>
+
+                            <td>
+                                @*<a href="#"><span class="__cf_email__" data-cfemail="34595d5855745f415a5d471a575b59">[email&#160;protected]</span></a>*@
+                                @item.PhoneNumber
+                            </td>
+
+                            <td>
+                                <a href='#' data-id="@item.CustomerId" class="btnClock">@Html.Raw(strClock)</a>
+                            </td>
+                            <td>
+                                <a href='/admin/accountclient/detail/@item.CustomerId' class="btn btn-success">Xem</a>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+
+
+                }
+                else
+                {
+                    <p class="text-danger">Chưa có khách hàng</p>
+                }
+
+
+
+            </tbody>
+        </table>
+    </div>

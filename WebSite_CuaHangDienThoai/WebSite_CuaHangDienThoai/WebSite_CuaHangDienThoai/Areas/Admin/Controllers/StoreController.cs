@@ -44,6 +44,38 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
 
+        public ActionResult Partail_Index(int? page)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                IEnumerable<tb_Store> items = db.tb_Store.OrderByDescending(x => x.StoreId);
+                if (items != null)
+                {
+                    var pageSize = 10;
+                    if (page == null)
+                    {
+                        page = 1;
+                    }
+                    var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+                    items = items.ToPagedList(pageIndex, pageSize);
+                    ViewBag.PageSize = pageSize;
+                    ViewBag.Page = page;
+                    return PartialView("_PartialIndex", items); 
+                }
+                else
+                {
+                    ViewBag.txt = "Không tồn tại sản phẩm";
+                    return PartialView("_PartialIndex"); 
+                }
+            }
+        }
+
+
+
 
 
 
@@ -120,6 +152,10 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                 db.SaveChanges();
                                 code = new { Success = true, Code = 1, Url = "" };
                             }
+                        else 
+                        {
+                            code = new { Success = false, Code = -10, Url = "" };
+                        }
                         
                     }
                     else

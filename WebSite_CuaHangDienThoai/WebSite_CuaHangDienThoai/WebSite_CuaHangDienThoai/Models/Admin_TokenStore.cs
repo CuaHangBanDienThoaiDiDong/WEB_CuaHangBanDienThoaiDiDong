@@ -8,8 +8,8 @@ namespace WebSite_CuaHangDienThoai.Models
 {
     public class Admin_TokenStore
     {
-        [Required(ErrorMessage = "Vui lòng nhập tên cửa hàng.")]
-        public string Name { get; set; }
+        //[Required(ErrorMessage = "Vui lòng nhập tên cửa hàng.")]
+        //public string Name { get; set; }
         [Required(ErrorMessage = "Vui lòng nhập địa chỉ.")]
         public string Location { get; set; }
 

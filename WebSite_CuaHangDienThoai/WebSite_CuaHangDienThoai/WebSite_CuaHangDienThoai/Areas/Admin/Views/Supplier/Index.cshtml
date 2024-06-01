@@ -59,7 +59,7 @@
         </div>
         <div class="card-body">
 
-            <table class="table table-hover">
+            <table class="table table-hover  table-striped ">
                 <thead>
                     <tr class="text-center">
                         <th><input type="checkbox" id="SelectAll" /></th>
@@ -82,11 +82,11 @@
 
 
                                 
-                                    <tr class="text-center opacity-100 bg-gray-light" id="trow_@item.SupplierId">
+                                    <tr class="text-center opacity-100 " id="trow_@item.SupplierId">
                                         <td><input type="checkbox" class="cbkItem" value="@item.SupplierId" /></td>
                                         <td>@i</td>
 
-                                        <td> <a href="/admin/Supplier/Details/@item.SupplierId"> @item.Name</a>  </td>
+                                        <td> <a href="/admin/Supplier/Details/@item.SupplierId" class="text-black"style="color:black"> @item.Name</a>  </td>
                                         <td>@item.Phone</td>
                                         <td>
                                             @item.Location

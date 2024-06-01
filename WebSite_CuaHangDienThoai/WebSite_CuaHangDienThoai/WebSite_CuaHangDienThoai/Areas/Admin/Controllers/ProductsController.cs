@@ -50,6 +50,40 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                
         }
 
+        public ActionResult Partial_Index(int? page) 
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                IEnumerable<tb_Products> items = db.tb_Products.OrderByDescending(x => x.ProductsId);
+                if (items != null)
+                {
+                    var pageSize = 10;
+                    if (page == null)
+                    {
+                        page = 1;
+                    }
+                    var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+                    items = items.ToPagedList(pageIndex, pageSize);
+                    var products = db.tb_Products.ToList();
+
+                    ViewBag.Count = products.Count;
+                    ViewBag.PageSize = pageSize;
+                    ViewBag.Page = page;
+                    return PartialView(items);
+                }
+                else
+                {
+                    ViewBag.txt = "Không tồn tại sản phẩm";
+                    return PartialView();
+                }
+            }
+        }
+
+
         public ActionResult Partial_AddProduct()
         {
             ViewBag.ProductCategory = new SelectList(db.tb_ProductCategory.ToList(), "ProductCategoryId", "Title");
@@ -394,33 +428,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
 
 
-
-
-        //[HttpPost]
-        //public ActionResult DeleteImage(int productsId, string imageUrl)
-        //{
-        //    try
-        //    {
-        //        // Tìm và xóa ảnh sản phẩm
-        //        var productImage = db.tb_ProductImage.FirstOrDefault(pi => pi.ProductsId == productsId && pi.ImageUrl == imageUrl);
-        //        if (productImage != null)
-        //        {
-        //            db.tb_ProductImage.Remove(productImage);
-        //            db.SaveChanges();
-        //            return Json(new { success = true, message = "Xóa ảnh thành công" });
-        //        }
-        //        else
-        //        {
-        //            return Json(new { success = false, message = "Không tìm thấy ảnh để xóa" });
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message });
-        //    }
-        //}
-
-
+    
 
 
 

@@ -9,6 +9,11 @@ namespace WebSite_CuaHangDienThoai
         {
             
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+       
+
+
+
             //// Thonmg tin khách hang
             routes.MapRoute(
                 name: "Muahnangthnahcong",

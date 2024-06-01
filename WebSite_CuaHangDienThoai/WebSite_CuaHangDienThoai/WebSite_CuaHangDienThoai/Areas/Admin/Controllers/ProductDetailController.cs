@@ -121,7 +121,58 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             return PartialView(result);
         }
 
+        public ActionResult Partail_ColorByProductsId(int id)
+        {
+            if (id != null)
+            {
 
+                var query = from pd in db.tb_ProductDetail
+                            join p in db.tb_Products on pd.ProductsId equals p.ProductsId
+                            where pd.ProductsId == id
+                            select new
+                            {
+
+                                Color = pd.Color,
+                                DungLuong = pd.Capacity
+                            };
+
+                // Tạo một danh sách để lưu trữ các màu và dung lượng mà không bị lặp lại
+                List<string> colors = new List<string>();
+                List<int> dungLuongs = new List<int>();
+
+                foreach (var item in query)
+                {
+                    if (!colors.Contains(item.Color))
+                    {
+                        colors.Add(item.Color);
+                    }
+
+                    if (!dungLuongs.Contains((int)item.DungLuong))
+                    {
+                        dungLuongs.Add((int)item.DungLuong);
+                    }
+                    else
+                    {
+
+                    }
+                }
+
+                // Chuyển đổi danh sách dung lượng sang một danh sách các đối tượng ProductDetailViewModel
+                List<ProductDetailViewModel> result = dungLuongs.Select(dl => new ProductDetailViewModel
+                {
+                    Color = string.Join(", ", colors),
+                    DungLuong = dl
+                }).ToList();
+                ViewBag.ProductsId = id;
+                return PartialView(result);
+            }
+            else
+            {
+                return PartialView(null);
+            }
+
+
+        }
 
         public ActionResult Partial_AddProductDetail(int id)
         {

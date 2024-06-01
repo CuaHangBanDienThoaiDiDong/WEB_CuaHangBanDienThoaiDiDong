@@ -3316,6 +3316,7 @@
     <Content Include="images\goiy-1.png" />
     <Content Include="images\icon-laptop-gaming-desk-50x50-50x50-50x50-1.png" />
     <Content Include="images\icon\goiy-1_1.jpg" />
+    <Content Include="images\icon\TUiNE.jpg" />
     <Content Include="images\Logo\50x50-1-100x100-1.png" />
     <Content Include="images\Logo\logo-iphone-220x48.png" />
     <Content Include="images\Logo\Logo-VNPAY-QR-1.png" />
@@ -3738,6 +3739,11 @@
     </Content>
     <Content Include="Areas\Admin\Views\Voucher\Partail_VoucherDetail.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCompany\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Store\_PartialIndex.cshtml" />
+    <Content Include="Areas\Admin\Views\Products\Partial_Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductDetail\Partail_ColorByProductsId.cshtml" />
+    <Content Include="Areas\Admin\Views\AccountClient\Partail_Index.cshtml" />
+    <Content Include="Areas\Admin\Views\AccountClient\Index.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
@@ -3756,6 +3762,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\JsAadminProduct.js" />
     <Content Include="Scripts\JsAdmin.js" />
     <Content Include="Scripts\jsShopping.js" />
     <Content Include="Scripts\JsShoppingCart.js" />
@@ -4262,7 +4269,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Views\AccountClient\" />
     <Folder Include="Areas\Admin\Views\HomePaeg\" />
     <Folder Include="Areas\Admin\Views\ProductDetailImage\" />
     <Folder Include="Areas\Admin\Views\Seller\" />
