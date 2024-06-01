@@ -3268,6 +3268,7 @@
     <Content Include="Content\clients\plugins\uplot\uPlot.iife.js" />
     <Content Include="Content\clients\plugins\uplot\uPlot.iife.min.js" />
     <Content Include="Content\clients\plugins\uplot\uPlot.min.css" />
+    <Content Include="Content\CongTac.css" />
     <Content Include="Content\Css\Addmin\Login.css" />
     <Content Include="Content\Css\Client\bootstrap.min.css" />
     <Content Include="Content\Css\Client\CartIndex.css" />
@@ -3531,6 +3532,7 @@
     <Content Include="Scripts\Client\vendor\select2\select2.min.css" />
     <Content Include="Scripts\Client\vendor\select2\select2.min.js" />
     <Content Include="Scripts\Client\vendor\tilt\tilt.jquery.min.js" />
+    <Content Include="Scripts\CongTac.js" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Areas\Admin\Views\web.config" />
@@ -4043,6 +4045,7 @@
     <Compile Include="Models\Admin_TokenVoucher.cs" />
     <Compile Include="Models\Common\Filter.cs" />
     <Compile Include="Models\CompanyModel.cs" />
+    <Compile Include="Models\CustomerViewModelClock.cs" />
     <Compile Include="Models\Districts.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

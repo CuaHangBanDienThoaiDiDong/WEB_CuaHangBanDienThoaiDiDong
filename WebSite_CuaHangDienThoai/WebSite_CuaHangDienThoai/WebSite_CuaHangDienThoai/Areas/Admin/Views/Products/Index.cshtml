@@ -47,7 +47,69 @@
             <h3 class="card-title">Danh sách @ViewBag.Title</h3>
             <br />
             <span><label>Tổng số sản phẩm:</label> @ViewBag.Count</span>
+
+
+
+
+            <div class="toggleIsActiveAll" style="display: flex; align-items: center;">
+                <p style="margin-right: 10px;">Hiển thị sản phẩm</p>
+                <label class="toggle" for="myToggle">
+                    <span class="text-center" style="display: inline-block; white-space: nowrap;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:red" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                        </svg>
+
+                        <input class="toggle__input toggle__IsActiveAll text-center" name="" type="checkbox" id="myToggle">
+                        <div class="toggle__fill"></div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:green" fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
+                            <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486z" />
+                        </svg>
+                    </span>
+
+                </label>
+            </div>
+
+
+
+
+
+            <div class="toggleIsHomeAll" style="display: flex; align-items: center;">
+                <p style="margin-right: 10px;">Hiển thị trang chủ sản phẩm</p>
+                <label class="toggle" for="myToggle">
+                    <span class="text-center" style="display: inline-block; white-space: nowrap;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:red" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                        </svg>
+
+                        <input class="toggle__input toggle__IsHomeAll text-center" name="" type="checkbox" id="myToggle">
+                        <div class="toggle__fill"></div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:green" fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
+                            <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486z" />
+                        </svg>
+                    </span>
+
+                </label>
+            </div>
+
+
+
             <div class="card-tools">
+
+                <div class="toggleIsActiveAll" style="display:none;">
+
+                    <label class="toggle" for="myToggle">
+                        <span class="text-center">
+                            Khóa tất cả tài khoản  <i class=\"fas fa-lock-open\"></i>
+                            <input class=" toggle__input toggle__IsActiveAll   text-center" name="" type="checkbox" id="myToggle1">
+                            <div class="toggle__fill"></div>
+                            <i class=\"fas fa-lock text-danger\"></i>
+                        </span>
+
+                    </label>
+                </div>
+
+
+
                 <a href="/admin/products/add" class="btn btn-primary">Thêm mới</a>
                 <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
             </div>
@@ -75,6 +137,205 @@
         $(document).ready(function () {
             
             LoadCapti();
+
+
+            chekIsActive();
+
+
+            $('.toggle__IsActiveAll').change(function () {
+                var $toggleIsActiveAll = $('.toggleIsActiveAll');
+                if ($(this).is(':checked')) {
+                    $toggleIsActiveAll.addClass('active');
+                    Swal.fire({
+                        title: "Bạn muốn hiển thị tất cả sản phẩm ?",
+                        text: "Bạn đang thao tác !",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Chắc, hiển thị!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/admin/Products/UpdateAllIsActive',
+                                type: 'POST',
+                                success: function (rs) {
+                                    if (rs.success) {
+                                        // Kiểm tra xem Clock đã được cập nhật thành công hay không
+                                        if (rs.isAcive) {
+                                            location.reload(true);
+                                            // Nếu Clock đã được cập nhật thành công, cập nhật biểu tượng của nút
+                                            btn.html("<i class=\"fas fa-lock\"></i>");
+                                        }
+                                        else {
+                                            location.reload(true);
+                                            // Nếu Clock không được cập nhật thành công, cập nhật biểu tượng của nút
+                                            btn.html("<i class=\"fas fa-lock-open\"></i>");
+                                        }
+                                        // Hiển thị cảnh báo thành công
+                                        Swal.fire({
+                                            title: "Sản phẩm đã hiện thị các trang!",
+                                            icon: "success"
+                                        });
+                                    } else {
+                                        // Hiển thị cảnh báo lỗi
+                                        Swal.fire({
+                                            title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                            icon: "error"
+                                        });
+                                    }
+                                },
+                                error: function () {
+                                    // Hiển thị cảnh báo lỗi
+                                    Swal.fire({
+                                        title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                        icon: "error"
+                                    });
+                                }
+                            });
+                        } else {
+                            // Người dùng từ chối cảnh báo, loại bỏ lớp active và reset checkbox
+                            $toggleIsActiveAll.removeClass('active');
+                            setTimeout(function () {
+                                $('.toggle__IsActiveAll').prop('checked', false);
+                            }, 10);
+                        }
+                    });
+                } else {
+
+                    $toggleIsActiveAll.addClass('active');
+                    Swal.fire({
+                        title: "Bạn muốn mở khóa tất cả tài khoản này ?",
+                        text: "Bạn đang thao tác !",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Chắc ,mở khóa!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/admin/Products/UpdateAllUnIsActive',
+                                type: 'POST',
+                                success: function (rs) {
+                                    if (rs.success) {
+                                        // Kiểm tra xem Clock đã được cập nhật thành công hay không
+                                        if (rs.isAcive) {
+                                            location.reload(true);
+                                            // Nếu Clock đã được cập nhật thành công, cập nhật biểu tượng của nút
+                                            btn.html("<i class=\Procductslock\"></i>");
+                                        }
+                                        else {
+                                            location.reload(true);
+                                            // Nếu Clock không được cập nhật thành công, cập nhật biểu tượng của nút
+                                            btn.html("<i class=\"fas fa-lock-open\"></i>");
+                                        }
+                                        // Hiển thị cảnh báo thành công
+                                        Swal.fire({
+                                            title: "Khóa tài khoản thành công!",
+                                            icon: "success"
+                                        });
+                                    } else {
+                                        // Hiển thị cảnh báo lỗi
+                                        Swal.fire({
+                                            title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                            icon: "error"
+                                        });
+                                    }
+                                },
+                                error: function () {
+                                    // Hiển thị cảnh báo lỗi
+                                    Swal.fire({
+                                        title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                        icon: "error"
+                                    });
+                                }
+                            });
+                        } else {
+                            // Người dùng từ chối cảnh báo, loại bỏ lớp active và reset checkbox
+                            $toggleIsActiveAll.removeClass('active');
+                            setTimeout(function () {
+                                $('.toggle__IsActiveAll').prop('checked', false);
+                            }, 10);
+                        }
+                    });
+                    $toggleIsActiveAll.removeClass('active');
+                }
+            });
+
+
+
+
+            $('.toggle__IsHomeAll').change(function () {
+                var toggleIsHomeAll = $('.toggleIsHomeAll');
+                if ($(this).is(':checked')) {
+                    toggleIsHomeAll.addClass('active');
+                    Swal.fire({
+                        title: "Bạn muốn hiển thị tất cả ở trang chủ ?",
+                        text: "Bạn đang thao tác !",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Chắc, hiển thị!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/admin/Products/UpdateAllIsActive',
+                                type: 'POST',
+                                success: function (rs) {
+                                    if (rs.success) {
+                                        // Kiểm tra xem Clock đã được cập nhật thành công hay không
+                                        if (rs.isHome) {
+                                            location.reload(true);
+                                            // Nếu Clock đã được cập nhật thành công, cập nhật biểu tượng của nút
+                                            btn.html("<i class='fa fa-check text-success'></i>");
+                                        }
+                                        else {
+                                            location.reload(true);
+                                            // Nếu Clock không được cập nhật thành công, cập nhật biểu tượng của nút
+                                            btn.html("<i class='fas fa-times text-danger'></i");
+                                        }
+                                        // Hiển thị cảnh báo thành công
+                                        Swal.fire({
+                                            title: "Sản phẩm đã hiện thị các trang!",
+                                            icon: "success"
+                                        });
+                                    } else {
+                                        // Hiển thị cảnh báo lỗi
+                                        Swal.fire({
+                                            title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                            icon: "error"
+                                        });
+                                    }
+                                },
+                                error: function () {
+                                    // Hiển thị cảnh báo lỗi
+                                    Swal.fire({
+                                        title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                        icon: "error"
+                                    });
+                                }
+                            });
+                        } else {
+                            // Người dùng từ chối cảnh báo, loại bỏ lớp active và reset checkbox
+                            toggleIsHomeAll.removeClass('active');
+                            setTimeout(function () {
+                                $('.toggle__IsActiveAll').prop('checked', false);
+                            }, 10);
+                        }
+                    });
+                } else {
+
+                    toggleIsHomeAll.addClass('active');
+                  
+                    $toggleIsActiveAll.removeClass('active');
+                }
+            });
+
+
+
+
 
 
             $("#dialog").dialog({
@@ -142,6 +403,12 @@
                         checkbox.attr('selected', '');
                     }
                 });
+                if (checkStatus) {
+                    $('.toggleIsActiveAll').show(); 
+                    $('.toggleIsHomeAll').show(); 
+                } else {
+                    $('.toggleIsHomeAll').hide(); // Ẩn khi checkbox không được kiểm tra
+                }
             });
             $('body').on('click', '.btnDelete', function () {
                 var id = $(this).data("id");
@@ -281,14 +548,22 @@
                     }
                 });
             }
-
+            function chekIsActive() {
+                $.ajax({
+                    url: '/admin/Products/CheckAllIsActive',
+                    type: 'GET',
+                    success: function (response) {
+                        if (response.success && response.allClocksActive) {
+                            $('.toggle__IsActiveAll').prop('checked', true);
+                        }
+                    },
+                    error: function () {
+                        console.log("Đã xảy ra lỗi khi kiểm tra trạng thái tài khoản.");
+                    }
+                });
+            }
 
 
         });
-
-
-
-
-
     </script>
 }

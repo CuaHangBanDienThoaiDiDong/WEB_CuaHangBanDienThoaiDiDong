@@ -1,6 +1,7 @@
 ﻿using PagedList;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -79,19 +80,126 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
+        //[HttpPost]
+        //public ActionResult IsLock(int id)
+        //{
+        //    var item = db.tb_Customer.Find(id);
+        //    if (item != null)
+        //    {
+        //        item.Clock = !item.Clock;
+        //        db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+        //        db.SaveChanges();
+        //        return Json(new { success = true, isAcive = item.Clock });
+        //    }
+
+        //    return Json(new { success = false });
+        //}
+
+
         [HttpPost]
         public ActionResult IsLock(int id)
         {
-            var item = db.tb_Customer.Find(id);
-            if (item != null)
+            try
             {
-                item.Clock = !item.Clock;
-                db.Entry(item).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
-                return Json(new { success = true, isAcive = item.Clock });
+                var customer = db.tb_Customer.FirstOrDefault(c => c.CustomerId == id); 
+                if (customer != null)
+                {
+                    customer.Clock = !customer.Clock;
+                    db.SaveChanges(); 
+                    return Json(new { success = true, isActive = customer.Clock });
+                }
+                else
+                {
+                    return Json(new { success = false, error = "Không tìm thấy khách hàng" });
+                }
             }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+        [HttpGet]
+        public ActionResult CheckAllClocks()
+        {
+            try
+            {
+                var allClocksActive = db.tb_Customer.All(c => c.Clock==true);
+                return Json(new { success = true, allClocksActive = allClocksActive }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
 
-            return Json(new { success = false });
+        [HttpPost]
+        public ActionResult UpdateAllClocks()
+        {
+            try
+            {
+                
+                var customers = db.tb_Customer.ToList();
+                foreach (var customer in customers)
+                {
+                    customer.Clock = true;
+                    db.Entry(customer).State = EntityState.Modified;
+                }
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+        [HttpPost]
+        public ActionResult UpdateSelectedClocks(List<CustomerViewModelClock> selectedCustomers)
+        {
+            try
+            {
+                foreach (var customer in selectedCustomers)
+                {
+                    var dbCustomer = db.tb_Customer.Find(customer.CustomerId);
+                    if (dbCustomer != null)
+                    {
+                        // Cập nhật trạng thái Clock của khách hàng
+                        dbCustomer.Clock = !dbCustomer.Clock; // Đảo ngược trạng thái
+                        db.Entry(dbCustomer).State = EntityState.Modified;
+                    }
+                }
+                db.SaveChanges();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+
+
+
+        [HttpPost]
+        public ActionResult UpdateAllUnClocks()
+        {
+            try
+            {
+
+                var customers = db.tb_Customer.ToList();
+                foreach (var customer in customers)
+                {
+                    customer.Clock = false;
+                    db.Entry(customer).State = EntityState.Modified;
+                }
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
         }
     }
 }

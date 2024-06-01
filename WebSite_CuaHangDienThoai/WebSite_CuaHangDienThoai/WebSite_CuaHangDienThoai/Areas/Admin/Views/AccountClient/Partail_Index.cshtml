@@ -3,63 +3,98 @@
 @using PagedList.Mvc
 
 
-    <div class="table-responsive">
-        <table class="table user-list">
-            <thead>
-                <tr class="text-center">
-                    <th><input type="checkbox" id="SelectAll" /></th>
-                    <th><span>STT</span></th>
-                    <th><span>Hình</span></th>
-                    <th><span>Tên khách hàng</span></th>
-                    <th class="text-center"><span>SĐT</span></th>
+<div class="table-responsive">
+    <table class="table user-list">
+        <thead>
+            <tr class="text-center">
+                <th><input type="checkbox" id="SelectAll" /></th>
+                <th><span>STT</span></th>
+                <th><span>Hình</span></th>
+                <th><span>Tên khách hàng</span></th>
+                <th class="text-center"><span>SĐT</span></th>
 
-                    <th><span>Khóa</span></th>
-                    <th>Chi tiết</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.Any() && Model != null)
+                <th><span>Khóa</span></th>
+                <th>Chi tiết</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any() && Model != null)
+            {
+                var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+                foreach (var item in Model)
                 {
-                    var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
-                    foreach (var item in Model)
+                    var strClock = item.Clock.GetValueOrDefault() ? "<i class=\"fas fa-lock text-danger\"></i>" : "<i class=\"fas fa-lock-open\"></i>";
+                    <tr id="trow_@item.CustomerId" class="text-center">
+
+                        <td><input type="checkbox" class="cbkItem" value="@item.CustomerId" /></td>
+                        <td>@i</td>
+                        <td class="text-center " style="width:100px">
+                            @*<img src="https://bootdey.com/img/Content/avatar/avatar1.png">*@
+                            <img src="~/images/icon/TUiNE.jpg" style="width: 100%; height: 50%" />
+                        </td>
+                        <td>
+                            @item.CustomerName
+                        </td>
+
+                        <td>
+                            @*<a href="#"><span class="__cf_email__" data-cfemail="34595d5855745f415a5d471a575b59">[email&#160;protected]</span></a>*@
+                            @item.PhoneNumber
+                        </td>
+
+                        <td>
+                            <a href='#' data-id="@item.CustomerId" class="btnClock">@Html.Raw(strClock)</a>
+                        </td>
+                        <td>
+                            <a href='/admin/accountclient/detail/@item.CustomerId' class="btn btn-success">Xem</a>
+                        </td>
+                    </tr>
+                    i++;
+                }
+
+
+            }
+            else
+            {
+                <p class="text-danger">Chưa có khách hàng</p>
+            }
+
+
+
+        </tbody>
+    </table>
+    <hr />
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm">
+                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = 1 })" aria-label="First">
+                            <span aria-hidden="true">Đầu</span>
+                        </a>
+                    </li>
+                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    @for (int i = Model.PageNumber; i <= Model.PageNumber + 4 && i <= Model.PageCount; i++)
                     {
-                        var strClock = item.Clock.GetValueOrDefault() ? "<i class=\"fas fa-lock\"></i>" : "<i class=\"fas fa-lock-open\"></i>";
-                        <tr id="trow_@item.CustomerId" class="text-center">
-
-                            <td><input type="checkbox" class="cbkItem" value="@item.CustomerId" /></td>
-                            <td>@i</td>
-                            <td class="text-center "style="width:100px">
-                                @*<img src="https://bootdey.com/img/Content/avatar/avatar1.png">*@
-                                <img src="~/images/icon/TUiNE.jpg" style="width: 100%; height: 50%" />
-                            </td>
-                            <td>
-                                @item.CustomerName
-                            </td>
-
-                            <td>
-                                @*<a href="#"><span class="__cf_email__" data-cfemail="34595d5855745f415a5d471a575b59">[email&#160;protected]</span></a>*@
-                                @item.PhoneNumber
-                            </td>
-
-                            <td>
-                                <a href='#' data-id="@item.CustomerId" class="btnClock">@Html.Raw(strClock)</a>
-                            </td>
-                            <td>
-                                <a href='/admin/accountclient/detail/@item.CustomerId' class="btn btn-success">Xem</a>
-                            </td>
-                        </tr>
-                        i++;
+                        <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                        </li>
                     }
-
-
-                }
-                else
-                {
-                    <p class="text-danger">Chưa có khách hàng</p>
-                }
-
-
-
-            </tbody>
-        </table>
+                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount })" aria-label="Last">
+                            <span aria-hidden="true">Cuối</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
+</div>

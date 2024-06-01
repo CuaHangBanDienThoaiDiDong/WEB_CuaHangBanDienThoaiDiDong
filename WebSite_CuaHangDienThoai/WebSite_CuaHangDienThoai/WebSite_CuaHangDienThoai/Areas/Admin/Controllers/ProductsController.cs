@@ -505,6 +505,97 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             return Json(new { success = false });
         }
 
+        [HttpPost]
+        public ActionResult UpdateAllIsActive()
+        {
+            try
+            {
+                var products = db.tb_Products.ToList();
+
+                foreach (var product in products)
+                {
+                    var hasDetails = db.tb_ProductDetail.Any(pd => pd.ProductsId == product.ProductsId);
+                    if (hasDetails)
+                    {
+                        product.IsActive = true;
+                        db.Entry(product).State = EntityState.Modified;
+                    }
+                }
+
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult UpdateAllUnIsActive()
+        {
+            try
+            {
+                var products = db.tb_Products.ToList();
+
+                foreach (var product in products)
+                {
+                    var hasDetails = db.tb_ProductDetail.Any(pd => pd.ProductsId == product.ProductsId);
+                    if (hasDetails)
+                    {
+                        product.IsActive = false;
+                        db.Entry(product).State = EntityState.Modified;
+                    }
+                }
+
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+        public ActionResult CheckAllIsActive()
+        {
+            try
+            {
+                var allClocksActive = true;
+
+                var products = db.tb_Products.ToList();
+
+                foreach (var product in products)
+                {
+                    // Kiểm tra trạng thái IsActive của sản phẩm
+                    if (product.IsActive == true)
+                    {
+                        allClocksActive = true;
+                        break; // Nếu có sản phẩm nào không có IsActive là true, thoát vòng lặp
+                    }
+
+                    // Kiểm tra xem có chi tiết sản phẩm nào liên kết với sản phẩm không
+                    var hasDetails = db.tb_ProductDetail.Any(detail => detail.ProductsId == product.ProductsId);
+
+                    // Nếu không có chi tiết sản phẩm nào liên kết với sản phẩm
+                    if (hasDetails)
+                    {
+                        allClocksActive = false;
+                        break; // Nếu có sản phẩm không có chi tiết sản phẩm liên kết, thoát vòng lặp
+                    }
+                }
+
+                return Json(new { success = true, allClocksActive = allClocksActive }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
 
 
 
