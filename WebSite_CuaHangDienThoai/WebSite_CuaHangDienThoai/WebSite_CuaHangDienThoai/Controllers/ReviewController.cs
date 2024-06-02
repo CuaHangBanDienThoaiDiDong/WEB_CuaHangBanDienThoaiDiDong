@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -28,11 +29,14 @@ namespace WebSite_CuaHangDienThoai.Controllers
             if (reviewIds != null)
             {
                 var reviewDetails = db.tb_ReviewDetail
-              .Where(detail => reviewIds.Contains((int)detail.ReviewId))
-              .ToList();
+    .Where(detail => reviewIds.Contains((int)detail.ReviewId))
+    .OrderByDescending(detail => detail.ReviewDetailId)
+    .ToList();
+
 
                 if (reviewDetails != null)
                 {
+                    ViewBag.ProductDetailId = id;
                     ViewBag.Count = reviewDetails.Count;
                     return PartialView(reviewDetails);
                 }
@@ -141,5 +145,107 @@ namespace WebSite_CuaHangDienThoai.Controllers
             }
             return Json(code);
         }
+
+
+        [HttpPost]
+        public JsonResult EditContent(int reviewDetailId, string content)
+        {
+            var code = new { Success = false, Code = -1, Url = "" };
+
+            if (Session["CustomerId"] != null)
+            {
+                int idKhach = (int)Session["CustomerId"];
+                if (idKhach > 0)
+                {
+                    var reviewDetail = db.tb_ReviewDetail.Find(reviewDetailId);
+                    if (reviewDetail != null)
+                    {
+                        
+                        if (reviewDetail.CustomerId == idKhach)
+                        {
+                            var khachHang = db.tb_Customer.Find(idKhach);
+                            reviewDetail.Content = content;
+                            reviewDetail.ModifiedDate = DateTime.Now;
+                            reviewDetail.Modifeby = khachHang.CustomerName;
+
+                            try
+                            {
+                                db.Entry(reviewDetail).State = EntityState.Modified;
+                                db.SaveChanges();
+
+                                code = new { Success = true, Code = 1, Url = "" };
+                            }
+                            catch (Exception ex)
+                            {
+                                db.Entry(reviewDetail).State = EntityState.Unchanged;
+
+                                code = new { Success = false, Code = -6, Url = "" };
+                            }
+                        }
+                        else
+                        {
+                            code = new { Success = false, Code = -5, Url = "" }; 
+                        }
+                    }
+                    else
+                    {
+                        code = new { Success = false, Code = -3, Url = "" }; // Không tìm thấy đánh giá
+                    }
+                }
+                else
+                {
+                    code = new { Success = false, Code = -2, Url = "" }; // Không tìm thấy tài khoản người dùng
+                }
+            }
+            else
+            {
+                code = new { Success = false, Code = -4, Url = "" }; // Không có phiên làm việc
+            }
+
+            return Json(code);
+        }
+
+
+        //[HttpPost]
+        //public JsonResult EditContent(int reviewDetailId, string content)
+        //{
+        //    var code = new { Success = false, Code = -1, Url = "" };
+
+        //    if (Session["CustomerId"] != null)
+        //    {
+        //        int idKhach = (int)Session["CustomerId"];
+        //        if (idKhach > 0)
+        //        {
+        //            var reviewDetail = db.tb_ReviewDetail.Find(reviewDetailId);
+        //            if (reviewDetail != null)
+        //            {
+        //                var khachHang = db.tb_Customer.Find(idKhach);
+        //                reviewDetail.Content = content;
+        //                reviewDetail.ModifiedDate = DateTime.Now;
+        //                reviewDetail.Modifeby = khachHang.CustomerName;
+
+        //                db.Entry(reviewDetail).State = EntityState.Modified;
+        //                db.SaveChanges();
+
+        //                code = new { Success = true, Code = 1, Url = "" };
+        //            }
+        //            else
+        //            {
+        //                code = new { Success = false, Code = -3, Url = "" }; // Không tìm thấy đánh giá
+        //            }
+        //        }
+        //        else
+        //        {
+        //            code = new { Success = false, Code = -2, Url = "" }; // Không tìm thấy tài khoản người dùng
+        //        }
+        //    }
+        //    else
+        //    {
+        //        code = new { Success = false, Code = -4, Url = "" }; // Không có phiên làm việc
+        //    }
+
+        //    return Json(code);
+        //}
+
     }
 }

@@ -644,7 +644,54 @@
     $(document).ready(function () {
     var productDetailId = @Html.Raw(Json.Encode(Model.ProductDetailId));
     loadListReview(productDetailId);
-});
+
+
+
+        /*Start edit Review*/
+
+
+          $(".edit-btn").on("click", function(){
+            var reviewDetailId = $(this).data("id");
+            var contentP = $("#review-" + reviewDetailId);
+            var contentTextarea = $("#textarea-" + reviewDetailId);
+
+            contentP.toggleClass("d-none");
+            contentTextarea.toggleClass("d-none");
+
+            if (!contentTextarea.hasClass("d-none")) {
+                contentTextarea.focus();
+            } else {
+                var updatedContent = contentTextarea.val();
+                contentP.text("| " + updatedContent);
+
+                // Gửi AJAX để cập nhật nội dung trên server
+                $.ajax({
+                    url: '@Url.Action("EditContent", "Review")',
+                    type: 'POST',
+                    data: {
+                        reviewDetailId: reviewDetailId,
+                        content: updatedContent
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            alert("Đánh giá đã được cập nhật!");
+                        } else {
+                            alert("Có lỗi xảy ra, vui lòng thử lại.");
+                        }
+                    },
+                    error: function() {
+                        alert("Có lỗi xảy ra, vui lòng thử lại.");
+                    }
+                });
+            }
+        });
+
+
+
+    /*End edit Review*/
+
+
+    });
 
 
     function changeImage(imgUrl) {
@@ -696,6 +743,13 @@
         }
     });
     //End duung cho phu kien related acc needbuy
+
+
+
+
+
+
+
 
 </script>
 
