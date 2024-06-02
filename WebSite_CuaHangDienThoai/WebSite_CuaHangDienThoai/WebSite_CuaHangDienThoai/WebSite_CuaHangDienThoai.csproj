@@ -4031,6 +4031,7 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductDetailController.cs" />
     <Compile Include="Controllers\ProvincesVNController.cs" />
+    <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -4043,6 +4044,7 @@
     <Compile Include="Models\Admin_TokenStore.cs" />
     <Compile Include="Models\Admin_TokenSupplier.cs" />
     <Compile Include="Models\Admin_TokenVoucher.cs" />
+    <Compile Include="Models\Client_TokenReview.cs" />
     <Compile Include="Models\Common\Filter.cs" />
     <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\CustomerViewModelClock.cs" />
@@ -4262,6 +4264,11 @@
     <Content Include="Views\ShoppingCart\CheckOutSuccess.cshtml" />
     <Content Include="Views\ShoppingCart\Partial_TotalPriceCheckOut.cshtml" />
     <Content Include="Views\ShoppingCart\Partial_Voucher.cshtml" />
+    <Content Include="Views\Review\Partail_ReivewForProduct.cshtml" />
+    <Content Include="Views\Review\Add.cshtml" />
+    <Content Include="Views\Review\Partial_ThongTinKhach.cshtml" />
+    <Content Include="Views\Review\Partial_AddReview.cshtml" />
+    <Content Include="Views\Review\Partail_ReviewDetailById.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

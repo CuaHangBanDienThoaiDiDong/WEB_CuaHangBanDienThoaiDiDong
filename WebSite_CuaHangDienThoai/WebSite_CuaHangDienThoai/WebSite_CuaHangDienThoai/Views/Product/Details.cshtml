@@ -515,57 +515,27 @@
 
                                     <!-- User Review -->
 
-                                    <div class="user_review_container d-flex flex-column flex-sm-row">
-                                        <div class="user">
-                                            <div class="user_pic"></div>
-                                            <div class="user_rating">
-                                                <ul class="star_rating">
-                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                    <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="review">
-                                            <div class="review_date">27 Aug 2016</div>
-                                            <div class="user_name">Brandon William</div>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                        </div>
-                                    </div>
+
+                                    <div id="loadDataReview"></div>
+
+                                    <!--<div class="" id="loadDataReview">-->
+                                        @*@Html.Action("Partail_ReivewForProduct", "Review", new {id=Model.ProductDetailId})*@
+                                    <!--</div>-->
+
 
                                     <!-- User Review -->
 
-                                    <div class="user_review_container d-flex flex-column flex-sm-row">
-                                        <div class="user">
-                                            <div class="user_pic"></div>
-                                            <div class="user_rating">
-                                                <ul class="star_rating">
-                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                    <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="review">
-                                            <div class="review_date">27 Aug 2016</div>
-                                            <div class="user_name">Brandon William</div>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                        </div>
-                                    </div>
+
                                 </div>
 
                                 <!-- Add Review -->
 
                                 <div class="col-lg-6 add_review_col">
-
-                                    <div class="add_review">
+                                    @Html.Action("Add", "Review", new { id = Model.ProductDetailId , productName = Model.tb_Products.Title})
+                                    @*<div class="add_review">
                                         <form id="review_form" action="post">
                                             <div>
-                                                <h1>Add Review</h1>
+                                                <h1>Thêm đánh giá</h1>
                                                 <input id="review_name" class="form_input input_name" type="text" name="name" placeholder="Name*" required="required" data-error="Name is required.">
                                                 <input id="review_email" class="form_input input_email" type="email" name="email" placeholder="Email*" required="required" data-error="Valid email is required.">
                                             </div>
@@ -584,7 +554,7 @@
                                                 <button id="review_submit" type="submit" class="red_button review_submit_btn trans_300" value="Submit">submit</button>
                                             </div>
                                         </form>
-                                    </div>
+                                    </div>*@
 
                                 </div>
 
@@ -671,6 +641,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="~/Scripts/owl_carousel/owl.carousel.js"></script>
 <script>
+    $(document).ready(function () {
+    var productDetailId = @Html.Raw(Json.Encode(Model.ProductDetailId));
+    loadListReview(productDetailId);
+});
+
+
     function changeImage(imgUrl) {
         document.getElementById('mainImage').style.backgroundImage = 'url(' + imgUrl + ')';
         var thumbnails = document.querySelectorAll('.thumbnail_item');
@@ -682,30 +658,19 @@
     function updateMainImage(imageSrc) {
         document.getElementById('mainImage').src = imageSrc;
     }
-    //function updateMainImage(element) {
-    //    var newImage = element.getAttribute('src');
-
-    //    // Cập nhật ảnh lớn
-    //    document.getElementById('mainImage').style.backgroundImage = 'url(' + newImage + ')';
-
-    //    // Cập nhật trạng thái active của thumbnails
-    //    var thumbnails = document.querySelectorAll('.single_product_thumbnails li');
-    //    thumbnails.forEach(function (thumb) {
-    //        thumb.classList.remove('active');
-    //    });
-    //    element.parentElement.classList.add('active');
-    //}
-
-    //start duung cho phu kien related acc needbuy
-    //$(document).ready(function () {
-    //    $(".owl-carousel").owlCarousel({
-    //        loop: false, // Không lặp lại sau khi cuộn hết
-    //        margin: 10, // Khoảng cách giữa các mục
-
-    //        items: 1 // Chỉ hiển thị một mục mỗi lần
-    //    });
-    //});
-
+    function loadListReview(id) {
+        $.ajax({
+            url: '/Review/Partail_ReivewForProduct',
+            type: 'GET',
+            data: { id: id },
+            success: function (response) {
+                $('#loadDataReview').html(response);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
 
 
 
