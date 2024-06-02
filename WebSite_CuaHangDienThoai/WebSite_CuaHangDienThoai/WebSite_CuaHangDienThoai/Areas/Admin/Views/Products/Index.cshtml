@@ -47,76 +47,123 @@
             <h3 class="card-title">Danh sách @ViewBag.Title</h3>
             <br />
             <span><label>Tổng số sản phẩm:</label> @ViewBag.Count</span>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="toggle-container" style="display: flex; align-items: center; justify-content: space-around;">
+                        <div class="toggleIsActiveAll" style="display: none; align-items: center;">
+
+                            <label class="toggle" style=" display: flex; align-items: center;" for="toggleIsActiveAll">
+                                <p style="flex: 1;">Hiển thị sản phẩm</p>
+                                <span class="text-center" style="display: inline-block; flex: 1; white-space: nowrap;">
+                                    <div style=" display: flex; align-items: center;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:red" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                        </svg>
+                                        <input class="toggle__input toggle__IsActiveAll text-center" name="" type="checkbox" id="toggleIsActiveAll">
+                                        <div class="toggle__fill"></div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:green" fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
+                                            <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486z" />
+                                        </svg>
+                                    </div>
+
+                                </span>
+                            </label>
+                        </div>
+
+                        @*Start IsHome*@
+                        <div class="toggleIsHomeAll" style="display: none; align-items: center;">
+
+                            <label class="toggle" style=" display: flex; align-items: center;" for="toggleIsHomeAll">
+                                <p style="flex: 1;">Hiển thị trang chủ sản phẩm</p>
+                                <span class="text-center" style="display: inline-block; flex: 1; white-space: nowrap;">
+                                    <div style=" display: flex; align-items: center;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:red" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                        </svg>
+                                        <input class="toggle__input toggle__IsHomeAll text-center" name="" type="checkbox" id="toggleIsHomeAll">
+                                        <div class="toggle__fill"></div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:green" fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
+                                            <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486z" />
+                                        </svg>
+                                    </div>
+
+                                </span>
+                            </label>
+                        </div>
 
 
+                        @*End IsHome*@
+
+                        @*Start IsHot*@
+                        <div class="toggleIsHotAll" style="display: none; align-items: center;">
+
+                            <label class="toggle" style=" display: flex; align-items: center;" for="toggleIsHotAll">
+                                <p style="flex: 1;">Hiển thị sản phẩm hot </p>
+                                <span class="text-center" style="display: inline-block; flex: 1; white-space: nowrap;">
+                                    <div style=" display: flex; align-items: center;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:red" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                        </svg>
+                                        <input class="toggle__input toggle__IsHotAll text-center" name="" type="checkbox" id="toggleIsHotAll">
+                                        <div class="toggle__fill"></div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:green" fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
+                                            <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486z" />
+                                        </svg>
+                                    </div>
+
+                                </span>
+                            </label>
+                        </div>
 
 
-            <div class="toggleIsActiveAll" style="display: flex; align-items: center;">
-                <p style="margin-right: 10px;">Hiển thị sản phẩm</p>
-                <label class="toggle" for="myToggle">
-                    <span class="text-center" style="display: inline-block; white-space: nowrap;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:red" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                        @*End IsHot*@
+
+                        @*Start IsSale*@
+                        <div class="toggleIsSaleAll" style="display: none; align-items: center;">
+
+                            <label class="toggle" style=" display: flex; align-items: center;" for="toggleIsSaleAll">
+                                <p style=" flex: 1;">Hiển thị sản phẩm khuyễn mãi</p>
+                                <span class="text-center" style="display: inline-block; flex: 1; white-space: nowrap;">
+                                    <div style=" display: flex; align-items: center;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:red" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                        </svg>
+                                        <input class="toggle__input toggle__IsSaleAll text-center" name="" type="checkbox" id="toggleIsSaleAll">
+                                        <div class="toggle__fill"></div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:green" fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
+                                            <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486z" />
+                                        </svg>
+                                    </div>
+
+                                </span>
+                            </label>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <a href="/Them-dong-san-pham-moi" class="btn btn-primary text-center">
+                        Thêm mới <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-dotted" viewBox="0 0 16 16">
+                            <path d="M8 0q-.264 0-.523.017l.064.998a7 7 0 0 1 .918 0l.064-.998A8 8 0 0 0 8 0M6.44.152q-.52.104-1.012.27l.321.948q.43-.147.884-.237L6.44.153zm4.132.271a8 8 0 0 0-1.011-.27l-.194.98q.453.09.884.237zm1.873.925a8 8 0 0 0-.906-.524l-.443.896q.413.205.793.459zM4.46.824q-.471.233-.905.524l.556.83a7 7 0 0 1 .793-.458zM2.725 1.985q-.394.346-.74.74l.752.66q.303-.345.648-.648zm11.29.74a8 8 0 0 0-.74-.74l-.66.752q.346.303.648.648zm1.161 1.735a8 8 0 0 0-.524-.905l-.83.556q.254.38.458.793l.896-.443zM1.348 3.555q-.292.433-.524.906l.896.443q.205-.413.459-.793zM.423 5.428a8 8 0 0 0-.27 1.011l.98.194q.09-.453.237-.884zM15.848 6.44a8 8 0 0 0-.27-1.012l-.948.321q.147.43.237.884zM.017 7.477a8 8 0 0 0 0 1.046l.998-.064a7 7 0 0 1 0-.918zM16 8a8 8 0 0 0-.017-.523l-.998.064a7 7 0 0 1 0 .918l.998.064A8 8 0 0 0 16 8M.152 9.56q.104.52.27 1.012l.948-.321a7 7 0 0 1-.237-.884l-.98.194zm15.425 1.012q.168-.493.27-1.011l-.98-.194q-.09.453-.237.884zM.824 11.54a8 8 0 0 0 .524.905l.83-.556a7 7 0 0 1-.458-.793zm13.828.905q.292-.434.524-.906l-.896-.443q-.205.413-.459.793zm-12.667.83q.346.394.74.74l.66-.752a7 7 0 0 1-.648-.648zm11.29.74q.394-.346.74-.74l-.752-.66q-.302.346-.648.648zm-1.735 1.161q.471-.233.905-.524l-.556-.83a7 7 0 0 1-.793.458zm-7.985-.524q.434.292.906.524l.443-.896a7 7 0 0 1-.793-.459zm1.873.925q.493.168 1.011.27l.194-.98a7 7 0 0 1-.884-.237zm4.132.271a8 8 0 0 0 1.012-.27l-.321-.948a7 7 0 0 1-.884.237l.194.98zm-2.083.135a8 8 0 0 0 1.046 0l-.064-.998a7 7 0 0 1-.918 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
                         </svg>
+                    </a>
 
-                        <input class="toggle__input toggle__IsActiveAll text-center" name="" type="checkbox" id="myToggle">
-                        <div class="toggle__fill"></div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:green" fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
-                            <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486z" />
-                        </svg>
-                    </span>
-
-                </label>
+                </div>
             </div>
-
-
-
-
-
-            <div class="toggleIsHomeAll" style="display: flex; align-items: center;">
-                <p style="margin-right: 10px;">Hiển thị trang chủ sản phẩm</p>
-                <label class="toggle" for="myToggle">
-                    <span class="text-center" style="display: inline-block; white-space: nowrap;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:red" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                        </svg>
-
-                        <input class="toggle__input toggle__IsHomeAll text-center" name="" type="checkbox" id="myToggle">
-                        <div class="toggle__fill"></div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:green" fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
-                            <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486z" />
-                        </svg>
-                    </span>
-
-                </label>
-            </div>
-
-
 
             <div class="card-tools">
 
-                <div class="toggleIsActiveAll" style="display:none;">
-
-                    <label class="toggle" for="myToggle">
-                        <span class="text-center">
-                            Khóa tất cả tài khoản  <i class=\"fas fa-lock-open\"></i>
-                            <input class=" toggle__input toggle__IsActiveAll   text-center" name="" type="checkbox" id="myToggle1">
-                            <div class="toggle__fill"></div>
-                            <i class=\"fas fa-lock text-danger\"></i>
-                        </span>
-
-                    </label>
-                </div>
-
-
-
-                <a href="/admin/products/add" class="btn btn-primary">Thêm mới</a>
-                <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
+                <a href="/Them-dong-san-pham-moi" class="btn btn-primary text-center">
+                    Thêm mới <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-dotted" viewBox="0 0 16 16">
+                        <path d="M8 0q-.264 0-.523.017l.064.998a7 7 0 0 1 .918 0l.064-.998A8 8 0 0 0 8 0M6.44.152q-.52.104-1.012.27l.321.948q.43-.147.884-.237L6.44.153zm4.132.271a8 8 0 0 0-1.011-.27l-.194.98q.453.09.884.237zm1.873.925a8 8 0 0 0-.906-.524l-.443.896q.413.205.793.459zM4.46.824q-.471.233-.905.524l.556.83a7 7 0 0 1 .793-.458zM2.725 1.985q-.394.346-.74.74l.752.66q.303-.345.648-.648zm11.29.74a8 8 0 0 0-.74-.74l-.66.752q.346.303.648.648zm1.161 1.735a8 8 0 0 0-.524-.905l-.83.556q.254.38.458.793l.896-.443zM1.348 3.555q-.292.433-.524.906l.896.443q.205-.413.459-.793zM.423 5.428a8 8 0 0 0-.27 1.011l.98.194q.09-.453.237-.884zM15.848 6.44a8 8 0 0 0-.27-1.012l-.948.321q.147.43.237.884zM.017 7.477a8 8 0 0 0 0 1.046l.998-.064a7 7 0 0 1 0-.918zM16 8a8 8 0 0 0-.017-.523l-.998.064a7 7 0 0 1 0 .918l.998.064A8 8 0 0 0 16 8M.152 9.56q.104.52.27 1.012l.948-.321a7 7 0 0 1-.237-.884l-.98.194zm15.425 1.012q.168-.493.27-1.011l-.98-.194q-.09.453-.237.884zM.824 11.54a8 8 0 0 0 .524.905l.83-.556a7 7 0 0 1-.458-.793zm13.828.905q.292-.434.524-.906l-.896-.443q-.205.413-.459.793zm-12.667.83q.346.394.74.74l.66-.752a7 7 0 0 1-.648-.648zm11.29.74q.394-.346.74-.74l-.752-.66q-.302.346-.648.648zm-1.735 1.161q.471-.233.905-.524l-.556-.83a7 7 0 0 1-.793.458zm-7.985-.524q.434.292.906.524l.443-.896a7 7 0 0 1-.793-.459zm1.873.925q.493.168 1.011.27l.194-.98a7 7 0 0 1-.884-.237zm4.132.271a8 8 0 0 0 1.012-.27l-.321-.948a7 7 0 0 1-.884.237l.194.98zm-2.083.135a8 8 0 0 0 1.046 0l-.064-.998a7 7 0 0 1-.918 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+                    </svg>
+                </a>
             </div>
         </div>
-        <div class="card-body loaddata">
-            @Html.Action("Partial_Index","Products")
-        
+        <div class="card-body " id="loaddata">
+            @Html.Action("Partial_Index", "Products")
+
 
         </div>
         <!-- /.card-body -->
@@ -134,12 +181,47 @@
 @section scripts{
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script>
+
+
+        function LoadIndex(page) {
+            $.ajax({
+                url: '/admin/Products/Partial_Index',
+                type: 'GET',
+                data: { page: page },
+                success: function (rs) {
+                    $('#loaddata').html(rs);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
         $(document).ready(function () {
-            
+
+            LoadIndex(1)
+
+            $(document).on('click', '.pagination a', function (e) {
+                e.preventDefault();
+                var page = $(this).attr('data-page');
+                LoadIndex(page);
+            });
+
             LoadCapti();
 
 
             chekIsActive();
+            chekIsHome();
+            chekIsHot();
+            chekIsSale();
+
+
+
+            var currentPage;
+
+            function LoadCurrentPage() {
+                LoadIndex(currentPage);
+            }
+
 
 
             $('.toggle__IsActiveAll').change(function () {
@@ -147,8 +229,8 @@
                 if ($(this).is(':checked')) {
                     $toggleIsActiveAll.addClass('active');
                     Swal.fire({
-                        title: "Bạn muốn hiển thị tất cả sản phẩm ?",
-                        text: "Bạn đang thao tác !",
+                        title: "Bạn muốn hiển thị tất cả sản phẩm?",
+                        text: "Bạn đang thao tác!",
                         icon: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
@@ -161,40 +243,29 @@
                                 type: 'POST',
                                 success: function (rs) {
                                     if (rs.success) {
-                                        // Kiểm tra xem Clock đã được cập nhật thành công hay không
-                                        if (rs.isAcive) {
-                                            location.reload(true);
-                                            // Nếu Clock đã được cập nhật thành công, cập nhật biểu tượng của nút
-                                            btn.html("<i class=\"fas fa-lock\"></i>");
-                                        }
-                                        else {
-                                            location.reload(true);
-                                            // Nếu Clock không được cập nhật thành công, cập nhật biểu tượng của nút
-                                            btn.html("<i class=\"fas fa-lock-open\"></i>");
-                                        }
-                                        // Hiển thị cảnh báo thành công
+                                        location.reload(true);
                                         Swal.fire({
                                             title: "Sản phẩm đã hiện thị các trang!",
                                             icon: "success"
                                         });
+
+
+                                        LoadCurrentPage();
                                     } else {
-                                        // Hiển thị cảnh báo lỗi
                                         Swal.fire({
-                                            title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                            title: "Đã xảy ra lỗi khi cố gắng hiển thị sản phẩm!",
                                             icon: "error"
                                         });
                                     }
                                 },
                                 error: function () {
-                                    // Hiển thị cảnh báo lỗi
                                     Swal.fire({
-                                        title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                        title: "Đã xảy ra lỗi khi cố gắng hiển thị sản phẩm!",
                                         icon: "error"
                                     });
                                 }
                             });
                         } else {
-                            // Người dùng từ chối cảnh báo, loại bỏ lớp active và reset checkbox
                             $toggleIsActiveAll.removeClass('active');
                             setTimeout(function () {
                                 $('.toggle__IsActiveAll').prop('checked', false);
@@ -202,16 +273,15 @@
                         }
                     });
                 } else {
-
-                    $toggleIsActiveAll.addClass('active');
+                    $toggleIsActiveAll.removeClass('active');
                     Swal.fire({
-                        title: "Bạn muốn mở khóa tất cả tài khoản này ?",
-                        text: "Bạn đang thao tác !",
+                        title: "Bạn muốn ẩn tất cả sản phẩm?",
+                        text: "Bạn đang thao tác!",
                         icon: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
                         cancelButtonColor: "#d33",
-                        confirmButtonText: "Chắc ,mở khóa!"
+                        confirmButtonText: "Chắc, ẩn!"
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $.ajax({
@@ -219,60 +289,45 @@
                                 type: 'POST',
                                 success: function (rs) {
                                     if (rs.success) {
-                                        // Kiểm tra xem Clock đã được cập nhật thành công hay không
-                                        if (rs.isAcive) {
-                                            location.reload(true);
-                                            // Nếu Clock đã được cập nhật thành công, cập nhật biểu tượng của nút
-                                            btn.html("<i class=\Procductslock\"></i>");
-                                        }
-                                        else {
-                                            location.reload(true);
-                                            // Nếu Clock không được cập nhật thành công, cập nhật biểu tượng của nút
-                                            btn.html("<i class=\"fas fa-lock-open\"></i>");
-                                        }
-                                        // Hiển thị cảnh báo thành công
+                                        location.reload(true);
                                         Swal.fire({
-                                            title: "Khóa tài khoản thành công!",
+                                            title: "Ẩn sản phẩm thành công!",
                                             icon: "success"
                                         });
+
+                                        LoadCurrentPage();
                                     } else {
-                                        // Hiển thị cảnh báo lỗi
                                         Swal.fire({
-                                            title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                            title: "Đã xảy ra lỗi khi cố gắng ẩn sản phẩm!",
                                             icon: "error"
                                         });
                                     }
                                 },
                                 error: function () {
-                                    // Hiển thị cảnh báo lỗi
                                     Swal.fire({
-                                        title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                        title: "Đã xảy ra lỗi khi cố gắng ẩn sản phẩm!",
                                         icon: "error"
                                     });
                                 }
                             });
                         } else {
-                            // Người dùng từ chối cảnh báo, loại bỏ lớp active và reset checkbox
-                            $toggleIsActiveAll.removeClass('active');
+                            $toggleIsActiveAll.addClass('active');
                             setTimeout(function () {
-                                $('.toggle__IsActiveAll').prop('checked', false);
+                                $('.toggle__IsActiveAll').prop('checked', true);
                             }, 10);
                         }
                     });
-                    $toggleIsActiveAll.removeClass('active');
                 }
             });
 
-
-
-
+            // Xử lý sự kiện thay đổi cho checkbox Hiển thị trang chủ sản phẩm
             $('.toggle__IsHomeAll').change(function () {
-                var toggleIsHomeAll = $('.toggleIsHomeAll');
+                var $toggleIsHomeAll = $('.toggleIsHomeAll');
                 if ($(this).is(':checked')) {
-                    toggleIsHomeAll.addClass('active');
+                    $toggleIsHomeAll.addClass('active');
                     Swal.fire({
-                        title: "Bạn muốn hiển thị tất cả ở trang chủ ?",
-                        text: "Bạn đang thao tác !",
+                        title: "Bạn muốn hiển thị tất cả ở trang chủ?",
+                        text: "Bạn đang thao tác!",
                         icon: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
@@ -281,63 +336,270 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $.ajax({
-                                url: '/admin/Products/UpdateAllIsActive',
+                                url: '/admin/Products/UpdateAllIsHome',
                                 type: 'POST',
                                 success: function (rs) {
                                     if (rs.success) {
-                                        // Kiểm tra xem Clock đã được cập nhật thành công hay không
-                                        if (rs.isHome) {
-                                            location.reload(true);
-                                            // Nếu Clock đã được cập nhật thành công, cập nhật biểu tượng của nút
-                                            btn.html("<i class='fa fa-check text-success'></i>");
-                                        }
-                                        else {
-                                            location.reload(true);
-                                            // Nếu Clock không được cập nhật thành công, cập nhật biểu tượng của nút
-                                            btn.html("<i class='fas fa-times text-danger'></i");
-                                        }
-                                        // Hiển thị cảnh báo thành công
+                                        location.reload(true);
                                         Swal.fire({
-                                            title: "Sản phẩm đã hiện thị các trang!",
+                                            title: "Sản phẩm đã hiện thị trang chủ!",
                                             icon: "success"
                                         });
                                     } else {
-                                        // Hiển thị cảnh báo lỗi
                                         Swal.fire({
-                                            title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                            title: "Đã xảy ra lỗi khi cố gắng hiển thị trang chủ sản phẩm!",
                                             icon: "error"
                                         });
                                     }
                                 },
                                 error: function () {
-                                    // Hiển thị cảnh báo lỗi
                                     Swal.fire({
-                                        title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                        title: "Đã xảy ra lỗi khi cố gắng hiển thị trang chủ sản phẩm!",
                                         icon: "error"
                                     });
                                 }
                             });
                         } else {
-                            // Người dùng từ chối cảnh báo, loại bỏ lớp active và reset checkbox
-                            toggleIsHomeAll.removeClass('active');
+                            $toggleIsHomeAll.removeClass('active');
                             setTimeout(function () {
-                                $('.toggle__IsActiveAll').prop('checked', false);
+                                $('.toggle__IsHomeAll').prop('checked', false);
                             }, 10);
                         }
                     });
                 } else {
-
-                    toggleIsHomeAll.addClass('active');
-                  
-                    $toggleIsActiveAll.removeClass('active');
+                    $toggleIsHomeAll.removeClass('active');
+                    Swal.fire({
+                        title: "Bạn muốn ẩn tất cả ở trang chủ?",
+                        text: "Bạn đang thao tác!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Chắc, ẩn!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/admin/Products/UpdateAllUnIsHome',
+                                type: 'POST',
+                                success: function (rs) {
+                                    if (rs.success) {
+                                        location.reload(true);
+                                        Swal.fire({
+                                            title: "Ẩn trang chủ sản phẩm thành công!",
+                                            icon: "success"
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            title: "Đã xảy ra lỗi khi cố gắng ẩn trang chủ sản phẩm!",
+                                            icon: "error"
+                                        });
+                                    }
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        title: "Đã xảy ra lỗi khi cố gắng ẩn trang chủ sản phẩm!",
+                                        icon: "error"
+                                    });
+                                }
+                            });
+                        } else {
+                            $toggleIsHomeAll.addClass('active');
+                            setTimeout(function () {
+                                $('.toggle__IsHomeAll').prop('checked', true);
+                            }, 10);
+                        }
+                    });
                 }
             });
 
 
+            // Start IsHot
+            $('.toggle__IsHotAll').change(function () {
+                var toggleIsHotAll = $('.toggleIsHotAll');
+                if ($(this).is(':checked')) {
+                    toggleIsHotAll.addClass('active');
+                    Swal.fire({
+                        title: "Bạn muốn hiển thị tất cả ở trang chủ?",
+                        text: "Bạn đang thao tác!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Chắc, hiển thị!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/admin/Products/UpdateAllIsHot',
+                                type: 'POST',
+                                success: function (rs) {
+                                    if (rs.success) {
+                                        location.reload(true);
+                                        Swal.fire({
+                                            title: "Sản phẩm đã hiện thị trang chủ!",
+                                            icon: "success"
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            title: "Đã xảy ra lỗi khi cố gắng hiển thị trang chủ sản phẩm!",
+                                            icon: "error"
+                                        });
+                                    }
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        title: "Đã xảy ra lỗi khi cố gắng hiển thị trang chủ sản phẩm!",
+                                        icon: "error"
+                                    });
+                                }
+                            });
+                        } else {
+                            toggleIsHotAll.removeClass('active');
+                            setTimeout(function () {
+                                $('.toggle__IsHotAll').prop('checked', false);
+                            }, 10);
+                        }
+                    });
+                } else {
+                    toggleIsHotAll.removeClass('active');
+                    Swal.fire({
+                        title: "Bạn muốn ẩn tất cả ở trang chủ?",
+                        text: "Bạn đang thao tác!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Chắc, ẩn!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/admin/Products/UpdateAllUnIsHot',
+                                type: 'POST',
+                                success: function (rs) {
+                                    if (rs.success) {
+                                        location.reload(true);
+                                        Swal.fire({
+                                            title: "Ẩn trang chủ sản phẩm thành công!",
+                                            icon: "success"
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            title: "Đã xảy ra lỗi khi cố gắng ẩn trang chủ sản phẩm!",
+                                            icon: "error"
+                                        });
+                                    }
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        title: "Đã xảy ra lỗi khi cố gắng ẩn trang chủ sản phẩm!",
+                                        icon: "error"
+                                    });
+                                }
+                            });
+                        } else {
+                            toggleIsHotAll.addClass('active');
+                            setTimeout(function () {
+                                $('.toggle__IsHotAll').prop('checked', true);
+                            }, 10);
+                        }
+                    });
+                }
+            });
 
+            // Énd IsHot
 
+            // Start Sale
+            $('.toggle__IsSaleAll').change(function () {
+                var toggleIsSaleAll = $('.toggleIsSaleAll');
+                if ($(this).is(':checked')) {
+                    toggleIsSaleAll.addClass('active');
+                    Swal.fire({
+                        title: "Bạn muốn hiển thị tất cả ở trang chủ?",
+                        text: "Bạn đang thao tác!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Chắc, hiển thị!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/admin/Products/UpdateAllIsSale',
+                                type: 'POST',
+                                success: function (rs) {
+                                    if (rs.success) {
+                                        location.reload(true);
+                                        Swal.fire({
+                                            title: "Sản phẩm đã hiện thị trang chủ!",
+                                            icon: "success"
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            title: "Đã xảy ra lỗi khi cố gắng hiển thị trang chủ sản phẩm!",
+                                            icon: "error"
+                                        });
+                                    }
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        title: "Đã xảy ra lỗi khi cố gắng hiển thị trang chủ sản phẩm!",
+                                        icon: "error"
+                                    });
+                                }
+                            });
+                        } else {
+                            toggleIsSaleAll.removeClass('active');
+                            setTimeout(function () {
+                                $('.toggle__IsSaleAll').prop('checked', false);
+                            }, 10);
+                        }
+                    });
+                } else {
+                    toggleIsSaleAll.removeClass('active');
+                    Swal.fire({
+                        title: "Bạn muốn ẩn tất cả ở trang chủ?",
+                        text: "Bạn đang thao tác!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Chắc, ẩn!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/admin/Products/UpdateAllUnIsSale',
+                                type: 'POST',
+                                success: function (rs) {
+                                    if (rs.success) {
+                                        location.reload(true);
+                                        Swal.fire({
+                                            title: "Ẩn trang chủ sản phẩm thành công!",
+                                            icon: "success"
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            title: "Đã xảy ra lỗi khi cố gắng ẩn trang chủ sản phẩm!",
+                                            icon: "error"
+                                        });
+                                    }
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        title: "Đã xảy ra lỗi khi cố gắng ẩn trang chủ sản phẩm!",
+                                        icon: "error"
+                                    });
+                                }
+                            });
+                        } else {
+                            toggleIsSaleAll.addClass('active');
+                            setTimeout(function () {
+                                $('.toggle__IsSaleAll').prop('checked', true);
+                            }, 10);
+                        }
+                    });
+                }
+            });
 
-
+            // Énd Sale
             $("#dialog").dialog({
                 autoOpen: false,
                 show: "fade",
@@ -404,10 +666,16 @@
                     }
                 });
                 if (checkStatus) {
-                    $('.toggleIsActiveAll').show(); 
-                    $('.toggleIsHomeAll').show(); 
+                    $('.toggleIsActiveAll').show();
+                    $('.toggleIsHomeAll').show();
+                    $('.toggleIsHotAll').show();
+                    $('.toggleIsSaleAll').show();
                 } else {
-                    $('.toggleIsHomeAll').hide(); // Ẩn khi checkbox không được kiểm tra
+                    $('.toggleIsHomeAll').hide();
+                    $('.toggleIsActiveAll').hide();
+                    $('.toggleIsHomeAll').hide();
+                    $('.toggleIsHotAll').hide();
+                    $('.toggleIsSaleAll').hide();
                 }
             });
             $('body').on('click', '.btnDelete', function () {
@@ -533,6 +801,9 @@
                 });
             });
 
+
+
+
             function LoadCapti() {
                 var productId = $('#loadCapacity').data('product-id');
 
@@ -548,6 +819,12 @@
                     }
                 });
             }
+
+
+
+
+
+
             function chekIsActive() {
                 $.ajax({
                     url: '/admin/Products/CheckAllIsActive',
@@ -562,8 +839,50 @@
                     }
                 });
             }
+            function chekIsHome() {
+                $.ajax({
+                    url: '/admin/Products/CheckAllIsHome',
+                    type: 'GET',
+                    success: function (response) {
+                        if (response.success && response.allIsHome) {
+                            $('.toggle__IsHomeAll').prop('checked', true);
+                        }
+                    },
+                    error: function () {
+                        console.log("Đã xảy ra lỗi khi kiểm tra trạng thái tài khoản.");
+                    }
+                });
+            }
 
 
+            function chekIsHot() {
+                $.ajax({
+                    url: '/admin/Products/CheckAllIsHot',
+                    type: 'GET',
+                    success: function (response) {
+                        if (response.success && response.allIsHot) {
+                            $('.toggle__IsHotAll').prop('checked', true);
+                        }
+                    },
+                    error: function () {
+                        console.log("Đã xảy ra lỗi khi kiểm tra trạng thái tài khoản.");
+                    }
+                });
+            }
+            function chekIsSale() {
+                $.ajax({
+                    url: '/admin/Products/CheckAllIsSale',
+                    type: 'GET',
+                    success: function (response) {
+                        if (response.success && response.allIsSale) {
+                            $('.toggle__IsSaleAll').prop('checked', true);
+                        }
+                    },
+                    error: function () {
+                        console.log("Đã xảy ra lỗi khi kiểm tra trạng thái tài khoản.");
+                    }
+                });
+            }
         });
     </script>
 }

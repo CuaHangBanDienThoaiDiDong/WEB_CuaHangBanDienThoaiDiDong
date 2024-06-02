@@ -15,6 +15,12 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin
         public override void RegisterArea(AreaRegistrationContext context) 
         {
             context.MapRoute(
+       name: "Admin_ThemMoiDongSanPham_Product",
+       url: "Them-dong-san-pham-moi",
+       defaults: new { controller = "Products", action = "Add" }
+   );
+
+            context.MapRoute(
        name: "Admin_DanhSachTaikhoankhachHang",
        url: "tai-khoan-khach-hang",
        defaults: new { controller = "AccountClient", action = "Index" }

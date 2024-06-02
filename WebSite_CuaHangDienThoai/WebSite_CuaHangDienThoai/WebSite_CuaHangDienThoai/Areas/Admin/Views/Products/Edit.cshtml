@@ -66,7 +66,7 @@
                                     <li class="nav-item"><a class="nav-link" href="#infor" data-toggle="tab">Thông số kỹ thuật</a></li>
                                     <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Hình ảnh</a></li>
 
-                                    <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">SEO</a></li>
+                                    @*<li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">SEO</a></li>*@
                                 </ul>
                             </div><!-- /.card-header -->
                             <div class="card-body">
@@ -148,15 +148,20 @@
                                                                     <td class="text-center">@i</td>
                                                                     
                                                                     <td class="text-center" style="width: 30%;">
-
+                                                                        <label class="" id="lbAnhCu" style="display: none ">Ảnh mới:</label>
                                                                         <img src="data:image;base64,@Convert.ToBase64String(item.Image)" alt="Current Image" id="currentImage" style="width: 30%; height: 30%; " />
-                                                                       
 
+                                                                        <div class=" form-group text-center " id="muiTen" style="display: none ;justify-content: center; align-items: center; height: 100px; margin-top: 50%">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" style="color:greenyellow" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                                                                <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708" />
+                                                                                <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708" />
+                                                                            </svg>
+                                                                        </div>
                                                                     </td>
                                                                     <td class="text-center" style="width: 30%;">
-
+                                                                        
                                                                         <div class="form-group text-center newImage">
-                                                                            <label>Ảnh mới:</label>
+                                                                            <label class=""id="lbImagePreview"style="display: none ">Ảnh mới:</label>
                                                                             <img id="newImagePreview" src="#" alt="New Image Preview" style="display:none;width:50%;height:50%; " />
                                                                         </div>
                                                                         <div class="form-group text-center">
@@ -364,9 +369,17 @@
             var reader = new FileReader();
             reader.onload = function () {
                 var output = document.getElementById('newImagePreview');
+                var labelAnhCu = document.getElementById('lbAnhCu');
+                var lbImagePreview = document.getElementById('lbImagePreview');
+                var muiTen = document.getElementById('muiTen');
                 output.src = reader.result;
                 output.style.display = 'block';
-              
+                if (labelAnhCu && muiTen && lbImagePreview) {
+                    labelAnhCu.style.display = 'block';
+                    muiTen.style.display = 'block';
+                    lbImagePreview.style.display = 'block';
+                }
+           
             }
             reader.readAsDataURL(event.target.files[0]);
         }

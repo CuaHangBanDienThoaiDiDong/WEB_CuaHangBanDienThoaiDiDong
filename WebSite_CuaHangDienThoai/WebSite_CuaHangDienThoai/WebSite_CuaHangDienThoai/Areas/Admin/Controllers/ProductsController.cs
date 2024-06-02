@@ -36,6 +36,9 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     items = items.ToPagedList(pageIndex, pageSize);
                     var products = db.tb_Products.ToList();
 
+                    ViewBag.ProductCategory = new SelectList(db.tb_ProductCategory.ToList(), "ProductCategoryId", "Title");
+                    ViewBag.ProductCompany = new SelectList(db.tb_ProductCompany.ToList(), "ProductCompanyId", "Title");
+
                     ViewBag.Count = products.Count;
                     ViewBag.PageSize = pageSize;
                     ViewBag.Page = page;
@@ -82,6 +85,9 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 }
             }
         }
+
+      
+
 
 
         public ActionResult Partial_AddProduct()
@@ -505,6 +511,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             return Json(new { success = false });
         }
 
+
+        //start IsActive
         [HttpPost]
         public ActionResult UpdateAllIsActive()
         {
@@ -595,9 +603,280 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 return Json(new { success = false, error = ex.Message });
             }
         }
+        // End IsActive
 
 
 
 
+        //start IsHome
+        [HttpPost]
+        public ActionResult UpdateAllIsHome()
+        {
+            try
+            {
+                var products = db.tb_Products.ToList();
+
+                foreach (var product in products)
+                {
+                    var hasDetails = db.tb_ProductDetail.Any(pd => pd.ProductsId == product.ProductsId);
+                    if (hasDetails)
+                    {
+                        product.IsHome = true;
+                        db.Entry(product).State = EntityState.Modified;
+                    }
+                }
+
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult UpdateAllUnIsHome()
+        {
+            try
+            {
+                var products = db.tb_Products.ToList();
+
+                foreach (var product in products)
+                {
+                    var hasDetails = db.tb_ProductDetail.Any(pd => pd.ProductsId == product.ProductsId);
+                    if (hasDetails)
+                    {
+                        product.IsHome = false;
+                        db.Entry(product).State = EntityState.Modified;
+                    }
+                }
+
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+        public ActionResult CheckAllIsHome()
+        {
+            try
+            {
+                var allIsHome = true;
+
+                var products = db.tb_Products.ToList();
+
+                foreach (var product in products)
+                {
+                   
+                    if (product.IsHome == true)
+                    {
+                        allIsHome = true;
+                        break; 
+                    }
+                    var hasDetails = db.tb_ProductDetail.Any(detail => detail.ProductsId == product.ProductsId);
+                    if (hasDetails)
+                    {
+                        allIsHome = false;
+                        break; 
+                    }
+                }
+
+                return Json(new { success = true, allIsHome = allIsHome }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+        // End IsActive
+
+
+
+
+
+
+        //start IsHot
+        [HttpPost]
+        public ActionResult UpdateAllIsHot()
+        {
+            try
+            {
+                var products = db.tb_Products.ToList();
+
+                foreach (var product in products)
+                {
+                    var hasDetails = db.tb_ProductDetail.Any(pd => pd.ProductsId == product.ProductsId);
+                    if (hasDetails)
+                    {
+                        product.IsHot = true;
+                        db.Entry(product).State = EntityState.Modified;
+                    }
+                }
+
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult UpdateAllUnIsHot()
+        {
+            try
+            {
+                var products = db.tb_Products.ToList();
+
+                foreach (var product in products)
+                {
+                    var hasDetails = db.tb_ProductDetail.Any(pd => pd.ProductsId == product.ProductsId);
+                    if (hasDetails)
+                    {
+                        product.IsHot = false;
+                        db.Entry(product).State = EntityState.Modified;
+                    }
+                }
+
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+        public ActionResult CheckAllIsHot()
+        {
+            try
+            {
+                var allIsHot = true;
+
+                var products = db.tb_Products.ToList();
+
+                foreach (var product in products)
+                {
+
+                    if (product.IsHot == true)
+                    {
+                        allIsHot = true;
+                        break;
+                    }
+                    var hasDetails = db.tb_ProductDetail.Any(detail => detail.ProductsId == product.ProductsId);
+                    if (hasDetails)
+                    {
+                        allIsHot = false;
+                        break;
+                    }
+                }
+
+                return Json(new { success = true, allIsHot = allIsHot }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+        // End IsActive
+        //start IsSale
+        [HttpPost]
+        public ActionResult UpdateAllIsSale()
+        {
+            try
+            {
+                var products = db.tb_Products.ToList();
+
+                foreach (var product in products)
+                {
+                    var hasDetails = db.tb_ProductDetail.Any(pd => pd.ProductsId == product.ProductsId && pd.PriceSale>0);
+                    if (hasDetails)
+                    {
+                        product.IsSale = true;
+                        db.Entry(product).State = EntityState.Modified;
+                    }
+                }
+
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult UpdateAllUnIsSale()
+        {
+            try
+            {
+                var products = db.tb_Products.ToList();
+
+                foreach (var product in products)
+                {
+                    var hasDetails = db.tb_ProductDetail.Any(pd => pd.ProductsId == product.ProductsId && pd.PriceSale > 0);
+                    if (hasDetails)
+                    {
+                        product.IsSale = false;
+                        db.Entry(product).State = EntityState.Modified;
+                    }
+                }
+
+                db.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+        public ActionResult CheckAllIsSale()
+        {
+            try
+            {
+                var allIsSale = true;
+
+                var products = db.tb_Products.ToList();
+
+                foreach (var product in products)
+                {
+
+                    if (product.IsSale == true)
+                    {
+                        allIsSale = true;
+                        break;
+                    }
+                    var hasDetails = db.tb_ProductDetail.Any(pd => pd.ProductsId == product.ProductsId && pd.PriceSale > 0);
+                    if (hasDetails)
+                    {
+                        allIsSale = false;
+                        break;
+                    }
+                }
+
+                return Json(new { success = true, allIsSale = allIsSale }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+        // End IsActive
     }
 }
