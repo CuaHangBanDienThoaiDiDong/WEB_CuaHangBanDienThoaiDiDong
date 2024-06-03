@@ -1,0 +1,159 @@
+﻿
+
+
+
+
+
+
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Thống kê danh thu</h3>
+
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="chart">
+                    <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Ngày</th>
+                            <th>Doanh thu</th>
+                            <th>Lợi nhuận</th>
+                        </tr>
+                    </thead>
+                    <tbody id="load_data"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer">
+        Footer
+    </div>
+    <!-- /.card-footer-->
+</div>
+
+
+
+
+
+
+    <script src="~/Content/clients/plugins/chart.js/Chart.min.js"></script>
+    <script src="~/Content/assets/plugins/moment/moment.min.js"></script>
+    <script>
+        // Định nghĩa hàm để gọi action Partial_StatisticalByYear và sau đó gọi hàm GetYearlyStatistical
+        function loadYearlyStatistical() {
+            var selectedYear = @ViewBag.Year; // Lấy giá trị năm từ ViewBag
+
+            $.ajax({
+                url: '/Admin/Statistical/Partial_StatisticalByYear', // Đường dẫn đến action Partial_StatisticalByYear
+                type: 'GET',
+                data: { year: selectedYear }, // Truyền tham số year vào dữ liệu yêu cầu
+                success: function (data) {
+                    // Sau khi action Partial_StatisticalByYear được gọi và trả về dữ liệu, gọi hàm GetYearlyStatistical
+                    $.ajax({
+                        url: '/Admin/Statistical/GetYearlyStatistical', // Đường dẫn đến action GetYearlyStatistical
+                        type: 'GET',
+                        data: { selectedYear: selectedYear }, // Truyền tham số selectedYear vào dữ liệu yêu cầu
+                        success: function (rs) {
+                            // Xử lý dữ liệu trả về từ action
+                            // Cập nhật biểu đồ và bảng dựa trên dữ liệu này
+                            updateChartAndTable(rs);
+                        },
+                        error: function () {
+                            alert("Đã xảy ra lỗi khi tải dữ liệu!");
+                        }
+                    });
+                },
+                error: function () {
+                    alert("Đã xảy ra lỗi khi tải dữ liệu!");
+                }
+            });
+        }
+
+        // Hàm cập nhật dữ liệu biểu đồ và bảng
+        function updateChartAndTable(data) {
+            var arrDoanhThu = [];
+            var arrLoiNhuan = [];
+            var arrYear = [];
+            $.each(data, function (i, item) {
+                arrYear.push(item.Year);
+                arrDoanhThu.push(item.DoanhThu);
+                arrLoiNhuan.push(item.LoiNhuan);
+            });
+
+            // Cập nhật dữ liệu cho biểu đồ
+            var barChartData = {
+                labels: arrYear,
+                datasets: [
+                    {
+                        label: 'Lợi nhuận',
+                        backgroundColor: 'rgba(60,141,188,0.9)',
+                        borderColor: 'rgba(60,141,188,0.8)',
+                        pointRadius: false,
+                        pointColor: '#3b8bba',
+                        pointStrokeColor: 'rgba(60,141,188,1)',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: 'rgba(60,141,188,1)',
+                        data: arrLoiNhuan
+                    },
+                    {
+                        label: 'Danh thu',
+                        backgroundColor: 'rgba(210, 214, 222, 1)',
+                        borderColor: 'rgba(210, 214, 222, 1)',
+                        pointRadius: false,
+                        pointColor: 'rgba(210, 214, 222, 1)',
+                        pointStrokeColor: '#c1c7d1',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: 'rgba(220,220,220,1)',
+                        data: arrDoanhThu
+                    },
+                ]
+            };
+
+            var barChartCanvas = $('#barChart').get(0).getContext('2d');
+            var barChart = new Chart(barChartCanvas, {
+                type: 'bar',
+                data: barChartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    datasetFill: false
+                }
+            });
+
+            // Cập nhật dữ liệu cho bảng
+            var tableBody = $('#load_data');
+            tableBody.empty();
+            $.each(data, function (i, item) {
+                var row = '<tr>' +
+                    '<td>' + (i + 1) + '</td>' +
+                    '<td>' + item.Ngay + '</td>' +
+                    '<td>' + item.DoanhThu + '</td>' +
+                    '<td>' + item.LoiNhuan + '</td>' +
+                    '</tr>';
+                tableBody.append(row);
+            });
+        }
+
+        // Gọi function loadYearlyStatistical khi trang được tải
+        $(document).ready(function () {
+            loadYearlyStatistical();
+        });
+    </script>
+
