@@ -155,7 +155,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                            {
                                CreatedDate = a.CreatedDate,
                                Quantity = b.Quantity,
-                               Price = b.Price,
+                               Price = a.TotalAmount,
                                OriginalPrice = c.OrigianlPrice
 
                            };
@@ -178,12 +178,13 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             {
                 Date = x.Key.Value,
                 TotalBuy = x.Sum(y => y.Quantity * y.OriginalPrice),
-                TotalSell = x.Sum(y => y.Quantity * y.Price),
+                TotalSell = x.Sum(y => y.Price),
             }).Select(x => new
             {
                 Date = x.Date,
                 DoanhThu = x.TotalSell,
-                LoiNhuan = x.TotalSell - x.TotalBuy
+                LoiNhuan = x.TotalSell - x.TotalBuy,
+                TienGoc=x.TotalBuy
             });
             return Json(new { Data = result }, JsonRequestBehavior.AllowGet);
         }
@@ -204,7 +205,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                            {
                                CreatedDate = a.CreatedDate,
                                Quantity = b.Quantity,
-                               Price = b.Price,
+                               Price = a.TotalAmount,
                                OriginalPrice = c.OrigianlPrice
                            };
 
@@ -225,54 +226,75 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     Year = x.Key.Year,
                     Month = x.Key.Month,
                     TotalBuy = x.Sum(y => y.Quantity * y.OriginalPrice),
-                    TotalSell = x.Sum(y => y.Quantity * y.Price),
+                    TotalSell = x.Sum(y=>y.Price),
                 })
                 .Select(x => new
                 {
                     Year = x.Year,
                     Month = x.Month,
                     DoanhThu = x.TotalSell,
-                    LoiNhuan = x.TotalSell - x.TotalBuy
+                    LoiNhuan = x.TotalSell - x.TotalBuy,
+                    TienGoc=x.TotalBuy
                 });
 
             return Json(new { Data = result }, JsonRequestBehavior.AllowGet);
 
         }
 
-
-
         [HttpGet]
         public JsonResult GetYearlyStatistical(int selectedYear)
         {
+            // Lấy tất cả các đơn hàng
+            var allOrders = db.tb_Order.ToList();
+            // Lấy tất cả các chi tiết đơn hàng
+            var allOrderDetails = db.tb_OrderDetail.ToList();
+            // Lấy tất cả các chi tiết sản phẩm
+            var allProductDetails = db.tb_ProductDetail.ToList();
+
+            // Log số lượng bản ghi để kiểm tra
+            System.Diagnostics.Debug.WriteLine("Total Orders: " + allOrders.Count);
+            System.Diagnostics.Debug.WriteLine("Total Order Details: " + allOrderDetails.Count);
+            System.Diagnostics.Debug.WriteLine("Total Product Details: " + allProductDetails.Count);
+
             var salesData = from a in db.tb_Order
                             join b in db.tb_OrderDetail on a.OrderId equals b.OrderId
                             join c in db.tb_ProductDetail on b.ProductDetailId equals c.ProductDetailId
-                            where a.typeOrder == true && a.CreatedDate.Year == 2024
+                            where a.typeOrder == false && a.CreatedDate.Year == selectedYear
                             select new
                             {
                                 a.CreatedDate.Year,
-                                b.Quantity,
-                                b.Price,
+                                a.Quantity,
+                                a.TotalAmount,
                                 c.OrigianlPrice
                             };
+
+    
+            System.Diagnostics.Debug.WriteLine("Filtered Sales Data: " + salesData.Count());
 
             var result = salesData.AsEnumerable()
                                   .GroupBy(x => x.Year)
                                   .Select(x => new
                                   {
                                       Year = x.Key,
-                                      TotalRevenue = x.Sum(y => y.Quantity * y.Price),
+
+                                      TotalRevenue = x.Sum(a => a.TotalAmount),
                                       TotalCost = x.Sum(y => y.Quantity * y.OrigianlPrice)
+                           
                                   })
                                   .Select(x => new
                                   {
                                       x.Year,
                                       DoanhThu = x.TotalRevenue,
-                                      LoiNhuan = x.TotalRevenue - x.TotalCost
-                                  });
+                                      LoiNhuan = x.TotalRevenue - x.TotalCost,
+                                      TienGoc= x.TotalCost
+                                  }).ToList();
 
+        
+            System.Diagnostics.Debug.WriteLine("Result: " + Newtonsoft.Json.JsonConvert.SerializeObject(result));
             return Json(new { Data = result }, JsonRequestBehavior.AllowGet);
         }
+
+
 
 
 

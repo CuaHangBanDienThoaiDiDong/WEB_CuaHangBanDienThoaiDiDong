@@ -52,8 +52,9 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Ngày</th>
+                                <th>Tháng @ViewBag.Date</th>
                                 <th>Doanh thu</th>
+                                <th>Đầu tư</th>
                                 <th>Lợi nhuận</th>
                             </tr>
                         </thead>
@@ -152,12 +153,25 @@
                     strHtml += "<tr>";
                     strHtml += "<td>" + (i + 1) + "</td>";
                     strHtml += "<td>" + strDate + "</td>";
-                    strHtml += "<td>" + item.DoanhThu + "</td>";
-                    strHtml += "<td>" + item.LoiNhuan + "</td>";
+                    strHtml += "<td>" + formatNumber(item.DoanhThu, 2) + ' đ' + "</td>";
+                    strHtml += "<td>" + formatNumber(item.TienGoc, 2) + ' đ' + "</td>";
+                    strHtml += "<td>" + formatNumber(item.LoiNhuan, 2) + ' đ' + "</td>";
                     strHtml += "</tr>";
                 });
                 $('#load_data').html(strHtml);
+        }
+
+     
+      
+
+        function formatNumber(value, SoSauDauPhay) {
+            var GT = 0;
+            if (!isNaN(value)) {
+                GT = parseFloat(value);
             }
+            return GT.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: SoSauDauPhay });
+        }
+
     </script>
 }
 
