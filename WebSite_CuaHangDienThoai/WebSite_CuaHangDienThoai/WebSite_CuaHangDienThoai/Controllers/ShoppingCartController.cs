@@ -15,6 +15,7 @@ using ImageProcessor.Processors;
 using DynamicData.Kernel;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using DynamicData;
 
 namespace WebSite_CuaHangDienThoai.Controllers
 {
@@ -465,8 +466,8 @@ namespace WebSite_CuaHangDienThoai.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.InnerException.Message); // Lấy chi tiết từ ngoại lệ bên trong
+                //Console.WriteLine(ex.Message);
+                //Console.WriteLine(ex.InnerException.Message); // Lấy chi tiết từ ngoại lệ bên trong
                 code = new { Success = false, Code = -10, Url = "" };
                 return Json(code);
 
@@ -614,7 +615,35 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
-       
+
+
+
+
+
+        //private List<ShoppingCartItem> ProcessCartItems(ShoppingCart cart, int customerId)
+        //{
+        //    List<ShoppingCartItem> insufficientItems = new List<ShoppingCartItem>();
+
+        //    foreach (var item in cart.Items)
+        //    {
+        //        var warehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == item.ProductDetailId);
+
+        //        if (warehouseDetail != null && warehouseDetail.QuanTity >= item.SoLuong)
+        //        {
+        //            warehouseDetail.QuanTity -= item.SoLuong;
+        //            DeleteCartSucces(customerId, item.ProductDetailId);
+        //            db.Entry(warehouseDetail).State = System.Data.Entity.EntityState.Modified;
+        //            db.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            // Nếu số lượng không đủ, thêm sản phẩm vào danh sách không đủ số lượng
+        //            insufficientItems.Add(item);
+        //        }
+        //    }
+
+        //    return insufficientItems; // Trả về danh sách sản phẩm không đủ số lượng
+        //}
 
 
 
@@ -622,26 +651,138 @@ namespace WebSite_CuaHangDienThoai.Controllers
         private List<ShoppingCartItem> ProcessCartItems(ShoppingCart cart, int customerId)
         {
             List<ShoppingCartItem> insufficientItems = new List<ShoppingCartItem>();
+            List<int> rollbackQuantities = new List<int>(); // Danh sách tạm thời lưu trữ số lượng cần rollback
+            List<ShoppingCartItem> removedItems = new List<ShoppingCartItem>(); // Danh sách tạm thời lưu trữ các mặt hàng đã bị xóa
 
-            foreach (var item in cart.Items)
+            try
             {
-                var warehouseDetail = db.tb_WarehouseDetail.Find(item.ProductDetailId);
-                if (warehouseDetail != null && warehouseDetail.QuanTity >= item.SoLuong)
+                // Tạo một bản sao của danh sách cart.Items để lặp qua
+                var itemsCopy = new List<ShoppingCartItem>(cart.Items);
+
+                foreach (var item in itemsCopy)
                 {
-                    warehouseDetail.QuanTity -= item.SoLuong;
-                    DeleteCartSucces(customerId, item.ProductDetailId);
-                    db.Entry(warehouseDetail).State = System.Data.Entity.EntityState.Modified;
-                    db.SaveChanges();
+                    var warehouseDetail = db.tb_WarehouseDetail.SingleOrDefault(w => w.ProductDetailId == item.ProductDetailId);
+
+                    if (warehouseDetail != null && warehouseDetail.QuanTity >= item.SoLuong)
+                    {
+                        // Lưu trạng thái ban đầu của số lượng sản phẩm
+                        rollbackQuantities.Add((int)warehouseDetail.QuanTity);
+
+                        // Trừ số lượng sản phẩm trong kho hàng
+                        warehouseDetail.QuanTity -= item.SoLuong;
+                        db.Entry(warehouseDetail).State = System.Data.Entity.EntityState.Modified;
+
+                        // Xóa sản phẩm khỏi giỏ hàng
+                        DeleteCartSucces(customerId, item.ProductDetailId);
+
+                        // Lưu thay đổi vào cơ sở dữ liệu
+                        db.SaveChanges();
+                        removedItems.Add(item);
+                    }
+                    else
+                    {
+                        // Lưu các thông tin của sản phẩm bị xóa vào danh sách tạm thời removedItems
+                      
+
+                        // Lấy số lượng ban đầu của sản phẩm trước khi thực hiện bất kỳ thay đổi nào
+                        var originalQuantity = rollbackQuantities[removedItems.Count - 1];
+
+                        // Lấy số lượng hiện tại của sản phẩm trong kho hàng
+                        var currentWarehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == item.ProductDetailId);
+                        if (currentWarehouseDetail != null)
+                        {
+                            var currentQuantity = currentWarehouseDetail.QuanTity;
+
+                            // Tính toán số lượng cần phải rollback
+                            var quantityToRollback = originalQuantity - currentQuantity;
+
+                            // Rollback số lượng sản phẩm trong kho hàng
+                            currentWarehouseDetail.QuanTity += quantityToRollback;
+                            db.Entry(currentWarehouseDetail).State = System.Data.Entity.EntityState.Modified;
+                        }
+                        // Rollback số lượng sản phẩm đã trừ
+                        for (int i = 0; i < rollbackQuantities.Count; i++)
+                        {
+                            // Lấy sản phẩm tương ứng từ giỏ hàng
+                            var currentItem = removedItems[i];
+
+                            if (currentItem != null)
+                            {
+                                // Tìm warehouse detail của sản phẩm trong cơ sở dữ liệu
+                                var rollbackWarehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == currentItem.ProductDetailId);
+
+                                if (rollbackWarehouseDetail != null)
+                                {
+                                    // Gán giá trị số lượng rollback cho warehouse detail
+                                    rollbackWarehouseDetail.QuanTity = rollbackQuantities[i];
+
+                                    // Cập nhật trạng thái của warehouse detail
+                                    db.Entry(rollbackWarehouseDetail).State = System.Data.Entity.EntityState.Modified;
+                                }
+                            }
+                        }
+
+                        // Lưu các thay đổi vào cơ sở dữ liệu
+                        db.SaveChanges();
+
+                        // Rollback các sản phẩm đã xóa nếu có lỗi xảy ra
+                        foreach (var removedItem in removedItems)
+                        {
+                            cart.AddToCart(removedItem, removedItem.SoLuong); // Thêm lại các sản phẩm đã bị xóa vào giỏ hàng
+                        }
+                        insufficientItems.Add(item);
+                    }
+
                 }
-                else
+            }
+            catch (Exception ex)
+            {
+                // Xử lý ngoại lệ và in ra thông báo lỗi
+                Console.WriteLine(ex.Message);
+                if (ex.InnerException != null)
                 {
-                    // Nếu số lượng không đủ, thêm sản phẩm vào danh sách không đủ số lượng
-                    insufficientItems.Add(item);
+                    Console.WriteLine(ex.InnerException.Message);
+                }
+
+                // Rollback số lượng sản phẩm đã trừ
+                for (int i = 0; i < rollbackQuantities.Count; i++)
+                {
+                    // Lấy sản phẩm tương ứng từ giỏ hàng
+                    var currentItem = removedItems[i];
+
+                    if (currentItem != null)
+                    {
+                        // Tìm warehouse detail của sản phẩm trong cơ sở dữ liệu
+                        var rollbackWarehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == currentItem.ProductDetailId);
+
+                        if (rollbackWarehouseDetail != null)
+                        {
+                            // Gán giá trị số lượng rollback cho warehouse detail
+                            rollbackWarehouseDetail.QuanTity = rollbackQuantities[i];
+
+                            // Cập nhật trạng thái của warehouse detail
+                            db.Entry(rollbackWarehouseDetail).State = System.Data.Entity.EntityState.Modified;
+                        }
+                    }
+                }
+
+                // Lưu các thay đổi vào cơ sở dữ liệu
+                db.SaveChanges();
+
+                // Rollback các sản phẩm đã xóa nếu có lỗi xảy ra
+                foreach (var removedItem in removedItems)
+                {
+                    cart.AddToCart(removedItem, removedItem.SoLuong); // Thêm lại các sản phẩm đã bị xóa vào giỏ hàng
                 }
             }
 
             return insufficientItems; // Trả về danh sách sản phẩm không đủ số lượng
         }
+
+
+
+
+
 
         private tb_Order CreateOrder(ShoppingCart cart, tb_Customer customerInfo, int typePayment)
         {
@@ -697,7 +838,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
             }));
 
             return order;
-        }
+        } 
 
 
 
