@@ -3361,6 +3361,7 @@
     <Content Include="Content\Css\Client\LayOut.css" />
     <Content Include="Content\Css\Client\LayOutSearch.css" />
     <Content Include="Content\Css\Client\LoginClient.css" />
+    <Content Include="Content\Css\Client\Order.css" />
     <Content Include="Content\Css\Client\ProDetail.css" />
     <Content Include="Content\Css\Client\Profile.css" />
     <Content Include="Content\Css\Client\P_CheckOut.css" />
@@ -4386,6 +4387,8 @@
     <Content Include="Views\Review\Partail_ReviewDetailById.cshtml" />
     <Content Include="Views\Order\Index.cshtml" />
     <Content Include="Views\Account\EditImage.cshtml" />
+    <Content Include="Views\Order\Partial_Order.cshtml" />
+    <Content Include="Views\Order\Partail_Ordertail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,68 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_OrderDetail>
+@if (ViewBag.Count != null && Model != null & Model.Any())
+{
+
+    <span><label>Số lượng sản phẩm :</label><span class="text-danger">
+    @ViewBag.Count
+</span></span>
+
+
+
+   
+    foreach (var item in Model)
+    {
+        var Capacity = "";
+        string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
+
+        int[] nguongDungLuong = new int[] { 999, 1999 };
+
+        int index = Array.FindIndex(nguongDungLuong, capacity => item.tb_ProductDetail.Capacity > capacity);
+
+        Capacity = index != -1 ? dungLuongOptions[index] : item.tb_ProductDetail.Capacity + " Gb";
+
+
+
+
+
+
+
+        byte[] strImg = null;
+        var CheckImage = item.tb_ProductDetail.tb_ProductDetailImage.SingleOrDefault(x => x.IsDefault == true);
+
+        if (CheckImage != null)
+        {
+            strImg = CheckImage.Image;
+        }
+
+        string imgSrc = "";
+        if (strImg != null && strImg.Length > 0)
+        {
+            string base64String = Convert.ToBase64String(strImg);
+            imgSrc = $"data:image;base64,{base64String}";
+        }
+<tr>
+
+    <td><img src="@imgSrc" class="img-cart"></td>
+    <td><strong>@item.tb_ProductDetail.tb_Products.Title</strong><p>@item.tb_ProductDetail.Color</p></td>
+    <td>@Capacity</td>
+    <td>
+        @item.Quantity
+    </td>
+
+    <td>
+        @if (item.tb_ProductDetail.PriceSale > 0)
+        {
+            <span class="text-danger">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.tb_ProductDetail.PriceSale)  đ</span>
+        }
+        else
+        {
+    <span class="text-danger">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.tb_ProductDetail.Price)  đ</span>
+        }
+    </td>
+</tr>
+    }
+}
+else
+{
+
+}

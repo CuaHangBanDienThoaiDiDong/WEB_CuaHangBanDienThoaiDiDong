@@ -1,152 +1,109 @@
 ﻿@model WebSite_CuaHangDienThoai.Models.tb_Customer
-<div class="card-header">
 
-    <div class="card-tools" style=" position: absolute; top: 10px; right: 10px;  ">
-        @*<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                <i class="fas fa-minus"></i>
-            </button>*@
-        <button type="button" class="btn btn-tool btnClose" data-card-widget="remove" title="Remove" style=" background: none; border: none; cursor: pointer;">
+<div class="card-header">
+    <div class="card-title">
+        <p>Thay đổi ảnh đại diện</p>
+    </div>
+    <div class="card-tools" style="position: absolute; top: 10px; right: 10px;">
+      
+        <button type="button" class="btn btn-tool btnClose" data-card-widget="remove" title="Remove" style="background: none; border: none; cursor: pointer;">
             <i class="fas fa-times"></i>
         </button>
     </div>
 </div>
-@using (Html.BeginForm("EditImage", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-    @Html.HiddenFor(x => x.CustomerId)
-    @Html.HiddenFor(x => x.Password)
-    @Html.HiddenFor(x => x.CustomerName)
-    @Html.HiddenFor(x => x.CustomerName)
-    @Html.HiddenFor(x => x.PhoneNumber)
-    @Html.HiddenFor(x => x.Email)
-    @Html.HiddenFor(x => x.Birthday)
-    @Html.HiddenFor(x => x.Loaction)
-    @Html.HiddenFor(x => x.NumberofPurchases)
-    @Html.HiddenFor(x => x.Code)
-    @Html.HiddenFor(x => x.Clock)
+
+<div class="card-body">
 
 
-
-    <div class="card-body">
-        @*<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
-                <div class="toast" style="position: absolute; top: 0; right: 0;">
-                    <div class="toast-header">
-                        <img src="..." class="rounded mr-2" alt="...">
-                        <strong class="mr-auto">Bootstrap</strong>
-                        <small>11 mins ago</small>
-                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="toast-body bg-danger">
-                        Hello, world! This is a toast message.
-                    </div>
-                </div>
-            </div>*@
-
-
-        <div class="alert alert-success hidden col-4  alertSuccessEditImage ">
-            <strong>Thành công!</strong> Dùng cho một hành động thành công hoặc tích cực.
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="row">
-
-                    <div class="col-lg-6">
-                        <div class="row">
-                            <div class="col-11">
-
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-11">
+                            <div class="form-group text-center justify-content-center align-items-center ">
                                 @if (Model.Image != null)
                                 {
-                                    <div class=" text-center " style="width:200px;height:200px;background-color:red;text-align:center;display:flex">
-                                        <label id="lbAnhCu" style="display: none;">Ảnh cũ:</label>
-                                        <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" alt="Current Image" id="currentImage" style="width: 100%; height: 100%;" />
+                                    <label id="lbAnhCu" style="display: none;">Ảnh cũ:</label>
+                                    <br />
 
+                                    <div class="text-center d-flex " style="width: 220px; height: 220px; text-align: center;">
+                                        <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" alt="Current Image" id="currentImage" style="width: 100%; height: 100%; margin: auto;" class="rounded-circle" />
                                     </div>
-
                                 }
                                 else
                                 {
-                                    <div class=" text-center " style="width:200px;height:200px;background-color:red;text-align:center;display:flex">
-                                        <label id="lbAnhCu" style="display: none;">Logo hệ thống:</label>
-                                        <img src="~/images/Logo/LogoWebpng.png" style="width: 100%; height: 80%;" />
+                                    <label id="lbAnhCu" style="display: none;">Logo hệ thống:</label>
+                                    <br />
+                                    <div class="text-center" style="width: 220px; height: 220px; text-align: center;">
+                                        <img src="~/images/Logo/LogoWebpng.png" style="width: 100%; height: 80%; margin: auto;" />
                                     </div>
-
-
                                 }
-                                <div class="form-group text-center">
-                                    <input type="file" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)" />
-                                </div>
-                                @*<input type="file" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)" />*@
                             </div>
-                            <div class="col-1">
-                                <div class=" form-group text-center " id="muiTen" style="display: none ;justify-content: center; align-items: center; height: 100px; margin-top: 150px">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" style="color:greenyellow" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708" />
-                                        <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708" />
-                                    </svg>
-                                </div>
+
+                            <div class="form-group text-center">
+                                <input type="file" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)" />
                             </div>
                         </div>
-
-
-
-                    </div>
-                    <div class="col-md-6">
-
-
-                        <div class="form-group text-center newImage">
-                            <label class="" id="lbImagePreview" style="display: none ">Ảnh mới:</label>
-                            <div class=" text-center " style="width:200px;height:200px;background-color:red;text-align:center;display:flex">
-                                <img id="newImagePreview" src="#" alt="New Image Preview" style="display: none; width: 90%; height: 80%;  " class="rounded-circle" />
+                        <div class="col-1">
+                            <div class="form-group text-center" id="muiTen" style="display: none; justify-content: center; align-items: center; height: 100px; margin-top: 100px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" style="color:greenyellow" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708" />
+                                    <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708" />
+                                </svg>
                             </div>
-
                         </div>
-                        @*<div class="form-group text-center">
-
-
-                                <input type="file" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)" style="border:none"/>
-
-                            </div>*@
                     </div>
                 </div>
-            </div>
-            <div class="col-12">
-                <div class="row">
-                    <div class="col-1">
+                <div class="col-md-6 d-flex justify-content-center align-items-center">
+                    <div class="form-group text-center newImage">
+                      
+                        <label class="" id="lbImagePreview" style="display: none;">Ảnh mới:</label>
+
+                        <div class="text-center" style="width: 220px; height: 220px;  text-align: center;">
+                            <img id="newImagePreview" src="#" alt="New Image Preview" style="width: 100%; height: 100%; margin: auto; display: none ;border-radius:80px" />
+                        </div>
 
                     </div>
-                    <div class="col-10 text-center">
-                        <button class="btnSaveImg btn btn-success @*hidden*@" data-id="@Model.CustomerId">
-                            Lưu
-                        </button>
-                    </div>
-                    <div class="col-1">
-
-                    </div>
-
                 </div>
+
+
+
             </div>
         </div>
+        <div class="col-12">
+            <div class="row">
+                <div class="alert alert-success hidden col-4 alertSuccessEditImage col-12">
+                    <strong>Thành công!</strong> Thay đổi ảnh đại diện .
+                </div>
 
 
+                <div class="alert alert-warning hidden alertWarningIamge">
+                    <strong>Thông báo!</strong> Bạn nên <a href="https://quantrimang.com/" class="alert-link">chọn ảnh tại (chọn tệp )</a>.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10 text-center">
+                    <button class="btnSaveImg btn btn-success @*hidden*@" data-id="@Model.CustomerId">Lưu</button>
 
-
-
+                    @*<button class="btnSaveImg btn " id="lbImagePreview" style="display: none;" data-id="Model.CustomerId">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="16" style="color:forestgreen" fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
+                            <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486z" />
+                        </svg>
+                    </button>*@
+                </div>
+                <div class="col-1"></div>
+            </div>
+        </div>
     </div>
 
-}
 
 
-@*<div class="row">
-        <div class="col-6 anh"
-    </div>*@
-
-
+    
+</div>
 
 <script>
-
     function previewImage(event) {
         var reader = new FileReader();
         reader.onload = function () {
@@ -156,8 +113,9 @@
             var muiTen = document.getElementById('muiTen');
             var btnSaveImg = document.querySelector('.btnSaveImg');
             output.src = reader.result;
-            output.style.display = 'block';
+            output.style.display = 'none';
             if (labelAnhCu && muiTen && lbImagePreview) {
+                output.style.display = 'block';
                 labelAnhCu.style.display = 'block';
                 muiTen.style.display = 'block';
                 lbImagePreview.style.display = 'block';
@@ -173,13 +131,9 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-        var bg = document.querySelector(".bg-sg");
-        var popup = document.getElementById('popup');
-        var thaydoi = document.querySelector('.thaydoi');
-        var closeButton = document.getElementById('closeButton');
-        var btnClose = document.querySelector('.btnClose');
         var btnSaveImg = document.querySelector('.btnSaveImg');
         var alertSuccessEditImage = document.querySelector('.alertSuccessEditImage');
+        var alertWarningIamge = document.querySelector('.alertWarningIamge');
 
         btnSaveImg.addEventListener('click', function () {
             var customerId = $(this).data('id');
@@ -198,73 +152,31 @@
                     contentType: false,
                     success: function (res) {
                         if (res.success) {
-                            alert("Cập nhật hình ảnh thành công!");
-                            url: '/tai-khoan/p5';
-                            //if (res.Code == 1) {
-                            //    alertSuccessEditImage.classList.remove('hidden');
-                            //    url: '/tai-khoan/p5';
-                            //    alert("Cập nhật hình ảnh thành công!");
-                            //}
-                        } else {
-                            if (res.Code == -2 || res.Code == -3) {
+                            if (res.Code == 1) {
+                               
+                                alertWarningIamge.classList.add('hidden'); 
                                 alertSuccessEditImage.classList.remove('hidden');
+                                setTimeout(function () {
+                                    window.location.href = '/tai-khoan/p' + customerId;
+
+                                }, 2000); 
                             }
+                        } else {
+                            if (res.Code == -2) {
+                                alertWarningIamge.classList.remove('hidden'); 
+                            }
+                     
                         }
                     },
                     error: function (xhr, status, error) {
                         console.error(xhr.responseText);
+                        alert("Đã xảy ra lỗi khi cập nhật hình ảnh.");
                     }
                 });
             } else {
-                alert("Vui lòng chọn một hình ảnh.");
+                alertWarningIamge.classList.remove('hidden'); 
+               /* alert("Vui lòng chọn một hình ảnh.");*/
             }
-        });
-
-        thaydoi.addEventListener('click', function () {
-            bg.style.display = "block";
-            popup.classList.remove('hidden');
-        });
-
-        btnClose.addEventListener('click', function () {
-            bg.style.display = "none";
-            popup.classList.add('hidden');
-        });
-
-        bg.addEventListener("click", function () {
-            bg.style.display = "none";
-            popup.classList.add('hidden');
-        });
-
-        closeButton.addEventListener('click', function () {
-            popup.classList.add('hidden');
-            bg.style.display = "none";
         });
     });
-
-    function previewImage(event) {
-        var reader = new FileReader();
-        reader.onload = function () {
-            var output = document.getElementById('newImagePreview');
-            var labelAnhCu = document.getElementById('lbAnhCu');
-            var lbImagePreview = document.getElementById('lbImagePreview');
-            var muiTen = document.getElementById('muiTen');
-            var btnSaveImg = document.querySelector('.btnSaveImg');
-            output.src = reader.result;
-            output.style.display = 'block';
-            if (labelAnhCu && muiTen && lbImagePreview) {
-                labelAnhCu.style.display = 'block';
-                muiTen.style.display = 'block';
-                lbImagePreview.style.display = 'block';
-                btnSaveImg.classList.remove('hidden');
-            } else {
-                labelAnhCu.style.display = 'none';
-                muiTen.style.display = 'none';
-                lbImagePreview.style.display = 'none';
-                btnSaveImg.classList.add('hidden');
-            }
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    }
-
-
 </script>

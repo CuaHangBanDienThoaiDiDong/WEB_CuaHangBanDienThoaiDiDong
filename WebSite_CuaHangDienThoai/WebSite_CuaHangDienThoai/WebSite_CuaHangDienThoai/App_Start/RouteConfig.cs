@@ -10,8 +10,14 @@ namespace WebSite_CuaHangDienThoai
             
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-       
 
+            //// Don hang
+            routes.MapRoute(
+                name: "DonHangKhachHang",
+                url: "don-hang",
+                defaults: new { controller = "Order", action = "Index", id = UrlParameter.Optional },
+                namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+            );
 
 
             //// Thonmg tin khách hang

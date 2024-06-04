@@ -294,54 +294,49 @@ namespace WebSite_CuaHangDienThoai.Controllers
         [HttpPost]
         public JsonResult EditImage(int customerId, HttpPostedFileBase newImage)
         {
-            try {
-                if (newImage != null && newImage.ContentLength > 0) 
+            try
+            {
+                if (newImage != null && newImage.ContentLength > 0)
                 {
                     var checkCustomer = db.tb_Customer.Find(customerId);
                     if (checkCustomer != null)
                     {
-                        // Nếu không tìm thấy ảnh
                         byte[] imageData = null;
                         using (var binaryReader = new BinaryReader(newImage.InputStream))
                         {
                             imageData = binaryReader.ReadBytes(newImage.ContentLength);
                         }
 
-
                         checkCustomer.Image = imageData;
 
                         db.Entry(checkCustomer).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
 
-                        //RedirectToAction("Index");
-
-                        return Json(new { success = true });
+                        return Json(new { success = true, Code = 1, message = "Cập nhật ảnh thành công" });
                     }
-                    else {
-                        return Json(new { success = false, Code = -2, message = "Không tìm thấy ảnh để cập nhật" });
+                    else
+                    {
+                        return Json(new { success = false, Code = -2, message = "Không tìm thấy khách hàng để cập nhật" });
                     }
                 }
                 else
                 {
                     return Json(new { success = false, Code = -3, message = "Không tìm thấy ảnh để cập nhật" });
                 }
-
             }
-          
             catch (Exception ex)
             {
                 return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message });
-
-            } 
-            
+            }
         }
 
 
 
 
 
-            //MaHoaPassword khi Regsiter
-            public static string MaHoaPass(string str)
+
+        //MaHoaPassword khi Regsiter
+        public static string MaHoaPass(string str)
         {
             MD5 md5 = new MD5CryptoServiceProvider();
             byte[] fromData = Encoding.UTF8.GetBytes(str);

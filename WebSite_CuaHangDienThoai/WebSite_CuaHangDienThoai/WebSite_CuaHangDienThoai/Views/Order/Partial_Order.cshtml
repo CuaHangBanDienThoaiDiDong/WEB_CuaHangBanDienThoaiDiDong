@@ -1,0 +1,84 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Order>
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+@if (ViewBag.Count != null && Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div class="container bootstrap snippets bootdey mt-5 panel panel-info panel-shadow">
+            <div class="col-md-12 col-sm-8 content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ol class="breadcrumb">
+                            <li><a href="#" class="text-black">Đơn hàng </a><span style="color:orangered"> @item.Code</span></li>
+
+
+                        </ol>
+                        <hr class="col-3" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="panel-heading">
+                                <h3>
+                                    <img class="img-circle img-thumbnail" src="https://bootdey.com/img/Content/user_3.jpg">
+                                    Matew darfkmoun
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Sản phẩm </th>
+                                                <th>Màu</th>
+                                                <th>Dung lượng</th>
+                                                <th>Số lượng</th>
+                                                <th>Giá</th>
+                                                <th>Tổng tiền</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @Html.Action("Partail_Ordertail", "Order", new { id = item.OrderId })
+
+                                           
+                                            <tr>
+                                               
+                                                <td colspan="6"> <hr /></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="text-right">Tạm tính</td>
+                                                <td>@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.TotalAmount) đ</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="text-right">Phát sinh</td>
+                                                <td>$2.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="text-right"><strong class="text-danger">Tổng tiền</strong></td>
+                                                <td class="text-danger">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.TotalAmount) đ</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        </div>
+                    </div>
+                      
+                </div>
+        </div>
+    }
+
+
+
+
+}
+else
+{
+
+
+}
+
