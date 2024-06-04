@@ -11,11 +11,9 @@ namespace WebSite_CuaHangDienThoai.Models
 {
     using System;
     using System.Collections.Generic;
-
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Text.RegularExpressions;
-
     public partial class tb_Customer
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -30,7 +28,6 @@ namespace WebSite_CuaHangDienThoai.Models
         public int CustomerId { get; set; }
         [Required(ErrorMessage = "Số điện thoại không được để trống")]
         [StringLength(10, ErrorMessage = "Số điện thoại phải có đúng 10 số", MinimumLength = 10)]
-
         public string PhoneNumber { get; set; }
         [Required(ErrorMessage = "Tên không được để trống")]
         public string CustomerName { get; set; }
@@ -40,14 +37,13 @@ namespace WebSite_CuaHangDienThoai.Models
         public string Email { get; set; }
         [Required(ErrorMessage = "Mật khẩu không được để trống")]
         public string Password { get; set; }
-        public string Image { get; set; }
         public Nullable<System.DateTime> Birthday { get; set; }
         public string Loaction { get; set; }
         public Nullable<int> NumberofPurchases { get; set; }
         public string Code { get; set; }
         public Nullable<bool> Clock { get; set; }
-
-
+        public byte[] Image { get; set; }
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_Cart> tb_Cart { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

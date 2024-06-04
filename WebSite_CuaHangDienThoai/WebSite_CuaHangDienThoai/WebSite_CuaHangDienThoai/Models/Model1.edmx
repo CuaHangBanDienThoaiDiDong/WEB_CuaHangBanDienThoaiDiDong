@@ -58,12 +58,12 @@
           <Property Name="CustomerName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" />
           <Property Name="Password" Type="varchar" MaxLength="100" />
-          <Property Name="Image" Type="nvarchar" MaxLength="250" />
           <Property Name="Birthday" Type="date" />
           <Property Name="Loaction" Type="nvarchar(max)" />
           <Property Name="NumberofPurchases" Type="int" />
           <Property Name="Code" Type="char" MaxLength="10" />
           <Property Name="Clock" Type="bit" />
+          <Property Name="Image" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="tb_ExportWareHouse">
           <Key>
@@ -318,7 +318,6 @@
           <Property Name="CitizenIdentificationCard" Type="char" MaxLength="12" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Image" Type="nvarchar" MaxLength="250" />
           <Property Name="Birthday" Type="date" Nullable="false" />
           <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
           <Property Name="DayofWork" Type="date" />
@@ -331,6 +330,7 @@
           <Property Name="Clock" Type="bit" />
           <Property Name="FunctionId" Type="int" />
           <Property Name="StoreId" Type="int" />
+          <Property Name="Image" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="tb_Store">
           <Key>
@@ -1157,12 +1157,12 @@
           <Property Name="CustomerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Image" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Birthday" Type="DateTime" Precision="0" />
           <Property Name="Loaction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="NumberofPurchases" Type="Int32" />
           <Property Name="Code" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="Clock" Type="Boolean" />
+          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="tb_Cart" Relationship="Self.GioHangtoKhachHang" FromRole="tb_Customer" ToRole="tb_Cart" />
           <NavigationProperty Name="tb_Order" Relationship="Self.OrdertKhachHang" FromRole="tb_Customer" ToRole="tb_Order" />
           <NavigationProperty Name="tb_Return" Relationship="Self.ReturntoKhachHang" FromRole="tb_Customer" ToRole="tb_Return" />
@@ -1466,7 +1466,6 @@
           <Property Name="CitizenIdentificationCard" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Image" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="DayofWork" Type="DateTime" Precision="0" />
@@ -1479,6 +1478,7 @@
           <Property Name="Clock" Type="Boolean" />
           <Property Name="FunctionId" Type="Int32" />
           <Property Name="StoreId" Type="Int32" />
+          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="tb_ExportWareHouse" Relationship="Self.ExportWareHousetoStaff" FromRole="tb_Staff" ToRole="tb_ExportWareHouse" />
           <NavigationProperty Name="tb_Function" Relationship="Self.StafftoFunction" FromRole="tb_Staff" ToRole="tb_Function" />
           <NavigationProperty Name="tb_ImportWarehouse" Relationship="Self.ImportWarehouseToStaff" FromRole="tb_Staff" ToRole="tb_ImportWarehouse" />
@@ -2323,12 +2323,12 @@
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="Birthday" ColumnName="Birthday" />
                 <ScalarProperty Name="Loaction" ColumnName="Loaction" />
                 <ScalarProperty Name="NumberofPurchases" ColumnName="NumberofPurchases" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="Clock" ColumnName="Clock" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2600,7 +2600,6 @@
                 <ScalarProperty Name="CitizenIdentificationCard" ColumnName="CitizenIdentificationCard" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="Birthday" ColumnName="Birthday" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="DayofWork" ColumnName="DayofWork" />
@@ -2613,6 +2612,7 @@
                 <ScalarProperty Name="Clock" ColumnName="Clock" />
                 <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
                 <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

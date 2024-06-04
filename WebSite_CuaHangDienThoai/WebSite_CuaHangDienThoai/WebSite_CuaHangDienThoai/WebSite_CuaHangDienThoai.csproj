@@ -3822,13 +3822,6 @@
     <Content Include="Areas\Admin\Views\Voucher\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Voucher\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Voucher\Edit.cshtml" />
-    <EntityDeploy Include="Models\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Admin\Views\Voucher\Partail_VoucherDetail.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCompany\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Store\_PartialIndex.cshtml" />
@@ -3857,6 +3850,13 @@
     <Content Include="Areas\Admin\Views\Statistical\StatisticalByMon.cshtml" />
     <Content Include="Areas\Admin\Views\Statistical\StatisticalByYear.cshtml" />
     <Content Include="Areas\Admin\Views\Statistical\Partial_StatisticalByYear.cshtml" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
@@ -4385,6 +4385,7 @@
     <Content Include="Views\Review\Partial_AddReview.cshtml" />
     <Content Include="Views\Review\Partail_ReviewDetailById.cshtml" />
     <Content Include="Views\Order\Index.cshtml" />
+    <Content Include="Views\Account\EditImage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

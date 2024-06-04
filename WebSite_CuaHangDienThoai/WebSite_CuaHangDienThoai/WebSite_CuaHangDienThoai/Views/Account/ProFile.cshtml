@@ -25,20 +25,28 @@
                             @{
                                 var order = Model.tb_Order.Where(x => x.CustomerId == Model.CustomerId).Count();
                                 <h4 class="mb-0 fw-semibold lh-1">
-
                                     @order
                                 </h4>
-
                             }
 
+                            @*<button id="showButton">Hiển thị thẻ</button>*@
 
+                            <div  id="popup"class=" hidden" >
+
+                                <div class="card">
+                                    @Html.Action("EditImage", "Account", new { id = Model.CustomerId })
+                                </div>
+                               
+                               
+                            </div>
+                            @*<div id="popup" class="hidden">
+
+                                @Html.Action("EditImage", "Account", new { id = Model.CustomerId })
+                                <p>Đây là thẻ được hiển thị</p>
+                                <button id="closeButton">Đóng</button>
+                            </div>*@
                             <p class="mb-0 fs-4">Đơn hàng</p>
                         </div>
-                        @*<div class="text-center">
-                            <i class="fa fa-user fs-6 d-block mb-2"></i>
-                            <h4 class="mb-0 fw-semibold lh-1">3,586</h4>
-                            <p class="mb-0 fs-4">Điểm tích lũy</p>
-                        </div>*@
                         <div class="text-center">
                             <i class="fa fa-check fs-6 d-block mb-2"></i>
                             <h4 class="mb-0 fw-semibold lh-1">2,659</h4>
@@ -48,13 +56,39 @@
                 </div>
                 <div class="col-lg-4 mt-n3 order-lg-2 order-1">
                     <div class="mt-n5">
-                        <div class="d-flex align-items-center justify-content-center mb-2">
-                            <div class="linear-gradient d-flex align-items-center justify-content-center rounded-circle" style="width: 110px; height: 110px;" ;="">
-                                <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden" style="width: 100px; height: 100px;" ;="">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="w-100 h-100">
+                        @if (Model.Image != null)
+                        {
+                            <div class="d-flex align-items-center justify-content-center mb-2 thaydoi">
+
+
+                                <div class="linear-gradient d-flex align-items-center justify-content-center rounded-circle" style="width: 110px; height: 110px;">
+
+
+                                    <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden" style="width: 100px; height: 100px;">
+                                        <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" alt="" class="w-100 h-100 thaydoi">
+                                    </div>
                                 </div>
+
                             </div>
-                        </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center justify-content-center mb-2 thaydoi">
+
+
+                                <div class="linear-gradient d-flex align-items-center justify-content-center rounded-circle" style="width: 110px; height: 110px;">
+
+
+                                    <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden" style="width: 100px; height: 100px;">
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="w-100 h-100 thaydoi">
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+
+
+
                         <div class="text-center">
                             <h5 class="fs-5 mb-0 fw-semibold">@Model.CustomerName</h5>
                             <p class="mb-0 fs-4">Designer</p>
@@ -69,17 +103,17 @@
                             </a>
                         </li>
                         <li class="position-relative">
-                            <a class="text-white bg-secondary d-flex align-items-center justify-content-center p-2 fs-4 rounded-circle " href="javascript:void(0)">
+                            <a class="text-white bg-secondary d-flex align-items-center justify-content-center p-2 fs-4 rounded-circle" href="javascript:void(0)">
                                 <i class="fa fa-twitter"></i>
                             </a>
                         </li>
                         <li class="position-relative">
-                            <a class="text-white bg-secondary d-flex align-items-center justify-content-center p-2 fs-4 rounded-circle " href="javascript:void(0)">
+                            <a class="text-white bg-secondary d-flex align-items-center justify-content-center p-2 fs-4 rounded-circle" href="javascript:void(0)">
                                 <i class="fa fa-dribbble"></i>
                             </a>
                         </li>
                         <li class="position-relative">
-                            <a class="text-white bg-danger d-flex align-items-center justify-content-center p-2 fs-4 rounded-circle " href="javascript:void(0)">
+                            <a class="text-white bg-danger d-flex align-items-center justify-content-center p-2 fs-4 rounded-circle" href="javascript:void(0)">
                                 <i class="fa fa-youtube"></i>
                             </a>
                         </li>
@@ -119,20 +153,56 @@
                 <h3>Thông tin cá nhân</h3>
             </div>
             <div class="card-body">
-                
+                <!-- Nội dung thông tin cá nhân -->
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-4">
-
-        </div>
-        <div class="col-8">
-
-        </div>
-    </div>
-
-  
 </div>
 
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('newImagePreview');
+            var labelAnhCu = document.getElementById('lbAnhCu');
+            var lbImagePreview = document.getElementById('lbImagePreview');
+            var muiTen = document.getElementById('muiTen');
+            output.src = reader.result;
+            output.style.display = 'block';
+            if (labelAnhCu && muiTen && lbImagePreview) {
+                labelAnhCu.style.display = 'block';
+                muiTen.style.display = 'block';
+                lbImagePreview.style.display = 'block';
+            }
+
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        var bg = document.querySelector(".bg-sg");
+        var popup = document.getElementById('popup');
+        var thaydoi = document.querySelector('.thaydoi');
+        var closeButton = document.getElementById('closeButton');
+        var btnClose = document.querySelector('.btnClose'); 
+        thaydoi.addEventListener('click', function () {
+            bg.style.display = "block";
+            popup.classList.remove('hidden');
+        });
+
+        btnClose.addEventListener('click', function () {
+            bg.style.display = "none";
+            popup.classList.add('hidden');
+        });
+
+        bg.addEventListener("click", function () {
+            bg.style.display = "none";
+            popup.classList.add('hidden');
+        });
+
+        closeButton.addEventListener('click', function () {
+            popup.classList.add('hidden');
+            bg.style.display = "none";
+        });
+    });
+
+</script>

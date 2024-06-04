@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="72621af6462d49c99f5ce763e2f0fc66" Name="Diagram1">
+      <Diagram DiagramId="afef9d0cd13747c7be9e45f9028dbf41" Name="Diagram1">
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.Districts" Width="1.5" PointX="3.75" PointY="28.375" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.Provinces" Width="1.5" PointX="1.5" PointY="28.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
@@ -32,7 +32,7 @@
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.tb_Store" Width="1.5" PointX="6" PointY="28.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.tb_Supplier" Width="1.5" PointX="6" PointY="41.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.tb_Voucher" Width="1.5" PointX="5.25" PointY="44.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.tb_VoucherDetail" Width="3.375" PointX="7.5" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.tb_VoucherDetail" Width="1.5" PointX="7.5" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.tb_Warehouse" Width="1.5" PointX="8.25" PointY="29.375" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.tb_WarehouseDetail" Width="1.5" PointX="10.5" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAI_newModel.Wards" Width="1.5" PointX="3.75" PointY="31.375" IsExpanded="true" />

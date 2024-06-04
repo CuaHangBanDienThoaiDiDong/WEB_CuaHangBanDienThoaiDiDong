@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -19,18 +20,18 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return View();
         }
 
-        public ActionResult Partial_Login() 
+        public ActionResult Partial_Login()
         {
             return PartialView();
         }
 
 
-        public ActionResult ProFile(int id) 
+        public ActionResult ProFile(int id)
         {
-         
-            var item = db.tb_Customer.Find(id); 
+
+            var item = db.tb_Customer.Find(id);
             return View(item);
-        }    
+        }
 
         public ActionResult Login()
         {
@@ -176,7 +177,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         public ActionResult Partial_Register()
         {
-            return PartialView();   
+            return PartialView();
         }
 
 
@@ -277,8 +278,70 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
-        //MaHoaPassword khi Regsiter
-        public static string MaHoaPass(string str)
+
+
+        public ActionResult EditImage(int id)
+        {
+            var item = db.tb_Customer.Find(id);
+            if (item != null) 
+            {
+                return PartialView(item);
+            }
+            return PartialView();   
+        }
+
+
+        [HttpPost]
+        public JsonResult EditImage(int customerId, HttpPostedFileBase newImage)
+        {
+            try {
+                if (newImage != null && newImage.ContentLength > 0) 
+                {
+                    var checkCustomer = db.tb_Customer.Find(customerId);
+                    if (checkCustomer != null)
+                    {
+                        // Nếu không tìm thấy ảnh
+                        byte[] imageData = null;
+                        using (var binaryReader = new BinaryReader(newImage.InputStream))
+                        {
+                            imageData = binaryReader.ReadBytes(newImage.ContentLength);
+                        }
+
+
+                        checkCustomer.Image = imageData;
+
+                        db.Entry(checkCustomer).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        //RedirectToAction("Index");
+
+                        return Json(new { success = true });
+                    }
+                    else {
+                        return Json(new { success = false, Code = -2, message = "Không tìm thấy ảnh để cập nhật" });
+                    }
+                }
+                else
+                {
+                    return Json(new { success = false, Code = -3, message = "Không tìm thấy ảnh để cập nhật" });
+                }
+
+            }
+          
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Đã xảy ra lỗi: " + ex.Message });
+
+            } 
+            
+        }
+
+
+
+
+
+            //MaHoaPassword khi Regsiter
+            public static string MaHoaPass(string str)
         {
             MD5 md5 = new MD5CryptoServiceProvider();
             byte[] fromData = Encoding.UTF8.GetBytes(str);

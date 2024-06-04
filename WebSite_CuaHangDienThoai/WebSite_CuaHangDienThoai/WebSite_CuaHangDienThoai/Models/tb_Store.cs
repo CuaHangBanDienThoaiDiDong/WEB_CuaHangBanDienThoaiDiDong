@@ -11,8 +11,8 @@ namespace WebSite_CuaHangDienThoai.Models
 {
     using System;
     using System.Collections.Generic;
-
     using System.ComponentModel.DataAnnotations;
+
 
     public partial class tb_Store
     {
@@ -24,7 +24,6 @@ namespace WebSite_CuaHangDienThoai.Models
         }
     
         public int StoreId { get; set; }
-        
         public string CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
@@ -32,9 +31,9 @@ namespace WebSite_CuaHangDienThoai.Models
         public string Alias { get; set; }
         [Required(ErrorMessage = "Địa chỉ không được để trống")]
         public string Location { get; set; }
-    
+      
         public string City { get; set; }
-
+ 
         public string District { get; set; }
         public Nullable<bool> IsStatus { get; set; }
         [Required(ErrorMessage = "Tỉnh / thành  không được để trống")]

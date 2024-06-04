@@ -1,4 +1,7 @@
-﻿
+﻿body {
+    font-family: Arial, sans-serif;
+}
+
 .img-fluid {
     max-width: 100%;
     height: auto;
@@ -21,7 +24,7 @@
 }
 
 .linear-gradient {
-    background-image: linear-gradient(#50b2fc,#f44c66);
+    background-image: linear-gradient(#50b2fc, #f44c66);
 }
 
 .rounded-circle {
@@ -46,11 +49,7 @@
 
 .bg-light-info {
     --bs-bg-opacity: 1;
-    background-color: rgba(235,243,254,1) !important;
-}
-
-.card {
-    margin-bottom: 30px;
+    background-color: rgba(235, 243, 254, 1) !important;
 }
 
 .position-relative {
@@ -59,10 +58,6 @@
 
 .shadow-none {
     box-shadow: none !important;
-}
-
-.overflow-hidden {
-    overflow: hidden !important;
 }
 
 .border {
@@ -116,4 +111,35 @@ a {
 
 .ms-7 {
     margin-left: 30px !important;
+}
+
+#showButton {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+
+#showButton {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+/* Popup CSS */
+#popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+   
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 10001; /* Đảm bảo popup luôn nằm trên cùng */
+/*
+    width:650px;
+    height:650px;*/
+}
+
+.hidden {
+    display: none;
 }

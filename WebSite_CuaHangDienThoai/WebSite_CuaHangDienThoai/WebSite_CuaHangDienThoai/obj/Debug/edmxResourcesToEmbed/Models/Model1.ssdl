@@ -53,12 +53,12 @@
     <Property Name="CustomerName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="100" />
     <Property Name="Password" Type="varchar" MaxLength="100" />
-    <Property Name="Image" Type="nvarchar" MaxLength="250" />
     <Property Name="Birthday" Type="date" />
     <Property Name="Loaction" Type="nvarchar(max)" />
     <Property Name="NumberofPurchases" Type="int" />
     <Property Name="Code" Type="char" MaxLength="10" />
     <Property Name="Clock" Type="bit" />
+    <Property Name="Image" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="tb_ExportWareHouse">
     <Key>
@@ -313,7 +313,6 @@
     <Property Name="CitizenIdentificationCard" Type="char" MaxLength="12" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="Image" Type="nvarchar" MaxLength="250" />
     <Property Name="Birthday" Type="date" Nullable="false" />
     <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
     <Property Name="DayofWork" Type="date" />
@@ -326,6 +325,7 @@
     <Property Name="Clock" Type="bit" />
     <Property Name="FunctionId" Type="int" />
     <Property Name="StoreId" Type="int" />
+    <Property Name="Image" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="tb_Store">
     <Key>

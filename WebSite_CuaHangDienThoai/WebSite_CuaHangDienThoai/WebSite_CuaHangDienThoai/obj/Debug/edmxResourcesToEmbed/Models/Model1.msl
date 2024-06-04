@@ -58,12 +58,12 @@
           <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Password" ColumnName="Password" />
-          <ScalarProperty Name="Image" ColumnName="Image" />
           <ScalarProperty Name="Birthday" ColumnName="Birthday" />
           <ScalarProperty Name="Loaction" ColumnName="Loaction" />
           <ScalarProperty Name="NumberofPurchases" ColumnName="NumberofPurchases" />
           <ScalarProperty Name="Code" ColumnName="Code" />
           <ScalarProperty Name="Clock" ColumnName="Clock" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -335,7 +335,6 @@
           <ScalarProperty Name="CitizenIdentificationCard" ColumnName="CitizenIdentificationCard" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Password" ColumnName="Password" />
-          <ScalarProperty Name="Image" ColumnName="Image" />
           <ScalarProperty Name="Birthday" ColumnName="Birthday" />
           <ScalarProperty Name="Location" ColumnName="Location" />
           <ScalarProperty Name="DayofWork" ColumnName="DayofWork" />
@@ -348,6 +347,7 @@
           <ScalarProperty Name="Clock" ColumnName="Clock" />
           <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
           <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
