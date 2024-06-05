@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Staff>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Quản lý nhân viên";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -67,7 +67,7 @@
                         var i = 1;
                      foreach(var item in Model)
                         {
-                            var strClock = item.Clock.GetValueOrDefault() ? "<i class=\"fas fa-lock\"></i>" : "<i class=\"fas fa-lock-open\"></i>";
+                            var strClock = item.Clock.GetValueOrDefault() ? "<i class=\"fas fa-lock text-danger\"></i>" : "<i class=\"fas fa-lock-open\"></i>";
                             <tr id="trow_@item.StaffId">
                                 <td><input type="checkbox" class="cbkItem" value="@item.StaffId" /></td>
                                 <td class="text-center">@i</td>
@@ -138,20 +138,19 @@
 
             $('body').on('click', '.btnClockStaff', function () {
                 var id = $(this).data("id");
-                alert(id);
+                var btn = $(this);
 
                 var conf = confirm('Bạn có muốn khóa tài khoản nhân viên này');
-                if (conf === true) {
+                if (conf == true) {
                     $.ajax({
                         url: '/Admin/Staff/IsLock',
                         type: 'POST',
-                        data: { id: id },// Sử dụng JSON.stringify
-                        contentType: 'application/json', // Thiết lập kiểu dữ liệu là JSON
+                        data: { id: id },
                         success: function (rs) {
                             if (rs.success) {
-                                if (rs.isActive) {
+                                if (rs.isAcive) {
                                     location.reload(true);
-                                    btn.html("<i class=\"fas fa-lock\"></i>");
+                                    btn.html("<i class=\"fas fa-lock text-danger\"></i>");
                                 } else {
                                     location.reload(true);
                                     btn.html("<i class=\"fas fa-lock-open\"></i>");

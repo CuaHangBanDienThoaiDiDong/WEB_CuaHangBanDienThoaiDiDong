@@ -3851,6 +3851,17 @@
     <Content Include="Areas\Admin\Views\Statistical\StatisticalByMon.cshtml" />
     <Content Include="Areas\Admin\Views\Statistical\StatisticalByYear.cshtml" />
     <Content Include="Areas\Admin\Views\Statistical\Partial_StatisticalByYear.cshtml" />
+    <Content Include="Areas\WareHouse\Views\web.config" />
+    <Content Include="Areas\WareHouse\Views\Shared\_LayoutWareHouse.cshtml" />
+    <Content Include="Areas\WareHouse\Views\ExportWareHouse\Index.cshtml" />
+    <Content Include="Areas\WareHouse\Views\Shared\_MenuSideBar.cshtml" />
+    <Content Include="Areas\WareHouse\Views\ExportWareHouse\Partial_ThongTinDonHang.cshtml" />
+    <Content Include="Areas\WareHouse\Views\ExportWareHouse\Partial_ThongTinXuat.cshtml" />
+    <Content Include="Areas\WareHouse\Views\ExportWareHouse\Partial_OrderDetail.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_LayoutWareHouse.cshtml" />
+    <Content Include="Areas\Admin\Views\ExportWareHouse\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ExportWareHouse\Partial_ThongTinDonHang.cshtml" />
+    <Content Include="Areas\Admin\Views\ExportWareHouse\Partial_OrderDetail.cshtml" />
     <EntityDeploy Include="Models\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
@@ -4115,6 +4126,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountClientController.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ExportWareHouseController.cs" />
     <Compile Include="Areas\Admin\Controllers\FunctionController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomePageController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
@@ -4135,6 +4147,8 @@
     <Compile Include="Areas\Admin\Controllers\WareHouseImportController.cs" />
     <Compile Include="Areas\Seller\Controllers\SellerController.cs" />
     <Compile Include="Areas\Seller\SellerAreaRegistration.cs" />
+    <Compile Include="Areas\WareHouse\Controllers\ExportWareHouseController.cs" />
+    <Compile Include="Areas\WareHouse\WareHouseAreaRegistration.cs" />
     <Compile Include="Common\Common.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />
@@ -4160,6 +4174,7 @@
     <Compile Include="Models\Admin_TokenStore.cs" />
     <Compile Include="Models\Admin_TokenSupplier.cs" />
     <Compile Include="Models\Admin_TokenVoucher.cs" />
+    <Compile Include="Models\Admin_WareHouse_Export_ToKen.cs" />
     <Compile Include="Models\Client_TokenReview.cs" />
     <Compile Include="Models\Common\Filter.cs" />
     <Compile Include="Models\CompanyModel.cs" />
@@ -4389,6 +4404,7 @@
     <Content Include="Views\Account\EditImage.cshtml" />
     <Content Include="Views\Order\Partial_Order.cshtml" />
     <Content Include="Views\Order\Partail_Ordertail.cshtml" />
+    <Content Include="Views\Order\Partail_TrangThaiDonHang.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4403,11 +4419,13 @@
     <Folder Include="Areas\Admin\Views\ProductDetailImage\" />
     <Folder Include="Areas\Admin\Views\Seller\" />
     <Folder Include="Areas\Seller\Data\" />
+    <Folder Include="Areas\WareHouse\Data\" />
     <Folder Include="Models\NewFolder1\" />
     <Folder Include="Uploads\flash\" />
     <Folder Include="Uploads\images\Products\DongHoThongMinh\" />
     <Folder Include="Uploads\_thumbs\Images\setting\" />
     <Folder Include="Views\MenuDanhMucNoiBat\" />
+    <Folder Include="Views\WareHouse\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebSite_CuaHangDienThoai.Models.Token.Admin;
 using WebSite_CuaHangDienThoai.Models;
+using System.IO;
 
 namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 {
@@ -60,6 +61,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
             ViewBag.ChucNang = new SelectList(db.tb_Function.ToList(), "FunctionId", "TitLe");
+            ViewBag.Store = new SelectList(db.tb_Store.ToList(), "StoreId", "Location");
             return PartialView();
             //}
             //}
@@ -84,7 +86,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add(tb_Staff model, tb_Role modelPhanQuyen, Admin_Add_Staff_ToKen req)
+        public ActionResult Add(tb_Staff model, tb_Role modelPhanQuyen, Admin_Add_Staff_ToKen req, HttpPostedFileBase newImage)
         {
             var code = new { Success = false, Code = -1, Url = "" };
             if (req.SDT != null && req.Name != null && req.CCCD != null && req.Email != null && req.DiaChi != null && req.GioiTinh != null && req.Luong > 0)
@@ -103,9 +105,29 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                             if (req.FunctionId != null)
                         {
                             string pass = "123";
+                                if (newImage != null && newImage.ContentLength > 0)
+                                {
+                                    try 
+                                    {
 
+                                        byte[] imageData = null;
+                                        using (var binaryReader = new BinaryReader(newImage.InputStream))
+                                        {
+                                            imageData = binaryReader.ReadBytes(newImage.ContentLength);
+                                        }
 
-                            Random ran = new Random();
+                                        model.Image = imageData;
+                                    }
+                                    catch (Exception ex) 
+                                    {
+                                        code = new { Success = false, Code = -5, Url = "" };
+                                        return Json(code);
+                                    }
+
+                                    
+                                }
+
+                                Random ran = new Random();
 
                             string Code = "2" + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9);
                             model.Code = Code.Trim();
@@ -119,7 +141,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                             model.Location = req.DiaChi;
                             model.Wage = req.Luong;
                             model.FunctionId = req.FunctionId;
-
+model.StoreId = req.StoreId;        
                             model.Clock = false;
 
                             model.CreatedDate = DateTime.Now;
@@ -187,6 +209,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
           
 
             ViewBag.ChucNang = new SelectList(db.tb_Function.ToList(), "IdChucNang", "TenChucNang");
+            ViewBag.Store = new SelectList(db.tb_Store.ToList(), "StoreId", "Location");
             return Json(code);
         }
 

@@ -1,0 +1,220 @@
+﻿@model WebSite_CuaHangDienThoai.Models.Admin_WareHouse_Export_ToKen
+
+@using (Ajax.BeginForm("Partial_ExportWareHouse", "ExportWareHouse", new AjaxOptions
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "load_data",
+    OnSuccess = "OnSuccessCO",
+    OnFailure = "OnFailure",
+    OnBegin = "OnBeginCO"
+}, new { @Id = "myForm" }))
+{
+    <script>
+        function OnBeginCO() {
+            $('#btnOutOrder').attr("disabled", "disabled");
+        }
+        function validateForm() {
+            var codeValue = document.getElementById('Code').value.trim();
+            var khoValue = document.getElementById('Idkho').value;
+
+            var codeError = document.getElementById('code-error');
+            var khoError = document.getElementById('Idkho-error');
+
+            // Đặt lại thông báo lỗi
+            codeError.textContent = 'Không bỏ trống';
+            khoError.textContent = 'Không thấy kho';
+        }
+
+        function OnSuccessCO(res) {
+            if (res.Success) {
+                if (res.Code == 1) {
+
+                    location.reload(true);
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "success",
+                        title: "Xuất đơn hàng thành công"
+                    });
+
+                    $.ajax({
+                        url: "/Product/Suggest",
+                        type: "GET",
+                        data: { searchString: inputValue },
+                        success: function (response) {
+
+                            $(".search-suggestions").html(response);
+                        },
+                        error: function (xhr, status, error) {
+
+                            console.error(xhr.responseText);
+                        }
+                    });
+
+                } else {
+                }
+            }
+            else {
+                if (res.Code == -2) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi tìm...",
+                        text: "Không tìm thấy đơn hàng",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+
+                }
+                if (res.Code == -3) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi tìm...",
+                        text: "Đơn hàng dã hủy trên hệ thống ! Vui lòng kiểm tra lại ",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+                }
+                if (res.Code == -4) {
+                    Swal.fire({
+                        icon: "question",
+                        title: "Lỗi tìm...",
+                        text: "Đơn hàng chưa được xác nhận ",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+
+                }
+                if (res.Code == -5) {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Lỗi tìm...",
+                        text: "Mã hàng được trả về ",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+                }
+                if (res.Code == -6) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi tìm...",
+                        text: "Đơn hàng lập lại 2 lần ",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+                }
+            }
+
+        }
+        // Đảm bảo mã JavaScript được thực thi sau khi tài liệu HTML đã được tải hoàn toàn
+        document.addEventListener("DOMContentLoaded", function () {
+            // Lấy ra trường nhập liệu mã đơn hàng
+            const codeInput = document.getElementById("Code");
+
+            // Thêm sự kiện input cho trường nhập liệu
+            codeInput.addEventListener("input", function (event) {
+                // Gọi hàm để gửi dữ liệu lên server
+                callPartialExportWareHouse(event.target.value);
+            });
+        });
+
+        // Hàm gửi dữ liệu lên server
+        async function callPartialExportWareHouse(codeValue) {
+            try {
+                // Tạo yêu cầu fetch để gửi dữ liệu lên server
+                const response = await fetch("/ExportWareHouse/Partial_ExportWareHouse", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ Code: codeValue }) // Chuyển đổi dữ liệu thành chuỗi JSON
+                });
+
+                // Kiểm tra xem yêu cầu có thành công hay không
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // Chuyển đổi phản hồi từ dạng JSON sang đối tượng JavaScript
+                const data = await response.json();
+
+                // Xử lý kết quả từ server nếu cần
+                console.log(data);
+            } catch (error) {
+                // Xử lý lỗi nếu có
+                console.error(error);
+            }
+        }
+
+
+
+
+
+
+    </script>
+    @Html.AntiForgeryToken()
+    <h5>Thông tin xuất đơn hàng</h5>
+    <h4 class="Text-danger">@ViewBag.Error</h4>
+    <div class="form-group">
+        <label>Mã Đơn hàng </label>
+        <input type="text" name="Code" id="Code" required class="form-control MaDonHang" autocomplete="off" placeholder="Mã Đơn hàng DH**** " />
+        @Html.ValidationMessageFor(model => model.Code, null, new { @class = "text-danger" })
+        <span id="code-error" class="text-danger"></span>
+    </div>
+
+
+
+    <div class="row p-2">
+        <div class="col-1"></div>
+
+        <div class="col-10 d-grid gap-2 col-10 mx-auto"><button type="submit" class="btn btn-danger btnOutOrder ">Xuất đơn hàng</button></div>
+
+        <div class="col-1"></div>
+    </div>
+
+}
+<script>
+    // Đảm bảo mã JavaScript được thực thi sau khi tài liệu HTML đã được tải hoàn toàn
+    document.addEventListener("DOMContentLoaded", function () {
+        // Lấy ra trường nhập liệu mã đơn hàng
+        const codeInput = document.getElementById("Code");
+
+        // Thêm sự kiện input cho trường nhập liệu
+        codeInput.addEventListener("input", function (event) {
+            // Gọi hàm để gửi dữ liệu lên server
+            callPartialExportWareHouse(event.target.value);
+        });
+    });
+
+    // Hàm gửi dữ liệu lên server
+    async function callPartialExportWareHouse(codeValue) {
+        try {
+            // Tạo yêu cầu fetch để gửi dữ liệu lên server
+            const response = await fetch("/WareHouse/ExportWareHouse/Partial_ExportWareHouse", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ Code: codeValue }) // Chuyển đổi dữ liệu thành chuỗi JSON
+            });
+
+            // Kiểm tra xem yêu cầu có thành công hay không
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            // Chuyển đổi phản hồi từ dạng JSON sang đối tượng JavaScript
+            const data = await response.json();
+
+            // Xử lý kết quả từ server nếu cần
+            console.log(data);
+        } catch (error) {
+            // Xử lý lỗi nếu có
+            console.error(error);
+        }
+    }
+</script>

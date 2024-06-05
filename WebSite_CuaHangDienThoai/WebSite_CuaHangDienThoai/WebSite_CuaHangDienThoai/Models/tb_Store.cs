@@ -12,8 +12,6 @@ namespace WebSite_CuaHangDienThoai.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
-
     public partial class tb_Store
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -31,9 +29,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public string Alias { get; set; }
         [Required(ErrorMessage = "Địa chỉ không được để trống")]
         public string Location { get; set; }
-      
         public string City { get; set; }
- 
         public string District { get; set; }
         public Nullable<bool> IsStatus { get; set; }
         [Required(ErrorMessage = "Tỉnh / thành  không được để trống")]

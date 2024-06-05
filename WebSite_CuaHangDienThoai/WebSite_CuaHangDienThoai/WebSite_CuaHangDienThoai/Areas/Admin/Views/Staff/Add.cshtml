@@ -54,6 +54,7 @@
 
 @section  scripts{
     <script>
+     
         $(document).ready(function () {
             $('.auto').autoNumeric('init');
             $('#demoPrice').bind('blur focusout keypress keyup', function () {
@@ -67,6 +68,34 @@
                 var conf = confirm('Bạn có muốn xóa các sản phẩm đã chọn không');
 
             });
+
+
+
+
+
+            function previewImage(event) {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var output = document.getElementById('newImagePreview');
+                  
+                    var lbImagePreview = document.getElementById('lbImagePreview');
+                  
+                   
+                    output.src = reader.result;
+                    output.style.display = 'none';
+                    if ( lbImagePreview) {
+                        output.style.display = 'block';
+                       
+                        lbImagePreview.style.display = 'block';
+                    } else {
+                       
+                      
+                        lbImagePreview.style.display = 'none';
+                       
+                    }
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            }
         });
 
 

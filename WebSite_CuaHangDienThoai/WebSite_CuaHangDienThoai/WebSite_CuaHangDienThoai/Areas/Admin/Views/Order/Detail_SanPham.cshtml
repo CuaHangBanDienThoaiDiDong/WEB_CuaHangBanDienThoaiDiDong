@@ -21,9 +21,9 @@
                     <th class="border-gray-200 text-center" scope="col">Tên sản phẩm</th>
                     <th class="border-gray-200 text-center" scope="col">Dung lượng</th>
                     <th class="border-gray-200 text-center" scope="col">Màu</th>
-                    <th class="border-gray-200 text-center" scope="col">Giá</th>
+      
                     <th class="border-gray-200 text-center" scope="col">Số lượng</th>
-                    <th class="border-gray-200 text-center" scope="col">Tổng tiền</th>
+   
 
                 </tr>
             </thead>
@@ -47,9 +47,9 @@
                         <td class="text-center">@item.tb_ProductDetail.tb_Products.Title</td>
                         <td class="text-center">@Capacity</td>
                         <td class="text-center">@item.tb_ProductDetail.Color</td>
-                        <td class="text-center">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price)</td>
+                       
                         <td class="text-center">@item.Quantity</td>
-                        <td class="text-center">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price * item.Quantity, 0)</td>
+                      
 
                     </tr>
                     i++;

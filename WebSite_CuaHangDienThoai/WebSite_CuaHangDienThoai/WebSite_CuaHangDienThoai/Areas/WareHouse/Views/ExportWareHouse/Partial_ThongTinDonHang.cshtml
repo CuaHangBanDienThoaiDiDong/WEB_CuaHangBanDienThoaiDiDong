@@ -1,0 +1,114 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Order
+
+<div class="card-header">
+    Thông tin đơn hàng
+    <div class="card-tools">
+        <button class="btn btn-success btnExportWareHouse" data-id="@ViewBag.OrderId">Xuất đơn hàng</button>
+    </div>
+</div>
+
+<div class="card-body">
+    @if (ViewBag.Count != null)
+    {
+        <div class="form-row" style="display: flex; align-items: center;">
+            <div class="form-group col-md-6">
+                <label for="tenDT">Tên Khách Hàng:</label>
+                <span>@Model.tb_Customer.CustomerName</span>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="diaChi">Địa chỉ giao hàng:</label>
+                <span>@Model.Address</span>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="lapPhieu">Ngày mua :</label>
+                <span>@Model.CreatedDate.ToString("dd/MM/yyyy")</span>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="col-12">
+            @Html.Action("Partial_OrderDetail", "ExportWareHouse", new { id = Model.OrderId })
+        </div>
+    }
+    else
+    {
+        <div class="form-row" style="display: flex; align-items: center;">
+            <p class="text-danger">Không tìm thấy dữ liệu</p>
+        </div>
+    }
+</div>
+
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.btnExportWareHouse').click(function () {
+            var orderId = $(this).data('id');
+            alert(orderId);
+            $.ajax({
+                url: '/ExportWareHouse/Partial_ExportWareHouse', // Thay ControllerName bằng tên controller thực tế của bạn
+                type: 'POST',
+                dataType: 'json',
+                data: { Orderid: orderId },
+                success: function (res) {
+                    if (res.Success) {
+                        if (res.Code == 1) {
+                            alert('Xuaast thanh cong')
+                        }
+
+                    } else {
+                        if (res.Code == -2) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi tìm...",
+                                text: "Không tìm thấy đơn hàng",
+                                /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                            });
+
+                        }
+                        if (res.Code == -3) {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Lỗi tìm...",
+                                text: "Đơn hàng dã hủy trên hệ thống ! Vui lòng kiểm tra lại ",
+                                /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                            });
+                        }
+                        if (res.Code == -4) {
+                            Swal.fire({
+                                icon: "question",
+                                title: "Lỗi tìm...",
+                                text: "Đơn hàng chưa được xác nhận ",
+                                /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                            });
+
+                        }
+                        if (res.Code == -5) {
+                            Swal.fire({
+                                icon: "info",
+                                title: "Lỗi tìm...",
+                                text: "Mã hàng được trả về ",
+                                /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                            });
+                        }
+                        if (res.Code == -6) {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Lỗi tìm...",
+                                text: "Đơn hàng lập lại 2 lần ",
+                                /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                            });
+                        }
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Xử lý lỗi AJAX, nếu có
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+
+</script>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="CUAHANGDIENTHOAI_newModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="Districts">
     <Key>
       <PropertyRef Name="idDistricts" />
@@ -568,6 +568,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="NewStaffToStoreFK">
+    <End Role="tb_Store" Type="Self.tb_Store" Multiplicity="0..1" />
+    <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Store">
+        <PropertyRef Name="StoreId" />
+      </Principal>
+      <Dependent Role="tb_Staff">
+        <PropertyRef Name="StoreId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="OrderDetailtoOrder">
     <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="0..1" />
     <End Role="tb_OrderDetail" Type="Self.tb_OrderDetail" Multiplicity="*" />
@@ -784,18 +796,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="StafftoStore">
-    <End Role="tb_Store" Type="Self.tb_Store" Multiplicity="0..1" />
-    <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tb_Store">
-        <PropertyRef Name="StoreId" />
-      </Principal>
-      <Dependent Role="tb_Staff">
-        <PropertyRef Name="FunctionId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="StoretoDistricts">
     <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
     <End Role="tb_Store" Type="Self.tb_Store" Multiplicity="*" />
@@ -892,7 +892,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="CUAHANGDIENTHOAI_newModelStoreContainer">
+  <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
     <EntitySet Name="Districts" EntityType="Self.Districts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Provinces" EntityType="Self.Provinces" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
@@ -976,6 +976,10 @@
       <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
       <End Role="tb_ImportWarehouse" EntitySet="tb_ImportWarehouse" />
     </AssociationSet>
+    <AssociationSet Name="NewStaffToStoreFK" Association="Self.NewStaffToStoreFK">
+      <End Role="tb_Store" EntitySet="tb_Store" />
+      <End Role="tb_Staff" EntitySet="tb_Staff" />
+    </AssociationSet>
     <AssociationSet Name="OrderDetailtoOrder" Association="Self.OrderDetailtoOrder">
       <End Role="tb_Order" EntitySet="tb_Order" />
       <End Role="tb_OrderDetail" EntitySet="tb_OrderDetail" />
@@ -1046,10 +1050,6 @@
     </AssociationSet>
     <AssociationSet Name="StafftoFunction" Association="Self.StafftoFunction">
       <End Role="tb_Function" EntitySet="tb_Function" />
-      <End Role="tb_Staff" EntitySet="tb_Staff" />
-    </AssociationSet>
-    <AssociationSet Name="StafftoStore" Association="Self.StafftoStore">
-      <End Role="tb_Store" EntitySet="tb_Store" />
       <End Role="tb_Staff" EntitySet="tb_Staff" />
     </AssociationSet>
     <AssociationSet Name="StoretoDistricts" Association="Self.StoretoDistricts">

@@ -33,7 +33,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         public ActionResult Partial_Order(int id) 
         {
-            var order = db.tb_Order.Where(x => x.CustomerId == id);
+            var order = db.tb_Order.Where(x => x.CustomerId == id).OrderByDescending(x => x.OrderId).ToList();
             if (order.Any()) 
             {
                 ViewBag.Count=order.Count();    
@@ -53,5 +53,37 @@ namespace WebSite_CuaHangDienThoai.Controllers
             }
             return PartialView();
         }
+
+
+
+
+
+
+
+
+
+        public ActionResult Partail_TrangThaiDonHang(int id)
+        {
+            int idKhach = (int)Session["CustomerId"];
+            var cheCheckORderDetail = db.tb_Order.Find(id);
+            if (cheCheckORderDetail != null)
+            {
+                var checkOutOrder = db.tb_ExportWareHouse.FirstOrDefault(x => x.OrderId == cheCheckORderDetail.OrderId);
+                if (checkOutOrder != null)
+                {
+                    ViewBag.Out = "XuatKho";
+                    return PartialView(cheCheckORderDetail);
+                }
+                else
+                {
+                    return PartialView(cheCheckORderDetail);
+
+                }
+
+            }
+            return PartialView();
+        }
+
+
     }
 }

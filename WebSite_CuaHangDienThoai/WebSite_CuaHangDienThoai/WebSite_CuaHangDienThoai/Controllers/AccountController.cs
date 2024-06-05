@@ -55,7 +55,9 @@ namespace WebSite_CuaHangDienThoai.Controllers
                         Session["CustomerId"] = checkClock.CustomerId;
                         Session["Email"] = checkClock.Email;
                         Session["PhoneNumber"] = checkClock.PhoneNumber;
-                        Session["img"] = checkClock.Image;
+                      
+                        string base64String = Convert.ToBase64String(checkClock.Image);
+                        Session["img"] = base64String;
                         return RedirectToAction("Index", "Home");
                     }
                     else
@@ -76,46 +78,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
             return View();
         }
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Login(string msnv, string PhoneNumber, string password)
-        //{
-        //    var code = new { Success = false, Code = -1, Url = "" };
-        //    if (ModelState.IsValid)
-        //    {
-        //        var f_password = MaHoaPass(password);
-        //        var data = db.tb_Customer.Where(s => s.PhoneNumber.Equals(PhoneNumber) && s.Password.Equals(f_password)).ToList();
-        //        if (data.Count > 0 /*&& dataNhanVien.Count == 0*/)
-        //        {
-        //            var checkClock = db.tb_Customer.FirstOrDefault(s => s.PhoneNumber == PhoneNumber && s.Clock == false);
-        //            if (checkClock != null)
-        //            {
-        //                Session["Client"] = data;
-        //                Session["CustomerName"] = checkClock.CustomerName;
-        //                Session["CustomerId"] = checkClock.CustomerId;
-        //                Session["Email"] = checkClock.Email;
-        //                Session["PhoneNumber"] = checkClock.PhoneNumber;
-        //                Session["img"] = checkClock.Image;
-        //                code = new { Success = true, Code = 1, Url = "" };
-        //            }
-        //            else
-        //            {
-        //                ViewBag.error = "Tài khoản bị đã khóa";
-        //                code = new { Success = false, Code = -3, Url = "" };
-        //            }
-
-        //        }
-
-        //        else
-        //        {
-        //            //ViewBag.error = "Không tồn tại tài khoản";
-        //            code = new { Success = false, Code = -4, Url = "" };// Không tồn tại tài khoản
-        //        }
-        //    }
-
-        //    return Json(code);
-        //}
-
+        
 
         public ActionResult LogOut()
         {

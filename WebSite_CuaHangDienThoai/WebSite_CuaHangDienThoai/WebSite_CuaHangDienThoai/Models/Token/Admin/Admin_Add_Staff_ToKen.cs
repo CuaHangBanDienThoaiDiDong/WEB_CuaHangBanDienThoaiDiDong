@@ -15,7 +15,8 @@
             public string DiaChi { get; set; }
             public decimal Luong { get; set; }
             public string GioiTinh { get; set; }
-        
+       
             public int FunctionId { get; set; }
+            public int StoreId { get; set; }
         }
     }
