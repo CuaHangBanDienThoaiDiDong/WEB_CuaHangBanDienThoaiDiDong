@@ -188,14 +188,14 @@
                         /*footer: '<a href="#">Why do I have this issue?</a>'*/
                     });
                 }
-                //if (res.Code == -6) {
-                //    Swal.fire({
-                //        icon: "warning",
-                //        title: "Lỗi tìm...",
-                //        text: "Đơn hàng lập lại 2 lần ",
-                //        /*footer: '<a href="#">Why do I have this issue?</a>'*/
-                //    });
-                //}
+                if (res.Code == -100) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi tìm...",
+                        text: "Đơn hàng lập lại 2 lần ",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+                }
             }
 
         }
@@ -307,7 +307,7 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group app-label">
-                                        <label for="General" class="text-muted">Chức vụ</label>
+                                        <label for="General" class="text-muted">Cửa hàng</label>
                                         @*@Html.Action("Partival_IdChucNang", "Staff")*@
 
                                         @*@Html.ValidationMessageFor(x => x.ProductCategoryId, null, new { @class = "text-danger" })*@

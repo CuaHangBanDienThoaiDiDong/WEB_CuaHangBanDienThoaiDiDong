@@ -50,6 +50,11 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
                         if (functionTitle != null)
                         {
+                            if (data.Image != null) 
+                            {
+                                string base64String = Convert.ToBase64String(data.Image);
+                                Session["userimg"] = base64String;
+                            }
                             if (functionTitle.Contains("Quản lý kho hàng"))
                             {
                                 Session["user"] = data;

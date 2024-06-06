@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using WebSite_CuaHangDienThoai.Models.Token.Admin;
 using WebSite_CuaHangDienThoai.Models;
 using System.IO;
+using System.Windows.Forms;
+using PagedList;
 
 namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 {
@@ -38,6 +40,40 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 }
             }
 
+        }
+
+
+        public ActionResult Partial_Index(int? page)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                IEnumerable<tb_Staff> items = db.tb_Staff.OrderByDescending(x => x.StaffId);
+                if (items != null)
+                {
+                    var pageSize = 10;
+                    if (page == null)
+                    {
+                        page = 1;
+                    }
+                    var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+                    items = items.ToPagedList(pageIndex, pageSize);
+                    var products = db.tb_Staff.ToList();
+
+                    ViewBag.Count = products.Count;
+                    ViewBag.PageSize = pageSize;
+                    ViewBag.Page = page;
+                    return PartialView(items);
+                }
+                else
+                {
+                    ViewBag.txt = "Không tồn tại sản phẩm";
+                    return PartialView();
+                }
+            }
         }
         public ActionResult Partial_AddStaff()
         {
@@ -77,9 +113,33 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
 
-                return View();
+                var functionTitle = db.tb_Function
+                                            .Where(func => func.FunctionId == checkStaff.FunctionId)
+                                            .Select(func => func.TitLe)
+                                            .FirstOrDefault();
+                if (functionTitle != null) 
+                {
+                    if (functionTitle.Contains("admin") || functionTitle.Contains("Quản Lý"))
+                    {
+                        Session["user"] = checkStaff;
+                        return View();
+
+                    }
+                    else 
+                    {
+                        return RedirectToAction("NonRole", "HomePage");
+                    }
+                }
+                return RedirectToAction("DangNhap", "Account");
+
             }
+
+
+
+
         }
 
      
@@ -89,122 +149,129 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         public ActionResult Add(tb_Staff model, tb_Role modelPhanQuyen, Admin_Add_Staff_ToKen req, HttpPostedFileBase newImage)
         {
             var code = new { Success = false, Code = -1, Url = "" };
-            if (req.SDT != null && req.Name != null && req.CCCD != null && req.Email != null && req.DiaChi != null && req.GioiTinh != null && req.Luong > 0)
+            try {
+                if (req.SDT != null && req.Name != null && req.CCCD != null && req.Email != null && req.DiaChi != null && req.GioiTinh != null && req.Luong > 0)
 
-            {
-                var checkMail = db.tb_Staff.FirstOrDefault(row => row.Email == req.Email);
-                var checkPhone = db.tb_Staff.FirstOrDefault(row => row.PhoneNumber == req.SDT);
-                if (checkMail == null)
                 {
-                    if (checkPhone == null)
+                    var checkMail = db.tb_Staff.FirstOrDefault(row => row.Email == req.Email);
+                    var checkPhone = db.tb_Staff.FirstOrDefault(row => row.PhoneNumber == req.SDT);
+                    if (checkMail == null)
                     {
-                        tb_Staff nvSession = (tb_Staff)Session["user"];
-                        var item = db.tb_Staff.SingleOrDefault(x => x.Code == nvSession.Code);
-                        if (item != null)
+                        if (checkPhone == null)
                         {
-                            if (req.FunctionId != null)
-                        {
-                            string pass = "123";
-                                if (newImage != null && newImage.ContentLength > 0)
+                            tb_Staff nvSession = (tb_Staff)Session["user"];
+                            var item = db.tb_Staff.SingleOrDefault(x => x.Code == nvSession.Code);
+                            if (item != null)
+                            {
+                                if (req.FunctionId != null)
                                 {
-                                    try 
+                                    string pass = "123";
+                                    if (newImage != null && newImage.ContentLength > 0)
                                     {
-
-                                        byte[] imageData = null;
-                                        using (var binaryReader = new BinaryReader(newImage.InputStream))
+                                        try
                                         {
-                                            imageData = binaryReader.ReadBytes(newImage.ContentLength);
+
+                                            byte[] imageData = null;
+                                            using (var binaryReader = new BinaryReader(newImage.InputStream))
+                                            {
+                                                imageData = binaryReader.ReadBytes(newImage.ContentLength);
+                                            }
+
+                                            model.Image = imageData;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            code = new { Success = false, Code = -5, Url = "" };
+                                            return Json(code);
                                         }
 
-                                        model.Image = imageData;
-                                    }
-                                    catch (Exception ex) 
-                                    {
-                                        code = new { Success = false, Code = -5, Url = "" };
-                                        return Json(code);
+
                                     }
 
-                                    
+                                    Random ran = new Random();
+
+                                    string Code = "2" + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9);
+                                    model.Code = Code.Trim();
+                                    model.PhoneNumber = req.SDT;
+                                    model.NameStaff = req.Name.Trim();
+                                    model.Password = MaHoaPass(pass);
+
+                                    model.CitizenIdentificationCard = req.CCCD;
+                                    model.Email = req.Email;
+                                    model.Birthday = req.Birthday;
+                                    model.Location = req.DiaChi;
+                                    model.Wage = req.Luong;
+                                    model.FunctionId = req.FunctionId;
+                                    model.StoreId = req.StoreId;
+                                    model.Clock = false;
+                                    model.CreatedBy = nvSession.NameStaff;
+                                    model.CreatedDate = DateTime.Now;
+                                    model.DayofWork = DateTime.Now;
+                                    model.ModifiedDate = DateTime.Now;
+                                    model.Sex = req.GioiTinh;
+
+                                    //if (req.GioiTinh == "Nam")
+                                    //{
+                                    //    model.Sex = "Nam";
+                                    //}
+                                    //else
+                                    //{
+                                    //    model.Sex = "Nữ";
+                                    //}
+
+                                    db.tb_Staff.Add(model);
+                                    db.SaveChanges();
+
+
+                                    int NhaVienIdNew = model.StaffId;
+                                    modelPhanQuyen.StaffId = NhaVienIdNew;
+                                    modelPhanQuyen.FunctionId = (int)req.FunctionId;
+
+                                    db.tb_Role.Add(modelPhanQuyen);
+                                    db.SaveChanges();
+
+
+
+                                    //Đăng ký nhân viên thành công
+                                    code = new { Success = true, Code = 1, Url = "" };
+
+
+
                                 }
-
-                                Random ran = new Random();
-
-                            string Code = "2" + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9);
-                            model.Code = Code.Trim();
-                            model.PhoneNumber = req.SDT;
-                            model.NameStaff = req.Name.Trim();
-                            model.Password = MaHoaPass(pass);
-
-                            model.CitizenIdentificationCard = req.CCCD;
-                            model.Email = req.Email;
-                            model.Birthday = req.Birthday;
-                            model.Location = req.DiaChi;
-                            model.Wage = req.Luong;
-                            model.FunctionId = req.FunctionId;
-model.StoreId = req.StoreId;        
-                            model.Clock = false;
-
-                            model.CreatedDate = DateTime.Now;
-                            model.DayofWork = DateTime.Now;
-                            model.ModifiedDate = DateTime.Now;
-                            model.Sex = req.GioiTinh;
-
-                            //if (req.GioiTinh == "Nam")
-                            //{
-                            //    model.Sex = "Nam";
-                            //}
-                            //else
-                            //{
-                            //    model.Sex = "Nữ";
-                            //}
-
-                            db.tb_Staff.Add(model);
-                            db.SaveChanges();
-
-
-                            int NhaVienIdNew = model.StaffId;
-                            modelPhanQuyen.StaffId = NhaVienIdNew;
-                            modelPhanQuyen.FunctionId = (int)req.FunctionId;
-
-                            db.tb_Role.Add(modelPhanQuyen);
-                            db.SaveChanges();
-
-
-
-                            //Đăng ký nhân viên thành công
-                            code = new { Success = true, Code = 1, Url = "" };
-
-
-
+                                else
+                                {
+                                    //"Không thấy chức năng cho nhân viên mới";
+                                    code = new { Success = false, Code = -4, Url = "" };
+                                }
+                            }
+                            else
+                            { ViewBag.error = "Không thấy Session nhân viên hiện tại"; }
                         }
                         else
                         {
-                            //"Không thấy chức năng cho nhân viên mới";
-                            code = new { Success = false, Code = -4, Url = "" };
+                            // "Số điện thoại đã tồn tại";
+                            code = new { Success = false, Code = -3, Url = "" };
                         }
-                        }
-                        else
-                        { ViewBag.error = "Không thấy Session nhân viên hiện tại"; }
+
                     }
                     else
                     {
-                        // "Số điện thoại đã tồn tại";
-                        code = new { Success = false, Code = -3, Url = "" };
+                        //"Email đã tồn tại";
+                        code = new { Success = false, Code = -2, Url = "" };
                     }
-
                 }
+
                 else
                 {
-                    //"Email đã tồn tại";
-                    code = new { Success = false, Code = -2, Url = "" };
+                    //"Vui lòng nhậ đầy đủ thông tin nhân viên ";
+                    code = new { Success = false, Code = -5, Url = "" };
                 }
             }
-
-            else 
+            catch (Exception ex) 
             {
-                //"Vui lòng nhậ đầy đủ thông tin nhân viên ";
-                code = new { Success = false, Code = -5, Url = "" };
+                code = new { Success = false, Code = -100, Url = "" };
             }
+           
 
           
 
@@ -216,7 +283,190 @@ model.StoreId = req.StoreId;
 
 
 
+        public ActionResult Detail(int id) 
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
+
+                var functionTitle = db.tb_Function
+                                            .Where(func => func.FunctionId == checkStaff.FunctionId)
+                                            .Select(func => func.TitLe)
+                                            .FirstOrDefault();
+                if (functionTitle != null)
+                {
+                    if (functionTitle.Contains("admin") || functionTitle.Contains("Quản Lý"))
+                    {
+                        if (id > 0)
+                        {
+                            var item = db.tb_Staff.Find(id);
+                            ViewBag.ChucNang = new SelectList(db.tb_Function.ToList(), "FunctionId", "TitLe");
+                            ViewBag.Store = new SelectList(db.tb_Store.ToList(), "StoreId", "Location");
+                            return View(item);
+                        }
+
+                    }
+                    else
+                    {
+                        return RedirectToAction("NonRole", "HomePage");
+                    }
+                }
+                return RedirectToAction("DangNhap", "Account");
+
+            }
+
+
+         
+         
+        }
+
+        public ActionResult Edit(int id)
+        {
+
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
+
+                var functionTitle = db.tb_Function
+                                            .Where(func => func.FunctionId == checkStaff.FunctionId)
+                                            .Select(func => func.TitLe)
+                                            .FirstOrDefault();
+                if (functionTitle != null)
+                {
+                    if (functionTitle.Contains("admin") || functionTitle.Contains("Quản Lý"))
+                    {
+                        if (id > 0)
+                        {
+                            if (id > 0)
+                            {
+                                var item = db.tb_Staff.Find(id);
+                                var viewModel = new EditStaffViewModel
+                                {
+                                    Id = item.StaffId,
+                                    Code = item.Code,
+                                    PhoneNumber = item.PhoneNumber,
+                                    NameStaff = item.NameStaff,
+                                    CitizenIdentificationCard = item.CitizenIdentificationCard,
+                                    Email = item.Email,
+                                    Password = item.Password,
+                                    Birthday = item.Birthday,
+                                    Location = item.Location,
+                                    DayofWork = item.DayofWork,
+                                    Wage = item.Wage,
+                                    Sex = item.Sex,
+                                    CreatedBy = item.CreatedBy,
+                                    CreatedDate = item.CreatedDate,
+                                    FunctionId = (int)item.FunctionId,
+                                    StoreId = (int)item.StoreId,
+                                    Clock = (bool)item.Clock,
+                                    Image = item.Image,
+
+                                };
+                                ViewBag.ChucNang = new SelectList(db.tb_Function.ToList(), "FunctionId", "TitLe");
+                                ViewBag.Store = new SelectList(db.tb_Store.ToList(), "StoreId", "Location");
+                                return View(viewModel);
+                            }
+                            return View();
+                        }
+
+                    }
+                    else
+                    {
+                        return RedirectToAction("NonRole", "HomePage");
+                    }
+                }
+                return RedirectToAction("DangNhap", "Account");
+
+            }
+
+          
+        }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(EditStaffViewModel item, HttpPostedFileBase newImage) {
+            using (var dbContextTransaction = db.Database.BeginTransaction()) 
+            {
+                try 
+                {
+                    if (ModelState.IsValid) 
+                    {
+                        
+                        var staff = db.tb_Staff.Find(item.Id);
+                        if (staff != null)
+                        {
+                            staff.StaffId = item.Id;
+                            staff.Code = item.Code;
+                            staff.PhoneNumber = item.PhoneNumber;
+                            staff.NameStaff = item.NameStaff;
+                            staff.CitizenIdentificationCard = item.CitizenIdentificationCard;
+                            staff.Email = item.Email;
+                            staff.Password = item.Password;
+                            staff.Birthday = (DateTime)item.Birthday;
+                            staff.Location = item.Location;
+                            staff.DayofWork = item.DayofWork;
+                            staff.Wage = item.Wage;
+                            staff.Sex = item.Sex;
+                            staff.CreatedBy = item.CreatedBy;
+                            staff.CreatedDate = item.CreatedDate;
+                            staff.FunctionId = (int)item.FunctionId;
+                            staff.StoreId = (int)item.StoreId;
+
+                            staff.Clock = (bool)item.Clock;
+
+                            if (newImage != null)
+                            {
+                                byte[] imageData = null;
+                                using (var binaryReader = new BinaryReader(newImage.InputStream))
+                                {
+                                    imageData = binaryReader.ReadBytes(newImage.ContentLength);
+                                }
+
+                                staff.Image = imageData;
+                            }
+                            else
+                            {
+                                staff.Image = item.Image;
+                            }
+                            
+                            db.Entry(staff).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
+
+                            var role = db.tb_Role.FirstOrDefault(x => x.StaffId == item.Id);
+                            role.FunctionId = (int)item.FunctionId;
+                            db.Entry(role).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
+                            dbContextTransaction.Commit();
+                            return Json(new { success = true, code = 1 });
+                        }
+                        else 
+                        {
+                            return Json(new { success = false, code = -2 });
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { success = false, code = -3 });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+                    return Json(new { success = false, code = -100 });
+                } 
+            }
+        }
+
         public ActionResult IsLock(int? id)
         {
 
@@ -232,23 +482,25 @@ model.StoreId = req.StoreId;
             return Json(new { success = false });
         }
 
+        [HttpPost]
+        public ActionResult KhoiPhucMatKhau(int? id) 
+        {
+            var item = db.tb_Staff.SingleOrDefault(x => x.StaffId == id);
+            if (item != null)
+            {
+                string pass = "123";
+                item.Password = MaHoaPass(pass);
+               
+                db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                return Json(new { success = true, code=1});
+            }
+
+            return Json(new { success = false });
+        }
 
 
-        //[HttpPost]
-        //public ActionResult IsLock(int id)
-        //{
 
-        //    var item = db.tb_Staff.SingleOrDefault(x => x.StaffId==id);
-        //    if (item != null)
-        //    {
-        //        item.Clock = !item.Clock;
-        //        db.Entry(item).State = System.Data.Entity.EntityState.Modified;
-        //        db.SaveChanges();
-        //        return Json(new { success = true, isAcive = item.Clock });
-        //    }
-
-        //    return Json(new { success = false });
-        //}
 
 
         public static string MaHoaPass(string str)
