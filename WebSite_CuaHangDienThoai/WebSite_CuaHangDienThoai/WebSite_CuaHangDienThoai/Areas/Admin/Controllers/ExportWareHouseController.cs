@@ -18,16 +18,25 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
         public ActionResult Partial_ThongTinDonHang(string code)
         {
-            var checkOder = db.tb_Order.FirstOrDefault(x => x.Code.Contains(code) && x.Confirm == true);
+            var checkOder = db.tb_Order.FirstOrDefault(x => x.Code.Contains(code) );
 
-            if (checkOder != null)
-            {
-                var checkOrderDetail = db.tb_OrderDetail.Where(x => x.OrderId == checkOder.OrderId).Count();
-                ViewBag.OrderId = checkOder.OrderId;
-                ViewBag.Count = checkOrderDetail;
-                return PartialView(checkOder);
+            try {
+                if (checkOder != null)
+                {
+                    var checkOrderDetail = db.tb_OrderDetail.Where(x => x.OrderId == checkOder.OrderId).Count();
+                    var ExportWareHouse = db.tb_ExportWareHouse.FirstOrDefault(x => x.OrderId == checkOder.OrderId);
+                    ViewBag.OrderId = checkOder.OrderId;
+                    ViewBag.Count = checkOrderDetail;
+                    if (ExportWareHouse != null)
+                    {
+                        ViewBag.ExportWareHouse = ExportWareHouse.CreatedDate;
+                    }
+                    return PartialView(checkOder);
+                }
+                return PartialView();
             }
-            return PartialView();
+            catch(Exception ex) { return PartialView(); }      
+            
         }
 
 
@@ -41,76 +50,82 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
         public JsonResult Partial_ExportWareHouse(int Orderid)
         {
-            var code = new { Success = false, Code = -1, Url = "" };
-            try
+            using (var dbContextTransaction = db.Database.BeginTransaction())
             {
-                var checkOrder = db.tb_Order.Find(Orderid);
-                if (checkOrder != null)
+
+                var code = new { Success = false, Code = -1, Url = "" };
+                try
                 {
-                    var checkCancelOrder = db.tb_Order.FirstOrDefault(x => x.OrderId == checkOrder.OrderId && x.typeOrder == false);
-                    if (checkCancelOrder != null)
+                    var checkOrder = db.tb_Order.Find(Orderid);
+                    if (checkOrder != null)
                     {
-                        var checkConfim = db.tb_Order.FirstOrDefault(x => x.OrderId == checkCancelOrder.OrderId && x.Confirm == true);
-                        if (checkConfim != null)
+                        var checkCancelOrder = db.tb_Order.FirstOrDefault(x => x.OrderId == checkOrder.OrderId && x.typeOrder == false);
+                        if (checkCancelOrder != null)
                         {
-                            var OrderReturn = db.tb_Order.FirstOrDefault(x => x.OrderId == checkConfim.OrderId && x.typeReturn == false);
-                            if (OrderReturn != null)
+                            var checkConfim = db.tb_Order.FirstOrDefault(x => x.OrderId == checkCancelOrder.OrderId && x.Confirm == true);
+                            if (checkConfim != null)
                             {
-                                var checkTBOut = db.tb_ExportWareHouse.FirstOrDefault(x => x.OrderId == OrderReturn.OrderId);
-                                if (checkTBOut == null)
+                                var OrderReturn = db.tb_Order.FirstOrDefault(x => x.OrderId == checkConfim.OrderId && x.typeReturn == false);
+                                if (OrderReturn != null)
                                 {
-                                    tb_Staff nvSession = (tb_Staff)Session["user"];
-                                    var staff = db.tb_Staff.SingleOrDefault(row => row.StaffId == nvSession.StaffId);
-                                    var checkWareHouse = db.tb_Warehouse.FirstOrDefault(r => r.StoreId == staff.tb_Store.StoreId);
-                                    tb_ExportWareHouse model = new tb_ExportWareHouse();
-                                    model.CreatedDate = DateTime.Now;
-                                    model.StaffId = staff.StaffId;
-                                    model.OrderId = checkOrder.OrderId;
-                                    model.WarehouseId = checkWareHouse.WarehouseId;
-                                    db.tb_ExportWareHouse.Add(model);
-                                    db.SaveChanges();
+                                    var checkTBOut = db.tb_ExportWareHouse.FirstOrDefault(x => x.OrderId == OrderReturn.OrderId);
+                                    if (checkTBOut == null)
+                                    {
+                                        tb_Staff nvSession = (tb_Staff)Session["user"];
+                                        var staff = db.tb_Staff.SingleOrDefault(row => row.StaffId == nvSession.StaffId);
+                                        var checkWareHouse = db.tb_Warehouse.FirstOrDefault(r => r.StoreId == staff.tb_Store.StoreId);
+                                        tb_ExportWareHouse model = new tb_ExportWareHouse();
+                                        model.CreatedDate = DateTime.Now;
+                                        model.StaffId = staff.StaffId;
+                                        model.OrderId = checkOrder.OrderId;
+                                        model.WarehouseId = checkWareHouse.WarehouseId;
+                                        db.tb_ExportWareHouse.Add(model);
+                                        db.SaveChanges();
 
 
-                                    code = new { Success = true, Code = 1, Url = "" };
+                                        return Json(new { success = true, code = 1 });
+                                    }
+                                    else
+                                    {
+                                        return Json(new { Success = false, Code = -6 });
+                                       
+                                    }
                                 }
                                 else
                                 {
-                                    code = new { Success = false, Code = -6, Url = "" };
+                                    return Json(new { Success = false, Code = -5 });
                                 }
+
+
                             }
                             else
                             {
-                                code = new { Success = false, Code = -5, Url = "" };
+                                return Json(new { Success = false, Code = -4 });
                             }
-
 
                         }
                         else
                         {
-                            code = new { Success = false, Code = -4, Url = "" };
+                            //Don Hang da bi huy
+                           
+                            return Json(new { Success = false, Code = -3 });
                         }
-
                     }
                     else
                     {
-                        //Don Hang da bi huy
-                        code = new { Success = false, Code = -3, Url = "" };
+                        //Khong thay ma Order
+                            return Json(new { Success = false, Code = -2 });
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    //Khong thay ma Order
-                    code = new { Success = false, Code = -2, Url = "" };
+                    dbContextTransaction.Rollback();
+                    return Json(new { Success = false, Code = -100 });
+
                 }
-            }
-            catch (Exception ex)
-            {
-                code = new { Success = false, Code = -100, Url = "" };
-                return Json(code);
 
             }
-
-            return Json(code);
+            
 
         }
 

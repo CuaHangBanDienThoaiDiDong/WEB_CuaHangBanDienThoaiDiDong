@@ -76,7 +76,7 @@
                         @if (Model != null && Model.Any())
                         {
                             var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
-                            foreach(var item in Model)
+                            foreach (var item in Model)
                             {
 
 
@@ -95,56 +95,56 @@
                                     string base64String = Convert.ToBase64String(strImg);
                                     imgSrc = $"data:image;base64,{base64String}";
                                 }
-                                    <tr class="text-center" id="trow_@item.ProductsId">
-                                        <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
-                                        <td>@i</td>
-                                        <td style="width:20%"><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" style="width:50%" /></td>
-                                        <td> <a href="/admin/Products/Detail/@item.ProductsId"> @item.Title</a>  </td>
-                                        <td>@item.tb_Products.Title</td>
-                                        <td>@item.tb_Products.tb_ProductCategory.Title</td>
-                                        <td>
-                                            @item.tb_Products.tb_ProductCompany.Title
-                                          
-                                        </td>
-                                        <td>
-                                          
-                                                <span>
-                                                  
-                                                    @if (item.Capacity >= 999)
-                                                    {
-                                                        <span>1Tb</span>
-                                                    }
-                                                    else if (item.Capacity == 2999)
-                                                    {
-                                                        <span>2Tb</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span>@item.Capacity</span>
-                                                    }
+                                <tr class="text-center" id="trow_@item.ProductsId">
+                                    <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
+                                    <td>@i</td>
+                                    <td style="width:20%"><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" style="width:50%" /></td>
+                                    <td> <a href="/admin/Products/Detail/@item.ProductsId"> @item.Title</a>  </td>
+                                    <td>@item.tb_Products.Title</td>
+                                    <td>@item.tb_Products.tb_ProductCategory.Title</td>
+                                    <td>
+                                        @item.tb_Products.tb_ProductCompany.Title
 
-                                                </span>
-                                                <p>Thêm </p>
+                                    </td>
+                                    <td>
 
-                                           
+                                        <span>
 
-                                        </td>
-                                        <td><p>@item.Color</p></td>
-                                      
-                                        <td>
-                                           
+                                            @if (item.Capacity >= 999)
+                                            {
+                                                <span>1Tb</span>
+                                            }
+                                            else if (item.Capacity == 2999)
+                                            {
+                                                <span>2Tb</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@item.Capacity</span>
+                                            }
 
-                                            <a href="/admin/ProductDetail/Detail/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Xem</a>
-                                            <a href="/admin/ProductDetail/Edit/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Sửa</a>
-                                        </td>
-                                    </tr>
+                                        </span>
+                                        <p>Thêm </p>
 
-                              
+
+
+                                    </td>
+                                    <td><p>@item.Color</p></td>
+
+                                    <td>
+
+
+                                        <a href="/admin/ProductDetail/Detail/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Xem</a>
+                                        <a href="/admin/ProductDetail/Edit/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Sửa</a>
+                                    </td>
+                                </tr>
+
+
 
                                 i++;
                             }
                         }
-                       
+
                     </tbody>
 
                 }
@@ -159,12 +159,41 @@
 
             </table>
 
+            <hr />
             <div class="row">
-                    <div class="col-6"></div>
-                    <div class="col-6" style="text-align:right;">
-                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
-                    </div>
+                <div class="col-12 d-flex justify-content-center">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm">
+                            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="1" aria-label="First">
+                                    <span aria-hidden="true">Đầu</span>
+                                </a>
+                            </li>
+                            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="@(Model.PageNumber - 1)" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            @for (int i = Model.PageNumber; i <= Model.PageNumber + 4 && i <= Model.PageCount; i++)
+                            {
+                                <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                                    <a class="page-link" href="#" data-page="@i">@i</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="@(Model.PageNumber + 1)" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="@Model.PageCount" aria-label="Last">
+                                    <span aria-hidden="true">Cuối</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
+            </div>
 
         </div>
         <!-- /.card-body -->

@@ -3366,6 +3366,7 @@
     <Content Include="Content\Css\Client\Profile.css" />
     <Content Include="Content\Css\Client\P_CheckOut.css" />
     <Content Include="Content\Css\Client\RegisterClient.css" />
+    <Content Include="Content\Css\Client\TrangThaiDonHang.css" />
     <Content Include="Content\icon\icofont\css\icofont.css" />
     <Content Include="Content\icon\icofont\fonts\icofont.svg" />
     <Content Include="Content\icon\themify-icons\fonts\themify.svg" />
@@ -3851,13 +3852,6 @@
     <Content Include="Areas\Admin\Views\Statistical\StatisticalByMon.cshtml" />
     <Content Include="Areas\Admin\Views\Statistical\StatisticalByYear.cshtml" />
     <Content Include="Areas\Admin\Views\Statistical\Partial_StatisticalByYear.cshtml" />
-    <Content Include="Areas\WareHouse\Views\web.config" />
-    <Content Include="Areas\WareHouse\Views\Shared\_LayoutWareHouse.cshtml" />
-    <Content Include="Areas\WareHouse\Views\ExportWareHouse\Index.cshtml" />
-    <Content Include="Areas\WareHouse\Views\Shared\_MenuSideBar.cshtml" />
-    <Content Include="Areas\WareHouse\Views\ExportWareHouse\Partial_ThongTinDonHang.cshtml" />
-    <Content Include="Areas\WareHouse\Views\ExportWareHouse\Partial_ThongTinXuat.cshtml" />
-    <Content Include="Areas\WareHouse\Views\ExportWareHouse\Partial_OrderDetail.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_LayoutWareHouse.cshtml" />
     <Content Include="Areas\Admin\Views\ExportWareHouse\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ExportWareHouse\Partial_ThongTinDonHang.cshtml" />
@@ -4150,8 +4144,6 @@
     <Compile Include="Areas\Admin\Controllers\WareHouseImportController.cs" />
     <Compile Include="Areas\Seller\Controllers\SellerController.cs" />
     <Compile Include="Areas\Seller\SellerAreaRegistration.cs" />
-    <Compile Include="Areas\WareHouse\Controllers\ExportWareHouseController.cs" />
-    <Compile Include="Areas\WareHouse\WareHouseAreaRegistration.cs" />
     <Compile Include="Common\Common.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />
@@ -4423,7 +4415,6 @@
     <Folder Include="Areas\Admin\Views\ProductDetailImage\" />
     <Folder Include="Areas\Admin\Views\Seller\" />
     <Folder Include="Areas\Seller\Data\" />
-    <Folder Include="Areas\WareHouse\Data\" />
     <Folder Include="Models\NewFolder1\" />
     <Folder Include="Uploads\flash\" />
     <Folder Include="Uploads\images\Products\DongHoThongMinh\" />

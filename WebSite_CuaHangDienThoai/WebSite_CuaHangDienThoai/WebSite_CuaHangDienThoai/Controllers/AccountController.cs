@@ -41,41 +41,50 @@ namespace WebSite_CuaHangDienThoai.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(string msnv, string PhoneNumber, string password)
         {
-            if (ModelState.IsValid)
+            try 
             {
-                var f_password = MaHoaPass(password);
-                var data = db.tb_Customer.Where(s => s.PhoneNumber.Equals(PhoneNumber) && s.Password.Equals(f_password)).ToList();
-                if (data.Count > 0 /*&& dataNhanVien.Count == 0*/)
+                if (ModelState.IsValid)
                 {
-                    var checkClock = db.tb_Customer.FirstOrDefault(s => s.PhoneNumber == PhoneNumber && s.Clock == false);
-                    if (checkClock != null)
+                    var f_password = MaHoaPass(password);
+                    var data = db.tb_Customer.Where(s => s.PhoneNumber.Equals(PhoneNumber) && s.Password.Equals(f_password)).ToList();
+                    if (data.Count > 0 /*&& dataNhanVien.Count == 0*/)
                     {
-                        Session["Client"] = data;
-                        Session["CustomerName"] = checkClock.CustomerName;
-                        Session["CustomerId"] = checkClock.CustomerId;
-                        Session["Email"] = checkClock.Email;
-                        Session["PhoneNumber"] = checkClock.PhoneNumber;
-                      
-                        string base64String = Convert.ToBase64String(checkClock.Image);
-                        Session["img"] = base64String;
-                        return RedirectToAction("Index", "Home");
+                        var checkClock = db.tb_Customer.FirstOrDefault(s => s.PhoneNumber == PhoneNumber && s.Clock == false);
+                        if (checkClock != null)
+                        {
+                            Session["Client"] = data;
+                            Session["CustomerName"] = checkClock.CustomerName;
+                            Session["CustomerId"] = checkClock.CustomerId;
+                            Session["Email"] = checkClock.Email;
+                            Session["PhoneNumber"] = checkClock.PhoneNumber;
+                            if (checkClock.Image != null)
+                            {
+                                string base64String = Convert.ToBase64String(checkClock.Image);
+                                Session["img"] = base64String;
+                            }
+
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Tài khoản đã bị khóa ");
+                        }
+
                     }
+
                     else
                     {
-                        ModelState.AddModelError("", "Tài khoản đã bị khóa ");
+                        ModelState.AddModelError("", "Số điện thoại hoặc mật khẩu không đúng");
+
+                        return View();
+                        //return RedirectToAction("Register", "Account");
                     }
-
-                }
-
-                else
-                {
-                    ModelState.AddModelError("", "Số điện thoại hoặc mật khẩu không đúng");
-
-                    return View();
-                    //return RedirectToAction("Register", "Account");
                 }
             }
-
+            catch(Exception ex) 
+            {
+                return RedirectToAction("NotFound", "Error");
+            }   
             return View();
         }
         

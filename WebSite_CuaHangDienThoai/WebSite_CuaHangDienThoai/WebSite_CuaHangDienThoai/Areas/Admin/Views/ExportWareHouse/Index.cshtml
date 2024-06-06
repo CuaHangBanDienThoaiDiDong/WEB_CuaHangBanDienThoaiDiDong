@@ -25,11 +25,11 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Quản lý dòng sản phẩm</h1>
+                <h1>Quản lý kho xuất</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
                     <li class="breadcrumb-item active">@ViewBag.Title</li>
                 </ol>
             </div>
@@ -50,8 +50,25 @@
                     <div class="form-group col-md-12" style="display: flex; align-items: center;">
 
                         <label for="phieuXuat" style="margin-right: 10px;">Mã đơn hàng:</label>
-                        <input type="text" class="form-control" id="maDonHang" placeholder="Mã đơn hàng ">
-                        <button>Tìm</button>
+                        <div class="input-group border">
+                            <input type="text" class="form-control" id="maDonHang"style=" border: none; box-shadow: none;" placeholder="Mã đơn hàng">
+                            <a href="#" class="btn btn-outline-secondary text-danger" id="clearInputBtn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"  fill="currentColor" class="bi bi-bookmark-x" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.146 5.146a.5.5 0 0 1 .708 0L8 6.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 7l1.147 1.146a.5.5 0 0 1-.708.708L8 7.707 6.854 8.854a.5.5 0 1 1-.708-.708L7.293 7 6.146 5.854a.5.5 0 0 1 0-.708" />
+                                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z" />
+                                </svg>
+                            </a>
+                        </div>
+
+
+
+                        @*<input type="text" class="form-control" id="maDonHang" placeholder="Mã đơn hàng ">
+        <a href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-x" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M6.146 5.146a.5.5 0 0 1 .708 0L8 6.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 7l1.147 1.146a.5.5 0 0 1-.708.708L8 7.707 6.854 8.854a.5.5 0 1 1-.708-.708L7.293 7 6.146 5.854a.5.5 0 0 1 0-.708" />
+                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z" />
+            </svg>
+        </a>*@
                     </div>
                 </div>
                 <div class="col-6">
@@ -89,21 +106,23 @@
 @section scripts{
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script>
+
+       
         $(document).ready(function () {
             $('#maDonHang').on('input', function () {
                 var code = $(this).val();
                 if (code.trim() !== '') {
 
                     $.ajax({
-                        url: '/WareHouse/ExportWareHouse/Partial_ThongTinDonHang', // Thay TênController bằng tên thực tế của controller
+                        url: '/Admin/ExportWareHouse/Partial_ThongTinDonHang',
                         type: 'GET',
                         data: { code: code },
                         success: function (data) {
-                            // Hiển thị kết quả từ controller trong một phần tử HTML
+                          
                             $('.loadOrder').html(data);
                         },
                         error: function (xhr, status, error) {
-                            // Xử lý lỗi nếu có
+                          
                             console.error(xhr.responseText);
                         }
                     });
@@ -114,28 +133,29 @@
                 }
             });
 
-
+            document.getElementById('clearInputBtn').addEventListener('click', function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ a
+                document.getElementById('maDonHang').value = ''; 
+                $('.loadOrder').html('');
+            });
 
 
 
             $('.btnExportWareHouse').click(function () {
                 var orderId = $(this).data('id');
                 $.ajax({
-                    url: '/WareHouse/ExportWareHouse/Partial_ExportWareHouse', // Thay ControllerName bằng tên controller thực tế của bạn
+                    url: '/Admin/ExportWareHouse/Partial_ExportWareHouse', 
                     type: 'POST',
                     dataType: 'json',
                     data: { Orderid: orderId },
                     success: function (response) {
                         if (response.Success) {
-                            // Xử lý thành công, ví dụ: chuyển hướng trang
                             window.location.href = response.Url;
                         } else {
-                            // Xử lý lỗi, bạn có thể hiển thị thông báo hoặc thực hiện hành động khác
                             alert('Đã xảy ra lỗi: ' + response.Code);
                         }
                     },
                     error: function (xhr, status, error) {
-                        // Xử lý lỗi AJAX, nếu có
                         console.error(xhr.responseText);
                     }
                 });

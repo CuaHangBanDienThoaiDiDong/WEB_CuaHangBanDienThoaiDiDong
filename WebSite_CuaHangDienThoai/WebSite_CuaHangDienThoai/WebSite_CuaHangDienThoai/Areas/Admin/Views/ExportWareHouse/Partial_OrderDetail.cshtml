@@ -5,7 +5,14 @@
         Danh sách sản phẩm
     </h3>
     <br />
-    <span><label>Số lượng sản phẩm :</label><span class="text-danger">@ViewBag.Count </span></span>
+    <div class="row">
+        <div style="display: flex; align-items: center;">
+            <p style="margin-right: 10px; margin-bottom: 0;"><label style="margin-bottom: 0;">Số lượng sản phẩm:</label></p>
+            <p style="margin-bottom: 0;" class="text-danger">@ViewBag.Count</p>
+        </div>
+
+    </div>
+
     <div class="card-tools">
 
     </div>
@@ -49,7 +56,7 @@
                         <td class="text-center">@Capacity / @item.tb_ProductDetail.Color</td>
                         @*<td class="text-center">@item.tb_ProductDetail.Co</td>*@
 
-                        <td class="text-center">@item.Quantity</td>
+                        <td class="text-center text-danger">@item.Quantity</td>
 
 
                     </tr>

@@ -7,7 +7,7 @@
     <div style="overflow-x:auto;">
         <table class="table table-hover">
             <thead>
-                <tr>
+                <tr class="text-center">
                     <th>STT</th>
                     <th>Hình ảnh</th>
                     <th>Tên sản phẩm</th>
@@ -50,9 +50,7 @@
                             <td class="text-center">@item.tb_ProductDetail.Color</td>
                             <td>@item.tb_ProductDetail.tb_Products.tb_ProductCategory.Title</td>
                             <td>
-                                <form class="form-inline">
-                                    <input type="number" class="form-control Quantity" style="width:40%" id="@item.ProductDetailId" value="@item.QuanTity" />
-                                </form>
+                                @item.QuanTity
                             </td>
                             <td>@Capacity</td>
                             

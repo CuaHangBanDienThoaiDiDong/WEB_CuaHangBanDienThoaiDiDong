@@ -383,95 +383,101 @@ namespace WebSite_CuaHangDienThoai.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CheckOut(OrderViewVNPay req, tb_Products model)
         {
-            var code = new { Success = false, Code = -1, Url = "" };
-            try
+
+
+            using (var dbContextTransaction = db.Database.BeginTransaction())
             {
-                
-
-                if (ModelState.IsValid)
+                var code = new { Success = false, Code = -1, Url = "" };
+                try
                 {
-                    if (Session["CustomerId"] != null)
+
+
+                    if (ModelState.IsValid)
                     {
-                        int idKhach = (int)Session["CustomerId"];
-                        var inforKhachHang = db.tb_Customer.FirstOrDefault(x => x.CustomerId == idKhach);
-                        ShoppingCart cart = (ShoppingCart)Session["Cart"];
-
-                        if (cart != null)
+                        if (Session["CustomerId"] != null)
                         {
-                            var insufficientItems = ProcessCartItems(cart, idKhach);
-                            if (insufficientItems.Any())
+                            int idKhach = (int)Session["CustomerId"];
+                            var inforKhachHang = db.tb_Customer.FirstOrDefault(x => x.CustomerId == idKhach);
+                            ShoppingCart cart = (ShoppingCart)Session["Cart"];
+
+                            if (cart != null)
                             {
-                                //code = new { Success = false, Code = -2, Url = "" }; // Mã lỗi cho số lượng không đủ
-                                return Json(new { Success = false, Code = -2, InsufficientItems = insufficientItems });
+                                var insufficientItems = ProcessCartItems(cart, idKhach);
+                                if (insufficientItems.Any())
+                                {
+                                    //code = new { Success = false, Code = -2, Url = "" }; // Mã lỗi cho số lượng không đủ
+                                    return Json(new { Success = false, Code = -2, InsufficientItems = insufficientItems });
+                                }
+
+                                var order = CreateOrder(cart, inforKhachHang, req.TypePayment);
+
+                                if (order == null)
+                                {
+                                    code = new { Success = false, Code = -5, Url = "" }; // Mã lỗi chung
+                                    return Json(code);
+                                }
+
+                                db.tb_Order.Add(order);
+                                db.SaveChanges();
+                                int Oder = order.OrderId;
+
+                                //foreach (var item in cart.Items)
+                                //{
+                                //    if (item.PercentPriceReduction.HasValue && item.PercentPriceReduction.Value > 0)
+                                //    {
+
+                                //        var checkCode = db.tb_VoucherDetail.FirstOrDefault(x => x.Code == item.Code);
+                                //        var checkVoucher = db.tb_Voucher.FirstOrDefault(x => x.VoucherId == checkCode.VoucherId);
+                                //        int id = checkVoucher.VoucherId;
+
+                                //        UpdateVoucherDetail(item.Code, id, Oder, inforKhachHang);
+                                //    }
+                                //    else 
+                                //    {
+                                //        break;
+                                //    }
+
+                                //}
+
+
+
+                                SendConfirmationEmails(cart, order, inforKhachHang);
+                                cart.ClearCart();
+                                dbContextTransaction.Commit();
+                                code = new { Success = true, Code = 1, Url = "" };
+                                if (req.TypePayment == 2)
+                                {
+                                    var url = UrlPayment(req.TypePaymentVN, order.Code);
+                                    code = new { Success = true, Code = req.TypePayment, Url = url };
+                                }
                             }
-
-                            var order = CreateOrder(cart, inforKhachHang, req.TypePayment);
-
-                            if (order == null)
+                            else
                             {
-                                code = new { Success = false, Code = -5, Url = "" }; // Mã lỗi chung
-                                return Json(code);
-                            }
-
-                            db.tb_Order.Add(order);
-                            db.SaveChanges();
-                            int Oder = order.OrderId;
-
-                            //foreach (var item in cart.Items)
-                            //{
-                            //    if (item.PercentPriceReduction.HasValue && item.PercentPriceReduction.Value > 0)
-                            //    {
-
-                            //        var checkCode = db.tb_VoucherDetail.FirstOrDefault(x => x.Code == item.Code);
-                            //        var checkVoucher = db.tb_Voucher.FirstOrDefault(x => x.VoucherId == checkCode.VoucherId);
-                            //        int id = checkVoucher.VoucherId;
-
-                            //        UpdateVoucherDetail(item.Code, id, Oder, inforKhachHang);
-                            //    }
-                            //    else 
-                            //    {
-                            //        break;
-                            //    }
-                                
-                            //}
-
-
-
-                            SendConfirmationEmails(cart, order, inforKhachHang);
-                            cart.ClearCart();
-
-                            code = new { Success = true, Code = 1, Url = "" };
-                            if (req.TypePayment == 2)
-                            {
-                                var url = UrlPayment(req.TypePaymentVN, order.Code);
-                                code = new { Success = true, Code = req.TypePayment, Url = url };
+                                code = new { Success = false, Code = -6, Url = "" }; // Mã lỗi cho giỏ hàng null
                             }
                         }
                         else
                         {
-                            code = new { Success = false, Code = -6, Url = "" }; // Mã lỗi cho giỏ hàng null
+                            code = new { Success = false, Code = -3, Url = "" }; // Mã lỗi cho session khách hàng null
                         }
                     }
                     else
                     {
-                        code = new { Success = false, Code = -3, Url = "" }; // Mã lỗi cho session khách hàng null
+                        code = new { Success = false, Code = -4, Url = "" }; // Mã lỗi cho model state không hợp lệ
                     }
+
+                    return Json(code);
                 }
-                else
+                catch (Exception ex)
                 {
-                    code = new { Success = false, Code = -4, Url = "" }; // Mã lỗi cho model state không hợp lệ
+                    dbContextTransaction.Rollback();
+                    code = new { Success = false, Code = -10, Url = "" };
+                    return Json(code);
+
                 }
 
-                return Json(code);
             }
-            catch (Exception ex)
-            {
-                //Console.WriteLine(ex.Message);
-                //Console.WriteLine(ex.InnerException.Message); // Lấy chi tiết từ ngoại lệ bên trong
-                code = new { Success = false, Code = -10, Url = "" };
-                return Json(code);
-
-            }
+            
         }
 
         //private void UpdateVoucherDetail(string code, int orderId, tb_Customer customer)
