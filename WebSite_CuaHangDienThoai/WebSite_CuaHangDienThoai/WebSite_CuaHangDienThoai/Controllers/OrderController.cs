@@ -48,35 +48,74 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         public ActionResult Partail_Ordertail(int id)
         {
-            var orderDetail = db.tb_OrderDetail.Where(x => x.OrderId == id).OrderByDescending(x => x.OrderId).ToList();
-            if (orderDetail != null)
+            try
             {
-                ViewBag.Count = orderDetail.Count();
-                return PartialView(orderDetail);
+                if (Session["CustomerId"] != null)
+
+                {
+                    int idKhach = (int)Session["CustomerId"];
+
+                    var orderDetail = db.tb_OrderDetail.Where(x => x.OrderId == id).OrderByDescending(x => x.OrderId).ToList();
+                    if (orderDetail != null)
+                    {
+                        ViewBag.Count = orderDetail.Count();
+                        return PartialView(orderDetail);
+                    }
+                    return PartialView();
+
+                }
+                else
+                {
+                    return RedirectToAction("Login", "Account");
+                }
             }
-            return PartialView();
+            catch (Exception)
+            {
+                return RedirectToAction("Login", "Account");
+
+            }
+           
         }
 
         public ActionResult Partail_TrangThaiDonHang(int id)
         {
-            int idKhach = (int)Session["CustomerId"];
-            var cheCheckORderDetail = db.tb_Order.Find(id);
-            if (cheCheckORderDetail != null)
+            try 
             {
-                var checkOutOrder = db.tb_ExportWareHouse.FirstOrDefault(x => x.OrderId == cheCheckORderDetail.OrderId);
-                if (checkOutOrder != null)
+                if (Session["CustomerId"] != null)
+
                 {
-                    ViewBag.Out = "XuatKho";
-                    return PartialView(cheCheckORderDetail);
+                    int idKhach = (int)Session["CustomerId"];
+
+                    var cheCheckORderDetail = db.tb_Order.Find(id);
+                    if (cheCheckORderDetail != null)
+                    {
+                        var checkOutOrder = db.tb_ExportWareHouse.FirstOrDefault(x => x.OrderId == cheCheckORderDetail.OrderId);
+                        if (checkOutOrder != null)
+                        {
+                            ViewBag.Out = "XuatKho";
+                            return PartialView(cheCheckORderDetail);
+                        }
+                        else
+                        {
+                            return PartialView(cheCheckORderDetail);
+
+                        }
+
+                    }
+                    return PartialView();
+
                 }
                 else
                 {
-                    return PartialView(cheCheckORderDetail);
-
+                    return RedirectToAction("Login", "Account");
                 }
-
             }
-            return PartialView();
+            catch (Exception)
+            {
+                return RedirectToAction("Login", "Account");
+
+            }    
+           
         }
 
 
@@ -128,7 +167,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 {
                     ViewBag.OrderId = id;
                     ViewBag.Code=order.Code;
-                    return PartialView(order);    
+                    return PartialView();    
                 }
                 else
                 {
@@ -147,6 +186,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                  var order=db.tb_Order.Find(id);
                 if (order != null) 
                 {
+                    ViewBag.Code = code;
                     return View(order);
                 }
                 else
@@ -244,11 +284,19 @@ namespace WebSite_CuaHangDienThoai.Controllers
                             foreach (var productDetailId in order.tb_OrderDetail) 
                             {
                                 var warehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(x => x.ProductDetailId == productDetailId.ProductDetailId);
-                                if (warehouseDetail != null) 
+                                if (warehouseDetail != null)
                                 {
                                     warehouseDetail.QuanTity += productDetailId.Quantity;
-                                    order.Status = req.Status;
-                                  
+                                    if (!string.IsNullOrEmpty(req.CustomStatusHidden))
+                                    {
+                                        order.Status = req.CustomStatusHidden.Trim();
+                                    }
+                                    else
+                                    {
+                                        order.Status = req.Status.Trim();
+                                    }
+
+
                                     db.Entry(warehouseDetail).State = System.Data.Entity.EntityState.Modified;
                                     db.SaveChanges();
                                 } 

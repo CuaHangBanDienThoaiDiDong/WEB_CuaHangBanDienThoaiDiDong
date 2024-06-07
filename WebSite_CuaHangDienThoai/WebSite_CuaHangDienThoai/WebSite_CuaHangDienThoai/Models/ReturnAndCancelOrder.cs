@@ -9,6 +9,7 @@ namespace WebSite_CuaHangDienThoai.Models
     {
 
         public string Status { get; set; }
+        public string CustomStatusHidden { get; set; }
 
         //public int OrderId { get; set; }
 
