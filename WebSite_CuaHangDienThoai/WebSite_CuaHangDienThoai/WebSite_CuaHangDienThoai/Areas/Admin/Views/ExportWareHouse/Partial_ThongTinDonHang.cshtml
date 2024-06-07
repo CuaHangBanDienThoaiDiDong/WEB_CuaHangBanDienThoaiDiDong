@@ -75,8 +75,9 @@ else
     $(document).ready(function () {
         $('.btnExportWareHouse').click(function () {
             var orderId = $(this).data('id');
+            alert("thuan");
             $.ajax({
-                url: '/ExportWareHouse/Partial_ExportWareHouse', // Thay ControllerName bằng tên controller thực tế của bạn
+                url: '/Admin/ExportWareHouse/Partial_ExportWareHouse', 
                 type: 'POST',
                 dataType: 'json',
                 data: { Orderid: orderId },

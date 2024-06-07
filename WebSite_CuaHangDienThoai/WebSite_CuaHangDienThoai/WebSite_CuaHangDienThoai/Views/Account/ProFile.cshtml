@@ -19,37 +19,36 @@
             <img src="https://www.bootdey.com/image/1352x300/FF00FF/000000" alt="" class="img-fluid">
             <div class="row align-items-center">
                 <div class="col-lg-4 order-lg-1 order-2">
-                    <div class="d-flex align-items-center justify-content-around m-4">
-                        <div class="text-center" style="color:chocolate">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag-heart-fill" viewBox="0 0 16 16">
-                                <path d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132" />
-                            </svg>
-                            @{
-                                var order = Model.tb_Order.Where(x => x.CustomerId == Model.CustomerId).Count();
-                                <h4 class="mb-0 fw-semibold lh-1">
-                                    @order
-                                </h4>
-                            }
+                   
+                    @*<button id="showButton">Hiển thị thẻ</button>*@
 
-                            @*<button id="showButton">Hiển thị thẻ</button>*@
+                    <div id="popup" class=" hidden">
 
-                            <div id="popup" class=" hidden">
-
-                                <div class="card">
-                                    @Html.Action("EditImage", "Account", new { id = Model.CustomerId })
-                                </div>
-
-
-                            </div>
-                            @*<div id="popup" class="hidden">
-
-                @Html.Action("EditImage", "Account", new { id = Model.CustomerId })
-                <p>Đây là thẻ được hiển thị</p>
-                <button id="closeButton">Đóng</button>
-            </div>*@
-                            <p class="mb-0 fs-4">Đơn hàng</p>
+                        <div class="card">
+                            @Html.Action("EditImage", "Account", new { id = Model.CustomerId })
                         </div>
+
+
+                    </div>
+                    <div class="d-flex align-items-center justify-content-around m-4">
                         <div class="text-center" >
+                            <a href="/don-hang"style="color:chocolate">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag-heart-fill" viewBox="0 0 16 16">
+                                    <path d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132" />
+                                </svg>
+                                @{
+                                    var order = Model.tb_Order.Where(x => x.CustomerId == Model.CustomerId).Count();
+                                    <h4 class="mb-0 fw-semibold lh-1">
+                                        @order
+                                    </h4>
+                                }
+
+
+                                <p class="mb-0 fs-4">Đơn hàng</p>
+                            </a>
+
+                        </div>
+                        <div class="text-center">
                             <a href="/gio-hang" style="color:orange">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-cart-check-fill" viewBox="0 0 16 16">
                                     <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708" />
@@ -65,7 +64,7 @@
 
                                 <p class="mb-0 fs-4">Giỏ hàng</p>
                             </a>
-                          
+
                         </div>
                         <div class="text-center">
                             <i class="fa fa-check fs-6 d-block mb-2"></i>
@@ -233,7 +232,11 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
-                Tab 2 content
+                Đơn hàng
+                @{
+                    var OrderId = Model.tb_Order.FirstOrDefault(x => x.CustomerId == Model.CustomerId);
+                 }
+                @Html.Action("Partial_Order", "Order", new { id = OrderId.OrderId })
             </div>
             <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
                 Tab 3 content

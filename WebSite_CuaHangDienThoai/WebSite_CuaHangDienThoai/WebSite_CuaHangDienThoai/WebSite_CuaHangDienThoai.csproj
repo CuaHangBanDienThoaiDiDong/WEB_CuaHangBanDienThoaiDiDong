@@ -4202,6 +4202,7 @@
     <Compile Include="Models\Provinces.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ReturnAndCancelOrder.cs" />
     <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -4401,6 +4402,11 @@
     <Content Include="Views\Order\Partial_Order.cshtml" />
     <Content Include="Views\Order\Partail_Ordertail.cshtml" />
     <Content Include="Views\Order\Partail_TrangThaiDonHang.cshtml" />
+    <Content Include="Views\Order\Partial_WaitPayOrder.cshtml" />
+    <Content Include="Views\Order\Partial_OrderSuccess.cshtml" />
+    <Content Include="Views\Order\Partial_CancelOrder.cshtml" />
+    <Content Include="Views\Order\Partail_ListOrderCancel.cshtml" />
+    <Content Include="Views\Order\SuccessCancelOrder.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

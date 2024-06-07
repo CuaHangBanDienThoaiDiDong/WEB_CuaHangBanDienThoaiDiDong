@@ -1,0 +1,66 @@
+﻿@model WebSite_CuaHangDienThoai.Models.ReturnAndCancelOrder
+
+@using (Ajax.BeginForm("CancelOrder", "Order", new AjaxOptions
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "load_data",
+    OnSuccess = "OnSuccessCO",
+    OnFailure = "OnFailure",
+    OnBegin = "OnBeginCO"
+}, new { @id = "myForm" }))
+{
+    <script>
+        function OnBeginCO() {
+            $('#btnSuccessCandelOrder').attr("disabled", "disabled");
+            $('#load_send').html('<h2>Đang tiến hành gửi yêu cầu....</h2>');
+        }
+
+        function OnSuccessCO(res) {
+            if (res.success) {
+                if (res.code == 1) {
+                    var orderId = $('#btnSuccessCandelOrder').data('id');
+                    location.href = "/Order/SuccessCancelOrder?id=" + orderId;
+                } else {
+                    location.href = res.url;
+                }
+            } else {
+                $('#btnSuccessCandelOrder').removeAttr("disabled");
+                $('#load_send').html('<h2>Có lỗi xảy ra, vui lòng thử lại.</h2>');
+            }
+        }
+
+        function OnFailure() {
+            $('#btnSuccessCandelOrder').removeAttr("disabled");
+            $('#load_send').html('<h2>Có lỗi xảy ra, vui lòng thử lại.</h2>');
+        }
+    </script>
+    <hr />
+    <div class="p-1 border-1 rounded-1">
+        <div class="m-1">
+            @Html.Action("Partail_ListOrderCancel", "Order", new { id = ViewBag.OrderId })
+            <br />
+            <div class="mt-1">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="orderId" value="@ViewBag.OrderId" />
+                <div class="form-group">
+                    <label>Hình thức thanh toán</label>
+                    <select class="form-control" id="drTypePayment" name="Status">
+                        <option value="Thay đổi phương thức thanh toán" selected>Thay đổi phương thức thanh toán</option>
+                        <option value="Thay đổi địa chỉ" id="chuyenkhoan">Thay đổi địa chỉ</option>
+                        <option value="Thay đổi sản phẩm khác" id="chuyenkhoan">Thay đổi sản phẩm khác</option>
+                    </select>
+                </div>
+                <div class="form-group" id="load_send"></div>
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-10 d-grid gap-2 col-10 mx-auto">
+                        <button type="submit" class="btn btn-danger btnSuccessCandelOrder" data-id="@ViewBag.OrderId">Xác nhận trả hàng</button>
+                    </div>
+                    <div class="col-1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+}

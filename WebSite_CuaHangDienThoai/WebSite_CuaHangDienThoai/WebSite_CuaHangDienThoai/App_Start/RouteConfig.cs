@@ -9,7 +9,13 @@ namespace WebSite_CuaHangDienThoai
         {
             
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
+            //// Huy don hang thnah cong
+            routes.MapRoute(
+             name: "HuyDonHangThanhCong",
+             url: "huy-don-hang-thanh-cong/{code}-p{id}",
+             defaults: new { controller = "Order", action = "SuccessCancelOrder", alias = UrlParameter.Optional },
+             namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+         );
 
             //// Don hang
             routes.MapRoute(

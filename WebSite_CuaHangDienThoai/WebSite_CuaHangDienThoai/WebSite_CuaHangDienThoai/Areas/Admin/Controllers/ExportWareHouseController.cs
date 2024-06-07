@@ -18,7 +18,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
         public ActionResult Partial_ThongTinDonHang(string code)
         {
-            var checkOder = db.tb_Order.FirstOrDefault(x => x.Code.Contains(code) );
+            var checkOder = db.tb_Order.FirstOrDefault(x => x.Code.Contains(code.Trim()) );
 
             try {
                 if (checkOder != null)
@@ -81,49 +81,49 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                         model.WarehouseId = checkWareHouse.WarehouseId;
                                         db.tb_ExportWareHouse.Add(model);
                                         db.SaveChanges();
+                                        dbContextTransaction.Commit();
 
-
-                                        return Json(new { success = true, code = 1 });
+                                        code = new { Success = true, Code = 1, Url = "" };
                                     }
                                     else
                                     {
-                                        return Json(new { Success = false, Code = -6 });
                                        
+                                        code = new { Success = false, Code = -6, Url = "" };
                                     }
                                 }
                                 else
                                 {
-                                    return Json(new { Success = false, Code = -5 });
+                                  
+                                    code = new { Success = false, Code = -5, Url = "" };
                                 }
 
 
                             }
                             else
                             {
-                                return Json(new { Success = false, Code = -4 });
+                                code = new { Success = false, Code = -4, Url = "" };
                             }
 
                         }
                         else
                         {
                             //Don Hang da bi huy
+                            code = new { Success = false, Code = -3, Url = "" };
                            
-                            return Json(new { Success = false, Code = -3 });
                         }
                     }
                     else
                     {
                         //Khong thay ma Order
-                            return Json(new { Success = false, Code = -2 });
+                       code = new { Success = false, Code = -2, Url = "" };
                     }
                 }
                 catch (Exception ex)
                 {
-                    dbContextTransaction.Rollback();
-                    return Json(new { Success = false, Code = -100 });
-
+                    dbContextTransaction.Rollback(); code = new { Success = false, Code = -100, Url = "" };
+                  
                 }
-
+                return Json(code);
             }
             
 
