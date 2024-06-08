@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Antlr.Runtime.Misc;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -25,13 +27,44 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return PartialView();
         }
 
-
         public ActionResult ProFile(int id)
         {
-
-            var item = db.tb_Customer.Find(id);
-            return View(item);
+            if (Session["CustomerId"] != null)
+            {
+                var item = db.tb_Customer.Find(id);
+                if (item == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.NAme = item.CustomerName;
+                return View(item);
+            }
+            else
+            {
+                return RedirectToAction("Login"); // Redirect tới trang đăng nhập nếu khách hàng chưa đăng nhập
+            }
         }
+        public ActionResult ProfileNew(int id)
+        {
+            if (Session["CustomerId"] != null)
+            {
+                var item = db.tb_Customer.Find(id);
+                if (item == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.NAme = item.CustomerName;
+                return View(item);
+            }
+            else
+            {
+                return RedirectToAction("Login"); // Redirect tới trang đăng nhập nếu khách hàng chưa đăng nhập
+            }
+        }
+
+
+
+
 
         public ActionResult Login()
         {
@@ -41,7 +74,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(string msnv, string PhoneNumber, string password)
         {
-            try 
+            try
             {
                 if (ModelState.IsValid)
                 {
@@ -81,13 +114,13 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     }
                 }
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 return RedirectToAction("NotFound", "Error");
-            }   
+            }
             return View();
         }
-        
+
 
         public ActionResult LogOut()
         {
@@ -172,7 +205,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 {
                     if (checkPhone == null)
                     {
-                        _khachhang.Password = MaHoaPass(_khachhang.Password);
+                        _khachhang.Password = MaHoaPass(_khachhang.Password.Trim()).Trim();
                         _khachhang.NumberofPurchases = 1;
                         _khachhang.Clock = false;
 
@@ -209,11 +242,94 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
+
+
+        public ActionResult Partial_Edit(int id)
+        {
+            if (id > 0)
+            {
+                var KhachHang = db.tb_Customer.Find(id);
+                if (KhachHang != null)
+                {
+                    var viewModel = new CLient_EditCustomerViewModel
+                    {
+                        CustomerId = KhachHang.CustomerId,
+                        PhoneNumber = KhachHang.PhoneNumber,
+                        CustomerName = KhachHang.CustomerName,
+                        Email = KhachHang.Email,
+                        Code = KhachHang.Code,
+                        Password = KhachHang.Password,
+                        Birthday = KhachHang.Birthday,
+                        Loaction = KhachHang.Loaction,
+                        NumberofPurchases = (int)KhachHang.NumberofPurchases,
+                        Clock = (bool)KhachHang.Clock,
+                        Image = KhachHang.Image,
+                    };
+                    return View(viewModel);
+                }
+
+            }
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(CLient_EditCustomerViewModel item, HttpPostedFileBase newImage) 
+        {
+            using (var dbContext = db.Database.BeginTransaction()) 
+            {
+                try 
+                {
+                    if (ModelState.IsValid)
+                    {
+                        var customer=db.tb_Customer.Find(item.CustomerId);
+                        if (customer != null)
+                        {
+                            customer.CustomerId = item.CustomerId;
+                            customer.PhoneNumber = item.PhoneNumber.Trim();
+                            customer.CustomerName = item.CustomerName.Trim();
+                            customer.Email = item.Email.Trim();
+                            customer.Code = item.Code;
+                            customer.Password = item.Password.Trim();
+                            customer.Birthday = item.Birthday;
+                            customer.Loaction = item.Loaction;
+                            customer.NumberofPurchases = (int)item.NumberofPurchases;
+                            customer.Clock = (bool)item.Clock;
+                            customer.Image = item.Image;
+                            db.Entry(customer).State= System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
+                            dbContext.Commit(); 
+                            return Json(new { success = true,code =1 });
+                        }
+                        else 
+                        {
+                            return Json(new { success = false, code = -1 });//Lỗi dữ liệu khách hàng
+                        }
+                    }
+                    else 
+                    {
+                        return Json(new { success = false, code = -99 });//Thông tin rỗng
+                    }
+                } 
+                catch (Exception ex) 
+                {
+                    dbContext.Rollback();
+                    return Json(new { success = false, code = -100 });
+
+                }
+            }
+            
+        }
+
+
         public ActionResult UpdatePass(int id)
         {
-            var KhachHang = db.tb_Customer.Find(id);
+            if (id > 0) 
+            {
+                var KhachHang = db.tb_Customer.Find(id);
 
-            return View(KhachHang);
+                return View(KhachHang);
+            }
+            return View();
         }
         public ActionResult Partail_UpdatePass(int id)
         {

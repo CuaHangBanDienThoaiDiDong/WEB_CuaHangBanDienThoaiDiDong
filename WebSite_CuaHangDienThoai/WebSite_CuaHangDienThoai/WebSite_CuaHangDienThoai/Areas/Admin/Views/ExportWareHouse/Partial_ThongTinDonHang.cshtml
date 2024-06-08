@@ -2,7 +2,28 @@
 @if (ViewBag.OrderId != null)
 {
     <div class="card-header">
-        Thông tin đơn hàng
+
+
+<div class="card-title">
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li class="col-lg-6">
+                    <a href="#" class="text-black">Thông tin đơn hàng </a>
+                    <span style="color:orangered"> @Model.Code </span>|
+                    Ngày đặt <span class="text-danger">@Model.CreatedDate.ToString("dd/MM/yyyy")</span>
+                </li>
+                <li class="col-lg-6 text-right">
+                    <!-- Đặt class text-right để căn phải -->
+                    <!-- Nếu muốn căn phải, sử dụng CSS "text-align: right;" ở đây -->
+                </li>
+            </ol>
+
+            <hr class="col-lg-4" /> <!-- Đảm bảo cùng với số cột trước -->
+        </div>
+    </div>
+
+</div>
         <div class="card-tools">
 
             @if (ViewBag.ExportWareHouse != null)
@@ -13,6 +34,14 @@
                     @ViewBag.ExportWareHouse.ToString("dd/MM/yyyy")
                 </div>
             }
+            else if (Model.typeOrder == true)
+            {
+
+                <div class="btn btn-danger">
+                    Đơn hàng đã hủy
+                    <br /><span hidden>Thuan</span>
+                </div>
+            }
             else if (Model.Confirm == false)
             {
 
@@ -21,6 +50,7 @@
                     <br /><span hidden>Thuan</span>
                 </div>
             }
+
             else
             {
 
@@ -29,7 +59,7 @@
             }
 
         </div>
-        </div>
+    </div>
     <div class="card-body">
         @if (ViewBag.Count != null)
         {

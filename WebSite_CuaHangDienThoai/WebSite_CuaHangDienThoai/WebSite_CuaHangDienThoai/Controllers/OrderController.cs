@@ -19,8 +19,9 @@ namespace WebSite_CuaHangDienThoai.Controllers
             if (Session["CustomerId"] != null)
             {
                 int idKhach = (int)Session["CustomerId"];
-
+                var customer=db.tb_Customer.Find(idKhach);  
                 ViewBag.id = idKhach;
+                ViewBag.Name = customer.CustomerName;
                 return View();
 
 
@@ -152,6 +153,27 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 }
             }
             return PartialView();
+        }
+        public ActionResult Partial_OrderCanceled()
+        {
+
+            if (Session["CustomerId"] != null)
+            {
+                int idKhach = (int)Session["CustomerId"];
+                var checkORder = db.tb_Order.Where(x => x.CustomerId == idKhach && x.typeOrder == true).OrderByDescending(x => x.OrderId).ToList();
+                if (checkORder != null)
+                {
+                    ViewBag.Count = checkORder.Count;
+                    return PartialView(checkORder);
+                }
+                return PartialView();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+          
         }
 
 

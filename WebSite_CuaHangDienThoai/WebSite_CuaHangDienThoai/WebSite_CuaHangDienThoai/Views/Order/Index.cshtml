@@ -27,6 +27,13 @@
                     <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708" />
                 </svg>
             </span>
+            <span>
+                <a href="/tai-khoan/p@(ViewBag.id)" style="color:black;margin-left:5px">@ViewBag.Name</a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708" />
+                    <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708" />
+                </svg>
+            </span>
             <span><a href="/don-hang" style="color:orange;margin-left:5px">Đơn hàng</a></span>
 
         </div>
@@ -91,7 +98,8 @@
                             @Html.Action("Partial_OrderSuccess", "Order")
                         </div>
                         <div class="tab-pane fade" id="ex-with-icons-tabs-DaHuy" role="tabpanel" aria-labelledby="ex-with-icons-tab-DaHuy">
-                            Đã hủy
+                            Đơn hàng đã hủy
+                            @Html.Action("Partial_OrderCanceled", "Order")
                         </div>
                     </div>
                 </div>

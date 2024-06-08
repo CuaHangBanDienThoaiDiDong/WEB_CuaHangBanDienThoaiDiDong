@@ -13,37 +13,64 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
         public ActionResult Index()
         {
-            return View();
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                return View();
+            }
+             
         }
 
         public ActionResult Partial_ThongTinDonHang(string code)
         {
-            var checkOder = db.tb_Order.FirstOrDefault(x => x.Code.Contains(code.Trim()) );
-
-            try {
-                if (checkOder != null)
-                {
-                    var checkOrderDetail = db.tb_OrderDetail.Where(x => x.OrderId == checkOder.OrderId).Count();
-                    var ExportWareHouse = db.tb_ExportWareHouse.FirstOrDefault(x => x.OrderId == checkOder.OrderId);
-                    ViewBag.OrderId = checkOder.OrderId;
-                    ViewBag.Count = checkOrderDetail;
-                    if (ExportWareHouse != null)
-                    {
-                        ViewBag.ExportWareHouse = ExportWareHouse.CreatedDate;
-                    }
-                    return PartialView(checkOder);
-                }
-                return PartialView();
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
             }
-            catch(Exception ex) { return PartialView(); }      
-            
+            else
+            {
+
+                var checkOder = db.tb_Order.FirstOrDefault(x => x.Code.Contains(code.Trim()));
+
+                try
+                {
+                    if (checkOder != null)
+                    {
+                        var checkOrderDetail = db.tb_OrderDetail.Where(x => x.OrderId == checkOder.OrderId).Count();
+                        var ExportWareHouse = db.tb_ExportWareHouse.FirstOrDefault(x => x.OrderId == checkOder.OrderId);
+                        ViewBag.OrderId = checkOder.OrderId;
+                        ViewBag.Count = checkOrderDetail;
+                        if (ExportWareHouse != null)
+                        {
+                            ViewBag.ExportWareHouse = ExportWareHouse.CreatedDate;
+                        }
+                        return PartialView(checkOder);
+                    }
+                    return PartialView();
+                }
+                catch (Exception ex) { return PartialView(); }
+
+            }
+
+
         }
 
 
 
         public ActionResult Partial_ThongTinXuat()
         {
-            return PartialView();
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                return PartialView();
+
+            }
         }
 
         [HttpPost]

@@ -4170,6 +4170,7 @@
     <Compile Include="Models\Admin_TokenSupplier.cs" />
     <Compile Include="Models\Admin_TokenVoucher.cs" />
     <Compile Include="Models\Admin_WareHouse_Export_ToKen.cs" />
+    <Compile Include="Models\CLient_EditCustomerViewModel.cs" />
     <Compile Include="Models\Client_TokenReview.cs" />
     <Compile Include="Models\Common\Filter.cs" />
     <Compile Include="Models\CompanyModel.cs" />
@@ -4384,7 +4385,6 @@
     <Content Include="Views\ProvincesVN\Partial_Districts.cshtml" />
     <Content Include="Views\ProvincesVN\Partial_Wards.cshtml" />
     <Content Include="Views\ShoppingCart\CheckOutSucces.cshtml" />
-    <Content Include="Views\Account\ProFile.cshtml" />
     <Content Include="Views\ShoppingCart\VnpayReturn.cshtml" />
     <Content Include="Views\ShoppingCart\CheckOut.cshtml" />
     <Content Include="Views\ShoppingCart\Partial_CheckOut.cshtml" />
@@ -4407,6 +4407,10 @@
     <Content Include="Views\Order\Partial_CancelOrder.cshtml" />
     <Content Include="Views\Order\Partail_ListOrderCancel.cshtml" />
     <Content Include="Views\Order\SuccessCancelOrder.cshtml" />
+    <Content Include="Views\Order\Partial_OrderCanceled.cshtml" />
+    <Content Include="Views\Account\Partial_Edit.cshtml" />
+    <Content Include="Views\Account\ProFile.cshtml" />
+    <Content Include="Views\Account\ProfileNew.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

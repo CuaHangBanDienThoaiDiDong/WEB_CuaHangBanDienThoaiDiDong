@@ -16,13 +16,23 @@
         <div class="container bootstrap snippets bootdey mt-5 panel panel-info panel-shadow">
             <div class="col-md-12 col-sm-8 content">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-lg-10">
                         <ol class="breadcrumb">
-                            <li><a href="#" class="text-black">Đơn hàng </a><span style="color:orangered"> @item.Code </span>| Ngày đặt <span class="text-danger">@item.CreatedDate.ToString("dd/MM/yyyy") </span> </li>
-
-
+                            <li><a href="#" class="text-black">Đơn hàng </a><span style="color:orangered"> @item.Code </span>| Ngày đặt <span class="text-danger">@item.CreatedDate.ToString("dd/MM/yyyy") </span></li>
+                            <li style="text-align: right;">
+                                <!-- Sử dụng CSS "text-align: right;" để căn phải -->
+                            </li>
                         </ol>
-                        <hr class="col-3" />
+
+                        <hr class="col-4" />
+                    </div>
+                    <div class="col-2">
+                        @if (item.typeOrder == true)
+                        {
+                            <div class="btn btn-danger">Đơn hàng đã hủy</div>
+                        }
+
+
                     </div>
                 </div>
                 <div class="row">
