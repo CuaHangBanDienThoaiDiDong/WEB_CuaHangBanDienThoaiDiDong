@@ -13,5 +13,6 @@ namespace WebSite_CuaHangDienThoai.Models.Token.Client
         public string Password { get; set; }
         [Required(ErrorMessage = "Nhập mã từ email.")]
         public string Code { get; set; }
+        public string token { get; set; }
     }
 }

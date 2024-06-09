@@ -1,27 +1,18 @@
-﻿
-@model WebSite_CuaHangDienThoai.Models.Token.Client.Client_TokenAccount
+﻿@model WebSite_CuaHangDienThoai.Models.Token.Client.Client_ForgetPassClient
+
 @using (Ajax.BeginForm("UpdatePass", "Account", new AjaxOptions
 {
     HttpMethod = "POST",
     UpdateTargetId = "load_data",
     OnComplete = "OnSuccessCO",
-    OnFailure = "OnFailure"
-
-}, new { @Id = "myForm", onsubmit = "return validateForm();" }))
+    OnFailure = "OnFailure",
+}, new { @Id = "myForm" }))
 {
+
     <script>
-        function OnBeginCO() {
-            $('#btnOutOrder').attr("disabled", "disabled");
-        }
-
-
-
         function OnSuccessCO(res) {
-            if (res.Success == true) {
-
-                if (res.Code == 1) {
-
-
+            if (res.success) {
+                if (res.code == 1) {
                     const Toast = Swal.mixin({
                         toast: true,
                         position: "top-end",
@@ -36,122 +27,196 @@
 
                     Toast.fire({
                         icon: "success",
-                        title: "Xuất đơn hàng thành công"
+                        title: "Khôi phục mật khẩu thành công"
                     });
-
-                } else {
-                }
-            }
-            else {
-                if (res.Code == -2) {
+                } else if (res.code === -2) {
                     Swal.fire({
                         icon: "error",
-                        title: "Lỗi tìm...",
-                        text: "Không tìm thấy đơn hàng",
-                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                        title: "Lỗi",
+                        text: "Không tìm thấy tài khoản"
                     });
-
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi",
+                        text: "Đã xảy ra lỗi trong quá trình xử lý."
+                    });
                 }
+            } else {
+                if (res.code === -1) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi",
+                        text: "Dữ liệu rỗng"
+                    });
+                }
+                if (res.code === -2) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi",
+                        text: "Không tìm thấy tài khoản"
+                    });
+                }
+                if (res.code === -3) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi",
+                        text: "Không tìm thấy tài khoản"
+                    });
+                }
+                if (res.code === -100) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi",
+                        text: "Hệ thống tạm dừng"
+                    });
+                }
+            }
+        }
 
+
+
+        function submitForm() {
+            // Validate form
+            if (!validateForm()) {
+                return;
             }
 
+            // Lấy ra form và tạo đối tượng FormData
+            var form = document.getElementById('myForm');
+            var formData = new FormData(form);
+
+            // Gửi formData lên server
+            $.ajax({
+                url: '/Account/UpdatePass',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    // Xử lý phản hồi từ server
+                    OnSuccessCO(response);
+                },
+                error: function (error) {
+                    // Xử lý lỗi
+                    OnFailure(error);
+                }
+            });
         }
+
+
+
+
+
+
+
         function validateForm() {
             var confirmPassword = document.getElementById('ConfirmPassword').value.trim();
             var password = document.getElementById('Password').value.trim();
             var code = document.getElementById('Code').value.trim();
-            if (!password || !confirmPassword || !code) {
 
+            if (!password || !confirmPassword || !code) {
                 Swal.fire({
                     icon: "error",
-                    title: "Lỗi ...",
-                    text: "Vui lòng điền đầy đủ thông tin.",
-                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    title: "Lỗi",
+                    text: "Vui lòng điền đầy đủ thông tin."
                 });
                 return false;
-
             }
-            if (password !== confirmPassword) {
 
+            if (password !== confirmPassword) {
                 Swal.fire({
                     icon: "warning",
-                    title: "Lỗi tìm...",
-                    text: "Mật khẩu và xác nhận mật khẩu không khớp.",
-                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    title: "Lỗi",
+                    text: "Mật khẩu và xác nhận mật khẩu không khớp."
                 });
                 return false;
+            }
+
+            if (!/[!#$%^&*()_+{}\[\];:;<>,.?/~]/.test(password) || !/[A-Z]/.test(password)) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Lỗi",
+                    text: "Mật khẩu phải chứa ít nhất một ký tự đặc biệt và một ký tự viết hoa."
+                });
                 return false;
             }
 
             return true;
-
         }
 
-        function togglePasswordVisibility(inputId, buttonId) {
-            var passwordInput = document.getElementById(inputId);
-            var toggleButton = document.getElementById(buttonId);
+        function togglePasswordVisibility(passwordFieldId, toggleButtonId) {
+            var passwordField = document.getElementById(passwordFieldId);
+            var toggleButtonIcon = document.getElementById(toggleButtonId);
 
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleButtonIcon.classList.remove('fa-eye');
+                toggleButtonIcon.classList.add('fa-eye-slash');
             } else {
-                passwordInput.type = "password";
-
+                passwordField.type = "password";
+                toggleButtonIcon.classList.remove('fa-eye-slash');
+                toggleButtonIcon.classList.add('fa-eye');
             }
         }
 
-
-
-
-
+        document.getElementById("myForm").addEventListener("submit", function (event) {
+            if (!validateForm()) {
+                event.preventDefault();
+            }
+        });
     </script>
 
-
-
     @Html.AntiForgeryToken()
-    <h3>Thông tin khách hàng</h3>
-
-
+    @Html.ValidationSummary(true)
+    <h3>Khôi khục mật khẩu</h3>
 
     <div class="form-group">
-        <label>Khách hàng</label>
-
-        @if (ViewBag.Id != null)
+        @if (ViewBag.id != null)
         {
-            <input type="hidden" id="Id" name="Id" value="@ViewBag.Id" />
+            <input type="hidden" id="Id" name="Id" value="@ViewBag.id" />
+            <input type="hidden" name="token" value="@ViewBag.Token" />
         }
     </div>
 
     <div class="form-group">
         <span> Mã Code</span>
-        <div class="col-md-10 d-flex">
-            <input type="text" id="Code" name="Code" class="form-control" autocomplete="new-password" placeholder="Mã Code được cung cấp" />
-
-
+        <div class="col-md-12 d-flex">
+            <input type="text" id="Code" name="Code" class="form-control" autocomplete="new-password" placeholder="KP- ####" />
         </div>
     </div>
+
     <div class="form-group">
         <span> Mật Khẩu</span>
-        <div class="col-md-10 d-flex">
+        <div class="col-12 input-group input-group-custom">
             <input type="password" id="Password" name="Password" class="form-control" autocomplete="new-password" placeholder="Nhập Mật Khẩu" />
-            <button type="button" class="btn btn-success" onclick="togglePasswordVisibility('Password', 'togglePasswordBtn')"><i class="far fa-eye"></i></button>
-
+            <div class="input-group-append">
+                <button type="button" class="btn" onclick="togglePasswordVisibility('Password', 'togglePasswordBtn')">
+                    <i id="togglePasswordBtn" class="far fa-eye"></i>
+                </button>
+            </div>
         </div>
     </div>
+
     <div class="form-group">
         <span> Nhập lại mật khẩu </span>
-        <div class="col-md-10 d-flex">
+        <div class="col-12 input-group input-group-custom">
             <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Nhập Lại Mật Khẩu" />
-            <button type="button" class="btn btn-success" onclick="togglePasswordVisibility('ConfirmPassword', 'toggleConfirmPasswordBtn')"><i class="far fa-eye"></i></button>
-
+            <div class="input-group-append">
+                <button type="button" class="btn" onclick="togglePasswordVisibility('ConfirmPassword', 'toggleConfirmPasswordBtn')">
+                    <i id="toggleConfirmPasswordBtn" class="far fa-eye"></i>
+                </button>
+            </div>
         </div>
     </div>
 
     <div class="form-group" id="load_send"></div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-block btn-success btnForgotPass">Xác nhận</button>
-
+    <div class="form-group pt-2 d-flex justify-content-center">
+        @*<button type="submit" class="btn btn-block btn-success col-8 btnForgotPass">Xác nhận</button>*@
+        <button type="button" class="btn btn-success btnRegister col-8" onclick="submitForm();">Xác nhận cập nhật </button>
     </div>
-
-
 }
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

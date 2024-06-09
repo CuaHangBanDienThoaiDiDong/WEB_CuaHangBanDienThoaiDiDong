@@ -1,20 +1,210 @@
-﻿@model WebSite_CuaHangDienThoai.Models.tb_Customer
+﻿﻿@model WebSite_CuaHangDienThoai.Models.tb_Customer
+
 @{
-    ViewBag.Title = "Cập nhập mật khẩu ";
+    ViewBag.Title = "Khôi phục mật khẩu";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<link href="~/Content/Css/Client/Profile.css" rel="stylesheet" />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 @if (Model != null)
 {
-    <div class="container" style="padding-top:50px">
-        <div class="row text-center-md text-center-xs d-middle justify-content-start">
-            @Html.Action("Partail_UpdatePass", "Account", new { id = Model.CustomerId })
+
+    <div class="container">
+        <div class="card overflow-hidden">
+            <div class="card-body p-0">
+                <img src="https://www.bootdey.com/image/1352x300/FF00FF/000000" alt="" class="img-fluid">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 order-lg-1 order-2">
+
+                        @*<button id="showButton">Hiển thị thẻ</button>*@
+
+                        <div id="popup" class=" hidden">
+
+                            <div class="card">
+                                @Html.Action("EditImage", "Account", new { id = Model.CustomerId })
+                            </div>
+
+
+                        </div>
+                        <div class="d-flex align-items-center justify-content-around m-4">
+                            <div class="text-center">
+                                <a href="/don-hang" style="color:chocolate">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag-heart-fill" viewBox="0 0 16 16">
+                                        <path d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132" />
+                                    </svg>
+                                    @{
+                                        var order = Model.tb_Order.Where(x => x.CustomerId == Model.CustomerId).Count();
+                                        <h4 class="mb-0 fw-semibold lh-1">
+                                            @order
+                                        </h4>
+                                    }
+
+
+                                    <p class="mb-0 fs-4">Đơn hàng</p>
+                                </a>
+
+                            </div>
+                            <div class="text-center">
+                                <a href="/gio-hang" style="color:orange">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-cart-check-fill" viewBox="0 0 16 16">
+                                        <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708" />
+                                    </svg>
+                                    @{
+                                        var cart = Model.tb_Cart.FirstOrDefault(x => x.CustomerId == Model.CustomerId);
+                                        var cartItem = cart.tb_CartItem.Where(x => x.CartId == cart.CartId).Count();
+                                        <h4 class="mb-0 fw-semibold lh-1">
+                                            @cartItem
+                                        </h4>
+                                    }
+
+
+                                    <p class="mb-0 fs-4">Giỏ hàng</p>
+                                </a>
+
+                            </div>
+                            <div class="text-center">
+                                <i class="fa fa-check fs-6 d-block mb-2"></i>
+                                <h4 class="mb-0 fw-semibold lh-1">2,659</h4>
+                                <p class="mb-0 fs-4">Điểm tích lũy</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mt-n3 order-lg-2 order-1">
+                        <div class="mt-n5">
+                            @if (Model.Image != null)
+                            {
+                                <div class="d-flex align-items-center justify-content-center mb-2 thaydoi">
+
+
+                                    <div class="linear-gradient d-flex align-items-center justify-content-center rounded-circle" style="width: 110px; height: 110px;">
+
+
+                                        <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden" style="width: 100px; height: 100px;">
+                                            <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" alt="" class="w-100 h-100 thaydoi">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center justify-content-center mb-2 thaydoi">
+
+
+                                    <div class="linear-gradient d-flex align-items-center justify-content-center rounded-circle" style="width: 110px; height: 110px;">
+
+
+                                        <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden" style="width: 100px; height: 100px;">
+                                            <img src="~/images/Logo/LogoWeb.png" alt="" class="w-100 h-100 thaydoi">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            }
+
+
+
+                            <div class="text-center">
+                                <h5 class="fs-5 mb-0 fw-semibold">@Model.CustomerName</h5>
+                                @*<p class="mb-0 fs-4">Designer</p>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 order-last">
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-10">
+
+
+                        <div class="row text-center-md text-center-xs d-middle justify-content-start">
+                            @Html.Action("Partail_UpdatePass", "Account", new { id = Model.CustomerId, token = ViewBag.Token })
+
+                        </div>
+                    </div>
+                    <div class="col-1"></div>
+                </div>
+                <div class="container" style="padding-top:50px">
+
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+
+
         </div>
     </div>
+
+
+
 }
-else
-{
-    <p class="text-danger">Không tồn tại bảng ghi !!!</p>
-}
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('newImagePreview');
+            var labelAnhCu = document.getElementById('lbAnhCu');
+            var lbImagePreview = document.getElementById('lbImagePreview');
+            var muiTen = document.getElementById('muiTen');
+            output.src = reader.result;
+            output.style.display = 'block';
+            if (labelAnhCu && muiTen && lbImagePreview) {
+                labelAnhCu.style.display = 'block';
+                muiTen.style.display = 'block';
+                lbImagePreview.style.display = 'block';
+            }
+
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        var bg = document.querySelector(".bg-sg");
+        var popup = document.getElementById('popup');
+        var thaydoi = document.querySelector('.thaydoi');
+        var closeButton = document.getElementById('closeButton');
+        var btnClose = document.querySelector('.btnClose');
+        thaydoi.addEventListener('click', function () {
+            bg.style.display = "block";
+            popup.classList.remove('hidden');
+        });
+
+        btnClose.addEventListener('click', function () {
+            bg.style.display = "none";
+            popup.classList.add('hidden');
+        });
+
+        bg.addEventListener("click", function () {
+            bg.style.display = "none";
+            popup.classList.add('hidden');
+        });
+
+        closeButton.addEventListener('click', function () {
+            popup.classList.add('hidden');
+            bg.style.display = "none";
+        });
+    });
+
+</script>

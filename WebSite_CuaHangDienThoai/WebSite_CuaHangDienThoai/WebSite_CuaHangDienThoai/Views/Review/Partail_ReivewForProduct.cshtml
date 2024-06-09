@@ -24,7 +24,28 @@
             {
                 <div class="user_review d-flex flex-md-row">
                     <div class="user">
-                        <div class="user_pic"></div>
+                        <div class="user_pic">
+                            @if (item.tb_Customer.Image != null)
+                            {
+
+
+                                byte[] imageBytes = (byte[])item.tb_Customer.Image;
+                                string imgBase64 = Convert.ToBase64String(imageBytes);
+                                if (!string.IsNullOrEmpty(imgBase64))
+                                {
+                                    <img src="data:image;base64,@imgBase64" style="" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/Logo/LogoWeb.png" style="" />
+                                }
+                            }
+                            else
+                            {
+                                <img src="~/images/Logo/LogoWeb.png" style="" />
+                            }
+
+                        </div>
                         <div class="user_rating" style="display:none">
                             <ul class="star_rating">
                                 <li><i class="fa fa-star" aria-hidden="true"></i></li>
@@ -149,7 +170,17 @@ else
         success: function(response) {
             if (response.Success) { // Đã sửa thành response.Success
                 if (response.Code == 1) {
-                    alert("Đã cập nhật thành công");
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Cập nhập đánh giá thành công",
+                        showConfirmButton: false,
+                        timer: 1100,
+                        customClass: {
+                            container: 'swal2-container-custom',
+                            popup: 'swal2-popup-custom'
+                        }
+                    });
                     contentP.removeClass("d-none"); // Hiển thị thẻ p
                     editContainer.addClass("d-none"); // Ẩn container chứa textarea và button
 

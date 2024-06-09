@@ -20,7 +20,22 @@
         <div class="user_review_container d-flex flex-column flex-sm-row">
             <div class="user">
                 <div class="user_pic">
-                    <img src="~/images/Logo/LogoWeb.png" style="" />
+                    @if (Model.Image != null)
+                    {
+                        var imgBase64 = Session["img"] as string;
+                        if (!string.IsNullOrEmpty(imgBase64))
+                        {
+                            <img src="data:image;base64,@imgBase64" style="" />
+                        }
+                       
+                    }
+                    else
+                    {
+                        <img src="~/images/Logo/LogoWeb.png" style="" />
+                    }
+
+
+
                 </div>
 
             </div>

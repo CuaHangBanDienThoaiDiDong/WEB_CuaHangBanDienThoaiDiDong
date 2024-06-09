@@ -7,6 +7,16 @@
         <div class="row">
             <div class="col-md-12">
                 <form id="editCustomerForm" enctype="multipart/form-data">
+                    <div id="popupPassWord" class=" hidden">
+
+                        <div class="card">
+                            @Html.Action("EditImage", "Account", new { id = Model.CustomerId })
+                        </div>
+
+
+                    </div>
+
+
 
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true)
@@ -18,22 +28,7 @@
                     @Html.HiddenFor(model => model.Image, new { id = "currentImage" })
                     <input type="hidden" name="orderId" value="@Model.CustomerId" />
                     <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-center mb-2 thaydoi">
-                            <div class="linear-gradient d-flex align-items-center justify-content-center rounded-circle" style="width: 110px; height: 110px;">
-                                <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden" style="width: 100px; height: 100px;">
-                                    @if (Model.Image != null)
-                                    {
-                                        <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" alt="" class="w-100 h-100 old-img" id="oldimg">
-                                        <img id="newImagePreview" src="#" alt="New Image Preview" class="w-100 h-100 old-img" style="width: 100%; height: 100%; margin: auto; display: none; border-radius: 80px;" />
-                                    }
-                                    else
-                                    {
-                                        <img src="~/images/Logo/LogoWeb.png" alt="" id="oldimg" class="w-100 h-100 thaydoi">
-                                        <img id="newImagePreview" src="#" alt="New Image Preview" class="w-100 h-100 old-img" style="width: 100%; height: 100%; margin: auto; display: none; border-radius: 80px;" />
-                                    }
-                                </div>
-                            </div>
-                        </div>
+
 
 
                         <div class="tab-content">
@@ -75,8 +70,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <button type="button" class="btn btn-success col-md-10" onclick="submitForm()">Lưu</button>
-                        <a href="/admin/products" class="btn btn-danger">Quay lại</a>
+                        <button type="button" class="btn btn-success col-md-10 mx-auto" onclick="submitForm()">Lưu</button>
+
+
                     </div>
 
                 </form>
@@ -144,10 +140,10 @@
             isValid = false;
             errorMessage += "Địa chỉ không được để trống.\n";
         }
-        
-       
-        
-      
+
+
+
+
 
         // Hiển thị thông báo lỗi nếu không hợp lệ
         if (!isValid) {
@@ -171,22 +167,24 @@
             contentType: false,
             success: function(response) {
                 if (response.success) {
-                    var orderId = $('input[name="orderId"]').val();
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Cập nhật thành công',
-                        text: 'Thông tin của bạn đã được cập nhật.'
-                    }); setTimeout(function () {
-                        location.href = "/tai-khoan/-p" + orderId;
-                    }, 1000).then((result) => {
-                        if (result.isConfirmed) {
-                            location.href = "/tai-khoan/-p" + orderId;
-                        } else {
-                            setTimeout(function () {
-                                location.href = "/tai-khoan/-p" + orderId;
-                            }, 1500);// Chờ 1 giây và hiển thị lại thông báo
-                        }
-                    });
+                    if (response.code === 1) {
+                             var customerId = response.customerId;
+                         console.log("Customer ID:", customerId);
+                         Swal.fire({
+                             icon: 'success',
+                             title: 'Cập nhật thành công',
+                             text: 'Thông tin của bạn đã được cập nhật.'
+                         }).then((result) => {
+                             if (result.isConfirmed) {
+                                 location.href = "/Account/Profile" + customerId;
+                             } else {
+                                 setTimeout(function () {
+                                     location.href = "/tai-khoan/p" + customerId;
+                                 }, 1500);// Chờ 1 giây và hiển thị lại thông báo
+                             }
+                         });
+                    }
+
 
 
 
@@ -232,6 +230,26 @@
         };
         reader.readAsDataURL(event.target.files[0]);
     }
+
+
+
+
+    $(document).ready(function () {
+        var bg = $(".bg-sg");
+        var popupPassWord = $("#popupPassWord");
+        var btnEditPass = $("#btnEditPass");
+
+        btnEditPass.on('click', function () {
+            bg.css("display", "block");
+            popupPassWord.removeClass('hidden');
+        });
+
+        bg.on("click", function () {
+            bg.css("display", "none");
+            popupPassWord.addClass('hidden');
+        });
+    });
+
 
     $(document).ready(function () {
         $('.auto').autoNumeric('init');

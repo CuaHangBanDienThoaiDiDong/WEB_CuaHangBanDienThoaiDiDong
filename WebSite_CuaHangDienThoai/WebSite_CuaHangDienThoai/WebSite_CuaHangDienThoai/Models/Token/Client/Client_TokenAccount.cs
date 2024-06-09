@@ -19,5 +19,8 @@ namespace WebSite_CuaHangDienThoai.Models.Token.Client
         public int  SDT { get; set; }
 
 
+        public string token { get; set; }
+
+
     }
 }
