@@ -3871,13 +3871,6 @@
     <Content Include="Areas\Admin\Views\ExportWareHouse\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ExportWareHouse\Partial_ThongTinDonHang.cshtml" />
     <Content Include="Areas\Admin\Views\ExportWareHouse\Partial_OrderDetail.cshtml" />
-    <EntityDeploy Include="Models\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Admin\Views\Staff\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\Staff\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Staff\Partial_Index.cshtml" />
@@ -3893,6 +3886,16 @@
     <Content Include="Areas\Admin\Views\Seller\Partail_ProductDetail.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\Partial_LeftIndex.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\Suggest.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\Partail_ListProduct.cshtml" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
+    <Content Include="Areas\Admin\Views\Seller\Partial_TotalPriceCheckOut.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\SuggestCustomer.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
@@ -3915,6 +3918,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\JsAadminProduct.js" />
     <Content Include="Scripts\JsAdmin.js" />
+    <Content Include="Scripts\jsSeller.js" />
     <Content Include="Scripts\jsShopping.js" />
     <Content Include="Scripts\JsShoppingCart.js" />
     <Content Include="Scripts\owl_carousel\owl.carousel.css" />
@@ -4237,6 +4241,7 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ReturnAndCancelOrder.cs" />
+    <Compile Include="Models\SellerCart.cs" />
     <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -4298,6 +4303,12 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tb_Role.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tb_Seller.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tb_SellerDetail.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tb_Staff.cs">

@@ -1,0 +1,28 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Customer>
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <p class="card-text">Khách hàng:</p>
+            </div>
+            <div class="col-md-6">
+                <p class="card-text">@item.CustomerName - @item.PhoneNumber</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p class="card-text">Giá thường:</p>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-danger">Xem giá</button>
+            </div>
+        </div>
+    }
+
+}
+else 
+{
+<p class="text-danger">Không tìm thấy bảng !!!!</p>
+}

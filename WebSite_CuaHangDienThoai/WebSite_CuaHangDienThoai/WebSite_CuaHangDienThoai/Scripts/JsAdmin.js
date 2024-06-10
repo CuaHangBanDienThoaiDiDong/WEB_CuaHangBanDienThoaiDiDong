@@ -38,6 +38,9 @@
         });
 
     });
+
+
+
     $('body').on('click', '.btnDeleteNhapKhoSanpham', function (e) {
         e.preventDefault();
         var id = $(this).data('id');
@@ -91,7 +94,7 @@
     $('body').on('input', '.Quantity', function (e) {
         var productId = $(this).attr('id');
         var newQuantity = $(this).val();
-       
+
         if (newQuantity <= 0) {
             Swal.fire({
                 title: "Ban có muốn bỏ sản phẩm này",
@@ -163,7 +166,17 @@
         }
 
     });
-});
+
+
+
+
+
+    });
+
+
+
+
+
 
 function LoadList() {
     $.ajax({
@@ -173,5 +186,18 @@ function LoadList() {
             $('#load_data').html(rs);
         }
 
+    });
+}
+
+function loadListProductSeller() {
+    $.ajax({
+        url: '/Admin/Seller/Partail_ListProduct',
+        type: 'GET',
+        success: function (data) {
+            $('.loadDataList');
+        },
+        error: function () {
+            alert('Đã xảy ra lỗi khi tải danh sách sản phẩm!');
+        }
     });
 }

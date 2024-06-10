@@ -20,6 +20,7 @@ namespace WebSite_CuaHangDienThoai.Models
             this.tb_ExportWareHouse = new HashSet<tb_ExportWareHouse>();
             this.tb_ImportWarehouse = new HashSet<tb_ImportWarehouse>();
             this.tb_Role = new HashSet<tb_Role>();
+            this.tb_Seller = new HashSet<tb_Seller>();
         }
     
         public int StaffId { get; set; }
@@ -50,6 +51,8 @@ namespace WebSite_CuaHangDienThoai.Models
         public virtual ICollection<tb_ImportWarehouse> tb_ImportWarehouse { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_Role> tb_Role { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_Seller> tb_Seller { get; set; }
         public virtual tb_Store tb_Store { get; set; }
     }
 }

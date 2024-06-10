@@ -1024,6 +1024,7 @@ private void UpdateVoucherDetail(string voucherCode,int voucherId, int orderId, 
             ShoppingCart cart = (ShoppingCart)Session["Cart"];
             decimal totalPrice = 0;
             decimal save = 0;
+           
 
             if (cart != null && cart.Items.Any())
             {

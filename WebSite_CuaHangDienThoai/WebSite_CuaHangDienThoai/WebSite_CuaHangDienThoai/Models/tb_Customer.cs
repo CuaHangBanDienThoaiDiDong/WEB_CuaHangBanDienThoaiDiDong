@@ -12,8 +12,6 @@ namespace WebSite_CuaHangDienThoai.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Text.RegularExpressions;
     public partial class tb_Customer
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,19 +21,21 @@ namespace WebSite_CuaHangDienThoai.Models
             this.tb_Order = new HashSet<tb_Order>();
             this.tb_Return = new HashSet<tb_Return>();
             this.tb_ReviewDetail = new HashSet<tb_ReviewDetail>();
+            this.tb_Seller = new HashSet<tb_Seller>();
         }
     
         public int CustomerId { get; set; }
         [Required(ErrorMessage = "Số điện thoại không được để trống")]
         [StringLength(10, ErrorMessage = "Số điện thoại phải có đúng 10 số", MinimumLength = 10)]
         public string PhoneNumber { get; set; }
+
         [Required(ErrorMessage = "Tên không được để trống")]
         public string CustomerName { get; set; }
         [Required(ErrorMessage = "Email không được để trống")]
         [StringLength(150, ErrorMessage = "Email không được vượt quá 150 ký tự")]
         [EmailAddress(ErrorMessage = "Email không đúng định dạng")]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Mật khẩu không được để trống")]
+
         public string Password { get; set; }
         public Nullable<System.DateTime> Birthday { get; set; }
         public string Loaction { get; set; }
@@ -52,5 +52,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public virtual ICollection<tb_Return> tb_Return { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_ReviewDetail> tb_ReviewDetail { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_Seller> tb_Seller { get; set; }
     }
 }

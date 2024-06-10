@@ -307,6 +307,33 @@
           <Property Name="FunctionId" Type="int" Nullable="false" />
           <Property Name="Note" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="tb_Seller">
+          <Key>
+            <PropertyRef Name="SellerId" />
+          </Key>
+          <Property Name="SellerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="Modifiedby" Type="nvarchar(max)" />
+          <Property Name="TypePayment" Type="int" Nullable="false" />
+          <Property Name="StaffId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tb_SellerDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SellerId" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="ProductDetai" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="tb_Staff">
           <Key>
             <PropertyRef Name="StaffId" />
@@ -789,6 +816,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="SellerDetailtoSeller">
+          <End Role="tb_Seller" Type="Self.tb_Seller" Multiplicity="1" />
+          <End Role="tb_SellerDetail" Type="Self.tb_SellerDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Seller">
+              <PropertyRef Name="SellerId" />
+            </Principal>
+            <Dependent Role="tb_SellerDetail">
+              <PropertyRef Name="SellerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Sellerto">
+          <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="1" />
+          <End Role="tb_Seller" Type="Self.tb_Seller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Staff">
+              <PropertyRef Name="StaffId" />
+            </Principal>
+            <Dependent Role="tb_Seller">
+              <PropertyRef Name="StaffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SellertoCustomer">
+          <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="1" />
+          <End Role="tb_Seller" Type="Self.tb_Seller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="tb_Seller">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="StafftoFunction">
           <End Role="tb_Function" Type="Self.tb_Function" Multiplicity="0..1" />
           <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="*" />
@@ -921,6 +984,8 @@
           <EntitySet Name="tb_Review" EntityType="Self.tb_Review" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_ReviewDetail" EntityType="Self.tb_ReviewDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_Role" EntityType="Self.tb_Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_Seller" EntityType="Self.tb_Seller" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_SellerDetail" EntityType="Self.tb_SellerDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_Staff" EntityType="Self.tb_Staff" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_Store" EntityType="Self.tb_Store" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_Supplier" EntityType="Self.tb_Supplier" Schema="dbo" store:Type="Tables" />
@@ -1053,6 +1118,18 @@
             <End Role="tb_Staff" EntitySet="tb_Staff" />
             <End Role="tb_Role" EntitySet="tb_Role" />
           </AssociationSet>
+          <AssociationSet Name="SellerDetailtoSeller" Association="Self.SellerDetailtoSeller">
+            <End Role="tb_Seller" EntitySet="tb_Seller" />
+            <End Role="tb_SellerDetail" EntitySet="tb_SellerDetail" />
+          </AssociationSet>
+          <AssociationSet Name="Sellerto" Association="Self.Sellerto">
+            <End Role="tb_Staff" EntitySet="tb_Staff" />
+            <End Role="tb_Seller" EntitySet="tb_Seller" />
+          </AssociationSet>
+          <AssociationSet Name="SellertoCustomer" Association="Self.SellertoCustomer">
+            <End Role="tb_Customer" EntitySet="tb_Customer" />
+            <End Role="tb_Seller" EntitySet="tb_Seller" />
+          </AssociationSet>
           <AssociationSet Name="StafftoFunction" Association="Self.StafftoFunction">
             <End Role="tb_Function" EntitySet="tb_Function" />
             <End Role="tb_Staff" EntitySet="tb_Staff" />
@@ -1167,6 +1244,7 @@
           <NavigationProperty Name="tb_Order" Relationship="Self.OrdertKhachHang" FromRole="tb_Customer" ToRole="tb_Order" />
           <NavigationProperty Name="tb_Return" Relationship="Self.ReturntoKhachHang" FromRole="tb_Customer" ToRole="tb_Return" />
           <NavigationProperty Name="tb_ReviewDetail" Relationship="Self.ReviewDetailtoKhachHang" FromRole="tb_Customer" ToRole="tb_ReviewDetail" />
+          <NavigationProperty Name="tb_Seller" Relationship="Self.SellertoCustomer" FromRole="tb_Customer" ToRole="tb_Seller" />
         </EntityType>
         <EntityType Name="tb_ExportWareHouse">
           <Key>
@@ -1455,6 +1533,37 @@
           <NavigationProperty Name="tb_Function" Relationship="Self.RoletoFunction" FromRole="tb_Role" ToRole="tb_Function" />
           <NavigationProperty Name="tb_Staff" Relationship="Self.RoletoStaff" FromRole="tb_Role" ToRole="tb_Staff" />
         </EntityType>
+        <EntityType Name="tb_Seller">
+          <Key>
+            <PropertyRef Name="SellerId" />
+          </Key>
+          <Property Name="SellerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TypePayment" Type="Int32" Nullable="false" />
+          <Property Name="StaffId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tb_Customer" Relationship="Self.SellertoCustomer" FromRole="tb_Seller" ToRole="tb_Customer" />
+          <NavigationProperty Name="tb_SellerDetail" Relationship="Self.SellerDetailtoSeller" FromRole="tb_Seller" ToRole="tb_SellerDetail" />
+          <NavigationProperty Name="tb_Staff" Relationship="Self.Sellerto" FromRole="tb_Seller" ToRole="tb_Staff" />
+        </EntityType>
+        <EntityType Name="tb_SellerDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SellerId" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="ProductDetai" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tb_Seller" Relationship="Self.SellerDetailtoSeller" FromRole="tb_SellerDetail" ToRole="tb_Seller" />
+        </EntityType>
         <EntityType Name="tb_Staff">
           <Key>
             <PropertyRef Name="StaffId" />
@@ -1483,6 +1592,7 @@
           <NavigationProperty Name="tb_Function" Relationship="Self.StafftoFunction" FromRole="tb_Staff" ToRole="tb_Function" />
           <NavigationProperty Name="tb_ImportWarehouse" Relationship="Self.ImportWarehouseToStaff" FromRole="tb_Staff" ToRole="tb_ImportWarehouse" />
           <NavigationProperty Name="tb_Role" Relationship="Self.RoletoStaff" FromRole="tb_Staff" ToRole="tb_Role" />
+          <NavigationProperty Name="tb_Seller" Relationship="Self.Sellerto" FromRole="tb_Staff" ToRole="tb_Seller" />
           <NavigationProperty Name="tb_Store" Relationship="Self.NewStaffToStoreFK" FromRole="tb_Staff" ToRole="tb_Store" />
         </EntityType>
         <EntityType Name="tb_Store">
@@ -1703,6 +1813,18 @@
               <PropertyRef Name="CustomerId" />
             </Principal>
             <Dependent Role="tb_ReviewDetail">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SellertoCustomer">
+          <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="1" />
+          <End Role="tb_Seller" Type="Self.tb_Seller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="tb_Seller">
               <PropertyRef Name="CustomerId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2007,6 +2129,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="SellerDetailtoSeller">
+          <End Role="tb_Seller" Type="Self.tb_Seller" Multiplicity="1" />
+          <End Role="tb_SellerDetail" Type="Self.tb_SellerDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Seller">
+              <PropertyRef Name="SellerId" />
+            </Principal>
+            <Dependent Role="tb_SellerDetail">
+              <PropertyRef Name="SellerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Sellerto">
+          <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="1" />
+          <End Role="tb_Seller" Type="Self.tb_Seller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Staff">
+              <PropertyRef Name="StaffId" />
+            </Principal>
+            <Dependent Role="tb_Seller">
+              <PropertyRef Name="StaffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="NewStaffToStoreFK">
           <End Role="tb_Store" Type="Self.tb_Store" Multiplicity="0..1" />
           <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="*" />
@@ -2091,6 +2237,8 @@
           <EntitySet Name="tb_Review" EntityType="Self.tb_Review" />
           <EntitySet Name="tb_ReviewDetail" EntityType="Self.tb_ReviewDetail" />
           <EntitySet Name="tb_Role" EntityType="Self.tb_Role" />
+          <EntitySet Name="tb_Seller" EntityType="Self.tb_Seller" />
+          <EntitySet Name="tb_SellerDetail" EntityType="Self.tb_SellerDetail" />
           <EntitySet Name="tb_Staff" EntityType="Self.tb_Staff" />
           <EntitySet Name="tb_Store" EntityType="Self.tb_Store" />
           <EntitySet Name="tb_Supplier" EntityType="Self.tb_Supplier" />
@@ -2138,6 +2286,10 @@
           <AssociationSet Name="ReviewDetailtoKhachHang" Association="Self.ReviewDetailtoKhachHang">
             <End Role="tb_Customer" EntitySet="tb_Customer" />
             <End Role="tb_ReviewDetail" EntitySet="tb_ReviewDetail" />
+          </AssociationSet>
+          <AssociationSet Name="SellertoCustomer" Association="Self.SellertoCustomer">
+            <End Role="tb_Customer" EntitySet="tb_Customer" />
+            <End Role="tb_Seller" EntitySet="tb_Seller" />
           </AssociationSet>
           <AssociationSet Name="ExportWareHousetoOrder" Association="Self.ExportWareHousetoOrder">
             <End Role="tb_Order" EntitySet="tb_Order" />
@@ -2238,6 +2390,14 @@
           <AssociationSet Name="RoletoStaff" Association="Self.RoletoStaff">
             <End Role="tb_Staff" EntitySet="tb_Staff" />
             <End Role="tb_Role" EntitySet="tb_Role" />
+          </AssociationSet>
+          <AssociationSet Name="SellerDetailtoSeller" Association="Self.SellerDetailtoSeller">
+            <End Role="tb_Seller" EntitySet="tb_Seller" />
+            <End Role="tb_SellerDetail" EntitySet="tb_SellerDetail" />
+          </AssociationSet>
+          <AssociationSet Name="Sellerto" Association="Self.Sellerto">
+            <End Role="tb_Staff" EntitySet="tb_Staff" />
+            <End Role="tb_Seller" EntitySet="tb_Seller" />
           </AssociationSet>
           <AssociationSet Name="NewStaffToStoreFK" Association="Self.NewStaffToStoreFK">
             <End Role="tb_Store" EntitySet="tb_Store" />
@@ -2587,6 +2747,35 @@
                 <ScalarProperty Name="StaffId" ColumnName="StaffId" />
                 <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_Seller">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Seller">
+              <MappingFragment StoreEntitySet="tb_Seller">
+                <ScalarProperty Name="SellerId" ColumnName="SellerId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
+                <ScalarProperty Name="TypePayment" ColumnName="TypePayment" />
+                <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_SellerDetail">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_SellerDetail">
+              <MappingFragment StoreEntitySet="tb_SellerDetail">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SellerId" ColumnName="SellerId" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductDetai" ColumnName="ProductDetai" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

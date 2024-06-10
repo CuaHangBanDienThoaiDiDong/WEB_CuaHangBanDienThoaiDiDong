@@ -3,7 +3,16 @@
 <div class="card">
     <div class="card-header">
         <h2 class="card-title">Danh sách sản phẩm</h2>
-        
+
+    </div>
+    <div class="col-lg-12 text-right nav-search   search-suggestions" style="display: block">
+        @*<div class="row ">
+                <div class="col-lg-12 search-suggestions" style="display: block;">
+
+
+                </div>
+
+            </div>*@
     </div>
     <div class="card-body loadListSortProductDetail">
         @if (Model.Any() && Model != null)
@@ -16,9 +25,9 @@
                             @*<th><input type="checkbox" id="SelectAll" /></th>*@
                             <th>STT</th>
                             <th>Hình ảnh</th>
-                            <th>Tên sản phẩm</th>
+                            <th>Sản phẩm</th>
                             @*<th>Màu/Dung lượng</th>*@
-                            <th>Loại sản phẩm</th>
+                            <th>Giá/Giá Giảm</th>
 
 
                             <th></th>
@@ -71,14 +80,32 @@
                                             <a href="/admin/Products/Detail/@item.ProductsId" style="color:black">
                                                 <span class="text-danger"> @item.tb_Products.Title</span>
                                                 <br /> @item.Color/@Capacity
+                                                <br />@item.tb_Products.tb_ProductCategory.Title
                                             </a>
                                         </td>
                                         @*<td>@item.Color/@Capacity</td>*@
-                                        <td>@item.tb_Products.tb_ProductCategory.Title</td>
+                                        <td>
+
+                                            @if (item.PriceSale > 0)
+                                            {
+                                                <span style=" text-decoration: line-through;">
+                                                    @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price)
+                                                </span>
+                                                <span class="text-danger">
+                                                    @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.PriceSale)
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span>
+                                                    @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price)
+                                                </span>
+                                            }
+                                        </td>
 
 
                                         <td>
-                                            <button class="red_button btn-success add_to_cart_button  border-0 btn-0 btnAddList" data-id="@item.ProductDetailId">
+                                            <button class="red_button btn-success   border-0 btn-0 btnAddListSeller" data-id="@item.ProductDetailId">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-plus-fill" viewBox="0 0 16 16">
                                                     <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m6.5-11a.5.5 0 0 0-1 0V6H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V7H10a.5.5 0 0 0 0-1H8.5z" />
                                                 </svg>
@@ -107,5 +134,5 @@
         }
     </div>
 
-   
+
 </div>

@@ -4,13 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7843d6f483074e6598a3bdcd7a11f5fe" Name="Diagram1">
+      <Diagram DiagramId="e83d71a0caf34885a2b6fb8507fa6712" Name="Diagram1">
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Districts" Width="1.5" PointX="3.75" PointY="28.375" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Provinces" Width="1.5" PointX="1.5" PointY="28.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Cart" Width="1.5" PointX="5.25" PointY="22" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_CartItem" Width="1.5" PointX="7.5" PointY="13.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Customer" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Customer" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_ExportWareHouse" Width="1.5" PointX="10.5" PointY="20.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Function" Width="1.5" PointX="3.75" PointY="36.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_ImportWarehouse" Width="1.5" PointX="8.25" PointY="37.25" IsExpanded="true" />
@@ -28,9 +28,11 @@
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Review" Width="1.5" PointX="7.5" PointY="24.875" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_ReviewDetail" Width="1.5" PointX="9.75" PointY="24.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Role" Width="1.5" PointX="8.25" PointY="33.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Staff" Width="1.5" PointX="6" PointY="34.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Seller" Width="1.5" PointX="12.25" PointY="24.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_SellerDetail" Width="1.5" PointX="14.5" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Staff" Width="1.5" PointX="6" PointY="34.5" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Store" Width="1.5" PointX="6" PointY="28.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Supplier" Width="1.5" PointX="6" PointY="41.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Supplier" Width="1.5" PointX="6" PointY="41.25" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Voucher" Width="1.5" PointX="5.25" PointY="44.25" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_VoucherDetail" Width="1.5" PointX="7.5" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Warehouse" Width="1.5" PointX="8.25" PointY="29.375" IsExpanded="true" />
@@ -46,6 +48,7 @@
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.OrdertKhachHang" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.ReturntoKhachHang" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.ReviewDetailtoKhachHang" ManuallyRouted="false" />
+        <AssociationConnector Association="CUAHANGDIENTHOAIModel.SellertoCustomer" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.ExportWareHousetoOrder" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.ExportWareHousetoStaff" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.ExportWareHousetoWareHouse" ManuallyRouted="false" />
@@ -71,6 +74,8 @@
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.ReturnDetailtoReturn" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.ReviewDetailtoReview" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.RoletoStaff" ManuallyRouted="false" />
+        <AssociationConnector Association="CUAHANGDIENTHOAIModel.SellerDetailtoSeller" ManuallyRouted="false" />
+        <AssociationConnector Association="CUAHANGDIENTHOAIModel.Sellerto" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.NewStaffToStoreFK" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.StoretoWards" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.WarehousetoStore" ManuallyRouted="false" />

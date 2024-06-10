@@ -48,6 +48,8 @@ namespace WebSite_CuaHangDienThoai.Models
         public virtual DbSet<tb_Review> tb_Review { get; set; }
         public virtual DbSet<tb_ReviewDetail> tb_ReviewDetail { get; set; }
         public virtual DbSet<tb_Role> tb_Role { get; set; }
+        public virtual DbSet<tb_Seller> tb_Seller { get; set; }
+        public virtual DbSet<tb_SellerDetail> tb_SellerDetail { get; set; }
         public virtual DbSet<tb_Staff> tb_Staff { get; set; }
         public virtual DbSet<tb_Store> tb_Store { get; set; }
         public virtual DbSet<tb_Supplier> tb_Supplier { get; set; }
