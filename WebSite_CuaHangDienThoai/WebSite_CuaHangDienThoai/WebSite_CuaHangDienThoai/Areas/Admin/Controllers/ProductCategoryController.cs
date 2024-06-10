@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -171,9 +172,10 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
            
         }
+     
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(tb_ProductCategory model)
+        public ActionResult Edit(tb_ProductCategory model, HttpPostedFileBase newImage)
         {
             if (ModelState.IsValid)
             {
@@ -181,9 +183,19 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
                 model.ModifiedDate = DateTime.Now;
                 model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
-                model.Modifiedby = checkStaff.NameStaff+"-"+ checkStaff.Code;
+                model.Modifiedby = checkStaff.NameStaff + "-" + checkStaff.Code;
                 model.IsActive = false;
                 db.tb_ProductCategory.Attach(model);
+                if (newImage != null && newImage.ContentLength > 0)
+                {
+                    // Xử lý hình ảnh mới
+                    byte[] imageData = null;
+                    using (var binaryReader = new BinaryReader(newImage.InputStream))
+                    {
+                        imageData = binaryReader.ReadBytes(newImage.ContentLength);
+                    }
+                    model.Icon = imageData;
+                }
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("index");

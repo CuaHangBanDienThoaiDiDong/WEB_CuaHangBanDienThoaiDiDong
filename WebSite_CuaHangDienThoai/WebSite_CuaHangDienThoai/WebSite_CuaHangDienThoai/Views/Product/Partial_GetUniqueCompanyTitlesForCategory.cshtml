@@ -1,25 +1,26 @@
-﻿
-@model List<WebSite_CuaHangDienThoai.Models.UniqueCompanyTitlesViewModel>
-@if (ViewBag.CategoryTitle != null && Model!=null)
-{<ul class="nav nav-treeview menu-submenu" style="display: none;flex-direction: column; ">
-    <li class="nav-item" style="margin-top:-25px; ">
-        <a href="/danh-muc-san-pham/@ViewBag.Alias-@ViewBag.CategoryId" class="nav-link" style="color: white; margin-left: 20%">Tất cả</a>
-    </li>
-    @foreach (var item in Model)
+﻿@model List<WebSite_CuaHangDienThoai.Models.UniqueCompanyTitlesViewModel>
+<ul class="nav nav-treeview menu-submenu" style="display: none; flex-direction: column;">
+    @if (Model != null && Model.Any())
     {
-        <li class="nav-item text-white" style="margin-top:-50px; ">
-            <a href="/dong-san-pham/@ViewBag.CategoryTitle-@item.CompanyTitles-@(item.CompanyIds)-@(ViewBag.CategoryId)" class="nav-link text-white pl-2"style=" margin-left: 20% ">
-                @item.CompanyTitles (@item.ProductCount)
-            </a>
+
+        <li class="nav-item" style="margin-top:-25px;">
+            <a href="/danh-muc-san-pham/@ViewBag.Alias-@ViewBag.CategoryId" class="nav-link" style="color: white; margin-left: 20%">Tất cả</a>
         </li>
+        foreach (var item in Model)
+        {
+            <li class="nav-item text-white" style="margin-top:-50px;">
+                <a href="/dong-san-pham/@ViewBag.CategoryTitle-@item.CompanyTitles-@(item.CompanyIds)-@(ViewBag.CategoryId)" class="nav-link text-white pl-2" style="margin-left: 20%">
+                    @item.CompanyTitles (@item.ProductCount)
+                </a>
+            </li>
+        }
+
     }
-</ul>
-     
-}
-else
-{
-<li class="nav-item">
-    <p class="text-danger"> Không tìm thấy bảng ghi !!!</p>
+    else
+    {
+<li>
+    <p class="text-danger">Không có hãng nào được tìm thấy.</p>
 </li>
     }
-
+</ul>
+   

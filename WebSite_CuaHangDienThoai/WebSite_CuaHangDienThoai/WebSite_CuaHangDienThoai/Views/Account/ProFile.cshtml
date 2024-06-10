@@ -19,8 +19,8 @@
     <div class="container">
         <div class="card overflow-hidden">
             <div class="card-body p-0">
-                <img src="https://www.bootdey.com/image/1352x300/FF00FF/000000" alt="" class="img-fluid">
-                <div class="row align-items-center">
+               
+                <div class="row align-items-center pt-5">
                     <div class="col-lg-4 order-lg-1 order-2">
 
                         @*<button id="showButton">Hiển thị thẻ</button>*@
@@ -237,11 +237,19 @@
 
                 </div>
                 <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
-                    Đơn hàng
+                    Đơn hàng 12313
                     @{
                         var OrderId = Model.tb_Order.FirstOrDefault(x => x.CustomerId == Model.CustomerId);
                     }
-                    @Html.Action("Partial_Order", "Order", new { id = OrderId.OrderId })
+                    @if (OrderId != null)
+                    {
+                        @Html.Action("Partial_Order", "Order", new { id = Model.CustomerId })
+                    }
+else 
+                    {
+                        <p class="text-danger">Không có lịch sử mua hàng</p>
+                    }
+
                 </div>
                 <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
                     @Html.Action("Partial_Edit", "Account", new { id = Model.CustomerId })

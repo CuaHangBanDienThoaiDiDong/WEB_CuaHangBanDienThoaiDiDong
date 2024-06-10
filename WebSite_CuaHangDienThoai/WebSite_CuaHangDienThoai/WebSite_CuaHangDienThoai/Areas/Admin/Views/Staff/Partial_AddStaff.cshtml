@@ -13,18 +13,25 @@
 
 
     <script>
+        function validateEmail(email) {
+            var emailPattern = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+            return emailPattern.test(email);
+        }
+
+
+
 
         function validateForm() {
             var name = document.getElementById('Name').value.trim();
             var sdt = document.getElementById('SDT').value.trim();
-            var email = document.getElementById('CCCD').value.trim();
-            var password = document.getElementById('Email').value.trim();
+            var CCCD = document.getElementById('CCCD').value.trim();
+            var email = document.getElementById('Email').value.trim();
             var luong = document.getElementById('demoPrice').value.trim();
             var diaChi = document.getElementById('DiaChi').value.trim();
             var birthdayInput = document.getElementById('birthdayInput').value;
 
 
-            if (!name || !sdt || !email || !password || !diaChi || !luong) {
+            if (!name || !sdt || !email || !CCCD || !diaChi || !luong) {
 
                 Swal.fire({
                     icon: "error",
@@ -44,7 +51,7 @@
                 });
                 return false;
             }
-            if (sdt.length > 10) {
+            if (sdt.length != 10) {
                 Swal.fire({
                     icon: "error",
                     title: "Lỗi...",
@@ -52,7 +59,14 @@
                 });
                 return false;
             }
-
+            if (!validateEmail(email)) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi...",
+                    text: "Vui lòng nhập địa chỉ email hợp lệ.",
+                });
+                return false;
+            }
             var birthdayInput = document.getElementById('birthdayInput').value;
 
             // Gán giá trị vào trường ẩn
@@ -107,7 +121,10 @@
             // Lấy ra form và tạo đối tượng FormData
             var form = document.getElementById('myForm');
             var formData = new FormData(form);
-
+            var newImage = document.getElementById('newImage').files[0];
+            if (newImage) {
+                formData.append('newImage', newImage); 
+            }
             // Gửi formData lên server
             $.ajax({
                 url: '/Staff/Add',
@@ -184,7 +201,22 @@
                     Swal.fire({
                         icon: "info",
                         title: "Không để trống...",
-                        text: "Vui lòng nhậ đầy đủ thông tin nhân viên ",
+                        text: "Vui lòng nhập đầy đủ thông tin nhân viên ",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+                }
+                if (res.Code == -6) {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Không để trống...",
+                        text: "Vui lòng chọn ảnh nhân viên",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+                } if (res.Code == -7) {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Không để trống...",
+                        text: "Dữ liễu rỗng",
                         /*footer: '<a href="#">Why do I have this issue?</a>'*/
                     });
                 }
@@ -192,7 +224,7 @@
                     Swal.fire({
                         icon: "warning",
                         title: "Lỗi tìm...",
-                        text: "Đơn hàng lập lại 2 lần ",
+                        text: "Lỗi hệ thống máy chủ",
                         /*footer: '<a href="#">Why do I have this issue?</a>'*/
                     });
                 }
@@ -200,7 +232,33 @@
 
         }
 
-       
+        function submitForm() {
+            // Validate form
+            if (!validateForm()) {
+                return;
+            }
+
+            
+            var form = document.getElementById('myForm');
+            var formData = new FormData(form);
+
+           
+            $.ajax({
+                url: '/Staff/Add',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                   
+                    OnSuccessCO(response);
+                },
+                error: function (error) {
+                  
+                    OnFailure(error);
+                }
+            });
+        }
 
 
 
@@ -260,7 +318,7 @@
                                         <label for="middle-name" class="text-muted">Số điện thoại</label>
                                         <div class="form-group">
 
-                                            <input type="text" name="SDT" id="SDT" required class="form-control" autocomplete="off" placeholder="Số điện thoại" />
+                                            <input type="number" name="SDT" id="SDT" required class="form-control" autocomplete="off" placeholder="Số điện thoại" />
                                             @Html.ValidationMessageFor(model => model.SDT, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -271,7 +329,7 @@
                                         <label for="surname-name" class="text-muted">Căn cước công dân</label>
                                         <div class="form-group">
 
-                                            <input type="text" name="CCCD" id="CCCD" required class="form-control" autocomplete="off" placeholder="Căn cước công dân" />
+                                            <input type="number" name="CCCD" id="CCCD" required class="form-control" autocomplete="off" placeholder="Căn cước công dân" />
                                             @Html.ValidationMessageFor(model => model.CCCD, "", new { @class = "text-danger" })
 
                                         </div>
@@ -374,9 +432,9 @@
 
                                                 <label>Giới tính</label>
                                                 <select class="form-control" id="drTypePayment" name="GioiTinh">
-                                                    <option value="0" selected>Giới tính</option>
-                                                    <option value="1" id="chuyenkhoan">Nam</option>
-                                                    <option value="2" id="chuyenkhoan">Nữ</option>
+                                                   
+                                                    <option value="Nam" id="chuyenkhoan">Nam</option>
+                                                    <option value="Nữ" id="chuyenkhoan">Nữ</option>
 
                                                 </select>
 

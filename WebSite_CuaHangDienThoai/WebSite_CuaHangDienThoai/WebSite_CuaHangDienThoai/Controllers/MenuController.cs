@@ -17,15 +17,49 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return View();
         }
 
+        //public ActionResult MenuLeft(int? id)
+        //{
+        //    if (id != null)
+        //    {
+        //        ViewBag.CateId = id;
+        //    }
+        //    var item = db.tb_ProductCategory.ToList();
+        //    return PartialView("_MenuLeft", item);
+        //}
+
         public ActionResult MenuLeft(int? id)
         {
             if (id != null)
             {
                 ViewBag.CateId = id;
             }
-            var item = db.tb_ProductCategory.ToList();
-            return PartialView("_MenuLeft", item);
+
+            // Lấy tất cả các danh mục
+            var allCategories = db.tb_ProductCategory.ToList();
+
+            // Lấy các danh mục "Tai nghe", "Cáp sạc", "Ốp lưng"
+            var accessoryCategories = db.tb_ProductCategory
+                                        .Where(pc => pc.Title == "Tai nghe" ||
+                                                     pc.Title == "Cáp sạc" ||
+                                                     pc.Title == "Ốp lưng")
+                                        .Select(pc => pc.ProductCategoryId)
+                                        .ToList();
+
+            // Lấy các sản phẩm từ các danh mục trên
+            var accessories = db.tb_Products
+                                .Where(p => accessoryCategories.Contains((int)p.ProductCategoryId))
+                                .ToList();
+
+            // Tạo ViewModel để truyền dữ liệu
+            var viewModel = new MenuLeftViewModel
+            {
+                AllCategories = allCategories,
+                Accessories = accessories
+            };
+
+            return PartialView("_MenuLeft", viewModel);
         }
+
         public ActionResult MenuBrand(int? id)
         {
             if (id != null)

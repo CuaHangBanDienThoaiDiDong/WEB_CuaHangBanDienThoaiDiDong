@@ -145,8 +145,12 @@
 
 <section class="content">
     <div class="card mb-4">
-        <div class="card-header">Tất cả đơn hàng</div>
-        <div class="card-body p-0">
+        <div class="card-header">
+            Tất cả đơn hàng
+            <span>Ngày đặt:<input type="datetime-local" id="ngayxuat" onchange="getOrderNewToDay()" /></span>
+
+        </div>
+        <div class="card-body p-0" id="loadData">
             <!-- Billing history table-->
             <div class="table-responsive table-billing-history">
                 <table class="table mb-0">
@@ -219,6 +223,20 @@
 @section scripts{
     <script>
 
+        function getOrderNewToDay() {
+            var ngayxuat = $('#ngayxuat').val(); // Sử dụng jQuery để lấy giá trị của input datetime-local
+            $.ajax({
+                url: '/Admin/Order/GetOrderAll', // Địa chỉ URL của action trong controller
+                type: 'GET',
+                data: { ngayxuat: ngayxuat },
+                success: function (data) {
+                    $('#loadData').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+                }
+            });
+        }
 
 
 

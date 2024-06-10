@@ -55,21 +55,21 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
         //Goi y khi tim san phảm
-        public ActionResult SuggestTop(string searchString)
-        {
+        //public ActionResult SuggestTop(string searchString)
+        //{
 
-            if (!string.IsNullOrEmpty(searchString))
-            {
+        //    if (!string.IsNullOrEmpty(searchString))
+        //    {
 
-                var products = db.tb_Products.Where(p => p.Title.Contains(searchString)).Take(5).ToList();
-                ViewBag.products = products;
-                return PartialView(products);
-            }
-            else
-            {
-                return PartialView(null);
-            }
-        }
+        //        var products = db.tb_Products.Where(p => p.Title.Contains(searchString)).Take(5).ToList();
+        //        ViewBag.products = products;
+        //        return PartialView(products);
+        //    }
+        //    else
+        //    {
+        //        return PartialView(null);
+        //    }
+        //}
 
 
         [HttpGet]

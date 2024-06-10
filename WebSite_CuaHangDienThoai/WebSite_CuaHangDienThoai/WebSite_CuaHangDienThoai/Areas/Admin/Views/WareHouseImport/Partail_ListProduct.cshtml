@@ -14,13 +14,13 @@
                     @*<th><input type="checkbox" id="SelectAll" /></th>*@
                     <th>STT</th>
                     <th>Hình ảnh</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Màu</th>
+                    <th>Sản phẩm</th>
+                 
                     <th>Loại sản phẩm</th>
                     @*<th>Giá nhập</th>*@
                     <th>Số lượng</th>
 
-                    <th>Dung lượng</th>
+                    
                     <th></th>
                 </tr>
             </thead>
@@ -68,8 +68,12 @@
                                 <td class="text-center">
                                     <img class="imgproduct" data-id="@item.ProductDetailId" src="@imgSrc" width="50" />
                                 </td>
-                                <td class="text-center"><a href="/admin/Products/Detail/@item.ProductDetailId" style="color:black"> @item.ProductName</a></td>
-                                <td class="text-center">@item.Color</td>
+                                <td class="text-center">
+                                <a href="/admin/Products/Detail/@item.ProductDetailId" style="color:black"> <span class="text-danger">@item.ProductName</span>
+                                  <br />  <span>@item.Color/@Capacity</span>
+                                    </a>
+                                </td>
+                              
                                 <td>@item.Category</td>
                                 @*<td>
                                     @Common.FormatNumber(item.Price)
@@ -81,7 +85,7 @@
                                     </form>
                                 </td>
 
-                                <td>@Capacity</td>
+                               
                                 <td>
                                     <button class="red_button btn-danger add_to_cart_button  border-0 btn-0 btnDeleteNhapKhoSanpham" data-id="@item.ProductDetailId">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">

@@ -13,7 +13,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebSite_CuaHangDienThoai.Models;
 using WebSite_CuaHangDienThoai.Models.Token.Client;
-using System.IdentityModel.Tokens.Jwt; // Thêm namespace này
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Web.Configuration;
 using Microsoft.Extensions.Configuration;

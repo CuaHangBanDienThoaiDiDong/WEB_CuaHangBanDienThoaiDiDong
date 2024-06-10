@@ -8,7 +8,7 @@
 
 
 
-   
+
     foreach (var item in Model)
     {
         var Capacity = "";
@@ -20,29 +20,41 @@
 
         Capacity = index != -1 ? dungLuongOptions[index] : item.tb_ProductDetail.Capacity + " Gb";
 
-
-
-
-
-
-
-        byte[] strImg = null;
         var CheckImage = item.tb_ProductDetail.tb_ProductDetailImage.SingleOrDefault(x => x.IsDefault == true);
 
-        if (CheckImage != null)
-        {
-            strImg = CheckImage.Image;
-        }
 
-        string imgSrc = "";
-        if (strImg != null && strImg.Length > 0)
-        {
-            string base64String = Convert.ToBase64String(strImg);
-            imgSrc = $"data:image;base64,{base64String}";
-        }
+
+
+
 <tr>
 
-    <td><img src="@imgSrc" class="img-cart"></td>
+    <td>
+        
+        @if (CheckImage != null)
+        {
+
+            byte[] strImg = null;
+
+
+            if (CheckImage != null)
+            {
+                strImg = CheckImage.Image;
+            }
+
+            string imgSrc = "";
+            if (strImg != null && strImg.Length > 0)
+            {
+                string base64String = Convert.ToBase64String(strImg);
+                imgSrc = $"data:image;base64,{base64String}";
+            }
+            <img src="@imgSrc" class="img-cart w-50 h-50">
+        }
+        else
+        {
+            <img src="~/images/Logo/LogoWeb.png" />
+        }
+
+    </td>
     <td><strong>@item.tb_ProductDetail.tb_Products.Title</strong><p>@item.tb_ProductDetail.Color</p></td>
     <td>@Capacity</td>
     <td>

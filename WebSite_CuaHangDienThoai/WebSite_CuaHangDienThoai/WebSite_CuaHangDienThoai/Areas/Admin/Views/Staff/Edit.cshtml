@@ -56,7 +56,9 @@
             @Html.HiddenFor(model => model.CreatedBy)
             @Html.HiddenFor(model => model.Clock)
             @Html.HiddenFor(model => model.Code)
+  
             @Html.HiddenFor(model => model.Image, new { id = "currentImage" })
+
 
             <div class="card">
                 @if (Model != null)

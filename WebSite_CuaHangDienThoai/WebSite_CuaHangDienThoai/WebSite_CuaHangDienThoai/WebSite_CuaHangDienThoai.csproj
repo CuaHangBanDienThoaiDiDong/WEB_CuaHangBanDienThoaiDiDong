@@ -3661,7 +3661,6 @@
     <Content Include="Content\ckeditor\ckeditor\skins\moono\readme.md" />
     <Content Include="Areas\Admin\Views\ProductCategory\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCategory\Add.cshtml" />
-    <Content Include="Areas\Admin\Views\ProductCategory\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCompany\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCompany\Add.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Index.cshtml" />
@@ -3882,12 +3881,26 @@
     <Content Include="Areas\Admin\Views\Staff\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\Staff\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Staff\Partial_Index.cshtml" />
+    <Content Include="Areas\Admin\Views\AccountClient\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\AccountClient\Partial_Order.cshtml" />
+    <Content Include="Areas\Admin\Views\AccountClient\Partail_Ordertail.cshtml" />
+    <Content Include="Areas\Admin\Views\AccountClient\Partail_TrangThaiDonHang.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\GetOrderNewToDay.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\GetOrderAll.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCategory\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_LayoutSeller.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\Partail_ProductDetail.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\Partial_LeftIndex.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\Suggest.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
+    <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP3.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - Web Deploy1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - Web Deploy2.pubxml" />
+    <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - Web Deploy3.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -4200,6 +4213,7 @@
     <Compile Include="Models\EditStaffViewModel.cs" />
     <Compile Include="Models\EditVoucherViewModel.cs" />
     <Compile Include="Models\ImportWareHouse.cs" />
+    <Compile Include="Models\MenuLeftViewModel.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -4443,7 +4457,6 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Views\HomePaeg\" />
     <Folder Include="Areas\Admin\Views\ProductDetailImage\" />
-    <Folder Include="Areas\Admin\Views\Seller\" />
     <Folder Include="Areas\Seller\Data\" />
     <Folder Include="Models\NewFolder1\" />
     <Folder Include="Uploads\flash\" />

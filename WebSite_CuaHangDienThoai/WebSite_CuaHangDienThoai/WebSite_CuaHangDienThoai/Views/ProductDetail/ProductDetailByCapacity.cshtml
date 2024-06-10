@@ -174,14 +174,14 @@
 
 
                         @*sản phẩm cũ tương tự*@
-                        <br />
+                        <!--<br />
                         <div class="row border rounded-3 box_oldproduct box_oldproductV2 p-3 d-flex align-items-center" style="display: flex; flex-wrap: wrap; background-color: white">
                             <div class="col-4">
                                 <a href="#">
                                     <img src="~/Uploads/images/SanPham/iphone-15-pro-max-blue-1-1.jpg" style="width: 80%; height: 90% " class="mx-auto" />
                                 </a>
-                            </div>
-                            <div class="col-8 information-oldProduct">
+                            </div>-->
+                            @*<div class="col-8 information-oldProduct">
                                 <h3 class="viewmore-oldProduct" style=" font-size: 14px; line-height: 1.8 ">Xem sản phẩm cũ </h3>
                                 <a href="#" style="color: #2f80ed; text-decoration: none; transition: .2s  ">@Model.tb_Products.Title @Capacity </a>
                                 <div class="price-discount-warranty">
@@ -197,8 +197,8 @@
                                         Bảo hành 5.5 tháng chính hãng
                                     </span>
                                 </div>
-                            </div>
-                        </div>
+                            </div>*@
+                        <!--</div>-->
 
                         @*Phụ kiẹn cho sản phẩm*@
                         <br />
@@ -289,15 +289,15 @@
                                     }
 
                                 </div>
-                                        }
-                                        else
-                                        {
+                            }
+                            else
+                            {
                                 <span class="product_price">
 
                                     @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.Price)đ
                                 </span>
 
-                                        }
+                            }
                         </div>
 
 
@@ -327,10 +327,9 @@
 
 
 
-
                         @*/* start  Cấu hình  sản phầme*/*@
-                        <div class="bg-light">
-                            <div class="p-3">
+                        <div class="bg-light    border rounded-3  acc needbuy  align-items-center">
+                            <div class="p-3 col-12">
                                 <div class="row ">
                                     <div class="col-md-12">
                                         <h5 class="align-items-center"><b style="color:black;text-align:center">Cấu hình @Model.tb_Products.tb_ProductCategory.Title @Model.tb_Products.Title @Capacity</b></h5>
@@ -341,13 +340,13 @@
                                     <div class="col-md-12">
                                         <table class="table table-striped">
                                             @*<thead>
-                                                    <tr>
+                                <tr>
 
-                                                        <th scope="col">First</th>
-                                                        <th scope="col">Last</th>
+                                    <th scope="col">First</th>
+                                    <th scope="col">Last</th>
 
-                                                    </tr>
-                                                </thead>*@
+                                </tr>
+                            </thead>*@
                                             <tbody>
                                                 <tr>
 
@@ -359,6 +358,12 @@
 
                                                     <td>Chip:</td>
                                                     <td>@Model.tb_Products.CPU</td>
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td>Tốc độ CPU:</td>
+                                                    <td>@Model.tb_Products.CPUspeed </td>
 
                                                 </tr>
                                                 <tr>
@@ -395,18 +400,49 @@
                                                     <td>@Model.tb_Products.tb_ProductCompany.Title </td>
 
                                                 </tr>
+                                                <tr>
+
+                                                    <td>GPS:</td>
+                                                    <td>@Model.tb_Products.GPS </td>
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td>Bluetooth:</td>
+                                                    <td>@Model.tb_Products.Bluetooth </td>
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td>Sim:</td>
+                                                    <td>@Model.tb_Products.Sim </td>
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td> Mạng di động:</td>
+                                                    <td>@Model.tb_Products.MobileNetwork </td>
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td>Cổng kết nối/sạc:</td>
+                                                    <td>@Model.tb_Products.Connector </td>
+
+                                                </tr>
+
 
                                             </tbody>
                                         </table>
 
                                     </div>
-                                    <button type="submit" class="btn btn-outline-primary">
-                                        Xem thêm cấu hình chi tiết
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-caret-right-fill" style="color:blue" viewBox="0 0 16 16">
-                                            <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-                                        </svg>
+                                    @*<button type="submit" class="btn btn-outline-primary">
+                        Xem thêm cấu hình chi tiết
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-caret-right-fill" style="color:blue" viewBox="0 0 16 16">
+                            <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                        </svg>
 
-                                    </button>
+                    </button>*@
 
                                 </div>
                             </div>
@@ -421,51 +457,51 @@
 
 
                         @*<div id="thoi-gian-giao-hang" class="xtoydays rslt none">
-                                <div class="quickdelivery ">
-                                    <div class="deliverytime">
-                                        <p>
-                                            <a href="javascript:" onclick="OpenLocation(true)" class="onoffdelibox unline" class="text-blue">
+            <div class="quickdelivery ">
+                <div class="deliverytime">
+                    <p>
+                        <a href="javascript:" onclick="OpenLocation(true)" class="onoffdelibox unline" class="text-blue">
 
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
-                                                    <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10" />
-                                                    <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-                                                </svg>
-
-
-                                                Chọn địa chỉ nhận hàng
-                                            </a>
-                                            để biết thời gian giao.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                                <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10" />
+                                <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                            </svg>
 
 
-                            <ul class="star_rating">
-                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                            </ul>
-                            <div class="product_color">
-                                <span>Select Color:</span>
-                                <ul>
-                                    <li style="background: #e54e5d">1</li>
-                                    <li style="background: #252525"></li>
-                                    <li style="background: #60b3f3"></li>
-                                </ul>
-                            </div>
-                            <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
-                                <span>Số lượng:</span>
-                                <div class="quantity_selector">
-                                    <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                    <span id="quantity_value">1</span>
-                                    <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                </div>
-                                <div class="red_button add_to_cart_button "><a href="#">add to cart</a></div>
-                                <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
-                            </div>*@
+                            Chọn địa chỉ nhận hàng
+                        </a>
+                        để biết thời gian giao.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <ul class="star_rating">
+            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+            <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+        </ul>
+        <div class="product_color">
+            <span>Select Color:</span>
+            <ul>
+                <li style="background: #e54e5d">1</li>
+                <li style="background: #252525"></li>
+                <li style="background: #60b3f3"></li>
+            </ul>
+        </div>
+        <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
+            <span>Số lượng:</span>
+            <div class="quantity_selector">
+                <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                <span id="quantity_value">1</span>
+                <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
+            </div>
+            <div class="red_button add_to_cart_button "><a href="#">add to cart</a></div>
+            <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
+        </div>*@
                     </div>
                 </div>
             </div>

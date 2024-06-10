@@ -39,6 +39,14 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
+
+
+
+
+
+
+
+
         public ActionResult OrderNew(int? page)
         {
             if (Session["user"] == null)
@@ -124,9 +132,58 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
         }
 
+        public ActionResult GetOrderNewToDay(DateTime ngayxuat)
+        {
+            // Lấy ngày từ datetime-local
+            DateTime selectedDate = ngayxuat;
+
+            // Lấy ngày bắt đầu và ngày kết thúc của ngày đã chọn
+            DateTime startDate = selectedDate.Date;
+            DateTime endDate = startDate.AddDays(1); // Tăng ngày lên 1 để lấy đến cuối ngày
+
+            // Truy vấn để lấy danh sách đơn hàng trong khoảng thời gian startDate và endDate
+            var orders = db.tb_Order
+                .Where(o => o.CreatedDate >= startDate && o.CreatedDate < endDate)
+                .ToList();
+
+            if (orders != null && orders.Count > 0)
+            {
+                ViewBag.Count = orders.Count;
+                return PartialView(orders);
+            }
+            else
+            {
+                // Trả về partial view mặc định nếu không có đơn hàng nào
+                return PartialView();
+            }
+        }
 
 
+        public ActionResult GetOrderAll(DateTime ngayxuat)
+        {
+            // Lấy ngày từ datetime-local
+            DateTime selectedDate = ngayxuat;
 
+            // Lấy ngày bắt đầu và ngày kết thúc của ngày đã chọn
+            DateTime startDate = selectedDate.Date;
+            DateTime endDate = startDate.AddDays(1); // Tăng ngày lên 1 để lấy đến cuối ngày
+
+            // Truy vấn để lấy danh sách đơn hàng trong khoảng thời gian startDate và endDate
+            var orders = db.tb_Order
+                .Where(o => o.CreatedDate >= startDate && o.CreatedDate < endDate)
+                .ToList();
+
+            if (orders != null && orders.Count > 0)
+            {
+                ViewBag.Count = orders.Count;
+                return PartialView(orders);
+            }
+            else
+            {
+                // Trả về partial view mặc định nếu không có đơn hàng nào
+                return PartialView();
+            }
+        }
 
 
 

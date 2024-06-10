@@ -1,0 +1,105 @@
+﻿
+<div class="">
+    <form id="search-form col-12">
+        <div class="input-group border border-1 rounded-1 mb-3">
+            <input type="text" class="form-control" style="border:none" placeholder="Tìm tên sản phẩm" id="searchString" name="searchString">
+            <div class="input-group-append">
+                <button class="btn" id="clearinput">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-octagon" viewBox="0 0 16 16">
+                        <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1z" />
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                    </svg>
+                </button>
+                <button class="btn btn-secondary" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    @*<div class="col-lg-12 text-right nav-search search-suggestions" style="display: block">
+        <p>THuan</p>
+    </div>*@
+    <hr />
+
+    <div class="loadProduct" id="loadProduct">
+        @*@Html.Action("Partail_ProductDetail", "Seller")*@
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Sự kiện click nút clear
+        $('#clearinput').click(function () {
+            $("#searchString").val(""); // Xóa nội dung trong ô tìm kiếm
+            searchSuggestions.css("display", "none");
+            $.ajax({
+                url: "/admin/seller/Partail_ProductDetail",
+                type: "get",
+
+                success: function (response) {
+                    $(".loadProduct").html(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responsetext);
+                }
+            });
+        });
+
+        // Sự kiện khi nhập vào ô tìm kiếm
+        $("#searchString").on("input", function () {
+            var inputValue = $(this).val().trim();
+            var searchSuggestions = $(".search-suggestions");
+
+            if (inputValue !== "") {
+                searchSuggestions.css("display", "block"); // Hiển thị khung gợi ý
+            } else {
+                searchSuggestions.css("display", "none"); // Ẩn khung gợi ý nếu ô input rỗng
+            }
+        });
+
+        // Sự kiện khi nhập vào ô tìm kiếm bằng ID #searchString
+        $("#searchString").on("input", function () {
+            var inputvalue = $(this).val().trim();
+            if (inputvalue !== "") {
+                $.ajax({
+                    url: "/admin/seller/Suggest",
+                    data: { searchString: inputvalue }, // Truyền tham số tìm kiếm
+                    type: "get",
+                    success: function (response) {
+                        $(".loadProduct").html(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responsetext);
+                    }
+                });
+            }
+        });
+
+
+
+
+
+    
+
+
+        loadData();
+    });
+    function loadData() {
+        var searchString = $("#searchString").val().trim();
+        $.ajax({
+            url: "/admin/seller/Partail_ProductDetail",
+            type: "get",
+           
+            success: function (response) {
+                $(".loadProduct").html(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responsetext);
+            }
+        });
+    }
+
+</script>

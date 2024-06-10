@@ -10,6 +10,8 @@ using WebSite_CuaHangDienThoai.Models;
 using System.IO;
 using System.Windows.Forms;
 using PagedList;
+using System.Data.Entity.Validation;
+using System.Data.Entity;
 
 namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 {
@@ -141,139 +143,120 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
         }
-
-     
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Add(tb_Staff model, tb_Role modelPhanQuyen, Admin_Add_Staff_ToKen req, HttpPostedFileBase newImage)
         {
             var code = new { Success = false, Code = -1, Url = "" };
-            try {
-                if (req.SDT != null && req.Name != null && req.CCCD != null && req.Email != null && req.DiaChi != null && req.GioiTinh != null && req.Luong > 0)
-
+            try
+            {
+                if (ModelState.IsValid)
                 {
-                    var checkMail = db.tb_Staff.FirstOrDefault(row => row.Email == req.Email);
-                    var checkPhone = db.tb_Staff.FirstOrDefault(row => row.PhoneNumber == req.SDT);
-                    if (checkMail == null)
+                    if (req.SDT != null && req.Name != null && req.CCCD != null && req.Email != null && req.DiaChi != null && req.GioiTinh != null && req.Luong > 0)
                     {
-                        if (checkPhone == null)
+                        var checkMail = db.tb_Staff.FirstOrDefault(row => row.Email == req.Email);
+                        var checkPhone = db.tb_Staff.FirstOrDefault(row => row.PhoneNumber == req.SDT);
+                        if (checkMail == null)
                         {
-                            tb_Staff nvSession = (tb_Staff)Session["user"];
-                            var item = db.tb_Staff.SingleOrDefault(x => x.Code == nvSession.Code);
-                            if (item != null)
+                            if (checkPhone == null)
                             {
-                                if (req.FunctionId != null)
+                                if (newImage != null && newImage.ContentLength > 0) 
                                 {
-                                    string pass = "123";
-                                    if (newImage != null && newImage.ContentLength > 0)
+                                    tb_Staff nvSession = (tb_Staff)Session["user"];
+                                    var item = db.tb_Staff.SingleOrDefault(x => x.Code == nvSession.Code);
+                                    if (item != null)
                                     {
-                                        try
+                                        if (req.FunctionId != null)
                                         {
-
+                                            string pass = "123";
                                             byte[] imageData = null;
                                             using (var binaryReader = new BinaryReader(newImage.InputStream))
                                             {
                                                 imageData = binaryReader.ReadBytes(newImage.ContentLength);
                                             }
-
                                             model.Image = imageData;
+
+
+                                            Random ran = new Random();
+                                            string Code = "2" + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9);
+                                            model.Code = Code.Trim();
+                                            model.PhoneNumber = req.SDT;
+                                            model.NameStaff = req.Name.Trim();
+                                            model.CitizenIdentificationCard = req.CCCD;
+                                            model.Email = req.Email;
+                                            model.Birthday = req.Birthday;
+                                            model.Location = req.DiaChi;
+                                            model.DayofWork = DateTime.Now;
+                                            model.Sex = req.GioiTinh;
+                                            model.Wage = req.Luong;
+                                            model.CreatedBy = nvSession.NameStaff.Trim();
+                                            model.CreatedDate = DateTime.Now;
+                                            model.ModifiedDate = DateTime.Now;
+                                            model.Clock = false;
+                                            model.FunctionId = req.FunctionId;
+                                            model.StoreId = req.StoreId;
+                                            model.Password = MaHoaPass(pass);
+
+                                            db.tb_Staff.Add(model);
+                                            db.SaveChanges();
+
+                                            int NhaVienIdNew = model.StaffId;
+                                            modelPhanQuyen.StaffId = NhaVienIdNew;
+                                            modelPhanQuyen.FunctionId = (int)req.FunctionId;
+
+                                            db.tb_Role.Add(modelPhanQuyen);
+                                            db.SaveChanges();
+
+                                            //Đăng ký nhân viên thành công
+                                            code = new { Success = true, Code = 1, Url = "" };
                                         }
-                                        catch (Exception ex)
+                                        else
                                         {
-                                            code = new { Success = false, Code = -5, Url = "" };
-                                            return Json(code);
+                                            //"Không thấy chức năng cho nhân viên mới";
+                                            code = new { Success = false, Code = -4, Url = "" };
                                         }
-
-
                                     }
-
-                                    Random ran = new Random();
-
-                                    string Code = "2" + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9) + ran.Next(0, 9);
-                                    model.Code = Code.Trim();
-                                    model.PhoneNumber = req.SDT;
-                                    model.NameStaff = req.Name.Trim();
-                                    model.Password = MaHoaPass(pass);
-
-                                    model.CitizenIdentificationCard = req.CCCD;
-                                    model.Email = req.Email;
-                                    model.Birthday = req.Birthday;
-                                    model.Location = req.DiaChi;
-                                    model.Wage = req.Luong;
-                                    model.FunctionId = req.FunctionId;
-                                    model.StoreId = req.StoreId;
-                                    model.Clock = false;
-                                    model.CreatedBy = nvSession.NameStaff;
-                                    model.CreatedDate = DateTime.Now;
-                                    model.DayofWork = DateTime.Now;
-                                    model.ModifiedDate = DateTime.Now;
-                                    model.Sex = req.GioiTinh;
-
-                                    //if (req.GioiTinh == "Nam")
-                                    //{
-                                    //    model.Sex = "Nam";
-                                    //}
-                                    //else
-                                    //{
-                                    //    model.Sex = "Nữ";
-                                    //}
-
-                                    db.tb_Staff.Add(model);
-                                    db.SaveChanges();
-
-
-                                    int NhaVienIdNew = model.StaffId;
-                                    modelPhanQuyen.StaffId = NhaVienIdNew;
-                                    modelPhanQuyen.FunctionId = (int)req.FunctionId;
-
-                                    db.tb_Role.Add(modelPhanQuyen);
-                                    db.SaveChanges();
-
-
-
-                                    //Đăng ký nhân viên thành công
-                                    code = new { Success = true, Code = 1, Url = "" };
-
-
-
+                                    else
+                                    {
+                                        ViewBag.error = "Không thấy Session nhân viên hiện tại";
+                                    }
                                 }
                                 else
                                 {
-                                    //"Không thấy chức năng cho nhân viên mới";
-                                    code = new { Success = false, Code = -4, Url = "" };
+                                    code = new { Success = false, Code = -6, Url = "" };
+                                   
                                 }
+                               
                             }
                             else
-                            { ViewBag.error = "Không thấy Session nhân viên hiện tại"; }
+                            {
+                                // "Số điện thoại đã tồn tại";
+                                code = new { Success = false, Code = -3, Url = "" };
+                            }
                         }
                         else
                         {
-                            // "Số điện thoại đã tồn tại";
-                            code = new { Success = false, Code = -3, Url = "" };
+                            //"Email đã tồn tại";
+                            code = new { Success = false, Code = -2, Url = "" };
                         }
-
                     }
                     else
                     {
-                        //"Email đã tồn tại";
-                        code = new { Success = false, Code = -2, Url = "" };
+                        //"Vui lòng nhậ đầy đủ thông tin nhân viên ";
+                        code = new { Success = false, Code = -5, Url = "" };
                     }
                 }
-
-                else
+                else 
                 {
-                    //"Vui lòng nhậ đầy đủ thông tin nhân viên ";
-                    code = new { Success = false, Code = -5, Url = "" };
+                    code = new { Success = false, Code = -7, Url = "" };
+                    return Json(code);
                 }
+             
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 code = new { Success = false, Code = -100, Url = "" };
             }
-           
-
-          
 
             ViewBag.ChucNang = new SelectList(db.tb_Function.ToList(), "IdChucNang", "TenChucNang");
             ViewBag.Store = new SelectList(db.tb_Store.ToList(), "StoreId", "Location");
@@ -361,7 +344,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                     Password = item.Password,
                                     Birthday = item.Birthday,
                                     Location = item.Location,
-                                    DayofWork = item.DayofWork,
+                                    DayofWork = (DateTime)item.DayofWork,
                                     Wage = item.Wage,
                                     Sex = item.Sex,
                                     CreatedBy = item.CreatedBy,
@@ -370,7 +353,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                     StoreId = (int)item.StoreId,
                                     Clock = (bool)item.Clock,
                                     Image = item.Image,
-
+                              
                                 };
                                 ViewBag.ChucNang = new SelectList(db.tb_Function.ToList(), "FunctionId", "TitLe");
                                 ViewBag.Store = new SelectList(db.tb_Store.ToList(), "StoreId", "Location");
@@ -392,38 +375,64 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
           
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EditStaffViewModel item, HttpPostedFileBase newImage) {
-            using (var dbContextTransaction = db.Database.BeginTransaction()) 
+        public ActionResult Edit(EditStaffViewModel item, HttpPostedFileBase newImage)
+        {
+            using (var dbContextTransaction = db.Database.BeginTransaction())
             {
-                try 
+                try
                 {
-                    if (ModelState.IsValid) 
+                    if (ModelState.IsValid)
                     {
-                        
                         var staff = db.tb_Staff.Find(item.Id);
                         if (staff != null)
                         {
+                            tb_Staff nvSession = (tb_Staff)Session["user"];
+
                             staff.StaffId = item.Id;
-                            staff.Code = item.Code;
+                            staff.Password = item.Password;
+                            staff.DayofWork = item.DayofWork;
+                            if (item.CreatedBy == null) 
+                            {
+                                staff.CreatedBy = nvSession.NameStaff;
+
+                            }
+                            else
+                            {
+                                staff.CreatedBy = item.CreatedBy;
+                            }
+                          
+                            staff.CreatedDate=item.CreatedDate;
+                            staff.Clock = item.Clock;
+                            staff.Code = item.Code; 
+
+                            
                             staff.PhoneNumber = item.PhoneNumber;
                             staff.NameStaff = item.NameStaff;
                             staff.CitizenIdentificationCard = item.CitizenIdentificationCard;
                             staff.Email = item.Email;
-                            staff.Password = item.Password;
-                            staff.Birthday = (DateTime)item.Birthday;
                             staff.Location = item.Location;
                             staff.DayofWork = item.DayofWork;
                             staff.Wage = item.Wage;
                             staff.Sex = item.Sex;
-                            staff.CreatedBy = item.CreatedBy;
-                            staff.CreatedDate = item.CreatedDate;
+                            staff.ModifiedDate = DateTime.Now;
+                            staff.ModifiedBy = nvSession.NameStaff;
                             staff.FunctionId = (int)item.FunctionId;
                             staff.StoreId = (int)item.StoreId;
 
-                            staff.Clock = (bool)item.Clock;
+                            // Kiểm tra và gán giá trị cho Birthday
+                            if (item.Birthday != null)
+                            {
+                                staff.Birthday = (DateTime)item.Birthday;
+                            }
+                            else
+                            {
+                                staff.Birthday = DateTime.Now; // Gán mặc định nếu không có giá trị
+                            }
 
+                            // Kiểm tra và gán giá trị cho Image
                             if (newImage != null)
                             {
                                 byte[] imageData = null;
@@ -431,41 +440,66 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                 {
                                     imageData = binaryReader.ReadBytes(newImage.ContentLength);
                                 }
-
                                 staff.Image = imageData;
                             }
                             else
                             {
                                 staff.Image = item.Image;
                             }
-                            
-                            db.Entry(staff).State = System.Data.Entity.EntityState.Modified;
+
+                            db.Entry(staff).State = EntityState.Modified;
                             db.SaveChanges();
 
                             var role = db.tb_Role.FirstOrDefault(x => x.StaffId == item.Id);
-                            role.FunctionId = (int)item.FunctionId;
-                            db.Entry(role).State = System.Data.Entity.EntityState.Modified;
+                            if (role != null)
+                            {
+                               
+                                db.tb_Role.Remove(role);
+                                db.SaveChanges();
+                            }
+
+                            
+                            db.tb_Role.Add(new tb_Role
+                            {
+                                StaffId = item.Id,
+                                FunctionId = (int)item.FunctionId,
+                                Note = "Updated role" 
+                            });
                             db.SaveChanges();
+
                             dbContextTransaction.Commit();
                             return Json(new { success = true, code = 1 });
                         }
-                        else 
+                        else
                         {
-                            return Json(new { success = false, code = -2 });
+                            return Json(new { success = false, code = -2, message = "Staff not found" });
                         }
                     }
                     else
                     {
-                        return Json(new { success = false, code = -3 });
+                        return Json(new { success = false, code = -3, message = "Invalid model state" });
                     }
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    dbContextTransaction.Rollback();
+                    var errorMessages = ex.EntityValidationErrors
+                        .SelectMany(x => x.ValidationErrors)
+                        .Select(x => x.ErrorMessage);
+
+                    var fullErrorMessage = string.Join("; ", errorMessages);
+                    var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
+
+                    return Json(new { success = false, code = -100, error = exceptionMessage });
                 }
                 catch (Exception ex)
                 {
                     dbContextTransaction.Rollback();
-                    return Json(new { success = false, code = -100 });
-                } 
+                    return Json(new { success = false, code = -100, error = ex.Message });
+                }
             }
         }
+
 
         public ActionResult IsLock(int? id)
         {

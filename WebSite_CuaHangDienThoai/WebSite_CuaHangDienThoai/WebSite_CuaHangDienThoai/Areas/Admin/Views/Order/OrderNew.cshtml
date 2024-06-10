@@ -157,8 +157,11 @@
 <section class="content">
 
     <div class="card mb-4">
-        <div class="card-header">Billing History</div>
-        <div class="card-body p-0">
+       <div class="card-header">
+           <span>Ngày xuất:<input type="datetime-local" id="ngayxuat" onchange="getOrderNewToDay()" /></span>
+          
+       </div>
+        <div class="card-body p-0" id="loadData">
             <!-- Billing history table-->
             <div class="table-responsive table-billing-history">
                 <table class="table mb-0">
@@ -235,36 +238,42 @@
 @section scripts{
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script>
-        $(document).ready(function () {
-            $('body').on('click', '.btnConFirm', function (e) {
-                e.preventDefault();
-                var btn = $(this);
-                var id = btn.data("id");
-                $.ajax({
-                    url: '/admin/order/IsComfrim',
-                    type: 'POST',
-                    data: { id: id },
-                    success: function (rs) {
-                        if (rs.success) {
-                            if (rs.IsComfrim) {
-                                btn.html("<i class='fa fa-check text-success'></i>");
-
-                            } else {
-                                btn.html("<i class='fas fa-times text-danger'></i>");
-                            }
+    $(document).ready(function () {
+        $('body').on('click', '.btnConFirm', function (e) {
+            e.preventDefault();
+            var btn = $(this);
+            var id = btn.data("id");
+            $.ajax({
+                url: '/admin/order/IsComfrim',
+                type: 'POST',
+                data: { id: id },
+                success: function (rs) {
+                    if (rs.success) {
+                        if (rs.Confirm) {
+                            btn.html("<i class='fa fa-check text-success'></i>");
+                        } else {
+                            btn.html("<i class='fas fa-times text-danger'></i>");
                         }
-
                     }
-                });
+                }
             });
-
         });
+    });
 
-
-
-
-
-
+        function getOrderNewToDay() {
+            var ngayxuat = $('#ngayxuat').val(); // Sử dụng jQuery để lấy giá trị của input datetime-local
+            $.ajax({
+                url: '/Admin/Order/GetOrderNewToDay', // Địa chỉ URL của action trong controller
+                type: 'GET',
+                data: { ngayxuat: ngayxuat },
+                success: function (data) {
+                    $('#loadData').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+                }
+            });
+        }
     </script>
 }
 

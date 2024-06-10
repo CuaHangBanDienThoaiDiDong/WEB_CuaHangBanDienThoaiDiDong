@@ -304,36 +304,6 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
-        //public ActionResult Edit(int id)
-        //{
-
-        //    if (Session["user"] == null)
-        //    {
-        //        return RedirectToAction("DangNhap", "Account");
-        //    }
-        //    else
-        //    {
-        //        var item = db.tb_Voucher.Find(id);
-        //        if (item != null)
-        //        {
-        //            var viewModel = new EditVoucherViewModel
-        //            {
-        //                VoucherId = item.VoucherId,
-        //                Title = item.Title,
-        //                UsedDate = item.UsedDate,
-        //                ModifiedDate = item.ModifiedDate,
-        //                Code = item.Code,
-        //                CreatedBy = item.CreatedBy,
-        //                CreatedDate = item.CreatedDate,
-        //                PhanTramGiaGiam = (int)item.PercentPriceReduction,
-        //                Quantity = (int)item.Quantity,
-        //            };
-        //            return View(viewModel);
-        //        }
-        //        return View();
-        //    }
-
-        //}
 
 
 
