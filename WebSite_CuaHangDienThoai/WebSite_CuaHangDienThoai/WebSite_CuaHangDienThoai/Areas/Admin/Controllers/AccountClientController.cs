@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.ModelBinding;
 using System.Web.Mvc;
 using WebSite_CuaHangDienThoai.Models;
 
@@ -11,7 +12,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 {
     public class AccountClientController : Controller
     {
-        CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();   
+        CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
         // GET: Admin/AccountClient
         public ActionResult Index()
         {
@@ -31,8 +32,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 else
                 {
 
-                    var items = db.tb_Customer.ToList ();
-                    if (items!=null)
+                    var items = db.tb_Customer.ToList();
+                    if (items != null)
                     {
                         ViewBag.Count = items.Count();
                         return View(items);
@@ -44,7 +45,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
 
 
-        public ActionResult Detail(int id) 
+        public ActionResult Detail(int id)
         {
 
 
@@ -64,7 +65,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 else
                 {
 
-                    if (id > 0) 
+                    if (id > 0)
                     {
                         var customer = db.tb_Customer.Find(id);
                         if (customer == null)
@@ -79,12 +80,12 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 }
 
             }
-          
+
         }
 
 
 
-        public ActionResult Partail_Index(int? page) 
+        public ActionResult Partail_Index(int? page)
         {
             if (Session["user"] == null)
             {
@@ -149,27 +150,27 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 }
                 return PartialView();
             }
-            else 
+            else
             {
                 return RedirectToAction("NonRole", "HomePage");
             }
-          
+
         }
         public ActionResult Partail_Ordertail(int id)
         {
             try
             {
-             
-                  
-                    var orderDetail = db.tb_OrderDetail.Where(x => x.OrderId == id).OrderByDescending(x => x.OrderId).ToList();
-                    if (orderDetail != null)
-                    {
-                        ViewBag.Count = orderDetail.Count();
-                        return PartialView(orderDetail);
-                    }
-                    return PartialView();
 
-              
+
+                var orderDetail = db.tb_OrderDetail.Where(x => x.OrderId == id).OrderByDescending(x => x.OrderId).ToList();
+                if (orderDetail != null)
+                {
+                    ViewBag.Count = orderDetail.Count();
+                    return PartialView(orderDetail);
+                }
+                return PartialView();
+
+
             }
             catch (Exception)
             {
@@ -183,7 +184,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         {
             try
             {
-                if (id > 0) 
+                if (id > 0)
                 {
                     var cheCheckORderDetail = db.tb_Order.Find(id);
                     if (cheCheckORderDetail != null)
@@ -207,9 +208,9 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 {
                     return PartialView();
                 }
-               
 
-               
+
+
             }
             catch (Exception)
             {
@@ -225,11 +226,11 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         {
             try
             {
-                var customer = db.tb_Customer.FirstOrDefault(c => c.CustomerId == id); 
+                var customer = db.tb_Customer.FirstOrDefault(c => c.CustomerId == id);
                 if (customer != null)
                 {
                     customer.Clock = !customer.Clock;
-                    db.SaveChanges(); 
+                    db.SaveChanges();
                     return Json(new { success = true, isActive = customer.Clock });
                 }
                 else
@@ -247,7 +248,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         {
             try
             {
-                var allClocksActive = db.tb_Customer.All(c => c.Clock==true);
+                var allClocksActive = db.tb_Customer.All(c => c.Clock == true);
                 return Json(new { success = true, allClocksActive = allClocksActive }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -261,7 +262,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         {
             try
             {
-                
+
                 var customers = db.tb_Customer.ToList();
                 foreach (var customer in customers)
                 {
@@ -301,6 +302,65 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
 
+
+
+
+
+        public ActionResult AddClient() 
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                return PartialView();
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult AddClient(Admin_TokenAddClient req)
+        {
+            using (var dbContextTransaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (Session["user"] == null)
+                    {
+                        return Json(new { success = false, code = -99, redirectTo = Url.Action("DangNhap", "Account") });
+                    }
+                    else
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            tb_Customer customer = new tb_Customer();
+                            customer.PhoneNumber = req.PhoneNumber;
+                            customer.CustomerName = req.CustomerName;
+                            customer.Email = req.Email;
+                            customer.NumberofPurchases += 1;
+
+                            db.tb_Customer.Add(customer);
+                            db.SaveChanges();
+                            dbContextTransaction.Commit();
+                            return Json(new { success = true, code = 1 });
+                        }
+                        else
+                        {
+                            return Json(new { success = true, code = -1 });//Không đủ dữ liệu
+                        }
+                    }
+
+                }
+
+
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+                    return Json(new { success = false, code = -100 });
+
+                }
+            }
+        }
 
 
 

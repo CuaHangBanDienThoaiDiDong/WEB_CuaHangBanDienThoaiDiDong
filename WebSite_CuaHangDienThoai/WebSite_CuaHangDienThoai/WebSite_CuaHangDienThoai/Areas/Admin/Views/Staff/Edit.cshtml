@@ -154,7 +154,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-inline ">
                                                     <label class="control-label mr-2">Căn cước công dân :</label>
-                                                    @Html.TextBoxFor(model => model.CitizenIdentificationCard, new { @class = "form-control, col-10", id = "CitizenIdentificationCard", type = "number", pattern = "[0-9]" })
+                                                    @Html.TextBoxFor(model => model.CitizenIdentificationCard, new { @class = "form-control, col-10", id = "CitizenIdentificationCard", type = "text", pattern = "[0-9]" })
                                                     @Html.ValidationMessageFor(model => model.CitizenIdentificationCard, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -275,6 +275,9 @@
         if (!citizenId) {
             isValid = false;
             errorMessage += "Căn cước công dân không được để trống.\n";
+        } else if (!citizenId.length !=11) {
+            isValid = false;
+            errorMessage += "Căn cước công dân lỗi định dạng.\n";
         }
         if (!wage) {
             isValid = false;

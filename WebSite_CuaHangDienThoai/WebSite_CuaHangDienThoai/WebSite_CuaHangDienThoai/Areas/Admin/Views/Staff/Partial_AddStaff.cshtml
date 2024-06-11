@@ -59,6 +59,14 @@
                 });
                 return false;
             }
+            if (CCCD.length != 12) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi...",
+                    text: "Căn cước không được dài hơn 12 ký tự.",
+                });
+                return false;
+            }
             if (!validateEmail(email)) {
                 Swal.fire({
                     icon: "error",

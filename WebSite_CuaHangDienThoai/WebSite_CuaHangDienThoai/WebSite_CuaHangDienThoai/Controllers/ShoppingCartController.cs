@@ -438,7 +438,9 @@ namespace WebSite_CuaHangDienThoai.Controllers
                                 //    }
 
                                 //}
-
+                                inforKhachHang.NumberofPurchases += 1;
+                                db.Entry(inforKhachHang).State = EntityState.Modified;
+                                db.SaveChanges();
 
 
                                 SendConfirmationEmails(cart, order, inforKhachHang);
@@ -808,6 +810,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 Success = false,
                 Code = GenerateOrderCode(),
                 CustomerId = customerInfo.CustomerId,
+                
             };
        
 

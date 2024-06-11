@@ -1,7 +1,7 @@
 ﻿
 @{
-    ViewBag.Title = "Bán hàng";
-    Layout = "~/Areas/Seller/Views/Shared/_LayoutSeller.cshtml";
+    ViewBag.Title = "Bán hàng"+ ViewBag.Today;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutSeller.cshtml";
 }
 
 <style>
@@ -16,209 +16,54 @@
         border-bottom-left-radius: 25px;
         border-bottom-right-radius: 25px;
     }
+
+    .upper {
+        height: 100px;
+    }
+
+        .upper img {
+            width: 100%;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+    .user {
+        position: relative;
+    }
+
+    .profile img {
+        height: 80px;
+        width: 80px;
+        margin-top: 2px;
+    }
+
+    .profile {
+        position: absolute;
+        top: -50px;
+        left: 38%;
+        height: 90px;
+        width: 90px;
+        border: 3px solid #fff;
+        border-radius: 50%;
+    }
+
+    .follow {
+        border-radius: 15px;
+        padding-left: 20px;
+        padding-right: 20px;
+        height: 35px;
+    }
+
+    .stats span {
+        font-size: 29px;
+    }
 </style>
 
 <section class="content">
 
     <div class="">
 
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header" style="background-color:royalblue">
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <input type="text" placeholder="Tìm mặt hàng theo tên hoặc mã" />
-                        </div>
-                        <div class="col-md-9">
-                            <input type="text" placeholder="Tìm mặt hàng theo tên hoặc mã" />
-                        </div>
-                    </div>
-
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-5">
-
-                            @Html.Action("Partial_LeftIndex", "Seller")
-                            <!--<div class="" id="loadProduct">-->
-                                @*@Html.Action("Partail_ProductDetail", "Seller")*@
-                            <!--</div>-->
-
-
-
-
-
-
-                        </div>
-                        <div class="col-md-7">
-                            <div class="card">
-                                <div class="card-header">
-                                    <ul class="nav nav-tabs mb-3" id="ex-with-icons" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <a data-mdb-tab-init class="nav-link active" id="ex-with-icons-tab-1" href="#ex-with-icons-tabs-1" role="tab"
-                                               aria-controls="ex-with-icons-tabs-1" aria-selected="true">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-fill" viewBox="0 0 16 16">
-                                                    <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m5.5 1.5v2a1 1 0 0 0 1 1h2z" />
-                                                </svg>
-                                                Phiếu bán hàng
-                                            </a>
-                                        </li>
-                                        
-
-                                        <li class="nav-item" role="presentation ">
-                                            <button style="background-color:orange" class="addPhieu btn nav-link">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" style="color:white" height="20" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
-                                                    <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5" />
-                                                    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
-                                                </svg>
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-
-
-                                <div class="card-body">
-                                    <!-- Tabs content -->
-                                    <div class="tab-content" id="ex-with-icons-content">
-                                        <div class="tab-pane fade show active" id="ex-with-icons-tabs-1" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
-                                            <div class="loadDataList">
-                                                @*<table class="table ">
-                                                    <tr>
-                                                        <td>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:red;" fill="currentColor" class="bi bi-x-octagon" viewBox="0 0 16 16">
-                                                                <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1z" />
-                                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                                                            </svg>
-                                                        </td>
-                                                        <td><b>Vậy nủ Miaross</b></td>
-                                                        <td class="rounded-2 border-2 bg-light">210,000 đ</td>
-                                                        <td class="">
-
-                                                            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                                                <i class="fas fa-minus"></i>
-                                                            </button>
-
-                                                            <input id="form1" min="0" name="quantity" value="1" type="number"
-                                                                   class="" />
-
-                                                            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                                                <i class="fas fa-plus"></i>
-                                                            </button>
-
-                                                        </td>
-                                                        <td>200.00.000 đ</td>
-                                                    </tr>
-
-                                                </table>*@
-                                            </div>
-                                        </div>
-                                        @*<div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
-                                            Tab 2 content
-                                        </div>
-                                        <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
-                                            Tab 3 content
-                                        </div>*@
-                                    </div>
-                                    <!-- Tabs content -->
-
-                                </div>
-
-
-                                <div class="card-footer" style="background-color:white">
-                                    <div class="row">
-                                        <div class="col-lg-7">
-
-
-
-                                            <div class="row" style=" ">
-                                                <div class="col-md-12 ">
-                                                    <div class="card" style="background-color:lightgray     ">
-                                                        <div class="card-body">
-
-
-                                                            <div class="input-group mb-3">
-                                                                <input type="text"  class="form-control" placeholder="Tìm KH theo tên hoặc điện thoại" id="searchCustomer" name="searchCustomer">
-                                                                <div class="input-group-append">
-                                                                    <button class="btn btn-secondary" type="button">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
-                                                                            <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z" />
-                                                                        </svg>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-
-                                                            <div id="loadDataCustomer">
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <p class="card-text">Khách hàng:</p>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <p class="card-text">Nguyễn Mai Linh - 0984 446 246</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <p class="card-text">Giá thường:</p>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <button class="btn btn-danger">Xem giá</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                          
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
-                                        </div>
-                                        <div class="col-md-5">
-
-
-
-
-                                            <ul class="nav nav-tabs mb-3" id="ex-with-icons" role="tablist">
-                                                <li class="nav-item" role="presentation">
-                                                    <a data-mdb-tab-init class="nav-link active" id="ex-with-icons-tab-tienmat" href="#ex-with-icons-tabs-1" role="tab"
-                                                       aria-controls="ex-with-icons-tabs-1" aria-selected="true">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-fill" viewBox="0 0 16 16">
-                                                            <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m5.5 1.5v2a1 1 0 0 0 1 1h2z" />
-                                                        </svg>
-                                                       Thông tin thanh toán
-                                                    </a>
-                                                </li>
-                                               
-
-                                            </ul>
-
-
-                                            <div class="tab-content" id="ex-with-icons-content">
-                                                <div class="tab-pane fade show active" id="ex-with-icons-tab-tienmat" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
-                                                   <div class="loadPice">
-
-                                                   </div>
-                                                </div>
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Tabs navs -->
-                            <!-- Tabs navs -->
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
+       @Html.Action("Partail_SellerIndex","Seller")
 
     </div>
 
@@ -321,8 +166,9 @@
 
 
 
+          
 
-
+          
 
 
 
@@ -360,8 +206,8 @@
                         type: "get",
                         data: { search: inputvalue },
                         success: function (response) {
-
-                            $(".loadDataCustomer").html(response);
+                            
+                            $("#loadDataCustomer").html(response);
                         },
                         error: function (xhr, status, error) {
 
@@ -370,14 +216,11 @@
                     });
                 }
             });
-
-            // Start Input find customer
-
-
-
-
           
         });
+
+
+
 
 
         //Start updateSoLuong products checkout

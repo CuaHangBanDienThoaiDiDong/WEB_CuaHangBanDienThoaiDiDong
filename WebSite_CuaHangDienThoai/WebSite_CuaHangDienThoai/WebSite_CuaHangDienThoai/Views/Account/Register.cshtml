@@ -60,6 +60,15 @@
             return false;
             return false;
         }
+        if (sdt.lenght != 10) {
+            Swal.fire({
+                icon: "warning",
+                title: "Lỗi tìm...",
+                text: "Số điện không khác 10 ký tự",
+                /*footer: '<a href="#">Why do I have this issue?</a>'*/
+            });
+            return false;
+        }
 
 
 

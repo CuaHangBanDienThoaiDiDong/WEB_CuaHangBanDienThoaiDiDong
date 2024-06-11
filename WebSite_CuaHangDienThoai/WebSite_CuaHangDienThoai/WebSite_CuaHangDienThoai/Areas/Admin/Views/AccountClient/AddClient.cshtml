@@ -1,0 +1,347 @@
+﻿@model WebSite_CuaHangDienThoai.Models.Admin_TokenAddClient
+@using (Ajax.BeginForm("AddClient", "AccountClient", new AjaxOptions
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "load_data",
+    OnSuccess = "OnSuccessCO",
+    OnFailure = "OnFailure",
+    OnBegin = "OnBeginCO"
+}, new { @Id = "myForm" }))
+{
+
+
+
+    <script>
+        function validateEmail(email) {
+            var emailPattern = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+            return emailPattern.test(email);
+        }
+
+
+
+
+        function validateForm() {
+            var name = document.getElementById('CustomerName').value.trim();
+            var sdt = document.getElementById('PhoneNumber').value.trim();
+            var Sex = document.getElementById('Sex').value.trim();
+            var email = document.getElementById('Email').value.trim();
+          
+
+
+            if (!name || !sdt || !email || !Sex  ) {
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi tìm...",
+                    text: "Vui lòng điền đầy đủ thông tin.",
+                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                });
+                return false;
+
+            }
+           
+            if (sdt.length != 10) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi...",
+                    text: "Số điện thoại không được dài hơn 10 ký tự.",
+                });
+                return false;
+            }
+            if (Sex.length != 12) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi...",
+                    text: "Căn cước không được dài hơn 12 ký tự.",
+                });
+                return false;
+            }
+            if (!validateEmail(email)) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi...",
+                    text: "Vui lòng nhập địa chỉ email hợp lệ.",
+                });
+                return false;
+            }
+           
+
+
+
+
+            return true;
+        }
+
+
+        function OnBeginCO() {
+            $('#btnRegister').attr("disabled", "disabled");
+        }
+
+        function submitForm() {
+            // Validate form
+            if (!validateForm()) {
+                return;
+            }
+
+            // Lấy ra form và tạo đối tượng FormData
+            var form = document.getElementById('myForm');
+            var formData = new FormData(form);
+            var newImage = document.getElementById('newImage').files[0];
+            if (newImage) {
+                formData.append('newImage', newImage);
+            }
+            // Gửi formData lên server
+            $.ajax({
+                url: '/Staff/Add',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    // Xử lý phản hồi từ server
+                    OnSuccessCO(response);
+                },
+                error: function (error) {
+                    // Xử lý lỗi
+                    OnFailure(error);
+                }
+            });
+        }
+
+        function OnSuccessCO(res) {
+            if (res.Success) {
+                if (res.Code == 1) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "success",
+                        title: "Thêm nhân viên thành công"
+                    });
+
+                    setTimeout(function () {
+                        location.href = "/admin/Staff/index";
+                    }, 2000); // Thời gian chờ là 2000ms tương ứng với 2 giây
+                }
+                else {
+                }
+            }
+            else {
+                if (res.Code == -2) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi thêm nhân viên...",
+                        text: "Email đã tồn tại",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+
+                }
+                if (res.Code == -3) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi thêm nhân viên...",
+                        text: "Số điện thoại đã tồn tại ",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+                }
+                if (res.Code == -4) {
+                    Swal.fire({
+                        icon: "question",
+                        title: "Lỗi thêm nhân viên...",
+                        text: "Không thấy chức năng cho nhân viên mới ",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+
+                }
+                if (res.Code == -5) {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Không để trống...",
+                        text: "Vui lòng nhập đầy đủ thông tin nhân viên ",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+                }
+                if (res.Code == -6) {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Không để trống...",
+                        text: "Vui lòng chọn ảnh nhân viên",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+                } if (res.Code == -7) {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Không để trống...",
+                        text: "Dữ liễu rỗng",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+                }
+                if (res.Code == -100) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi tìm...",
+                        text: "Lỗi hệ thống máy chủ",
+                        /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+                }
+            }
+
+        }
+
+        function submitForm() {
+            // Validate form
+            if (!validateForm()) {
+                return;
+            }
+
+
+            var form = document.getElementById('myForm');
+            var formData = new FormData(form);
+
+
+            $.ajax({
+                url: '/Admin/AccountCLient/AddClient',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+
+                    OnSuccessCO(response);
+                },
+                error: function (error) {
+
+                    OnFailure(error);
+                }
+            });
+        }
+
+
+
+
+
+    </script>
+    <style>
+        .upper {
+            height: 100px;
+        }
+
+            .upper img {
+                width: 100%;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+            }
+
+        .user {
+            position: relative;
+        }
+
+        .profile img {
+            height: 80px;
+            width: 80px;
+            margin-top: 2px;
+        }
+
+        .profile {
+            position: absolute;
+            top: -50px;
+            left: 38%;
+            height: 90px;
+            width: 90px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+        }
+    </style>
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="card" id="">
+            <div class="card-header">
+                <div class="card-title">
+                   
+                </div>
+                <div class="card-tools">
+                    <button class="btn  btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+               <div class="row">
+                   
+               </div>
+
+
+               <div class="text-center mt-3">
+                   <img src="~/images/Logo/LogoWeb.png" class="rounded-circle" width="100" />
+                   <h4 class="mb-0">Tạo khách hàng mới</h4>
+                   <span class="text-muted d-block mb-2">Hệ thống bán hàng <span class="text-danger">LTD<span style="color: black; font-family: Poppins-Regular; ">MiniStore</span></span></span>
+
+                   <div class="row gy-3 overflow-hidden">
+
+                       <div class="col-12">
+                           <div class="form-floating mb-3">
+                               <input class="form-control" name="CustomerName" id="CustomerName" type="text" required autocomplete="off" placeholder="" />
+                               <label for="name" class="form-label">Tên khách hàng</label>
+                           </div>
+                       </div>
+                       <div class="col-12">
+                           <div class="form-floating mb-3">
+                               <input class="form-control" type="text" name="PhoneNumber" id="PhoneNumber" required autocomplete="off" placeholder="" />
+                               <label for="name" class="form-label">Số điện thoại khách hàng</label>
+                           </div>
+                       </div>
+                       <div class="row">
+                           <div class="col-10 mt-2">
+                               <div class="form-floating mb-3">
+                                   <input class="form-control" name="Email" id="Email" type="text" required autocomplete="off" placeholder="" />
+                                   <label for="name" class="form-label">Email khách hàng</label>
+                               </div>
+                           </div>
+                           <div class="col-md-2">
+                               <div class="form-group app-label">
+                                   <div class="col-lg-12">
+                                       <div class="form-group app-label">
+                                           <label>Giới tính</label>
+                                           <select class="form-control" id="drTypePayment" name="Sex">
+                                               <option value="Nam" id="chuyenkhoan">Nam</option>
+                                               <option value="Nữ" id="chuyenkhoan">Nữ</option>
+                                           </select>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+
+                       <div class="row">
+                           <div class="col-1"></div>
+
+                           <div class="col-10 d-grid gap-2 col-10 mx-auto">
+                               <button type="button" class="btn btn-success btnRegister" onclick="submitForm();">Đăng ký khách hàng mới</button>
+
+                           </div>
+
+                           <div class="col-1"></div>
+                       </div>
+
+                   </div>
+               </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+}
+
+

@@ -350,7 +350,7 @@
           <ScalarProperty Name="SellerId" ColumnName="SellerId" />
           <ScalarProperty Name="Price" ColumnName="Price" />
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-          <ScalarProperty Name="ProductDetai" ColumnName="ProductDetai" />
+          <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

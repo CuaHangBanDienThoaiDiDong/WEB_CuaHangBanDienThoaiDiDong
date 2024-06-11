@@ -332,7 +332,7 @@
           <Property Name="SellerId" Type="int" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
-          <Property Name="ProductDetai" Type="int" Nullable="false" />
+          <Property Name="ProductDetailId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="tb_Staff">
           <Key>
@@ -852,6 +852,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="SellerToProductDetail">
+          <End Role="tb_ProductDetail" Type="Self.tb_ProductDetail" Multiplicity="1" />
+          <End Role="tb_SellerDetail" Type="Self.tb_SellerDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Principal>
+            <Dependent Role="tb_SellerDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="StafftoFunction">
           <End Role="tb_Function" Type="Self.tb_Function" Multiplicity="0..1" />
           <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="*" />
@@ -1130,6 +1142,10 @@
             <End Role="tb_Customer" EntitySet="tb_Customer" />
             <End Role="tb_Seller" EntitySet="tb_Seller" />
           </AssociationSet>
+          <AssociationSet Name="SellerToProductDetail" Association="Self.SellerToProductDetail">
+            <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
+            <End Role="tb_SellerDetail" EntitySet="tb_SellerDetail" />
+          </AssociationSet>
           <AssociationSet Name="StafftoFunction" Association="Self.StafftoFunction">
             <End Role="tb_Function" EntitySet="tb_Function" />
             <End Role="tb_Staff" EntitySet="tb_Staff" />
@@ -1399,6 +1415,7 @@
           <NavigationProperty Name="tb_ProductDetailImage" Relationship="Self.ProductDetailImageToProductDetail" FromRole="tb_ProductDetail" ToRole="tb_ProductDetailImage" />
           <NavigationProperty Name="tb_Products" Relationship="Self.ProductDetaiToProducts" FromRole="tb_ProductDetail" ToRole="tb_Products" />
           <NavigationProperty Name="tb_Review" Relationship="Self.ReviewDetailtoProductDetai" FromRole="tb_ProductDetail" ToRole="tb_Review" />
+          <NavigationProperty Name="tb_SellerDetail" Relationship="Self.SellerToProductDetail" FromRole="tb_ProductDetail" ToRole="tb_SellerDetail" />
           <NavigationProperty Name="tb_WarehouseDetail" Relationship="Self.WarehouseDetailetoProductDetail" FromRole="tb_ProductDetail" ToRole="tb_WarehouseDetail" />
         </EntityType>
         <EntityType Name="tb_ProductDetailImage">
@@ -1561,7 +1578,8 @@
           <Property Name="SellerId" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="ProductDetai" Type="Int32" Nullable="false" />
+          <Property Name="ProductDetailId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tb_ProductDetail" Relationship="Self.SellerToProductDetail" FromRole="tb_SellerDetail" ToRole="tb_ProductDetail" />
           <NavigationProperty Name="tb_Seller" Relationship="Self.SellerDetailtoSeller" FromRole="tb_SellerDetail" ToRole="tb_Seller" />
         </EntityType>
         <EntityType Name="tb_Staff">
@@ -2057,6 +2075,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="SellerToProductDetail">
+          <End Role="tb_ProductDetail" Type="Self.tb_ProductDetail" Multiplicity="1" />
+          <End Role="tb_SellerDetail" Type="Self.tb_SellerDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Principal>
+            <Dependent Role="tb_SellerDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="WarehouseDetailetoProductDetail">
           <End Role="tb_ProductDetail" Type="Self.tb_ProductDetail" Multiplicity="0..1" />
           <End Role="tb_WarehouseDetail" Type="Self.tb_WarehouseDetail" Multiplicity="*" />
@@ -2366,6 +2396,10 @@
           <AssociationSet Name="ReviewDetailtoProductDetai" Association="Self.ReviewDetailtoProductDetai">
             <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
             <End Role="tb_Review" EntitySet="tb_Review" />
+          </AssociationSet>
+          <AssociationSet Name="SellerToProductDetail" Association="Self.SellerToProductDetail">
+            <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
+            <End Role="tb_SellerDetail" EntitySet="tb_SellerDetail" />
           </AssociationSet>
           <AssociationSet Name="WarehouseDetailetoProductDetail" Association="Self.WarehouseDetailetoProductDetail">
             <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
@@ -2775,7 +2809,7 @@
                 <ScalarProperty Name="SellerId" ColumnName="SellerId" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="ProductDetai" ColumnName="ProductDetai" />
+                <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

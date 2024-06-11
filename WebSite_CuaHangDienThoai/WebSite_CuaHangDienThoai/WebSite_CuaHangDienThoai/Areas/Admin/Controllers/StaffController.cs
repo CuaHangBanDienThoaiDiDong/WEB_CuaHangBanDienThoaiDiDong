@@ -304,6 +304,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
 
 
+
+
          
          
         }
@@ -353,6 +355,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                     StoreId = (int)item.StoreId,
                                     Clock = (bool)item.Clock,
                                     Image = item.Image,
+
                               
                                 };
                                 ViewBag.ChucNang = new SelectList(db.tb_Function.ToList(), "FunctionId", "TitLe");
@@ -394,6 +397,22 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                             staff.StaffId = item.Id;
                             staff.Password = item.Password;
                             staff.DayofWork = item.DayofWork;
+                            staff.Code = item.Code;
+                            staff.PhoneNumber = item.PhoneNumber;
+                            staff.NameStaff = item.NameStaff;
+                            staff.CitizenIdentificationCard = item.CitizenIdentificationCard;
+                            if (item.Birthday != null)
+                            {
+                                staff.Birthday = (DateTime)item.Birthday;
+                            }
+                            else
+                            {
+                                staff.Birthday = DateTime.Now; // Gán mặc định nếu không có giá trị
+                            }
+                            staff.Location = item.Location;
+                            staff.DayofWork = item.DayofWork;
+                            staff.Wage = item.Wage;
+                            staff.Sex = item.Sex;
                             if (item.CreatedBy == null) 
                             {
                                 staff.CreatedBy = nvSession.NameStaff;
@@ -406,31 +425,23 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                           
                             staff.CreatedDate=item.CreatedDate;
                             staff.Clock = item.Clock;
-                            staff.Code = item.Code; 
+                      
 
                             
-                            staff.PhoneNumber = item.PhoneNumber;
-                            staff.NameStaff = item.NameStaff;
-                            staff.CitizenIdentificationCard = item.CitizenIdentificationCard;
+                          
+                       
                             staff.Email = item.Email;
-                            staff.Location = item.Location;
-                            staff.DayofWork = item.DayofWork;
-                            staff.Wage = item.Wage;
-                            staff.Sex = item.Sex;
+                           
+                           
+                          
+                           
                             staff.ModifiedDate = DateTime.Now;
                             staff.ModifiedBy = nvSession.NameStaff;
                             staff.FunctionId = (int)item.FunctionId;
                             staff.StoreId = (int)item.StoreId;
 
                             // Kiểm tra và gán giá trị cho Birthday
-                            if (item.Birthday != null)
-                            {
-                                staff.Birthday = (DateTime)item.Birthday;
-                            }
-                            else
-                            {
-                                staff.Birthday = DateTime.Now; // Gán mặc định nếu không có giá trị
-                            }
+                            
 
                             // Kiểm tra và gán giá trị cho Image
                             if (newImage != null)

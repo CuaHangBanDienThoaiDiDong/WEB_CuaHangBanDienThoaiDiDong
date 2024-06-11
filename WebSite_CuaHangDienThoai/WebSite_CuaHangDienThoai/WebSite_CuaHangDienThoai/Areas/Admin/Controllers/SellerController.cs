@@ -13,8 +13,28 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
         public ActionResult Index()
         {
-            return View();
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                DateTime today = DateTime.Today;
+                DateTime startOfDay = today.Date;
+                DateTime endOfDay = today.Date.AddDays(1).AddTicks(-1);
+                ViewBag.Today = today;
+                return View();
+            }
+
         }
+
+        public ActionResult Partail_SellerIndex()
+        {
+            return PartialView();
+        }
+
+
+
 
         public ActionResult Partail_ProductDetail()
         {
@@ -23,7 +43,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
 
 
-   
+
 
         [HttpGet]
         public ActionResult Suggest(string searchString)
@@ -60,28 +80,131 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
-
         public ActionResult SuggestCustomer(string search)
         {
-            if (search != null) 
+            if (!string.IsNullOrEmpty(search))
             {
-                var customers = db.tb_Customer
-                   .Where(c => c.PhoneNumber.Contains(search) || c.CustomerName.Contains(search))
-                   .Select(c => new {
-                       c.CustomerId,
-                       c.PhoneNumber,
-                       c.CustomerName
-                   })
-                   .ToList();
-                ViewBag.Count=customers.Count;  
-                return PartialView(customers);
+                var customer = db.tb_Customer
+              .FirstOrDefault(c => c.PhoneNumber.Contains(search) || c.CustomerName.Contains(search));
+
+                if (customer != null)
+                {
+                    return PartialView(new List<tb_Customer> { customer });
+                }
+                else
+                {
+                    return PartialView();
+                }
             }
-            else 
+            else
             {
+
                 return PartialView();
             }
+        }
 
-          
+        [HttpPost]
+        public JsonResult CheckOutSeller(int CustomerId)
+        {
+            using (var dbContextTransaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (Session["user"] == null)
+                    {
+                        return Json(new { success = false, code = -99, redirectTo = Url.Action("DangNhap", "Account") });
+                    }
+                    else
+                    {
+                        tb_Staff nvSession = (tb_Staff)Session["user"];
+                        if (CustomerId > 0)
+                        {
+                            var customer = db.tb_Customer.SingleOrDefault(x => x.CustomerId == CustomerId);
+                            if (customer != null)
+                            {
+                                SellerCart cart = (SellerCart)Session["SellerCart"];
+                                if (cart != null)
+                                {
+                                    foreach (var item in cart.Items)
+                                    {
+                                        var checkQuantityPro = db.tb_ProductDetail.Find(item.ProductDetailId);
+                                        var warehouseDetail = db.tb_WarehouseDetail.SingleOrDefault(w => w.ProductDetailId == item.ProductDetailId);
+                                        if (warehouseDetail != null)
+                                        {
+                                            if (warehouseDetail.QuanTity >= item.SoLuong)
+                                            {
+                                                warehouseDetail.QuanTity -= item.SoLuong;
+                                                db.Entry(checkQuantityPro).State = System.Data.Entity.EntityState.Modified;
+                                                db.SaveChanges();
+
+
+
+                                            }
+                                            else
+                                            {
+                                                return Json(new { success = false, code = -7 });//Kho không đủ số lượng
+                                            }
+                                        }
+                                    }
+
+                                    tb_Seller seller = new tb_Seller();
+                                    seller.CustomerId = customer.CustomerId;
+                                    seller.Phone = customer.PhoneNumber;
+                                    seller.StaffId = nvSession.StaffId;
+
+                                    cart.Items.ForEach(x => seller.tb_SellerDetail.Add(new tb_SellerDetail
+                                    {
+                                        ProductDetailId = x.ProductDetailId,
+                                        Quantity = x.SoLuong,
+                                        Price = x.Price,
+
+                                    }));
+                                    seller.TotalAmount = cart.Items.Sum(x => (x.Price * x.SoLuong));
+                                    //seller.TypePayment = req.TypePayment;
+                                    seller.TypePayment = 0;
+                                    seller.CreatedDate = DateTime.Now;
+                                    seller.ModifiedDate = null;
+                                    seller.CreatedBy = nvSession.NameStaff;
+                                    Random rd = new Random();
+                                    seller.Code = "HD" + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9);
+
+                                    db.tb_Seller.Add(seller);
+                                    db.SaveChanges();
+
+
+                                    customer.NumberofPurchases += 1;
+
+
+                                    cart.ClearCart();
+                                    db.Entry(customer).State = System.Data.Entity.EntityState.Modified;
+                                    db.SaveChanges();
+                                    dbContextTransaction.Commit();
+
+
+                                    return Json(new { success = true, code = 1 });
+                                }
+                                else
+                                {
+                                    return Json(new { success = false, code = -3 });// Không có sản phẩm trong phiếu
+                                }
+                            }
+                            else
+                            {
+                                return Json(new { success = false, code = -1 });//Không tìm thấy khách hàng
+                            }
+                        }
+                        else
+                        {
+                            return Json(new { success = false, code = -1 });//Không tìm thấy khách hàng
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+                    return Json(new { success = false, code = -100 });
+                }
+            }
         }
 
 
@@ -110,9 +233,9 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                         CategoryName = checkSanPham.tb_Products.tb_ProductCategory.Title,
                         Capcity = (int)checkSanPham.Capacity,
                         Color = checkSanPham.Color,
-                     
 
-                        SoLuong = 0,
+
+                        SoLuong = 1,
                     };
                     if (checkSanPham.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault) != null)
                     {
@@ -225,7 +348,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             {
 
 
-               
+
 
                 int count = cart.Items.Count;
                 ViewBag.Count = count;
@@ -234,10 +357,54 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             return PartialView();
         }
 
-        public ActionResult Partial_LeftIndex() 
+        public ActionResult Partial_LeftIndex()
         {
             return PartialView();
         }
+
+
+
+
+
+
+
+
+
+
+
+        public ActionResult AddClient()
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                return PartialView();
+            }
+        }
+        //public JsonResult AddClient() 
+        //{
+        //    using (var dbContextTransaction = db.Database.BeginTransaction()) 
+        //    {
+        //        try 
+        //        {
+        //            if (Session["user"] == null)
+        //            {
+        //                return Json(new { success = false, code = -99, redirectTo = Url.Action("DangNhap", "Account") });
+        //            }
+        //            else
+        //            {
+        //                return Json(new { success = true, code = 1 });
+        //            }
+        //        catch (Exception ex) 
+        //        {
+        //            dbContextTransaction.Rollback();
+        //            return Json(new { success = false, code = -100 });
+
+        //        }
+        //    }
+        //}
 
     }
 }

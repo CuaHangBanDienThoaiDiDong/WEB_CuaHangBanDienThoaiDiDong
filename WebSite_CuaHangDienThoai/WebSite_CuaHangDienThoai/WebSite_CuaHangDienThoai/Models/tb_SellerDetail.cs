@@ -18,8 +18,9 @@ namespace WebSite_CuaHangDienThoai.Models
         public int SellerId { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
-        public int ProductDetai { get; set; }
+        public int ProductDetailId { get; set; }
     
+        public virtual tb_ProductDetail tb_ProductDetail { get; set; }
         public virtual tb_Seller tb_Seller { get; set; }
     }
 }
