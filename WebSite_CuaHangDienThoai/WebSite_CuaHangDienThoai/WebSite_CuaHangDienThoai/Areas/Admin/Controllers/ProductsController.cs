@@ -24,31 +24,42 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
-                IEnumerable<tb_Products> items = db.tb_Products.OrderByDescending(x => x.ProductsId);
-                if (items != null)
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
+                if (item == null)
                 {
-                    var pageSize = 10;
-                    if (page == null)
-                    {
-                        page = 1;
-                    }
-                    var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-                    items = items.ToPagedList(pageIndex, pageSize);
-                    var products = db.tb_Products.ToList();
-
-                    ViewBag.ProductCategory = new SelectList(db.tb_ProductCategory.ToList(), "ProductCategoryId", "Title");
-                    ViewBag.ProductCompany = new SelectList(db.tb_ProductCompany.ToList(), "ProductCompanyId", "Title");
-
-                    ViewBag.Count = products.Count;
-                    ViewBag.PageSize = pageSize;
-                    ViewBag.Page = page;
-                    return View(items);
+                    return RedirectToAction("NonRole", "HomePage");
                 }
                 else
                 {
-                    ViewBag.txt = "Không tồn tại sản phẩm";
+                    //var items = db.tb_Staff.OrderByDescending(x => x.Code).ToList();
                     return View();
                 }
+                //IEnumerable<tb_Products> items = db.tb_Products.OrderByDescending(x => x.ProductsId);
+                //if (items != null)
+                //{
+                //    var pageSize = 10;
+                //    if (page == null)
+                //    {
+                //        page = 1;
+                //    }
+                //    var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+                //    items = items.ToPagedList(pageIndex, pageSize);
+                //    var products = db.tb_Products.ToList();
+
+                //    ViewBag.ProductCategory = new SelectList(db.tb_ProductCategory.ToList(), "ProductCategoryId", "Title");
+                //    ViewBag.ProductCompany = new SelectList(db.tb_ProductCompany.ToList(), "ProductCompanyId", "Title");
+
+                //    ViewBag.Count = products.Count;
+                //    ViewBag.PageSize = pageSize;
+                //    ViewBag.Page = page;
+                //    return View(items);
+                //}
+                //else
+                //{
+                //    ViewBag.txt = "Không tồn tại sản phẩm";
+                //    return View();
+                //}
             }
                
         }

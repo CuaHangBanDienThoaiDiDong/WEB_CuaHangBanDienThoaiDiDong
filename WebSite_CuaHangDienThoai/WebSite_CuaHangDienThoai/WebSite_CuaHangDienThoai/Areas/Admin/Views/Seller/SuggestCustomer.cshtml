@@ -1,169 +1,158 @@
-﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Customer>
+﻿popup@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Customer>
 
-@if (Model != null)
-{
-    foreach (var item in Model)
+    @if (Model != null)
     {
-        <div class="row">
-            <div class="col-md-6">
-                <b class="card-text" style="color: red">Khách hàng:</b>
+        foreach (var item in Model)
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <b class="card-text" style="color: red">Khách hàng:</b>
+                </div>
+                <div class="col-md-6">
+                    <p class="card-text">@item.CustomerName</p>
+                </div>
             </div>
-            <div class="col-md-6">
-                <p class="card-text">@item.CustomerName</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <b class="card-text" style="color:red">Số điện thoại</b>
+                </div>
+                <div class="col-md-6">
+                    <p class="card-text"> @item.PhoneNumber</p>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <b class="card-text" style="color:red">Số điện thoại</b>
+            <hr />
+            <div class="row">
+
+                <div class="col-md-12">
+                    <button class="btn btn-success btnCheckOutSeller col-12" data-id="@item.CustomerId">Xuất hóa đơn </button>
+                </div>
             </div>
-            <div class="col-md-6">
-                <p class="card-text"> @item.PhoneNumber</p>
-            </div>
-        </div>
-        <hr />
-        <div class="row">
-           
-            <div class="col-md-12">
-                <button class="btn btn-success btnCheckOutSeller col-12" data-id="@item.CustomerId">Xuất hóa đơn </button>
-            </div>
-        </div>
 
 
+
+        }
+    }
+    else
+    {
+        <p class="text-danger">Không tìm thấy khách hàng nào.</p>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-10">
+                <button class="btn btn-info addClient  col-12">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
+                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                        <path d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4" />
+                    </svg>
+                    Tạo mới
+                </button>
+
+            </div>
+            <div class="col-2"></div>
+        </div>
 
     }
-}
-else
-{
-    <p class="text-danger">Không tìm thấy khách hàng nào.</p>
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col-10">
-            <button class="btn btn-info addClient  col-12">
 
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
-                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                    <path d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4" />
-                </svg>
-                Tạo mới
-            </button>
-
-        </div>
-        <div class="col-2"></div>
-    </div>
-   
-}
-
-<script>
+    <script>
 
 
-    //Start CheckOut
-    $(document).ready(function () {
-        $('.btnCheckOutSeller').click(function () {
-            var customerId = $(this).data('id');
-            alert
-            $.ajax({
-                url: '/Admin/Seller/CheckOutSeller',
-                type: 'POST',
-                data: { CustomerId: customerId },
-                success: function (response) {
-                    if (response.success) {
-
-                        if (response.code = 1) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Thành công',
-                                text: 'Xuất hóa đơn thành công'
-                            }); setTimeout(function () {
-                                window.location.reload();
-                            }, 1500)
-                          
-                        }
-                    
-                    } else {
-                        if (response.code === -1) {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Lỗi ...",
-                                text: "Không tìm thấy khác hàng",
-                                /*footer: '<a href="#">Why do I have this issue?</a>'*/
-                            });
-                        }
-                        if (response.code === -3) {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Lỗi ...",
-                                text: "Phiếu chưa có sản phẩm",
-                               /* footer: '<a href="#">Why do I have this issue?</a>'*/
-                            });
-                        }
-                        if (response.code === -7) {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Lỗi ...",
-                                text: "Kho không đủ sản phẩm ",
-                               /* footer: '<a href="#">Why do I have this issue?</a>'*/
-                            });
-                        }
-
-                        if (response.code === -99) {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Lỗi ...",
-                                text: "Lỗi hệ thống ",
-                                /* footer: '<a href="#">Why do I have this issue?</a>'*/
-                            });
-                           /* window.location.href = response.redirectTo;*/
+        //Start CheckOut
+        $(document).ready(function () {
+            $('.btnCheckOutSeller').click(function () {
+                var customerId = $(this).data('id');
+                alert
+                $.ajax({
+                    url: '/Admin/Seller/CheckOutSeller',
+                    type: 'POST',
+                    data: { CustomerId: customerId },
+                    success: function (response) {
+                        if (response.success) {
+                            if (response.code === 1) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Thành công',
+                                    text: 'Xuất hóa đơn thành công'
+                                });
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 1500);
+                            }
                         } else {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Máy chủ không phản hồi ",
-                                text: "Có lỗi xảy ra trong quá trình xuất hóa đơn!",
-                                /* footer: '<a href="#">Why do I have this issue?</a>'*/
-                            });
-                           
+                            if (response.code === -1) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Lỗi ...",
+                                    text: "Không tìm thấy khách hàng"
+                                });
+                            } else if (response.code === -3) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Lỗi ...",
+                                    text: "Phiếu chưa có sản phẩm"
+                                });
+                            } else if (response.code === -7) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Lỗi ...",
+                                    text: "Kho không đủ sản phẩm"
+                                });
+                            } else if (response.code === -99) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Lỗi ...",
+                                    text: "Lỗi hệ thống"
+                                });
+                                // window.location.href = response.redirectTo;
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Máy chủ không phản hồi",
+                                    text: "Có lỗi xảy ra trong quá trình xuất hóa đơn"
+                                });
+                            }
                         }
+
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Máy chủ không phản hồi ",
+                            text: "Đã xảy ra lỗi khi thực hiện yêu cầu!",
+                            /* footer: '<a href="#">Why do I have this issue?</a>'*/
+                        }); setTimeout(function () {
+                            window.location.url = "/admin/Account/DangNhap";
+                        }, 1500)
+
                     }
-                },
-                error: function (xhr, status, error) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Máy chủ không phản hồi ",
-                        text: "Đã xảy ra lỗi khi thực hiện yêu cầu!",
-                        /* footer: '<a href="#">Why do I have this issue?</a>'*/
-                    }); setTimeout(function () {
-                        window.location.url="/admin/Account/DangNhap";
-                    }, 1500)
-                    
-                }
+                });
+            });
+
+
+
+
+
+            var bg = document.querySelector(".bg-sg");
+            var popup = document.getElementById('popup');
+            var addClient = document.querySelector('.addClient');
+
+
+            addClient.addEventListener('click', function () {
+                bg.style.display = "block";
+                popup.style.display = "block";
+            });
+
+
+
+            bg.addEventListener("click", function () {
+                bg.style.display = "none";
+                popup.style.display = "none";
             });
         });
 
+        //End CheckOut
 
 
+        document.addEventListener("DOMContentLoaded", function () {
 
-
-        var bg = document.querySelector(".bg-sg");
-        var popup = document.getElementById('popup');
-        var addClient = document.querySelector('.addClient');
-
-
-        addClient.addEventListener('click', function () {
-            bg.style.display = "block";
-            popup.style.display = "block";
         });
-
-
-
-        bg.addEventListener("click", function () {
-            bg.style.display = "none";
-            popup.style.display = "none";
-        });
-    });
-
-    //End CheckOut
-
-
-    document.addEventListener("DOMContentLoaded", function () {
-       
-    });
-</script>
+    </script>

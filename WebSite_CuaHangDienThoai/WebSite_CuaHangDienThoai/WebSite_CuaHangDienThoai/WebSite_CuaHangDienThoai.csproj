@@ -3909,6 +3909,11 @@
     </Content>
     <Content Include="Areas\Admin\Views\AccountClient\AddClient.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\AddClient.cshtml" />
+    <Content Include="Areas\Admin\Views\Bill\Partial_IndexBill.cshtml" />
+    <Content Include="Areas\Admin\Views\Bill\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Bill\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Bill\Detail_SanPham.cshtml" />
+    <Content Include="Areas\Admin\Views\Bill\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
@@ -4169,6 +4174,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountClientController.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BillController.cs" />
     <Compile Include="Areas\Admin\Controllers\ExportWareHouseController.cs" />
     <Compile Include="Areas\Admin\Controllers\FunctionController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomePageController.cs" />
@@ -4208,6 +4214,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Admin_TokenAddClient.cs" />
+    <Compile Include="Models\Admin_TokenEditBill.cs" />
     <Compile Include="Models\Admin_TokenFunction.cs" />
     <Compile Include="Models\Admin_TokenImportWareHouse.cs" />
     <Compile Include="Models\Admin_TokenProductDetail.cs" />

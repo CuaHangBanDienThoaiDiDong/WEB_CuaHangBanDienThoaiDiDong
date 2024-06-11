@@ -185,11 +185,17 @@
                 }
             });
 
-          // Start Input find customer
+            // Start Input find customer
+
+
+           
+
+
             $("#searchCustomer").on("input", function () {
                 var inputvalue = $(this).val().trim();
                 if (inputvalue !== "") {
                     $.ajax({
+
                         url: "/Admin/Seller/SuggestCustomer",
                         type: "get",
                         data: { search: inputvalue },
@@ -202,6 +208,8 @@
                             console.error(xhr.responsetext);
                         }
                     });
+                } else {
+                    $("#loadDataCustomer").html('<div class="row"><div class="col-md-6"><b class="card-text" style="color:red">Khách hàng:</b></div></div>');
                 }
             });
           
