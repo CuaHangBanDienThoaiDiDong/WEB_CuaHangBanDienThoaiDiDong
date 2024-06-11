@@ -6,7 +6,7 @@
     {
         <div class="row">
             <div class="col-md-6">
-                <p class="card-text">Khách hàng:</p>
+                <b class="card-text" style="color: red">Khách hàng:</b>
             </div>
             <div class="col-md-6">
                 <p class="card-text">@item.CustomerName</p>
@@ -14,18 +14,17 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p class="card-text">Số điện thoại</p>
+                <b class="card-text" style="color:red">Số điện thoại</b>
             </div>
             <div class="col-md-6">
                 <p class="card-text"> @item.PhoneNumber</p>
             </div>
         </div>
+        <hr />
         <div class="row">
-            <div class="col-md-6">
-                <p class="card-text">Giá thường:</p>
-            </div>
-            <div class="col-md-6">
-                <button class="btn btn-success btnCheckOutSeller" data-id="@item.CustomerId">Xuất hóa đơn </button>
+           
+            <div class="col-md-12">
+                <button class="btn btn-success btnCheckOutSeller col-12" data-id="@item.CustomerId">Xuất hóa đơn </button>
             </div>
         </div>
 
@@ -81,7 +80,7 @@ else
                         }
                     
                     } else {
-                        if (response.code = -1) {
+                        if (response.code === -1) {
                             Swal.fire({
                                 icon: "error",
                                 title: "Lỗi ...",
@@ -89,7 +88,7 @@ else
                                 /*footer: '<a href="#">Why do I have this issue?</a>'*/
                             });
                         }
-                        if (response.code = -3) {
+                        if (response.code === -3) {
                             Swal.fire({
                                 icon: "error",
                                 title: "Lỗi ...",
@@ -97,7 +96,7 @@ else
                                /* footer: '<a href="#">Why do I have this issue?</a>'*/
                             });
                         }
-                        if (response.code = -7) {
+                        if (response.code === -7) {
                             Swal.fire({
                                 icon: "error",
                                 title: "Lỗi ...",

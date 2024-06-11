@@ -24,7 +24,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             {
 
                 tb_Staff nvSession = (tb_Staff)Session["user"];
-                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2 || row.FunctionId == 4));
                 if (item == null)
                 {
                     return RedirectToAction("NonRole", "HomePage");
@@ -314,7 +314,18 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
-                return PartialView();
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var role = db.tb_Role.FirstOrDefault(x => x.StaffId == nvSession.StaffId);
+                if (role != null && role.FunctionId == 1 || role.FunctionId == 4 || role.FunctionId == 2)
+                {
+                    return PartialView();
+                }
+                
+                else
+                {
+                    return RedirectToAction("NonRole", "HomePage");
+                }
+
             }
         }
         [HttpPost]
@@ -333,16 +344,31 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     {
                         if (ModelState.IsValid)
                         {
-                            tb_Customer customer = new tb_Customer();
-                            customer.PhoneNumber = req.PhoneNumber;
-                            customer.CustomerName = req.CustomerName;
-                            customer.Email = req.Email;
-                            customer.NumberofPurchases += 1;
+                            var checkPhoneNumber = db.tb_Customer.SingleOrDefault(x => x.PhoneNumber == req.PhoneNumber);
+                            var checkEmail = db.tb_Customer.SingleOrDefault(x => x.Email == req.Email);
 
+                            if (checkPhoneNumber != null)
+                            {
+                                return Json(new { success = false, code = -3 }); // Số điện thoại đã tồn tại
+                            }
+
+                            if (checkEmail != null)
+                            {
+                                return Json(new { success = false, code = -4 }); // Email đã tồn tại
+                            }
+
+                            tb_Customer customer = new tb_Customer
+                            {
+                                PhoneNumber = req.PhoneNumber,
+                                CustomerName = req.CustomerName,
+                                Email = req.Email,
+                                NumberofPurchases = 1
+                            };
                             db.tb_Customer.Add(customer);
                             db.SaveChanges();
                             dbContextTransaction.Commit();
-                            return Json(new { success = true, code = 1 });
+                            return Json(new { success = true, code = 1, phoneNumber = req.PhoneNumber });
+
                         }
                         else
                         {

@@ -1,11 +1,18 @@
-﻿using System;
+﻿
+using Microsoft.Owin.Security;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using WebSite_CuaHangDienThoai.Models;
+using System.Web.Security;
+using System.Security.Claims;
+
 
 namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 {
@@ -50,7 +57,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
                         if (functionTitle != null)
                         {
-                            if (data.Image != null) 
+                            if (data.Image != null)
                             {
                                 string base64String = Convert.ToBase64String(data.Image);
                                 Session["userimg"] = base64String;

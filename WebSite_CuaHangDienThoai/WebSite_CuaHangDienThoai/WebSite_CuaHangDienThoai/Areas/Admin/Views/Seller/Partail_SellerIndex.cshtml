@@ -1,4 +1,4 @@
-﻿<link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+﻿
 <style>
 
     .bg-sg {
@@ -24,20 +24,43 @@
         z-index: 9999;
       
     }
-
-    #cardAdd123 {
-        width: 380px;
-        border: none;
-        border-radius: 15px;
-        padding: 8px;
+    
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 300px;
         background-color: #fff;
-        position: relative;
-        height: 370px;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        z-index: 10000;
     }
 
+    .notification-content {
+        display: flex;
+        align-items: center;
+    }
+
+        .notification-content .icon {
+            margin-right: 10px;
+        }
+
+    .notification h5 {
+        margin: 0;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .notification p {
+        margin: 5px 0 0;
+        font-size: 14px;
+        color: #666;
+    }
 </style>
-<div class="bg-sg" style="display: block"></div>
-<div id="popup" style="display:block">
+<div class="bg-sg" style="display: none"></div>
+<div id="popup" style="display:none">
 
     <div class="">
       @Html.Action("AddClient", "AccountClient")
@@ -45,6 +68,7 @@
 
 
 </div>
+<div id="notification-container"></div>
 
 <div class="col-12">
     <div class="card">
@@ -176,20 +200,11 @@
                                                     <div id="loadDataCustomer">
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <p class="card-text">Khách hàng:</p>
+                                                                <b class="card-text" style="color:red">Khách hàng:</b>
                                                             </div>
-                                                            <div class="col-md-6">
-                                                                <p class="card-text">Nguyễn Mai Linh - 0984 446 246</p>
-                                                            </div>
+                                                           
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <p class="card-text">Giá thường:</p>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <button class="btn btn-danger">Xem giá</button>
-                                                            </div>
-                                                        </div>
+                                                       
                                                     </div>
 
                                                 </div>

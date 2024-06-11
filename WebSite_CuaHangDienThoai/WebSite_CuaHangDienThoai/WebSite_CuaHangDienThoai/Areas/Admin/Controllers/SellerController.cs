@@ -173,7 +173,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
                                     customer.NumberofPurchases += 1;
-
+                                    db.Entry(customer).State = System.Data.Entity.EntityState.Modified;
+                                    db.SaveChanges();
 
                                     cart.ClearCart();
                                     db.Entry(customer).State = System.Data.Entity.EntityState.Modified;
