@@ -1,0 +1,45 @@
+﻿
+
+@model List<WebSite_CuaHangDienThoai.Models.ProductDetailViewModel>
+
+<style>
+    #btnDungLuong {
+        border: solid 2px gray;
+    }
+</style>
+
+@if (ViewBag.ProductsId != null)
+{
+
+    if (Model != null)
+    {
+
+        <div class="row">
+            <div class="col-1">
+
+            </div>
+            <div class="col-10 d-flex justify-content-center">
+                @foreach (var item in Model)
+                { 
+                    <p>@item.Color</p>
+                }
+
+
+                </div>
+            <div class="col-1">
+
+            </div>
+
+        </div>
+
+    }
+
+    else
+    {
+        <p class="text-danger">Không tồn tại bảng ghi nào !!</p>
+    }
+}
+else
+{
+    <p class="text-danger">Không tồn tại bảng ghi nào !!</p>
+}

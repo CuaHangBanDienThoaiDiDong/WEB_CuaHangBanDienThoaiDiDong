@@ -224,10 +224,8 @@
                 @*End tab hóa đơn*@
                 @*Start tab kho hàng*@
                 <div class="tab-pane fade " id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
-                    <div clas="row">
-                        <div class="col-12">
-                            <p>KHo hang </p>
-                        </div>
+                    <div id="loaddata">
+
                     </div>
                 </div>
                 @*End tab  kho hàng*@
@@ -240,13 +238,32 @@
 </div>
 
 <script>
+    function LoadIndex(page) {
+        $.ajax({
+            url: '/admin/ProductDetail/Partial_ListProductDetail',
+            type: 'GET',
+            data: { page: page },
+            success: function (rs) {
+                $('#loaddata').html(rs);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
     $(document).ready(function () { 
         $("#clearinputCustomer").click(function () {
             $("#searchCustomer").val("");
             $("#loadDataCustomer").html('<div class="row"><div class="col-md-6"><b class="card-text" style="color:red">Khách hàng:</b></div></div>');
         });
 
-      
+        LoadIndex(1)
+
+        $(document).on('click', '.pagination a', function (e) {
+            e.preventDefault();
+            var page = $(this).attr('data-page');
+            LoadIndex(page);
+        });
     });
 
 </script>

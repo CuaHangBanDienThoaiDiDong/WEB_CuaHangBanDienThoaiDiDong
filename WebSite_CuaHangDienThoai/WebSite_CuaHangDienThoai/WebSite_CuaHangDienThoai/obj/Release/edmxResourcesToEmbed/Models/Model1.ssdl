@@ -15,6 +15,16 @@
     <Property Name="idProvinces" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="name" Type="nvarchar" MaxLength="255" />
   </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
   <EntityType Name="tb_Cart">
     <Key>
       <PropertyRef Name="CartId" />
@@ -43,12 +53,12 @@
     <Property Name="CustomerName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="100" />
     <Property Name="Password" Type="varchar" MaxLength="100" />
-    <Property Name="Image" Type="nvarchar" MaxLength="250" />
     <Property Name="Birthday" Type="date" />
     <Property Name="Loaction" Type="nvarchar(max)" />
     <Property Name="NumberofPurchases" Type="int" />
     <Property Name="Code" Type="char" MaxLength="10" />
     <Property Name="Clock" Type="bit" />
+    <Property Name="Image" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="tb_ExportWareHouse">
     <Key>
@@ -85,9 +95,17 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="Modifeby" Type="nvarchar(max)" />
     <Property Name="StaffId" Type="int" />
+    <Property Name="WarehouseId" Type="int" />
+    <Property Name="SupplierId" Type="int" />
+  </EntityType>
+  <EntityType Name="tb_ImportWarehouseDetail">
+    <Key>
+      <PropertyRef Name="ImportWarehouseDetailId" />
+    </Key>
+    <Property Name="ImportWarehouseDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ProductDetailId" Type="int" />
     <Property Name="QuanTity" Type="int" />
-    <Property Name="WarehouseId" Type="int" />
+    <Property Name="ImportWarehouseId" Type="int" />
   </EntityType>
   <EntityType Name="tb_Order">
     <Key>
@@ -124,7 +142,6 @@
     <Property Name="CartItem" Type="int" />
     <Property Name="DamagedProduct" Type="bit" />
     <Property Name="OrderId" Type="int" />
-    <Property Name="CustomerId" Type="int" />
     <Property Name="ProductDetailId" Type="int" />
   </EntityType>
   <EntityType Name="tb_ProductCategory">
@@ -134,7 +151,7 @@
     <Property Name="ProductCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Title" Type="nvarchar" MaxLength="150" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" />
-    <Property Name="Icon" Type="nvarchar" MaxLength="250" />
+    <Property Name="Icon" Type="varbinary(max)" />
     <Property Name="CreatedBy" Type="nvarchar(max)" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime" />
@@ -153,7 +170,7 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="Modifeby" Type="nvarchar(max)" />
     <Property Name="Alias" Type="nvarchar" MaxLength="250" />
-    <Property Name="Icon" Type="nvarchar" MaxLength="250" />
+    <Property Name="Icon" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="tb_ProductDetail">
     <Key>
@@ -166,7 +183,7 @@
     <Property Name="PriceSale" Type="decimal" Precision="18" Scale="2" />
     <Property Name="OrigianlPrice" Type="decimal" Precision="18" Scale="2" />
     <Property Name="TypeProduct" Type="bit" />
-    <Property Name="Image" Type="nvarchar" MaxLength="900" />
+    <Property Name="Image" Type="varbinary(max)" />
     <Property Name="Ram" Type="int" />
     <Property Name="Capacity" Type="int" />
     <Property Name="ProductsId" Type="int" />
@@ -177,7 +194,7 @@
     </Key>
     <Property Name="ProductImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ProductDetailId" Type="int" Nullable="false" />
-    <Property Name="Image" Type="nvarchar(max)" />
+    <Property Name="Image" Type="varbinary(max)" />
     <Property Name="IsDefault" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="tb_ProductImage">
@@ -186,8 +203,8 @@
     </Key>
     <Property Name="ProductImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ProductsId" Type="int" Nullable="false" />
-    <Property Name="Image" Type="nvarchar(max)" />
     <Property Name="IsDefault" Type="bit" Nullable="false" />
+    <Property Name="Image" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="tb_Products">
     <Key>
@@ -222,7 +239,7 @@
     <Property Name="BatteryType" Type="char" MaxLength="900" />
     <Property Name="ChargingSupport" Type="nvarchar" MaxLength="900" />
     <Property Name="BatteryTechnology" Type="nvarchar" MaxLength="900" />
-    <Property Name="Image" Type="nvarchar" MaxLength="900" />
+    <Property Name="Image" Type="varbinary(max)" />
     <Property Name="CPU" Type="nvarchar" MaxLength="100" />
     <Property Name="GPU" Type="nvarchar" MaxLength="100" />
     <Property Name="Screen" Type="char" MaxLength="1" />
@@ -285,6 +302,33 @@
     <Property Name="FunctionId" Type="int" Nullable="false" />
     <Property Name="Note" Type="nvarchar(max)" />
   </EntityType>
+  <EntityType Name="tb_Seller">
+    <Key>
+      <PropertyRef Name="SellerId" />
+    </Key>
+    <Property Name="SellerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="Phone" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar(max)" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="Modifiedby" Type="nvarchar(max)" />
+    <Property Name="TypePayment" Type="int" Nullable="false" />
+    <Property Name="StaffId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_SellerDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SellerId" Type="int" Nullable="false" />
+    <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="ProductDetailId" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="tb_Staff">
     <Key>
       <PropertyRef Name="StaffId" />
@@ -296,7 +340,6 @@
     <Property Name="CitizenIdentificationCard" Type="char" MaxLength="12" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="Image" Type="nvarchar" MaxLength="250" />
     <Property Name="Birthday" Type="date" Nullable="false" />
     <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
     <Property Name="DayofWork" Type="date" />
@@ -308,6 +351,8 @@
     <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
     <Property Name="Clock" Type="bit" />
     <Property Name="FunctionId" Type="int" />
+    <Property Name="StoreId" Type="int" />
+    <Property Name="Image" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="tb_Store">
     <Key>
@@ -323,6 +368,18 @@
     <Property Name="City" Type="nvarchar" MaxLength="60" />
     <Property Name="District" Type="nvarchar" MaxLength="60" />
     <Property Name="IsStatus" Type="bit" />
+    <Property Name="idProvinces" Type="int" />
+    <Property Name="idDistricts" Type="int" />
+    <Property Name="idWards" Type="int" />
+  </EntityType>
+  <EntityType Name="tb_Supplier">
+    <Key>
+      <PropertyRef Name="SupplierId" />
+    </Key>
+    <Property Name="SupplierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="500" />
+    <Property Name="Phone" Type="int" />
+    <Property Name="Location" Type="nvarchar" MaxLength="500" />
   </EntityType>
   <EntityType Name="tb_Voucher">
     <Key>
@@ -339,7 +396,20 @@
     <Property Name="UsedBy" Type="nvarchar" MaxLength="250" />
     <Property Name="UsedDate" Type="datetime" />
     <Property Name="Quantity" Type="int" />
+  </EntityType>
+  <EntityType Name="tb_VoucherDetail">
+    <Key>
+      <PropertyRef Name="VoucherDetailId" />
+    </Key>
+    <Property Name="VoucherDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar(max)" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="UsedBy" Type="nvarchar" MaxLength="250" />
+    <Property Name="UsedDate" Type="datetime" />
     <Property Name="OrderId" Type="int" />
+    <Property Name="VoucherId" Type="int" />
+    <Property Name="Code" Type="char" MaxLength="60" />
+    <Property Name="Status" Type="bit" />
   </EntityType>
   <EntityType Name="tb_Warehouse">
     <Key>
@@ -351,6 +421,15 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="Modifeby" Type="nvarchar(max)" />
     <Property Name="StoreId" Type="int" />
+  </EntityType>
+  <EntityType Name="tb_WarehouseDetail">
+    <Key>
+      <PropertyRef Name="WarehouseDetailId" />
+    </Key>
+    <Property Name="WarehouseDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductDetailId" Type="int" />
+    <Property Name="QuanTity" Type="int" />
+    <Property Name="WarehouseId" Type="int" />
   </EntityType>
   <EntityType Name="Wards">
     <Key>
@@ -420,7 +499,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Districts__idPro__04E4BC85">
+  <Association Name="FK__Districts__idPro__656C112C">
     <End Role="Provinces" Type="Self.Provinces" Multiplicity="0..1" />
     <End Role="Districts" Type="Self.Districts" Multiplicity="*" />
     <ReferentialConstraint>
@@ -432,7 +511,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Wards__idDistric__07C12930">
+  <Association Name="FK__Wards__idDistric__68487DD7">
     <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
     <End Role="Wards" Type="Self.Wards" Multiplicity="*" />
     <ReferentialConstraint>
@@ -456,14 +535,26 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="ImportWarehouseToProductDetail">
+  <Association Name="ImportWarehouseDetailToImportWarehouse">
+    <End Role="tb_ImportWarehouse" Type="Self.tb_ImportWarehouse" Multiplicity="0..1" />
+    <End Role="tb_ImportWarehouseDetail" Type="Self.tb_ImportWarehouseDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_ImportWarehouse">
+        <PropertyRef Name="ImportWarehouseId" />
+      </Principal>
+      <Dependent Role="tb_ImportWarehouseDetail">
+        <PropertyRef Name="ImportWarehouseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ImportWarehouseDetailToProductdtail">
     <End Role="tb_ProductDetail" Type="Self.tb_ProductDetail" Multiplicity="0..1" />
-    <End Role="tb_ImportWarehouse" Type="Self.tb_ImportWarehouse" Multiplicity="*" />
+    <End Role="tb_ImportWarehouseDetail" Type="Self.tb_ImportWarehouseDetail" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="tb_ProductDetail">
         <PropertyRef Name="ProductDetailId" />
       </Principal>
-      <Dependent Role="tb_ImportWarehouse">
+      <Dependent Role="tb_ImportWarehouseDetail">
         <PropertyRef Name="ProductDetailId" />
       </Dependent>
     </ReferentialConstraint>
@@ -480,6 +571,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="ImportWarehouseToSupplier">
+    <End Role="tb_Supplier" Type="Self.tb_Supplier" Multiplicity="0..1" />
+    <End Role="tb_ImportWarehouse" Type="Self.tb_ImportWarehouse" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Supplier">
+        <PropertyRef Name="SupplierId" />
+      </Principal>
+      <Dependent Role="tb_ImportWarehouse">
+        <PropertyRef Name="SupplierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="ImportWarehousetoWarehouse">
     <End Role="tb_Warehouse" Type="Self.tb_Warehouse" Multiplicity="0..1" />
     <End Role="tb_ImportWarehouse" Type="Self.tb_ImportWarehouse" Multiplicity="*" />
@@ -492,15 +595,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="OrderDetailtKhachHang">
-    <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="0..1" />
-    <End Role="tb_OrderDetail" Type="Self.tb_OrderDetail" Multiplicity="*" />
+  <Association Name="NewStaffToStoreFK">
+    <End Role="tb_Store" Type="Self.tb_Store" Multiplicity="0..1" />
+    <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="tb_Customer">
-        <PropertyRef Name="CustomerId" />
+      <Principal Role="tb_Store">
+        <PropertyRef Name="StoreId" />
       </Principal>
-      <Dependent Role="tb_OrderDetail">
-        <PropertyRef Name="CustomerId" />
+      <Dependent Role="tb_Staff">
+        <PropertyRef Name="StoreId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -525,6 +628,18 @@
       </Principal>
       <Dependent Role="tb_OrderDetail">
         <PropertyRef Name="ProductDetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="OrdertKhachHang">
+    <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="0..1" />
+    <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Customer">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="tb_Order">
+        <PropertyRef Name="CustomerId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -696,6 +811,54 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="SellerDetailtoSeller">
+    <End Role="tb_Seller" Type="Self.tb_Seller" Multiplicity="1" />
+    <End Role="tb_SellerDetail" Type="Self.tb_SellerDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Seller">
+        <PropertyRef Name="SellerId" />
+      </Principal>
+      <Dependent Role="tb_SellerDetail">
+        <PropertyRef Name="SellerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Sellerto">
+    <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="1" />
+    <End Role="tb_Seller" Type="Self.tb_Seller" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Staff">
+        <PropertyRef Name="StaffId" />
+      </Principal>
+      <Dependent Role="tb_Seller">
+        <PropertyRef Name="StaffId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SellertoCustomer">
+    <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="1" />
+    <End Role="tb_Seller" Type="Self.tb_Seller" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Customer">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="tb_Seller">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SellerToProductDetail">
+    <End Role="tb_ProductDetail" Type="Self.tb_ProductDetail" Multiplicity="1" />
+    <End Role="tb_SellerDetail" Type="Self.tb_SellerDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_ProductDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Principal>
+      <Dependent Role="tb_SellerDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="StafftoFunction">
     <End Role="tb_Function" Type="Self.tb_Function" Multiplicity="0..1" />
     <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="*" />
@@ -708,15 +871,87 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="VouchertoOrder">
+  <Association Name="StoretoDistricts">
+    <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
+    <End Role="tb_Store" Type="Self.tb_Store" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Districts">
+        <PropertyRef Name="idDistricts" />
+      </Principal>
+      <Dependent Role="tb_Store">
+        <PropertyRef Name="idDistricts" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StoretoProvinces">
+    <End Role="Provinces" Type="Self.Provinces" Multiplicity="0..1" />
+    <End Role="tb_Store" Type="Self.tb_Store" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Provinces">
+        <PropertyRef Name="idProvinces" />
+      </Principal>
+      <Dependent Role="tb_Store">
+        <PropertyRef Name="idProvinces" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StoretoWards">
+    <End Role="Wards" Type="Self.Wards" Multiplicity="0..1" />
+    <End Role="tb_Store" Type="Self.tb_Store" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Wards">
+        <PropertyRef Name="idWards" />
+      </Principal>
+      <Dependent Role="tb_Store">
+        <PropertyRef Name="idWards" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="VoucherDetailtoOrder">
     <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="0..1" />
-    <End Role="tb_Voucher" Type="Self.tb_Voucher" Multiplicity="*" />
+    <End Role="tb_VoucherDetail" Type="Self.tb_VoucherDetail" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="tb_Order">
         <PropertyRef Name="OrderId" />
       </Principal>
-      <Dependent Role="tb_Voucher">
+      <Dependent Role="tb_VoucherDetail">
         <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="VoucherDetailtoVoucher">
+    <End Role="tb_Voucher" Type="Self.tb_Voucher" Multiplicity="0..1" />
+    <End Role="tb_VoucherDetail" Type="Self.tb_VoucherDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Voucher">
+        <PropertyRef Name="VoucherId" />
+      </Principal>
+      <Dependent Role="tb_VoucherDetail">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="WarehouseDetailetoProductDetail">
+    <End Role="tb_ProductDetail" Type="Self.tb_ProductDetail" Multiplicity="0..1" />
+    <End Role="tb_WarehouseDetail" Type="Self.tb_WarehouseDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_ProductDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Principal>
+      <Dependent Role="tb_WarehouseDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="WarehouseDetailetoWarehouse">
+    <End Role="tb_Warehouse" Type="Self.tb_Warehouse" Multiplicity="0..1" />
+    <End Role="tb_WarehouseDetail" Type="Self.tb_WarehouseDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Warehouse">
+        <PropertyRef Name="WarehouseId" />
+      </Principal>
+      <Dependent Role="tb_WarehouseDetail">
+        <PropertyRef Name="WarehouseId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -735,12 +970,14 @@
   <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
     <EntitySet Name="Districts" EntityType="Self.Districts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Provinces" EntityType="Self.Provinces" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Cart" EntityType="Self.tb_Cart" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_CartItem" EntityType="Self.tb_CartItem" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Customer" EntityType="Self.tb_Customer" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_ExportWareHouse" EntityType="Self.tb_ExportWareHouse" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Function" EntityType="Self.tb_Function" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_ImportWarehouse" EntityType="Self.tb_ImportWarehouse" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_ImportWarehouseDetail" EntityType="Self.tb_ImportWarehouseDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Order" EntityType="Self.tb_Order" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_OrderDetail" EntityType="Self.tb_OrderDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_ProductCategory" EntityType="Self.tb_ProductCategory" Schema="dbo" store:Type="Tables" />
@@ -754,10 +991,15 @@
     <EntitySet Name="tb_Review" EntityType="Self.tb_Review" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_ReviewDetail" EntityType="Self.tb_ReviewDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Role" EntityType="Self.tb_Role" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_Seller" EntityType="Self.tb_Seller" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_SellerDetail" EntityType="Self.tb_SellerDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Staff" EntityType="Self.tb_Staff" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Store" EntityType="Self.tb_Store" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_Supplier" EntityType="Self.tb_Supplier" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Voucher" EntityType="Self.tb_Voucher" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_VoucherDetail" EntityType="Self.tb_VoucherDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Warehouse" EntityType="Self.tb_Warehouse" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_WarehouseDetail" EntityType="Self.tb_WarehouseDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Wards" EntityType="Self.Wards" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="CartItemtoCart" Association="Self.CartItemtoCart">
       <End Role="tb_Cart" EntitySet="tb_Cart" />
@@ -779,11 +1021,11 @@
       <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
       <End Role="tb_ExportWareHouse" EntitySet="tb_ExportWareHouse" />
     </AssociationSet>
-    <AssociationSet Name="FK__Districts__idPro__04E4BC85" Association="Self.FK__Districts__idPro__04E4BC85">
+    <AssociationSet Name="FK__Districts__idPro__656C112C" Association="Self.FK__Districts__idPro__656C112C">
       <End Role="Provinces" EntitySet="Provinces" />
       <End Role="Districts" EntitySet="Districts" />
     </AssociationSet>
-    <AssociationSet Name="FK__Wards__idDistric__07C12930" Association="Self.FK__Wards__idDistric__07C12930">
+    <AssociationSet Name="FK__Wards__idDistric__68487DD7" Association="Self.FK__Wards__idDistric__68487DD7">
       <End Role="Districts" EntitySet="Districts" />
       <End Role="Wards" EntitySet="Wards" />
     </AssociationSet>
@@ -791,21 +1033,29 @@
       <End Role="tb_Customer" EntitySet="tb_Customer" />
       <End Role="tb_Cart" EntitySet="tb_Cart" />
     </AssociationSet>
-    <AssociationSet Name="ImportWarehouseToProductDetail" Association="Self.ImportWarehouseToProductDetail">
-      <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
+    <AssociationSet Name="ImportWarehouseDetailToImportWarehouse" Association="Self.ImportWarehouseDetailToImportWarehouse">
       <End Role="tb_ImportWarehouse" EntitySet="tb_ImportWarehouse" />
+      <End Role="tb_ImportWarehouseDetail" EntitySet="tb_ImportWarehouseDetail" />
+    </AssociationSet>
+    <AssociationSet Name="ImportWarehouseDetailToProductdtail" Association="Self.ImportWarehouseDetailToProductdtail">
+      <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
+      <End Role="tb_ImportWarehouseDetail" EntitySet="tb_ImportWarehouseDetail" />
     </AssociationSet>
     <AssociationSet Name="ImportWarehouseToStaff" Association="Self.ImportWarehouseToStaff">
       <End Role="tb_Staff" EntitySet="tb_Staff" />
+      <End Role="tb_ImportWarehouse" EntitySet="tb_ImportWarehouse" />
+    </AssociationSet>
+    <AssociationSet Name="ImportWarehouseToSupplier" Association="Self.ImportWarehouseToSupplier">
+      <End Role="tb_Supplier" EntitySet="tb_Supplier" />
       <End Role="tb_ImportWarehouse" EntitySet="tb_ImportWarehouse" />
     </AssociationSet>
     <AssociationSet Name="ImportWarehousetoWarehouse" Association="Self.ImportWarehousetoWarehouse">
       <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
       <End Role="tb_ImportWarehouse" EntitySet="tb_ImportWarehouse" />
     </AssociationSet>
-    <AssociationSet Name="OrderDetailtKhachHang" Association="Self.OrderDetailtKhachHang">
-      <End Role="tb_Customer" EntitySet="tb_Customer" />
-      <End Role="tb_OrderDetail" EntitySet="tb_OrderDetail" />
+    <AssociationSet Name="NewStaffToStoreFK" Association="Self.NewStaffToStoreFK">
+      <End Role="tb_Store" EntitySet="tb_Store" />
+      <End Role="tb_Staff" EntitySet="tb_Staff" />
     </AssociationSet>
     <AssociationSet Name="OrderDetailtoOrder" Association="Self.OrderDetailtoOrder">
       <End Role="tb_Order" EntitySet="tb_Order" />
@@ -814,6 +1064,10 @@
     <AssociationSet Name="OrderDetailtoProductDetai" Association="Self.OrderDetailtoProductDetai">
       <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
       <End Role="tb_OrderDetail" EntitySet="tb_OrderDetail" />
+    </AssociationSet>
+    <AssociationSet Name="OrdertKhachHang" Association="Self.OrdertKhachHang">
+      <End Role="tb_Customer" EntitySet="tb_Customer" />
+      <End Role="tb_Order" EntitySet="tb_Order" />
     </AssociationSet>
     <AssociationSet Name="ProductCompanytoProductDetai" Association="Self.ProductCompanytoProductDetai">
       <End Role="tb_ProductCompany" EntitySet="tb_ProductCompany" />
@@ -871,13 +1125,53 @@
       <End Role="tb_Staff" EntitySet="tb_Staff" />
       <End Role="tb_Role" EntitySet="tb_Role" />
     </AssociationSet>
+    <AssociationSet Name="SellerDetailtoSeller" Association="Self.SellerDetailtoSeller">
+      <End Role="tb_Seller" EntitySet="tb_Seller" />
+      <End Role="tb_SellerDetail" EntitySet="tb_SellerDetail" />
+    </AssociationSet>
+    <AssociationSet Name="Sellerto" Association="Self.Sellerto">
+      <End Role="tb_Staff" EntitySet="tb_Staff" />
+      <End Role="tb_Seller" EntitySet="tb_Seller" />
+    </AssociationSet>
+    <AssociationSet Name="SellertoCustomer" Association="Self.SellertoCustomer">
+      <End Role="tb_Customer" EntitySet="tb_Customer" />
+      <End Role="tb_Seller" EntitySet="tb_Seller" />
+    </AssociationSet>
+    <AssociationSet Name="SellerToProductDetail" Association="Self.SellerToProductDetail">
+      <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
+      <End Role="tb_SellerDetail" EntitySet="tb_SellerDetail" />
+    </AssociationSet>
     <AssociationSet Name="StafftoFunction" Association="Self.StafftoFunction">
       <End Role="tb_Function" EntitySet="tb_Function" />
       <End Role="tb_Staff" EntitySet="tb_Staff" />
     </AssociationSet>
-    <AssociationSet Name="VouchertoOrder" Association="Self.VouchertoOrder">
+    <AssociationSet Name="StoretoDistricts" Association="Self.StoretoDistricts">
+      <End Role="Districts" EntitySet="Districts" />
+      <End Role="tb_Store" EntitySet="tb_Store" />
+    </AssociationSet>
+    <AssociationSet Name="StoretoProvinces" Association="Self.StoretoProvinces">
+      <End Role="Provinces" EntitySet="Provinces" />
+      <End Role="tb_Store" EntitySet="tb_Store" />
+    </AssociationSet>
+    <AssociationSet Name="StoretoWards" Association="Self.StoretoWards">
+      <End Role="Wards" EntitySet="Wards" />
+      <End Role="tb_Store" EntitySet="tb_Store" />
+    </AssociationSet>
+    <AssociationSet Name="VoucherDetailtoOrder" Association="Self.VoucherDetailtoOrder">
       <End Role="tb_Order" EntitySet="tb_Order" />
+      <End Role="tb_VoucherDetail" EntitySet="tb_VoucherDetail" />
+    </AssociationSet>
+    <AssociationSet Name="VoucherDetailtoVoucher" Association="Self.VoucherDetailtoVoucher">
       <End Role="tb_Voucher" EntitySet="tb_Voucher" />
+      <End Role="tb_VoucherDetail" EntitySet="tb_VoucherDetail" />
+    </AssociationSet>
+    <AssociationSet Name="WarehouseDetailetoProductDetail" Association="Self.WarehouseDetailetoProductDetail">
+      <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
+      <End Role="tb_WarehouseDetail" EntitySet="tb_WarehouseDetail" />
+    </AssociationSet>
+    <AssociationSet Name="WarehouseDetailetoWarehouse" Association="Self.WarehouseDetailetoWarehouse">
+      <End Role="tb_Warehouse" EntitySet="tb_Warehouse" />
+      <End Role="tb_WarehouseDetail" EntitySet="tb_WarehouseDetail" />
     </AssociationSet>
     <AssociationSet Name="WarehousetoStore" Association="Self.WarehousetoStore">
       <End Role="tb_Store" EntitySet="tb_Store" />

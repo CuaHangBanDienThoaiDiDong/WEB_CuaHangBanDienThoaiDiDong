@@ -1,0 +1,237 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Customer
+@{
+    ViewBag.Title = "Khách hàng" + ViewBag.NAme;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="~/Content/Css/Client/Profile.css" rel="stylesheet" />
+@if (Model != null)
+{
+
+    <div class="container">
+        <div class="card overflow-hidden">
+            <div class="card-body p-0">
+
+                <div class="row align-items-center pt-5">
+                    <div class="col-lg-4 order-lg-1 order-2">
+
+                        @*<button id="showButton">Hiển thị thẻ</button>*@
+
+                        @*<div id="popup" class=" hidden">
+
+                    <div class="card">
+                        @Html.Action("EditImage", "Account", new { id = Model.CustomerId })
+                    </div>
+
+
+                </div>*@
+                        <div class="d-flex align-items-center justify-content-around m-4">
+                            <div class="text-center">
+                                <a href="#" style="color:chocolate">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag-heart-fill" viewBox="0 0 16 16">
+                                        <path d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132" />
+                                    </svg>
+                                    @{
+                                        var order = Model.tb_Order.Where(x => x.CustomerId == Model.CustomerId).Count();
+                                        <h4 class="mb-0 fw-semibold lh-1">
+                                            @order
+                                        </h4>
+                                    }
+
+
+                                    <p class="mb-0 fs-4">Đơn hàng</p>
+                                </a>
+
+                            </div>
+                            <div class="text-center">
+                                <a href="#" style="color:orange">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-cart-check-fill" viewBox="0 0 16 16">
+                                        <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708" />
+                                    </svg>
+                                    @{
+                                        var cart = Model.tb_Cart.FirstOrDefault(x => x.CustomerId == Model.CustomerId);
+                                        var cartItem = cart.tb_CartItem.Where(x => x.CartId == cart.CartId).Count();
+                                        <h4 class="mb-0 fw-semibold lh-1">
+                                            @cartItem
+                                        </h4>
+                                    }
+
+
+                                    <p class="mb-0 fs-4">Giỏ hàng</p>
+                                </a>
+
+                            </div>
+                            @*<div class="text-center">
+                        <i class="fa fa-check fs-6 d-block mb-2"></i>
+                        <h4 class="mb-0 fw-semibold lh-1">2,659</h4>
+                        <p class="mb-0 fs-4">Điểm tích lũy</p>
+                    </div>*@
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mt-n3 order-lg-2 order-1">
+                        <div class="mt-n5">
+                            @if (Model.Image != null)
+                            {
+                                <div class="d-flex align-items-center justify-content-center mb-2 thaydoi">
+
+
+                                    <div class="linear-gradient d-flex align-items-center justify-content-center rounded-circle" style="width: 110px; height: 110px;">
+
+
+                                        <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden" style="width: 100px; height: 100px;">
+                                            <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" alt="" class="w-100 h-100 thaydoi">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center justify-content-center mb-2 thaydoi">
+
+
+                                    <div class="linear-gradient d-flex align-items-center justify-content-center rounded-circle" style="width: 110px; height: 110px;">
+
+
+                                        <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden" style="width: 100px; height: 100px;">
+                                            <img src="~/images/Logo/LogoWeb.png" alt="" class="w-100 h-100 thaydoi">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            }
+
+
+
+                            <div class="text-center">
+                                <h5 class="fs-5 mb-0 fw-semibold">@Model.CustomerName</h5>
+                                @*<p class="mb-0 fs-4">Designer</p>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 order-last">
+
+                    </div>
+                </div>
+                <ul class="nav nav-tabs mb-3" id="ex-with-icons" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a data-mdb-tab-init class="nav-link active" id="ex-with-icons-tab-1" href="#ex-with-icons-tabs-1" role="tab" style="color: blue"
+                           aria-controls="ex-with-icons-tabs-1" aria-selected="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" style="color:blue" height="25" fill="currentColor" class="bi bi-person-fill-check" viewBox="0 0 16 16">
+                                <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                <path d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4" />
+                            </svg>
+                            Thông tin
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation" style="color:chocolate">
+                        <a data-mdb-tab-init class="nav-link" id="ex-with-icons-tab-2" href="#ex-with-icons-tabs-2" role="tab" style="color:chocolate"
+                           aria-controls="ex-with-icons-tabs-2" aria-selected="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:chocolate" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0" />
+                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+                            </svg>
+                            Đơn hàng
+                        </a>
+
+
+                    </li>
+                  
+                </ul>
+            </div>
+
+
+            <div class="tab-content" id="ex-with-icons-content">
+                <div class="tab-pane fade show active" id="ex-with-icons-tabs-1" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
+                    <section class="section about-section gray-bg" id="about">
+                        <div class="container">
+                            <div class="row align-items-center flex-row-reverse">
+                                <div class="col-md-12">
+                                    <div class="about-text go-to">
+                                        <h3 class="dark-color">Thông tin tài khoản</h3>
+                                        <div class="row about-list">
+                                            <div class="col-md-6">
+                                                <div class="media">
+                                                    <label>Ngày sinh</label>
+                                                    <p>@Model.Birthday</p>
+                                                </div>
+
+
+                                                <div class="media">
+                                                    <label>Địa chỉ</label>
+                                                    <p>@Model.Loaction</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="media">
+                                                    <label>E-mail</label>
+                                                    <p>@Model.Email</p>
+                                                </div>
+                                                <div class="media">
+                                                    <label>Điện thoại</label>
+                                                    <p>@Model.PhoneNumber</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <hr />
+                            <div class="counter">
+                                <div class="row">
+                                    <div class="col-6 col-lg-4">
+                                        <div class="count-data text-center">
+                                            <h6 class="count h2" data-to="500" data-speed="500">500</h6>
+                                            <p class="m-0px font-w-600">Tỷ lệ đặt hàng</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-4">
+                                        <div class="count-data text-center">
+                                            <h6 class="count h2" data-to="150" data-speed="150">150</h6>
+                                            <p class="m-0px font-w-600">Tỷ lệ giao hàng thành công</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-4">
+                                        <div class="count-data text-center">
+                                            <h6 class="count h2" data-to="850" data-speed="850">850</h6>
+                                            <p class="m-0px font-w-600">Tỷ lệ đơn hủy</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+
+                </div>
+                <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
+                    Đơn hàng
+                    @{
+                        var OrderId = Model.tb_Order.FirstOrDefault(x => x.CustomerId == Model.CustomerId);
+                    }
+                    @if (OrderId != null)
+                    {
+                        @Html.Action("Partial_Order", "AccountClient", new { id = OrderId.OrderId })
+                    }
+                    else
+                    {
+                        <p> Chưa có lịch sử mua hàng</p>
+                    }
+                </div>
+                @*<div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
+            @Html.Action("Partial_Edit", "Account", new { id = Model.CustomerId })
+        </div>
+        <div class="tab-pane fade" id="ex-with-icons-tabs-4" role="tabpanel" aria-labelledby="ex-with-icons-tab-4">
+            @Html.Action("Partail_EditPassWord", "Account", new { id = Model.CustomerId })
+        </div>*@
+            </div>
+        </div>
+    </div>
+
+
+
+}

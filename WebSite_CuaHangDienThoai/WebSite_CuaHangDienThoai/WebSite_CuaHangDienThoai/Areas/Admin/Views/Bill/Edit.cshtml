@@ -1,1 +1,327 @@
-﻿
+﻿@model WebSite_CuaHangDienThoai.Models.Admin_TokenEditBill
+
+@{
+    ViewBag.Title = "Sửa hóa đơn " + Model.Code;
+}
+<style>
+    .scrollable-content {
+        max-height: 350px;
+        overflow-y: auto;
+    }
+
+    .scrollable-product-list {
+        max-height: 400px; /* Điều chỉnh chiều cao tối đa của phần danh sách sản phẩm */
+        overflow-y: auto; /* Cho phép cuộn dọc khi nội dung vượt quá chiều cao */
+    }
+</style>
+
+@section naviheader {
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/seller/index" class="nav-link">Bán hàng</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/productcategory" class="nav-link">@ViewBag.Title</a>
+        </li>
+    </ul>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <b>Chi tiết đơn hàng @Model.Code - @Model.CreatedDate.ToString("dd/MM/yyyy")</b>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/admin/seller/index">Bán hàng</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <!-- Default box -->
+    <div class="noidung">
+        <div class="card">
+            <div class="card-header">
+                <label>Hóa đơn @Model.Code</label>
+            </div>
+            <div class="card-body ">
+                <form id="editBill" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.SellerId)
+                    @Html.HiddenFor(model => model.Code)
+                    @Html.HiddenFor(model => model.CreatedBy)
+                    @Html.HiddenFor(model => model.CreatedDate)
+                    @Html.HiddenFor(model => model.StaffId)
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Mã đơn hàng</label>
+                                <p class="form-control">@Model.Code</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Họ tên khách</label>
+                                <p class="form-control">@Model.Customer.CustomerName</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group" id="loadTotal">
+                                <label>Tổng tiền</label>
+                                @*<input type="text" name="demoPriceSale" id="demoPriceSale" value="@Model.TotalAmount" class="form-control border border-1, col-12 auto">*@
+                                <p class="form-control">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.TotalAmount, 0) đ</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Số điện thoại</label>
+                                @Html.TextBoxFor(model => model.Phone, new { @class = "form-control border border-1, col-12", id = "Phone", type = "text", pattern = "[0-9]" })
+                                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Ngày tạo</label>
+                                <p class="form-control">@Model.CreatedDate.ToString("dd/MM/yyyy")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @*<label>Trạng thái thanh toán</label>
+                                    <p class="form-control">@(Model.TypePayment == 1 ? "Thanh toán tại quầy" : "Đã thanh toán")</p>*@
+
+                                <div class="form-inline col-md-12 mt-2">
+                                    <label class="control-label mr-2">Trạng thái thanh toán:</label>
+                                    <select class="form-control col-md-12" id="drTypePayment" name="TypePayment">
+
+                                        <option value="0" id="nam">Thanh toán tại quầy</option>
+                                        <option value="1" id="nu">Đã thanh toán</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <h4>Danh sách sản phẩm</h4>
+                    <div id="loadListItem">
+                     
+                    </div>
+                </form>
+
+            </div>
+
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-10 d-grid gap-2 col-10 mx-auto">
+                        <button type="button" class="btn btn-success btnUpdateHD123" onclick="submitForm();">Lưu hóa đơn @Model.Code</button>
+                    </div>
+                    <div class="col-1"></div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+<script>
+
+     function submitForm() {
+     var isValid = true;
+     var errorMessage = "";
+
+     // Lấy giá trị các trường
+         var phoneNumber = $('#Phone').val();
+
+
+     // Kiểm tra từng trường
+     if (!phoneNumber) {
+         isValid = false;
+         errorMessage += "Số điện thoại không được để trống.\n";
+     } else if (phoneNumber.length !== 10) {
+         isValid = false;
+         errorMessage += "Số điện thoại không hợp lệ.\n";
+     }
+
+     // Hiển thị thông báo lỗi nếu không hợp lệ
+     if (!isValid) {
+         Swal.fire({
+             icon: 'error',
+             title: 'Lỗi',
+             text: errorMessage
+         });
+         return;
+     }
+
+     // Nếu hợp lệ, thực hiện gửi dữ liệu bằng AJAX
+     var form = $('#editBill')[0];
+     var formData = new FormData(form);
+
+     $.ajax({
+        url: '@Url.Action("Edit", "Bill")',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Cập nhật thành công',
+                    text: 'Hóa đơn đã được cập nhập.'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        alert("Cập nhật thành công");
+                    } else {
+                        setTimeout(function() {
+                            alert("Cập nhật thành công");
+                        }, 1500);
+                    }
+                });
+            } else if (response.code === -3) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Dữ liệu không hợp lệ. Không tìm thấy hóa đơn.'
+                });
+            } else if (response.code === -4) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Dữ liệu không hợp lệ. Hóa phải có ít nhất 1 sản phẩm.'
+                });
+            } else if (response.code === -2) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Dữ liệu không hợp lệ. Không tìm thấy hóa đơn.'
+                });
+            } else if (response.code === -6) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Dữ liệu không hợp lệ. Số điện thoại không tồn tại.'
+                });
+            }
+            else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Đã xảy ra lỗi. Vui lòng thử lại.'
+                });
+            }
+        },
+        error: function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: 'Không thể kết nối tới máy chủ. Vui lòng thử lại sau.'
+            });
+        }
+    });
+ }
+
+
+
+
+
+
+
+  $(document).ready(function () {
+    var sellerId = @Model.SellerId;
+
+    loadListItem(sellerId);
+    updateTotalPrice(sellerId);
+
+      @*$(document).off('click', '.deleteSellerItem').on('click', '.deleteSellerItem', function () {
+          var itemId = $(this).data('id');
+          var sellerId = $(this).data('sellerid');
+
+          if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
+              deleteItem(sellerId, itemId);
+          }
+      });
+    function deleteItem(sellerId, itemId) {
+        $.ajax({
+            url: '@Url.Action("DeleteItem", "Bill")', // Đảm bảo đường dẫn URL là chính xác
+            type: 'POST', // Phương thức HTTP là POST
+            data: { sellerId: sellerId, productDetailId: itemId }, // Truyền dữ liệu
+            success: function (response) {
+                if (response.success) {
+                    // Xóa thành công, cập nhật lại danh sách sản phẩm và tổng tiền
+                    loadListItem(sellerId);
+                    updateTotalPrice(sellerId);
+                    showNotification('success', 'Xóa thành công', response.message);
+                } else {
+                    // Hiển thị thông báo lỗi
+                    showNotification('error', 'Lỗi', response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+                showNotification('error', 'Lỗi', 'Đã xảy ra lỗi khi xóa sản phẩm.');
+            }
+        });
+    }*@
+
+    function updateTotalPrice(sellerId) {
+        $.ajax({
+            url: '@Url.Action("GetTotalPrice", "Bill")', // Đảm bảo đường dẫn URL là chính xác
+            type: 'GET', // Phương thức HTTP là GET
+            data: { sellerId: sellerId }, // Truyền dữ liệu
+            success: function (response) {
+                // Cập nhật tổng tiền
+                $('#loadTotal').html('   <label>Tổng tiền</label><br/><p class="form-control">' + response + '</p>');
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+                showNotification('error', 'Lỗi', 'Đã xảy ra lỗi khi cập nhật tổng tiền.');
+            }
+        });
+    }
+
+    function loadListItem(sellerId) {
+        if (sellerId != null) {
+            $.ajax({
+                url: '@Url.Action("Partail_ListProductEdit", "Bill")', // Đảm bảo đường dẫn URL là chính xác
+                type: 'GET', // Phương thức HTTP là GET
+                data: { sellerId: sellerId }, // Truyền dữ liệu
+                success: function (response) {
+                    $("#loadListItem").html(response);
+                    attachDeleteItemEvent();
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    showNotification('error', 'Lỗi', 'Đã xảy ra lỗi khi tải lại danh sách sản phẩm.');
+                }
+            });
+        }
+    }
+
+
+    function showNotification(type, title, message) {
+        // Hiển thị thông báo
+    }
+});
+
+
+
+</script>

@@ -1,0 +1,95 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Function
+@{
+    ViewBag.Title = "Nhân viên trong chức vụ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Chi tiết chưc vụ</a>
+        </li>
+    </ul>
+}
+
+
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Chi tiết chức vụ</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <span>
+                            <label>Mã chức vụ : </label>@Model.Alias
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <span>
+                            <label>Tên chức vụ : </label>@Model.TitLe
+                        </span>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+
+
+
+                        @if (Model.ModifiedDate == null)
+                        {
+                            <span>
+                                <label>Thay đổi: </label>Chưa qua chỉnh sửa
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                <label>Thay đổi bởi : </label>@Model.Modifeby
+                            </span>
+                        }
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <span>
+                            <label>Tạo bởi: </label>@Model.CreatedBy
+                        </span>
+
+
+                    </div>
+                </div>
+            </div>
+            
+
+        </div>
+
+        <div class="card-footer">
+
+        </div>
+
+    </div>
+    @Html.Action("Partial_SatffOfFuntion", "Function", new {id=Model.FunctionId})
+  
+
+</section>

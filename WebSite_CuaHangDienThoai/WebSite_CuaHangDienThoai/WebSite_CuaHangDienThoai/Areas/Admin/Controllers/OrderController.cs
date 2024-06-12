@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
     {
         // GET: Admin/Order
         CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
-        public ActionResult Index(int? page)
+        public ActionResult Index()
         {
             if (Session["user"] == null)
             {
@@ -19,25 +20,32 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
-                //var item = db.tb_Order.ToList();
-                var item = db.tb_Order.OrderByDescending(x => x.OrderId).ToList();
-                if (page == null)
-                {
-                    page = 1;
-                }
-                if (page == null)
-                {
-                    page = 1;
-                }
-                var pageNumber = page ?? 1;
-                var pageSize = 10;
-                ViewBag.PageSize = pageSize;
-                ViewBag.Page = pageNumber;
-                return View(item);
+                return View();
             }
         }
 
-
+        public ActionResult Partial_OrderIndex(int? page)
+        {
+            IEnumerable<tb_Order> items = db.tb_Order.OrderByDescending(x => x.OrderId);
+            if (items != null)
+            {
+                var pageSize = 10;
+                if (page == null)
+                {
+                    page = 1;
+                }
+                var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+                items = items.ToPagedList(pageIndex, pageSize);
+                ViewBag.PageSize = pageSize;
+                ViewBag.Page = page;
+                return PartialView(items);
+            }
+            else
+            {
+                ViewBag.txt = "Không tồn tại sản phẩm";
+                return PartialView();
+            }
+        }
 
 
 

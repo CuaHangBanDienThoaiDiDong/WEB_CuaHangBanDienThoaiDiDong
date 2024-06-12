@@ -1,0 +1,195 @@
+﻿@model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
+@using PagedList.Mvc;
+
+
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Danh sách sản phẩm</h3>
+            <div class="row">
+              
+
+                <div class="col-6">
+                    <div class="d-flex align-items-center border border-1 rounded-1">
+
+                        <div class="input-group">
+                            <input type="text" class="form-control border-0" id="searchProductWareHouse" placeholder="Tên sản phẩm">
+                            <button class="btn" type="button" id="clearInputBill">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-octagon" viewBox="0 0 16 16">
+                                    <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1z" />
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+           
+        </div>
+        <div class="card-body">
+
+            <table class="table table-hover">
+                <thead>
+                    <tr class="text-center">
+                        <th><input type="checkbox" id="SelectAll" /></th>
+                        <th>STT</th>
+                        <th>Hình ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Màu</th>
+                        <th>Số lượng</th>
+                        <th>Loại sản phẩm</th>
+                        <th>Hãng</th>
+                        <th>Dung lượng</th>
+
+
+
+                    </tr>
+                </thead>
+                @if (ViewBag.txt == null)
+                {
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+                            foreach (var item in Model)
+                            {
+
+                                var Capacity = "";
+                                if (item.Capacity > 999)
+                                {
+                                    Capacity = "1Tb";
+                                }
+                                else if (item.Capacity > 1999)
+                                {
+                                    Capacity = "2 Tb";
+                                }
+                                else
+                                {
+                                    Capacity = item.Capacity + "Gb";
+                                }
+
+
+                                byte[] strImg = null;
+                                var CheckImage = item.tb_Products.tb_ProductImage.SingleOrDefault(x => x.IsDefault == true);
+
+                                if (CheckImage != null)
+                                {
+                                    strImg = CheckImage.Image;
+                                }
+
+                                string imgSrc = "";
+                                if (strImg != null && strImg.Length > 0)
+                                {
+                                    string base64String = Convert.ToBase64String(strImg);
+                                    imgSrc = $"data:image;base64,{base64String}";
+                                }
+
+
+
+                                <tr class="text-center opacity-100 " id="trow_@item.ProductsId">
+                                    <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
+                                    <td>@i</td>
+                                    <td>
+                                        <img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" />
+                                    </td>
+                                    <td> <a href="/admin/Products/Detail/@item.ProductsId" style="color:black"> @item.tb_Products.Title</a>  </td>
+                                    <td>
+                                        @item.Color
+                                    </td>
+                                    <td>
+                                        @Html.Action("Partial_QuantityProductDtail", "WareHouseImport", new { id = item.ProductDetailId })
+                                    </td>
+                                    <td>@item.tb_Products.tb_ProductCategory.Title</td>
+                                    <td>
+                                        @item.tb_Products.tb_ProductCompany.Title
+                                    </td>
+                                    <td>
+                                        @Capacity
+                                    </td>
+                                    <td>
+                                        <button class="red_button btn-success   border-0 btn-0 btnAddListSeller" data-id="@item.ProductDetailId">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-plus-fill" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m6.5-11a.5.5 0 0 0-1 0V6H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V7H10a.5.5 0 0 0 0-1H8.5z" />
+                                            </svg>
+                                        </button>
+                                    </td>
+
+                                  
+                                </tr>
+
+
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4">Không có bản ghi nào!!!</td>
+                            </tr>
+                        }
+                    </tbody>
+
+                }
+                else
+                {
+                    <tbody>
+                        <tr class="text-center text-danger">
+                            <td>@ViewBag.txt</td>
+                        </tr>
+                    </tbody>
+                }
+
+            </table>
+
+            <hr />
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm">
+                            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="1" aria-label="First">
+                                    <span aria-hidden="true">Đầu</span>
+                                </a>
+                            </li>
+                            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="@(Model.PageNumber - 1)" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            @for (int i = Model.PageNumber; i <= Model.PageNumber + 4 && i <= Model.PageCount; i++)
+                            {
+                                <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                                    <a class="page-link" href="#" data-page="@i">@i</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="@(Model.PageNumber + 1)" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="@Model.PageCount" aria-label="Last">
+                                    <span aria-hidden="true">Cuối</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+
+

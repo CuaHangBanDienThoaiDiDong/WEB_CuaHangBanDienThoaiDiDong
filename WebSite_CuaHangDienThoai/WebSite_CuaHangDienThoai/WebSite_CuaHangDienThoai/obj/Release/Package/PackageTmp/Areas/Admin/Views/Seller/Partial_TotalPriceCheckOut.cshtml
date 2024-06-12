@@ -1,0 +1,17 @@
+﻿
+@if (ViewBag.Save != null)
+{
+    <div class="d-flex justify-content-between">
+        <p class="mb-2  text-danger">Tiếp kiệm :</p>
+        <p class="mb-2 text-success">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(ViewBag.Save) </p>
+    </div>
+
+}
+
+
+
+<hr />
+<div class="d-flex justify-content-between">
+    <b class="mb-2 text-danger">Tổng tiền  (tạm tính):</b>
+    <p class="mb-2">  @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(ViewBag.TotalPrice) đ</p>
+</div>

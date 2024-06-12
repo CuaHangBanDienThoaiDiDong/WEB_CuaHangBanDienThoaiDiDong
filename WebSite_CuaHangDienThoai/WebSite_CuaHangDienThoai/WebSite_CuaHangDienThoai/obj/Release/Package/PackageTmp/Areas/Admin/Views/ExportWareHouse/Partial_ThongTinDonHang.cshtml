@@ -1,0 +1,187 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Order
+@if (ViewBag.OrderId != null)
+{
+    <div class="card-header">
+
+
+<div class="card-title">
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li class="col-lg-6">
+                    <a href="#" class="text-black">Thông tin đơn hàng </a>
+                    <span style="color:orangered"> @Model.Code </span>|
+                    Ngày đặt <span class="text-danger">@Model.CreatedDate.ToString("dd/MM/yyyy")</span>
+                </li>
+                <li class="col-lg-6 text-right">
+                    <!-- Đặt class text-right để căn phải -->
+                    <!-- Nếu muốn căn phải, sử dụng CSS "text-align: right;" ở đây -->
+                </li>
+            </ol>
+
+            <hr class="col-lg-4" /> <!-- Đảm bảo cùng với số cột trước -->
+        </div>
+    </div>
+
+</div>
+        <div class="card-tools">
+
+            @if (ViewBag.ExportWareHouse != null)
+            {
+                <div class="btn  btn-danger ">
+                    Đơn hàng đã xuât kho
+                    <br />
+                    @ViewBag.ExportWareHouse.ToString("dd/MM/yyyy")
+                </div>
+            }
+            else if (Model.typeOrder == true)
+            {
+
+                <div class="btn btn-danger">
+                    Đơn hàng đã hủy
+                    <br /><span hidden>Thuan</span>
+                </div>
+            }
+            else if (Model.Confirm == false)
+            {
+
+                <div class="btn btn-warning">
+                    Đơn hàng dự kiến
+                    <br /><span hidden>Thuan</span>
+                </div>
+            }
+
+            else
+            {
+
+                <button class="btn btn-success btnExportWareHouse" data-id="@ViewBag.OrderId">Xuất đơn hàng</button>
+
+            }
+
+        </div>
+    </div>
+    <div class="card-body">
+        @if (ViewBag.Count != null)
+        {
+            <div class="form-row" style="display: flex; align-items: center;">
+                <div class="form-group col-md-2">
+                    <label for="tenDT">Tên Khách Hàng:</label>
+                    <span>@Model.tb_Customer.CustomerName</span>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="diaChi">Địa chỉ giao hàng:</label>
+                    <span>@Model.Address</span>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="lapPhieu">Ngày mua :</label>
+                    <span>@Model.CreatedDate.ToString("dd/MM/yyyy")</span>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="col-12">
+                @Html.Action("Partial_OrderDetail", "ExportWareHouse", new { id = Model.OrderId })
+            </div>
+        }
+        else
+        {
+            <div class="form-row" style="display: flex; align-items: center;">
+                <p class="text-danger">Không tìm thấy dữ liệu</p>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p class="text-danger">Không tồn tại bảng ghi !!!</p>
+}
+
+
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.btnExportWareHouse').click(function () {
+            var orderId = $(this).data('id');
+            alert("thuan");
+            $.ajax({
+                url: '/Admin/ExportWareHouse/Partial_ExportWareHouse', 
+                type: 'POST',
+                dataType: 'json',
+                data: { Orderid: orderId },
+                success: function (res) {
+                    if (res.Success) {
+                        if (res.Code == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Xuất đơn hàng thành công',
+                                text: 'Đơn hàng đã có trên hệ thống'
+                            }); setTimeout(function () {
+                                window.location.href = '/Admin/ExportWareHouse/';
+                            }, 1000).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/Admin/ExportWareHouse/';
+                                } else {
+                                    setTimeout(function () {
+                                        window.location.href = '/Admin/ExportWareHouse/';
+                                    }, 1500);// Chờ 1 giây và hiển thị lại thông báo
+                                }
+                            });
+                        }
+
+                    } else {
+                        if (res.Code == -2) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi tìm...",
+                                text: "Không tìm thấy đơn hàng",
+                                /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                            });
+
+                        }
+                        if (res.Code == -3) {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Lỗi tìm...",
+                                text: "Đơn hàng dã hủy trên hệ thống ! Vui lòng kiểm tra lại ",
+                                /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                            });
+                        }
+                        if (res.Code == -4) {
+                            Swal.fire({
+                                icon: "question",
+                                title: "Lỗi tìm...",
+                                text: "Đơn hàng chưa được xác nhận ",
+                                /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                            });
+
+                        }
+                        if (res.Code == -5) {
+                            Swal.fire({
+                                icon: "info",
+                                title: "Lỗi tìm...",
+                                text: "Mã hàng được trả về ",
+                                /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                            });
+                        }
+                        if (res.Code == -6) {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Lỗi tìm...",
+                                text: "Đơn hàng lập lại 2 lần ",
+                                /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                            });
+                        }
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Xử lý lỗi AJAX, nếu có
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+
+</script>

@@ -1,0 +1,47 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_ImportWarehouse
+@{
+    ViewBag.Title = "Thông tin phiếu nhập"+ViewBag.Supplier;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+      
+            <div class="card-title">
+                Thông tin nhập kho <label for="exampleInputEmail1">Danh sách nhà cung cấp</label>
+               
+            </div>
+            <br>
+            <br>
+            <hr />
+            <div class="row">
+                <div class="card-header">
+                    <p>Thông tin nhà cung cấp</p>
+                    <br />
+                    <h3 class="text-center">@Model.tb_Supplier.Name</h3>
+                </div>
+                <div class="card-body">
+                    <span><b>Mã:</b> <span>@Model.SupplierId</span> <b style="margin-left:10px">Tên:</b> <span>@Model.tb_Supplier.Name</span></span>
+                    <br />
+                    <span><b>Địa chỉ:</b> @Model.tb_Supplier.Location</span>
+                    <br />
+                    <span><b>Điện thoại:</b> @Model.tb_Supplier.Phone</span>
+                    <span><b>Ngày nhận:</b> @(Model.CreateDate.HasValue ? Model.CreateDate.Value.ToString("dd/MM/yyyy") : "Không có dữ liệu")</span>
+                </div>
+            </div>
+        
+    </div>
+    <div class="card-body" id="">
+
+        @Html.Action("Partail_ListProductForDetail", "WareHouseImport", new {id=Model.ImportWarehouseId})
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 text-center">
+                
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</div>

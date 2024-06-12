@@ -42,6 +42,33 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
+        public ActionResult Partial_ListProductDetail(int? page) 
+        {
+            IEnumerable<tb_ProductDetail> items = db.tb_ProductDetail.OrderByDescending(x => x.ProductsId);
+            if (items != null)
+            {
+                var pageSize = 10;
+                if (page == null)
+                {
+                    page = 1;
+                }
+                var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+                items = items.ToPagedList(pageIndex, pageSize);
+                ViewBag.PageSize = pageSize;
+                ViewBag.Page = page;
+                return PartialView(items);
+            }
+            else
+            {
+                ViewBag.txt = "Không tồn tại sản phẩm";
+                return PartialView();
+            }
+        }
+
+
+
+
+
         public ActionResult Detail(int? id)
         {
             var item = db.tb_ProductDetail.Find(id);

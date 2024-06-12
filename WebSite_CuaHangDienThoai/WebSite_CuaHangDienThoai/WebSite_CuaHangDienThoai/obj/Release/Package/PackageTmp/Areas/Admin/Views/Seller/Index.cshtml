@@ -1,0 +1,560 @@
+﻿
+@{
+    ViewBag.Title = "Bán hàng"+ ViewBag.Today;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutSeller.cshtml";
+}
+
+<style>
+    .search-suggestions {
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ccc;
+        z-index: 999;
+        width: 92%;
+        top: 100%;
+        left: 0;
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
+
+    .upper {
+        height: 100px;
+    }
+
+        .upper img {
+            width: 100%;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+    .user {
+        position: relative;
+    }
+
+    .profile img {
+        height: 80px;
+        width: 80px;
+        margin-top: 2px;
+    }
+
+    .profile {
+        position: absolute;
+        top: -50px;
+        left: 38%;
+        height: 90px;
+        width: 90px;
+        border: 3px solid #fff;
+        border-radius: 50%;
+    }
+
+    .follow {
+        border-radius: 15px;
+        padding-left: 20px;
+        padding-right: 20px;
+        height: 35px;
+    }
+
+    .stats span {
+        font-size: 29px;
+    }
+</style>
+
+<section class="content">
+
+    <div class="">
+
+       @Html.Action("Partail_SellerIndex","Seller")
+
+    </div>
+
+</section>
+
+
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            loadListProduct();
+            LoadListPriceCheckOut();
+            updateQuantityListProuctsCheckOut(); // Gọi hàm này khi trang được tải
+            attachDeleteHandlers(); // Gọi hàm này khi trang được tải
+            // Sự kiện click nút clear
+            $('#clearInput').click(function () {
+                $("#searchString").val(""); // Xóa nội dung trong ô tìm kiếm
+                $.ajax({
+                   
+                 
+                    success: function (response) {
+                        $(".loadProduct").html(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responsetext);
+                    }
+                });
+            });
+      
+            $("#searchString").on("input", function () {
+                var inputValue = $(this).val().trim();
+                if (inputValue !== "") {
+                    $.ajax({
+                        url: "/Admin/Seller/Suggest",
+                        type: "GET",
+                        data: { searchString: inputValue },
+                        success: function (response) {
+
+                            $(".loadProduct").html(response);
+                        },
+                        error: function (xhr, status, error) {
+
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        // Sự kiện khi nhập vào ô tìm kiếm
+            $("#searchString").on("input", function () {
+                var inputValue = $(this).val().trim();
+                var searchSuggestions = $(".search-suggestions");
+
+                if (inputValue !== "") {
+                    searchSuggestions.css("display", "block"); // Hiển thị khung gợi ý
+                } else {
+                    searchSuggestions.css("display", "none"); // Ẩn khung gợi ý nếu ô input rỗng
+                }
+            });
+
+
+            $('body').on('click', '.btnAddListSeller', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                var soluong = 1;
+                $.ajax({
+                    url: '/admin/Seller/AddListProduct',
+                    type: 'POST',
+                    data: { id: id, soluong: soluong },
+                    success: function (rs) {
+                        if (rs.Success) {
+                            if (rs.Code == 1) {
+                                loadListProduct();
+                                LoadListPriceCheckOut();
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.onmouseenter = Swal.stopTimer;
+                                        toast.onmouseleave = Swal.resumeTimer;
+                                    }
+                                });
+
+                                Toast.fire({
+                                    icon: "success",
+                                    title: "Thêm thành công"
+                                });
+                            }
+                        }
+                        else {
+                        }
+
+                    }
+
+                });
+
+            });
+        });
+
+        $(document).ready(function () {
+            $("#searchstring").on("input", function () {
+                var inputvalue = $(this).val().trim();
+                if (inputvalue !== "") {
+                    $.ajax({
+                        url: "/admin/seller/Partail_ProductDetail",
+                        type: "get",
+
+                        success: function (response) {
+
+                            $(".loadProduct").html(response);
+                        },
+                        error: function (xhr, status, error) {
+
+                            console.error(xhr.responsetext);
+                        }
+                    });
+                }
+            });
+
+            // Start Input find customer
+
+
+           
+
+
+            $("#searchCustomer").on("input", function () {
+                var inputvalue = $(this).val().trim();
+                if (inputvalue !== "") {
+                    $.ajax({
+
+                        url: "/Admin/Seller/SuggestCustomer",
+                        type: "get",
+                        data: { search: inputvalue },
+                        success: function (response) {
+                            
+                            $("#loadDataCustomer").html(response);
+                        },
+                        error: function (xhr, status, error) {
+
+                            console.error(xhr.responsetext);
+                        }
+                    });
+                } else {
+                    $("#loadDataCustomer").html('<div class="row"><div class="col-md-6"><b class="card-text" style="color:red">Khách hàng:</b></div></div>');
+                }
+            });
+          
+        });
+
+
+
+
+
+        //Start updateSoLuong products checkout
+
+        function updateQuantityListProuctsCheckOut() {
+            $('body').on('input', '.QuantityListCheckOut', function (e) {
+                var productId = $(this).attr('id');
+                var newQuantity = $(this).val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Admin/Seller/UpdateQuantityCartItem',
+                    data: {
+                        id: productId,
+                        quantity: newQuantity
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        if (result.Success) {
+                            LoadListPriceCheckOut();
+                            console.log('Cập nhật số lượng thành công');
+                        } else {
+                            console.log('Có lỗi xảy ra: ' + result.msg);
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi",
+                                text: "Lỗi hệ thống máy chủ",
+                                footer: '<a href="/dang-nhap">Quay về đăng nhập?</a>'
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.log('Lỗi Ajax: ' + error.statusText);
+                    }
+                });
+            });
+        }
+
+
+        //end updateSoLuong products checkout
+
+
+
+
+        function attachDeleteHandlers() {
+            $('body').on('click', '.btndeleteCheckOut', function (e) {
+                e.preventDefault();
+                var productId = $(this).data("id");
+
+                Swal.fire({
+                    title: "Bạn có chắc?",
+                    text: "Muốn xóa sản phẩm này!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Xóa!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/Admin/Seller/DeleteCartItem',
+                            type: 'POST',
+                            data: { id: productId },
+                            success: function (rs) {
+                                if (rs.Success) {
+                                    if (rs.Code == 1) {
+                                        loadListProduct();
+                                        LoadListPriceCheckOut();
+                                        // Sử dụng SweetAlert2 để hiển thị thông báo ở góc trên bên trái
+                                        Swal.fire({
+                                            toast: true,
+                                            position: 'top-start', // Hiển thị ở góc trên bên trái
+                                            icon: 'success',
+                                            title: 'Xóa thành công',
+                                            showConfirmButton: false,
+                                            timer: 1500,
+                                            timerProgressBar: true,
+                                            didOpen: (toast) => {
+                                                toast.addEventListener('mouseenter', Swal.stopTimer);
+                                                toast.addEventListener('mouseleave', Swal.resumeTimer);
+                                            }
+                                        });
+                                    }
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.log(xhr.responseText);
+                            }
+                        });
+                    }
+                });
+            });
+        }
+        function LoadListPriceCheckOut() {
+            $.ajax({
+                url: '/Admin/Seller/Partial_TotalPriceCheckOut',
+                type: 'GET',
+                success: function (rs) {
+                    $('.loadPice').html(rs);
+                    attachDeleteHandlers(); // Gán lại sự kiện click sau khi tải lại danh sách sản phẩm
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function loadListProduct() {
+            $.ajax({
+                url: '/Admin/Seller/Partail_ListProduct',
+                type: 'GET',
+                success: function (data) {
+                    $('.loadDataList').html(data); // Thêm dữ liệu vào phần tử .loadDataList
+                },
+                error: function () {
+                    alert('Đã xảy ra lỗi khi tải danh sách sản phẩm!');
+                }
+            });
+        }
+
+        //document.addEventListener('DOMContentLoaded', function () {
+        //    const tabList = document.getElementById('ex-with-icons');
+        //    const tabContent = document.getElementById('ex-with-icons-content');
+        //    const addPhieuButton = document.querySelector('.addPhieu');
+
+        //    let tabCount = 1;
+
+        //    addPhieuButton.addEventListener('click', function () {
+        //        tabCount++;
+        //        const tabId = `ex-with-icons-tab-${tabCount}`;
+        //        const tabPaneId = `ex-with-icons-tabs-${tabCount}`;
+
+        //        // Tạo tab mới
+        //        const newTab = document.createElement('li');
+        //        newTab.className = 'nav-item';
+        //        newTab.role = 'presentation';
+        //        newTab.innerHTML = `
+        //    <a data-mdb-tab-init class="nav-link" id="${tabId}" href="#${tabPaneId}" role="tab"
+        //       aria-controls="${tabPaneId}" aria-selected="false">
+        //        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-fill" viewBox="0 0 16 16">
+        //            <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m5.5 1.5v2a1 1 0 0 0 1 1h2z" />
+        //        </svg>
+        //        Phiếu ${tabCount}
+        //    </a>
+        //`;
+        //        tabList.insertBefore(newTab, tabList.children[tabList.children.length - 1]);
+
+        //        // Tạo nội dung của tab mới
+        //        const newTabContent = document.createElement('div');
+        //        newTabContent.className = 'tab-pane fade show active'; // Chỉ thêm class active vào tab đầu tiên
+        //        newTabContent.id = tabPaneId;
+        //        newTabContent.role = 'tabpanel';
+        //        newTabContent.setAttribute('aria-labelledby', tabId);
+        //        newTabContent.innerHTML = `
+        //    <div class="loadDataList">
+        //        <p>THuan${tabCount}</p>
+        //    </div>
+        //`;
+
+        //        // Ẩn tất cả các tab content trước khi hiển thị tab mới
+        //        const allTabContents = document.querySelectorAll('.tab-pane');
+        //        allTabContents.forEach(tab => tab.classList.remove('show', 'active'));
+
+        //        // Hiển thị tab mới
+        //        newTabContent.classList.add('show', 'active');
+        //        tabContent.appendChild(newTabContent);
+        //    });
+        //});
+
+
+
+        ////document.addEventListener('DOMContentLoaded', function () {
+        ////    const tabList = document.getElementById('ex-with-icons');
+        ////    const tabContent = document.getElementById('ex-with-icons-content');
+        ////    const addPhieuButton = document.querySelector('.addPhieu');
+
+        ////    let tabCount = 1;
+
+        ////    addPhieuButton.addEventListener('click', function () {
+        ////        tabCount++;
+        ////        const tabId = `ex-with-icons-tab-${tabCount}`;
+        ////        const tabPaneId = `ex-with-icons-tabs-${tabCount}`;
+
+        ////        // Tạo tab mới
+        ////        const newTab = document.createElement('li');
+        ////        newTab.className = 'nav-item';
+        ////        newTab.role = 'presentation';
+        ////        newTab.innerHTML = `
+        ////    <a data-mdb-tab-init class="nav-link" id="${tabId}" href="#${tabPaneId}" role="tab"
+        ////       aria-controls="${tabPaneId}" aria-selected="false">
+        ////        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-fill" viewBox="0 0 16 16">
+        ////            <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m5.5 1.5v2a1 1 0 0 0 1 1h2z" />
+        ////        </svg>
+        ////        Phiếu ${tabCount}
+        ////    </a>
+        ////`;
+        ////        tabList.insertBefore(newTab, tabList.children[tabList.children.length - 1]);
+
+        ////        // Tạo nội dung của tab mới
+        ////        const newTabContent = document.createElement('div');
+        ////        newTabContent.className = 'tab-pane fade show active'; // Chỉ thêm class active vào tab đầu tiên
+        ////        newTabContent.id = tabPaneId;
+        ////        newTabContent.role = 'tabpanel';
+        ////        newTabContent.setAttribute('aria-labelledby', tabId);
+        ////        newTabContent.innerHTML = `
+        ////    <div class="loadDataList">
+        ////        <table class="table" id="productTable-${tabCount}">
+        ////            <!-- Bảng sản phẩm của phiếu ${tabCount} sẽ được hiển thị ở đây -->
+        ////            <p>THuan${tabCount}</p>
+        ////        </table>
+        ////    </div>
+        ////`;
+
+        ////        // Ẩn tất cả các tab content trước khi hiển thị tab mới
+        ////        const allTabContents = document.querySelectorAll('.tab-pane');
+        ////        allTabContents.forEach(tab => tab.classList.remove('show', 'active'));
+
+        ////        // Hiển thị tab mới
+        ////        newTabContent.classList.add('show', 'active');
+        ////        tabContent.appendChild(newTabContent);
+        ////    });
+
+
+        ////    // Sự kiện khi nhấn nút "Thêm vào giỏ hàng"
+        ////    //document.querySelectorAll('.btnAddListSeller').forEach(button => {
+        ////    //    button.addEventListener('click', function () {
+
+
+        ////    //        const productId = this.getAttribute('data-id');
+        ////    //        const tabPaneId = this.closest('.tab-pane').id;
+        ////    //        const quantity = 1;
+        ////    //        if (tabPane) {
+        ////    //            const tabPaneId = tabPane.id;
+        ////    //            addProductToCart(productDetailId, tabPaneId);
+        ////    //        } else {
+        ////    //            console.error('Không tìm thấy tab-pane cho nút này');
+        ////    //        }
+        ////    //        addItemToCart(tabPaneId, productId, quantity);
+        ////    //    });
+        ////    //});
+        ////    //document.querySelectorAll('.btnAddListSeller').forEach(button => {
+        ////    //    button.addEventListener('click', function () {
+        ////    //        const productDetailId = this.getAttribute('data-id');
+        ////    //        const tabPane = this.closest('.tab-pane');
+        ////    //        if (tabPane) {
+        ////    //            const tabPaneId = tabPane.id;
+        ////    //            addProductToCart(productDetailId, tabPaneId);
+        ////    //        } else {
+        ////    //            console.error('Không tìm thấy tab-pane cho nút này');
+        ////    //        }
+        ////    //    });
+        ////    //});
+        ////    document.querySelectorAll('.btnAddListSeller').forEach(button => {
+        ////        button.addEventListener('click', function () {
+        ////            const tabPaneId = `ex-with-icons-tabs-${tabCount}`; // tabCount cần được định nghĩa ở nơi khác trong mã JavaScript của bạn
+        ////            const tabId = `ex-with-icons-tab-${tabCount}`;
+
+        ////            // Tạo tab-pane mới
+        ////            const newTabPane = document.createElement('div');
+        ////            newTabPane.className = 'tab-pane fade'; // Không thêm 'show active' ở đây
+
+        ////            // Gán id cho tab-pane
+        ////            newTabPane.id = tabPaneId;
+
+        ////            // Tạo nội dung của tab-pane
+        ////            newTabPane.innerHTML = `
+        ////    <div class="loadDataList">
+        ////        <!-- Hiển thị danh sách sản phẩm -->
+        ////    </div>
+        ////`;
+
+        ////            // Tạo nav-link mới
+        ////            const newTabLink = document.createElement('a');
+        ////            newTabLink.className = 'nav-link';
+        ////            newTabLink.setAttribute('data-toggle', 'tab');
+        ////            newTabLink.setAttribute('href', `#${tabPaneId}`);
+        ////            newTabLink.setAttribute('role', 'tab');
+        ////            newTabLink.setAttribute('aria-controls', tabPaneId);
+        ////            newTabLink.setAttribute('aria-selected', 'false');
+
+        ////            // Gán id cho nav-link
+        ////            newTabLink.id = tabId;
+
+        ////            // Tạo nội dung của nav-link
+        ////            newTabLink.innerHTML = `
+        ////    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-fill" viewBox="0 0 16 16">
+        ////        <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m5.5 1.5v2a1 1 0 0 0 1 1h2z" />
+        ////    </svg>
+        ////    Phiếu ${tabCount}
+        ////`;
+
+        ////            // Chèn tab-pane và nav-link vào trong DOM
+        ////            tabContent.appendChild(newTabPane);
+        ////            tabList.insertBefore(newTabLink, tabList.children[tabList.children.length - 1]);
+
+        ////            // Kích hoạt tab mới
+        ////            newTabLink.click();
+
+        ////            tabCount++; // Tăng số lượng tab
+        ////        });
+        ////    });
+
+
+        ////});
+
+        //document.querySelectorAll('.btnAddListSeller').forEach(button => {
+        //        button.addEventListener('click', function () {
+        //            const productDetailId = this.getAttribute('data-id');
+        //            const tabPane = this.closest('.tab-pane');
+        //            if (tabPane) {
+        //                const tabPaneId = tabPane.id;
+        //                addProductToCart(productDetailId, tabPaneId);
+        //            } else {
+        //                console.error('Không tìm thấy tab-pane cho nút này');
+        //            }
+        //        });
+        //    });
+
+        //function addProductToCart(productId, quantity,) {
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "/Admin/Seller/AddListProduct",
+        //        data: { id: productId, soluong: quantity },
+        //        success: function (response) {
+        //            if (response.Success) {
+        //                alert("Thêm sản phẩm vào giỏ hàng thành công!");
+        //                addItemToCart(tabPaneId, productId, quantity); // Cập nhật giao diện khi thêm sản phẩm vào giỏ hàng thành công
+        //            } else {
+        //                alert("Thêm sản phẩm vào giỏ hàng thất bại!");
+        //            }
+        //        },
+        //        error: function () {
+        //            alert("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng!");
+        //        }
+        //    });
+        //}
+       
+
+    </script>
+
+}

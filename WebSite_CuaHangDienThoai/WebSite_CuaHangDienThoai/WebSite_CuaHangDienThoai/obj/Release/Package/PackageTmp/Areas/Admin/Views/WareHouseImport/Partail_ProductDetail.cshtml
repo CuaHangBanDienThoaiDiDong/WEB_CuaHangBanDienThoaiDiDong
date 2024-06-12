@@ -1,0 +1,124 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Danh sách sản phẩm</h2>
+        <div class="card-tools">
+            <input type="text" />
+            <a href="/admin/WareHouseImport/add" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clipboard2-plus" viewBox="0 0 16 16">
+                    <path d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5z" />
+                    <path d="M3 2.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 0 0-1h-.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1H12a.5.5 0 0 0 0 1h.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5z" />
+                    <path d="M8.5 6.5a.5.5 0 0 0-1 0V8H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V9H10a.5.5 0 0 0 0-1H8.5z" />
+                </svg>
+                Tạo phiếu nhập
+            </a>
+            <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
+        </div>
+    </div>
+    <div class="card-body loadListSortProductDetail">
+        @if (Model.Any() && Model != null)
+        {
+            <div style="overflow-x:auto;">
+                <!-- Bảng chứa thead -->
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="">
+                            @*<th><input type="checkbox" id="SelectAll" /></th>*@
+                            <th>STT</th>
+                            <th>Hình ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            @*<th>Màu/Dung lượng</th>*@
+                            <th>Loại sản phẩm</th>
+                          
+                           
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <!-- Div chứa tbody với cuộn dọc -->
+                <div style="max-height: 580px; overflow-y: auto;">
+                    <table class="table table-hover">
+                        <tbody>
+                            @if (Model.Any())
+                            {
+                                var i = 1;
+                                foreach (var item in Model)
+                                {
+                                    byte[] strImg = null;
+
+                                    var Capacity = "";
+
+                                    string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
+
+                                    int[] nguongDungLuong = new int[] { 999, 1999 };
+
+                                    int index = Array.FindIndex(nguongDungLuong, capacity => item.Capacity > capacity);
+
+                                    Capacity = index != -1 ? dungLuongOptions[index] : item.Capacity + " Gb";
+
+                                    var CheckImage = item.tb_Products.tb_ProductImage.SingleOrDefault(x => x.IsDefault == true);
+
+                                    if (CheckImage != null)
+                                    {
+                                        strImg = CheckImage.Image;
+                                    }
+
+                                    string imgSrc = "";
+                                    if (strImg != null && strImg.Length > 0)
+                                    {
+                                        string base64String = Convert.ToBase64String(strImg);
+                                        imgSrc = $"data:image;base64,{base64String}";
+                                    }
+
+                                    <tr class="text-center opacity-100 " id="trow_@item.ProductsId">
+                                        @*<td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>*@
+                                        <td>@i</td>
+                                        <td style="width:50px">
+                                            <img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" />
+                                        </td>
+                                        <td>
+                                            <a href="/admin/Products/Detail/@item.ProductsId" style="color:black">
+                                                <span class="text-danger"> @item.tb_Products.Title</span>
+                                               <br /> @item.Color/@Capacity
+                                            </a>
+                                        </td>
+                                        @*<td>@item.Color/@Capacity</td>*@
+                                        <td>@item.tb_Products.tb_ProductCategory.Title</td>
+
+
+                                        <td>
+                                            <button class="red_button btn-success add_to_cart_button  border-0 btn-0 btnAddList" data-id="@item.ProductDetailId">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-plus-fill" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m6.5-11a.5.5 0 0 0-1 0V6H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V7H10a.5.5 0 0 0 0-1H8.5z" />
+                                                </svg>
+                                            </button>
+                                        </td>
+
+                                    </tr>
+
+                                    i++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="8">Không có bản ghi nào!!!</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <p class="text-danger">Không tìm thấy bảng ghi nào !!!</p>
+        }
+    </div>
+
+    <div class="card-footer">
+      
+    </div>
+</div>

@@ -1,0 +1,160 @@
+﻿
+@model WebSite_CuaHangDienThoai.Models.Admin_TokenEditBill
+
+@using WebSite_CuaHangDienThoai.Common
+
+<div id="notification-container"></div>
+<span><label>Số lượng sản phẩm</label><span class="text-danger">@ViewBag.Count</span></span>
+<div class="row">
+    <div class="col-12 scrollable-content">
+
+        <div class=" scrollable-product-list">
+            @if (Model != null)
+            {
+                int i = 1;
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">STT</th>
+                            <th class="border-gray-200 text-center" scope="col">Sản phẩm</th>
+                            <th class="border-gray-200 text-center" scope="col">Số tiền</th>
+                            <th class="border-gray-200 text-center" scope="col">Số lượng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            var Capacity = "";
+                            string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
+                            int[] nguongDungLuong = new int[] { 999, 1999 };
+                            int index = Array.FindIndex(nguongDungLuong, capacity => item.Product.Capacity > capacity);
+                            Capacity = index != -1 ? dungLuongOptions[index] : item.Product.Capacity + " Gb";
+
+                            <tr>
+                                <td class="text-center">@i</td>
+                                <td class="text-center">
+                                    <span class="text-danger">
+                                        @item.Product.tb_Products.Title
+                                    </span>
+                                    <br />
+                                    @Capacity-@item.Product.Color
+
+                                </td>
+                                <td class="text-center">
+
+
+                                    @if (item.Product.PriceSale > 0)
+                                    {
+                                        <span  class="text-danger" >
+                                            @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Product.PriceSale) đ
+                                        </span> 
+                                        <br />
+                                        <span style=" text-decoration: line-through;">
+                                            @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Product.Price) đ
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span>
+                                            @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price)
+                                        </span>
+                                    }
+
+                                </td>
+                                <td class="text-center">@item.Quantity</td>
+                                <td class="text-center">
+                                    <div class="btn deleteSellerItem" data-id="@item.Id" data-SellerId="@Model.SellerId">
+                                        <svg xmlns="http://www.w3.org/2000/svg" style=" color:red;" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                                            <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                                        </svg>
+                                    </div>
+                                </td>
+
+
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+        <div class="card-footer"></div>
+    </div>
+</div>
+<script>
+   $(document).ready(function () {
+ 
+ 
+
+      $(document).off('click', '.deleteSellerItem').on('click', '.deleteSellerItem', function () {
+          var itemId = $(this).data('id');
+          var sellerId = $(this).data('sellerid');
+
+          if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
+              deleteItem(sellerId, itemId);
+          }
+      });
+    function deleteItem(sellerId, itemId) {
+        $.ajax({
+            url: '@Url.Action("DeleteItem", "Bill")', // Đảm bảo đường dẫn URL là chính xác
+            type: 'POST', // Phương thức HTTP là POST
+            data: { sellerId: sellerId, productDetailId: itemId }, // Truyền dữ liệu
+            success: function (response) {
+                if (response.success) {
+                    // Xóa thành công, cập nhật lại danh sách sản phẩm và tổng tiền
+                    loadListItem(sellerId);
+                    updateTotalPrice(sellerId);
+                    showNotification('success', 'Xóa thành công', response.message);
+                } else {
+                    // Hiển thị thông báo lỗi
+                    showNotification('error', 'Lỗi', response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+                showNotification('error', 'Lỗi', 'Đã xảy ra lỗi khi xóa sản phẩm.');
+            }
+        });
+    }
+
+    function updateTotalPrice(sellerId) {
+        $.ajax({
+            url: '@Url.Action("GetTotalPrice", "Bill")', // Đảm bảo đường dẫn URL là chính xác
+            type: 'GET', // Phương thức HTTP là GET
+            data: { sellerId: sellerId }, // Truyền dữ liệu
+            success: function (response) {
+                // Cập nhật tổng tiền
+                $('#loadTotal').html('   <label>Tổng tiền</label><br/><p class="form-control">' + response + '</p>');
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+                showNotification('error', 'Lỗi', 'Đã xảy ra lỗi khi cập nhật tổng tiền.');
+            }
+        });
+    }
+
+    function loadListItem(sellerId) {
+        if (sellerId != null) {
+            $.ajax({
+                url: '@Url.Action("Partail_ListProductEdit", "Bill")', // Đảm bảo đường dẫn URL là chính xác
+                type: 'GET', // Phương thức HTTP là GET
+                data: { sellerId: sellerId }, // Truyền dữ liệu
+                success: function (response) {
+                    $("#loadListItem").html(response);
+                    attachDeleteItemEvent();
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    showNotification('error', 'Lỗi', 'Đã xảy ra lỗi khi tải lại danh sách sản phẩm.');
+                }
+            });
+        }
+    }
+
+
+    function showNotification(type, title, message) {
+        // Hiển thị thông báo
+    }
+});
+
+</script>

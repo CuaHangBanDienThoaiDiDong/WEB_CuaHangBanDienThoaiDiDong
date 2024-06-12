@@ -19,6 +19,27 @@ namespace WebSite_CuaHangDienThoai.Models
 
         public int TypePayment { get; set; }
         public int StaffId { get; set; }
+
+        public tb_Customer Customer { get; set; }
+       
+        public Admin_TokenEditBill()
+        {
+            Items = new List<Admin_TokenEditBillItem>();
+        }
+        public decimal GetPriceTotal()
+        {
+            return Items.Sum(x => x.Price);
+        }
+        public int GetTongSoLuong()
+        {
+            return Items.Sum(x => x.Quantity);
+        }
+        public void RemoveItem(int productDetailId)
+        {
+            // Xóa tất cả các mục có ProductDetailId trùng khớp
+            Items.RemoveAll(item => item.ProductDetailId == productDetailId);
+        }
+
     }
     public class Admin_TokenEditBillItem 
     {
@@ -27,5 +48,6 @@ namespace WebSite_CuaHangDienThoai.Models
         public decimal Price { get; set; }
         public int Quantity { get; set; }
         public int ProductDetailId { get; set; }
+        public tb_ProductDetail Product { get; set; }
     }
 }

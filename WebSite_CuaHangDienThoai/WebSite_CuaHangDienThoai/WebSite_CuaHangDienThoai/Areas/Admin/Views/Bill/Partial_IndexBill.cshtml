@@ -11,8 +11,8 @@
         right: 0;
         bottom: 0;
         background: #000;
-        opacity: 0.8;
-        z-index: 9998;
+        opacity: 0.5;
+        z-index: 9978;
     }
 
     #popupBill {
@@ -22,36 +22,55 @@
         transform: translate(-50%, -50%);
         padding: 20px;
         /*   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);*/
+        z-index: 9988;
+    }
+
+    #notification-container {
+        position: relative;
         z-index: 9999;
+        display: inline-block; /* Hiển thị phần tử theo kiểu inline-block */
+        width: 200px; /* Thiết lập độ rộng của phần tử */
+
+        padding: 10px; /* Thêm padding để nội dung không sát với viền */
+
+        right: 20px; /* Dịch chuyển về bên phải */
+        top: 20px; /* Dịch chuyển xuống dưới */
     }
 </style>
 
 
-<div class="bg-sg" style="display: block "></div>
-<div id="popupBill" style="display:block">
-
-    <div id="loadDataSellerEdit">
-        <div class="card">
-            <p>THuan</p>
-            <p>THuan</p>
-            <p>THuan</p>
-            <p>THuan</p>
-            <p>THuan</p>
-            <p>THuan</p>
-            <p>THuan</p>
-            <p>THuan</p>
-        </div>
-       
-    </div>
-
-
+<div class="bg-sg" style="display: none ">
+    <div id="notification-container" style="background-color:white "></div>
 </div>
-<div id="notification-container"></div>
+<div id="popupBill" style="display:none">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-tools">
+                <div class="btn btnCloseEditBill">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                        <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="loadDataSellerEdit">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 <div class="card">
     <div class="card-header">
         <div class="row">
             <div class="col-3">
-                <span>Ngày xuất: <input type="datetime-local" id="ngayxuatBill" onchange="getOrderNewToDay()" /></span>
+                <div class="d-flex align-items-cente border border-1 rounded-1">
+                    <span class="m-1"><label class="text-danger ">Ngày xuất:</label> <input type="datetime-local" style="border:none" id="ngayxuatBill" onchange="getOrderNewToDay()" /></span>
+
+                </div>
             </div>
 
             <div class="col-6">
@@ -59,7 +78,7 @@
 
                     <div class="input-group">
                         <input type="text" class="form-control border-0" id="searchBill" placeholder="Nhập Số điện thoại, mã đơn hàng, tên khách">
-                        <button class="btn" type="button">
+                        <button class="btn" type="button" id="clearInputBill">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-octagon" viewBox="0 0 16 16">
                                 <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1z" />
                                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
@@ -75,7 +94,7 @@
     </div>
 </div>
 
-<div class="card-body">
+<div class="card-body" id="loadDataSuggestBill">
     <table class="table table-hover ">
         <thead>
             <tr class="text-center">
@@ -119,8 +138,8 @@
                             </td>
                             <td>
                                 <a href="/admin/Bill/Detail/@item.SellerId" target="_blank" class="btn btn-sm btn-success">Xem</a>
-                              
-                                <button class="btn btn-sm btn-danger btnCapNhatBill" data-id="@item.SellerId">Cập nhật131</button>
+
+                                <button class="btn btn-sm btn-danger btnCapNhatBill" data-id="@item.SellerId">Cập nhật</button>
                             </td>
 
 
@@ -185,32 +204,123 @@
 
 
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
+    function LoadIndex(page) {
+        $.ajax({
+            url: '/Admin/Bill/Partial_IndexBill',
+            type: 'GET',
+            data: { page: page },
+            success: function (rs) {
+                $('#loaddata').html(rs);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    var originalContent;
+
     $(document).ready(function () {
-        var bg = document.querySelector(".bg-sg");
-        var popup = document.getElementById('popupBill');
-    
-        var btnCapNhatBill = document.querySelectorAll('.btnCapNhatBill');
+        originalContent = $('#loadDataSuggestBill').html();
+        LoadIndex(1);
 
-        //addClient.forEach(function (element) {
-        //    element.addEventListener('click', function () {
-        //        bg.style.display = "block";
-        //        popup.style.display = "block";
-        //    });
-        //});
+        $(document).on('click', '.pagination a', function (e) {
+            e.preventDefault();
+            var page = $(this).attr('data-page');
+            LoadIndex(page);
+        });
 
-        btnCapNhatBill.forEach(function (element) {
-            element.addEventListener('click', function () {
-            
-                bg.style.display = "block";
-                popup.style.display = "block";
+        $('#clearInputBill').click(function () {
+            $("#searchBill").val(""); // Xóa nội dung trong ô tìm kiếm
+            resetToOriginalContent(); // Đặt lại nội dung ban đầu
+        });
+
+        $('#searchBill').on('input', function () {
+            var keyword = $(this).val().trim();
+            if (keyword.length > 0) {
+                // Gọi action SuggestBillCustomer với keyword
+                $.ajax({
+                    url: '/Admin/Bill/SuggestBillCustomer',
+                    type: 'GET',
+                    data: { search: keyword },
+                    success: function (response) {
+                        $('#loadDataSuggestBill').html(response);
+                    },
+                    error: function () {
+                        // Xử lý lỗi nếu có
+                        console.log('Đã xảy ra lỗi khi tải dữ liệu.');
+                    }
+                });
+            } else {
+                resetToOriginalContent(); // Đặt lại nội dung ban đầu nếu không có keyword
+            }
+        });
+
+        if (typeof $ === 'undefined') {
+            console.error('jQuery is not loaded');
+            return;
+        }
+
+        // Select elements using jQuery
+        var bg = $(".bg-sg");
+        var popup = $("#popupBill");
+
+        var btnCapNhatBill = $('.btnCapNhatBill');
+
+        btnCapNhatBill.each(function () {
+            $(this).on('click', function (e) {
+                e.preventDefault();
+
+                bg.show();
+                popup.show();
+
+                var id = $(this).data('id');
+                if (id != null) {
+                    $.ajax({
+                        url: '/admin/Bill/Edit',
+                        type: 'GET',
+                        data: { id: id },
+                        success: function (response) {
+                            $("#loadDataSellerEdit").html(response);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
             });
         });
 
-        bg.addEventListener("click", function () {
-            bg.style.display = "none";
-            popup.style.display = "none";
+        bg.on('click', function () {
+            bg.hide();
+            popup.hide();
+        });
+
+        $('.btnCloseEditBill').on('click', function () {
+            bg.hide();
+            popup.hide();
         });
     });
 
+    function getOrderNewToDay() {
+        var ngayxuat = $('#ngayxuatBill').val(); // Sử dụng jQuery để lấy giá trị của input datetime-local
+        $.ajax({
+            url: '/Admin/Bill/BillExportToday', // Địa chỉ URL của action trong controller
+            type: 'GET',
+            data: { ngayxuat: ngayxuat },
+            success: function (data) {
+                $('#loadDataSuggestBill').html(data);
+            },
+            error: function (xhr, status, error) {
+                console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+            }
+        });
+    }
+
+    function resetToOriginalContent() {
+        $('#loadDataSuggestBill').html(originalContent);
+    }
 </script>

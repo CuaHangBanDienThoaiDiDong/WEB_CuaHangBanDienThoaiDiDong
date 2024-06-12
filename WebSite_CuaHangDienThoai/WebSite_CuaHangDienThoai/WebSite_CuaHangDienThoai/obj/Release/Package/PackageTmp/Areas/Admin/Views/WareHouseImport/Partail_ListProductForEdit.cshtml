@@ -1,0 +1,118 @@
+﻿@model  IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ImportWarehouseDetail>
+
+
+
+
+<h4 class=" text-center">Thông tin sản phẩm</h4><small>Số lượng sản phẩm @ViewBag.Count</small>
+@if (Model != null && Model.Any())
+{
+    <div style="overflow-x:auto;">
+        <!-- Bảng chứa thead -->
+        <table class="table table-hover">
+            <thead>
+                <tr class="text-center">
+                    @*<th><input type="checkbox" id="SelectAll" /></th>*@
+
+                    <th>Hình ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Màu</th>
+                    <th>Loại sản phẩm</th>
+                    @*<th>Giá nhập</th>*@
+
+
+                    <th>Dung lượng</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+
+        <!-- Div chứa tbody với cuộn dọc -->
+        <div style="max-height: 580px; overflow-y: auto;">
+            <table class="table table-hover">
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            var checkImg = item.tb_ProductDetail.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault == true);
+
+
+                            byte[] strImg = null;
+
+                            var Capacity = "";
+
+                            string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
+
+                            int[] nguongDungLuong = new int[] { 999, 1999 };
+
+                            int index = Array.FindIndex(nguongDungLuong, capacity => item.tb_ProductDetail.Capacity > capacity);
+
+                            Capacity = index != -1 ? dungLuongOptions[index] : item.tb_ProductDetail.Capacity + " Gb";
+
+
+
+                            if (checkImg != null)
+                            {
+                                strImg = checkImg.Image;
+                            }
+
+                            string imgSrc = "";
+                            if (strImg != null && strImg.Length > 0)
+                            {
+                                string base64String = Convert.ToBase64String(strImg);
+                                imgSrc = $"data:image;base64,{base64String}";
+                            }
+
+                            <tr class="opacity-100 " id="trow_@item.ProductDetailId">
+                                @*<td><input type="checkbox" class="cbkItem" value="@item.ProductDetailId" /></td>*@
+
+                                <td class="text-center">
+                                    <img class="imgproduct" data-id="@item.ProductDetailId" src="@imgSrc" width="50" />
+                                </td>
+                                <td class="text-center"><a href="/admin/Products/Detail/@item.ProductDetailId" style="color:black"> @item.tb_ProductDetail.tb_Products.Title</a></td>
+                                <td class="text-center">
+
+                                    <input type="number" class="form-control  Update_Quantity_For_Edit " style="width:100%" id="@item.ProductDetailId"data-importwarehousedid="@item.tb_ImportWarehouse.ImportWarehouseId" data-importwarehousedetailid="@item.ImportWarehouseDetailId"data-idWareHouse="@item.tb_ImportWarehouse.tb_Warehouse.WarehouseId"    value="@item.QuanTity" />
+
+                                </td>
+                                <td class="text-center">@item.tb_ProductDetail.Color</td>
+                                <td>@item.tb_ProductDetail.tb_Products.tb_ProductCategory.Title</td>
+                                @*<td>
+            @Common.FormatNumber(item.Price)
+        </td>*@
+
+                                <td>@Capacity</td>
+                                <td>
+                                    <button class="red_button btn-danger add_to_cart_button border-0 btn-0 btnDelete" data-id="@item.ProductDetailId">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                        </svg>
+                                    </button>
+                                </td>
+                                        
+
+                            </tr>
+                        }
+
+
+
+
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8">Không có bản ghi nào!!!</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <p class="text-danger">Không tìm thấy bảng ghi nào !!!</p>
+}
+
+

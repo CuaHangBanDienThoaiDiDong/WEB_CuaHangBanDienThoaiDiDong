@@ -1,0 +1,252 @@
+﻿
+<style>
+
+    .bg-sg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #000;
+        opacity: 0.8;
+        z-index: 9998;
+        
+    }
+
+    #popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+       
+        padding: 20px;
+     /*   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);*/
+        z-index: 9999;
+      
+    }
+    
+   
+</style>
+<div class="bg-sg" style="display: none"></div>
+<div id="popup" style="display:none">
+
+    <div class="">
+      @Html.Action("AddClient", "AccountClient")
+    </div>
+
+
+</div>
+<div id="notification-container"></div>
+
+<div class="col-12">
+    <div class="card">
+        <div class="card-header" style="background-color:lightgray">
+            <div class="row">
+                <div class="col-12">
+                    <ul class="nav nav-tabs mb-3" id="ex-with-icons" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a data-mdb-tab-init class="nav-link active" id="ex-with-icons-tab-1" href="#ex-with-icons-tabs-1" role="tab"
+                               aria-controls="ex-with-icons-tabs-1" aria-selected="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-fill" viewBox="0 0 16 16">
+                                    <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m5.5 1.5v2a1 1 0 0 0 1 1h2z" />
+                                </svg>
+                                Bán hàng
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item" role="presentation">
+                            <a data-mdb-tab-init class="nav-link " id="ex-with-icons-tab-2" href="#ex-with-icons-tabs-2" role="tab"
+                               aria-controls="ex-with-icons-tabs-2" aria-selected="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
+                                    <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5M11.5 4a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z" />
+                                    <path d="M2.354.646a.5.5 0 0 0-.801.13l-.5 1A.5.5 0 0 0 1 2v13H.5a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1H15V2a.5.5 0 0 0-.053-.224l-.5-1a.5.5 0 0 0-.8-.13L13 1.293l-.646-.647a.5.5 0 0 0-.708 0L11 1.293l-.646-.647a.5.5 0 0 0-.708 0L9 1.293 8.354.646a.5.5 0 0 0-.708 0L7 1.293 6.354.646a.5.5 0 0 0-.708 0L5 1.293 4.354.646a.5.5 0 0 0-.708 0L3 1.293zm-.217 1.198.51.51a.5.5 0 0 0 .707 0L4 1.707l.646.647a.5.5 0 0 0 .708 0L6 1.707l.646.647a.5.5 0 0 0 .708 0L8 1.707l.646.647a.5.5 0 0 0 .708 0L10 1.707l.646.647a.5.5 0 0 0 .708 0L12 1.707l.646.647a.5.5 0 0 0 .708 0l.509-.51.137.274V15H2V2.118z" />
+                                </svg>
+                                Hóa đơn
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a data-mdb-tab-init class="nav-link " id="ex-with-icons-tab-3" href="#ex-with-icons-tabs-3" role="tab"
+                               aria-controls="ex-with-icons-tabs-3" aria-selected="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-houses-fill" viewBox="0 0 16 16">
+                                    <path d="M7.207 1a1 1 0 0 0-1.414 0L.146 6.646a.5.5 0 0 0 .708.708L1 7.207V12.5A1.5 1.5 0 0 0 2.5 14h.55a2.5 2.5 0 0 1-.05-.5V9.415a1.5 1.5 0 0 1-.56-2.475l5.353-5.354z" />
+                                    <path d="M8.793 2a1 1 0 0 1 1.414 0L12 3.793V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3.293l1.854 1.853a.5.5 0 0 1-.708.708L15 8.207V13.5a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 4 13.5V8.207l-.146.147a.5.5 0 1 1-.708-.708z" />
+                                </svg>
+                                Kho hàng
+                            </a>
+                        </li>
+                    </ul>
+                </div>            </div>
+
+        </div>
+        <div class="card-body">
+
+            <div class="tab-content" id="ex-with-icons-content">
+
+                @*Start tab bán hang*@
+                <div class="tab-pane fade show active" id="ex-with-icons-tabs-1" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            @Html.Action("Partial_LeftIndex", "Seller")
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card">
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs mb-3" id="ex-with-icons" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <a data-mdb-tab-init class="nav-link active" id="ex-with-icons-tab-1" href="#ex-with-icons-tabs-1" role="tab"
+                                               aria-controls="ex-with-icons-tabs-1" aria-selected="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-fill" viewBox="0 0 16 16">
+                                                    <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m5.5 1.5v2a1 1 0 0 0 1 1h2z" />
+                                                </svg>
+                                                Phiếu bán hàng
+                                            </a>
+                                        </li>
+
+
+                                        <li class="nav-item" role="presentation ">
+                                            <button style="background-color:orange" class="addPhieu btn nav-link">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" style="color:white" height="20" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5" />
+                                                    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+                                                </svg>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+                                <div class="card-body">
+                                    <!-- Tabs content -->
+                                    <div class="">
+                                        <div class="">
+                                            <div class="loadDataList">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Tabs content -->
+
+                                </div>
+
+
+                                <div class="card-footer" style="background-color:white">
+                                    <div class="row">
+                                        <div class="col-lg-7">
+
+
+
+                                            <div class="row" style=" ">
+                                                <div class="col-md-12 ">
+                                                    <div class="card" style="background-color:lightgray     ">
+                                                        <div class="card-body">
+
+
+                                                            <div class="input-group mb-3">
+                                                                <input type="text" class="form-control" placeholder="Tìm KH theo tên hoặc điện thoại" id="searchCustomer" name="searchCustomer">
+                                                                <div class="input-group-append">
+                                                                    <button class="btn" style="background-color: white" id="clearinputCustomer">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-octagon" viewBox="0 0 16 16">
+                                                                            <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1z" />
+                                                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                                                        </svg>
+                                                                    </button>
+                                                                    <button class="btn btn-secondary" type="button">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                                                                            <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z" />
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div id="loadDataCustomer">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <b class="card-text" style="color:red">Khách hàng:</b>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                        <div class="col-md-5">
+
+
+
+
+                                            <ul class="nav nav-tabs mb-3" id="ex-with-icons" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                    <a data-mdb-tab-init class="nav-link active" id="ex-with-icons-tab-tienmat" href="#ex-with-icons-tabs-1" role="tab"
+                                                       aria-controls="ex-with-icons-tabs-1" aria-selected="true">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-fill" viewBox="0 0 16 16">
+                                                            <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m5.5 1.5v2a1 1 0 0 0 1 1h2z" />
+                                                        </svg>
+                                                        Thông tin thanh toán
+                                                    </a>
+                                                </li>
+
+
+                                            </ul>
+
+
+                                            <div class="tab-content" id="ex-with-icons-content">
+                                                <div class="tab-pane fade show active" id="ex-with-icons-tab-tienmat" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
+                                                    <div class="loadPice">
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tabs navs -->
+                            <!-- Tabs navs -->
+
+                        </div>
+                    </div>
+                </div>
+                @*End tab bán hang*@
+                @*Start tab hóa đơn*@
+                <div class="tab-pane fade " id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
+                   @Html.Action("Partial_IndexBill", "Bill")
+                </div>
+                @*End tab hóa đơn*@
+                @*Start tab kho hàng*@
+                <div class="tab-pane fade " id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
+                    <div clas="row">
+                        <div class="col-12">
+                            <p>KHo hang </p>
+                        </div>
+                    </div>
+                </div>
+                @*End tab  kho hàng*@
+            </div>
+
+              
+
+            </div>
+        </div>
+</div>
+
+<script>
+    $(document).ready(function () { 
+        $("#clearinputCustomer").click(function () {
+            $("#searchCustomer").val("");
+            $("#loadDataCustomer").html('<div class="row"><div class="col-md-6"><b class="card-text" style="color:red">Khách hàng:</b></div></div>');
+        });
+
+      
+    });
+
+</script>

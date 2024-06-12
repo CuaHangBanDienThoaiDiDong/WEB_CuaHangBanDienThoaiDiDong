@@ -38,6 +38,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                
             }
 
+
+
         }
 
         public ActionResult Partail_SellerIndex()
@@ -157,6 +159,10 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                                 return Json(new { success = false, code = -7 });//Kho không đủ số lượng
                                             }
                                         }
+                                        else
+                                        {
+                                            return Json(new { success = false, code = -7 });//Kho không đủ số lượng
+                                        }
                                     }
 
                                     tb_Seller seller = new tb_Seller();
@@ -171,7 +177,16 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                         Price = x.Price,
 
                                     }));
-                                    seller.TotalAmount = cart.Items.Sum(x => (x.Price * x.SoLuong));
+
+
+
+
+                                    seller.TotalAmount = cart.GetPriceTotal();  
+                                  
+
+
+
+
                                     //seller.TypePayment = req.TypePayment;
                                     seller.TypePayment = 0;
                                     seller.CreatedDate = DateTime.Now;
@@ -223,15 +238,13 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
-
         [HttpPost]
         public ActionResult AddListProduct(int id, int soluong)
         {
             var code = new { Success = false, Code = -1, Count = 0 };
-            var checkSanPham = db.tb_ProductDetail.FirstOrDefault(row => row.ProductDetailId == id);
-            if (checkSanPham != null)
+            try
             {
-
+                var checkSanPham = db.tb_ProductDetail.FirstOrDefault(row => row.ProductDetailId == id);
                 if (checkSanPham != null)
                 {
                     SellerCart cart = (SellerCart)Session["SellerCart"];
@@ -239,44 +252,57 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     {
                         cart = new SellerCart();
                     }
-                    SellerCartItem item = new SellerCartItem
+
+                    SellerCartItem existingItem = cart.Items.FirstOrDefault(x => x.ProductDetailId == id);
+                    if (existingItem != null)
                     {
-                        ProductDetailId = checkSanPham.ProductDetailId,
-                        ProductName = checkSanPham.tb_Products.Title,
-                        CategoryName = checkSanPham.tb_Products.tb_ProductCategory.Title,
-                        Capcity = (int)checkSanPham.Capacity,
-                        Color = checkSanPham.Color,
-
-
-                        SoLuong = 1,
-                    };
-                    if (checkSanPham.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault) != null)
-                    {
-                        item.ProductImg = checkSanPham.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault).Image;
-                    }
-
-
-                    item.Price = (decimal)checkSanPham.Price;
-                    item.PriceSale = (decimal)checkSanPham.PriceSale;
-                    if (checkSanPham.PriceSale > 0)
-                    {
-                        item.PriceSale = (decimal)checkSanPham.PriceSale;
-                        item.PriceTotal = item.SoLuong * item.PriceSale;
+                        // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng lên
+                        existingItem.SoLuong += soluong;
+                        existingItem.PriceTotal = existingItem.SoLuong * existingItem.Price;
                     }
                     else
                     {
-                        item.PriceTotal = item.SoLuong * item.Price;
+                        SellerCartItem item = new SellerCartItem
+                        {
+                            ProductDetailId = checkSanPham.ProductDetailId,
+                            ProductName = checkSanPham.tb_Products.Title,
+                            CategoryName = checkSanPham.tb_Products.tb_ProductCategory.Title,
+                            Capcity = (int)checkSanPham.Capacity,
+                            Color = checkSanPham.Color,
+                            SoLuong = 1,
+                        };
+
+                        if (checkSanPham.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault) != null)
+                        {
+                            item.ProductImg = checkSanPham.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault).Image;
+                        }
+
+                        item.Price = (decimal)checkSanPham.Price;
+                        item.PriceSale = (decimal)checkSanPham.PriceSale;
+                        if (checkSanPham.PriceSale > 0)
+                        {
+                            item.PriceSale = (decimal)checkSanPham.PriceSale;
+                            item.PriceTotal = item.SoLuong * item.PriceSale;
+                        }
+                        else
+                        {
+                            item.PriceTotal = item.SoLuong * item.Price;
+                        }
+
+                        cart.AddToCart(item, soluong);
                     }
-                    cart.AddToCart(item, soluong);
+
                     Session["SellerCart"] = cart;
                     code = new { Success = true, Code = 1, Count = cart.Items.Count };
-
                 }
                 else
                 {
-                    code = new { Success = false, Code = -1, Count = 0 };//Số Lượng Không Đủ
+                    code = new { Success = false, Code = -2, Count = 0 }; // Sản phẩm không tồn tại
                 }
-
+            }
+            catch (Exception ex)
+            {
+                code = new { Success = false, Code = -99, Count = 0 }; // Lỗi xảy ra
             }
             return Json(code);
         }

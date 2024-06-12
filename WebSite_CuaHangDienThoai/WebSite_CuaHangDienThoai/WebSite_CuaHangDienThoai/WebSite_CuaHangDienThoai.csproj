@@ -3914,10 +3914,19 @@
     <Content Include="Areas\Admin\Views\Bill\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\Bill\Detail_SanPham.cshtml" />
     <Content Include="Areas\Admin\Views\Bill\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Bill\Partail_ListProductEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\Bill\SuggestBillCustomer.cshtml" />
+    <Content Include="Areas\Admin\Views\Bill\SellerExportToday.cshtml" />
+    <Content Include="Areas\Admin\Views\Bill\BillExportToday.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductDetail\Partial_ListProductDetail.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Partial_OrderIndex.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\Partial_WareHouseImportIndex.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\WareHouseImportExportToday.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP3.pubxml" />
+    <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP4.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - Web Deploy1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - Web Deploy2.pubxml" />
@@ -4478,6 +4487,7 @@
     <Content Include="Views\Account\ProFile.cshtml" />
     <Content Include="Views\Account\ProfileNew.cshtml" />
     <Content Include="Views\Account\Partail_EditPassWord.cshtml" />
+    <Content Include="Views\Product\Partial_SanPhamGoiY.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

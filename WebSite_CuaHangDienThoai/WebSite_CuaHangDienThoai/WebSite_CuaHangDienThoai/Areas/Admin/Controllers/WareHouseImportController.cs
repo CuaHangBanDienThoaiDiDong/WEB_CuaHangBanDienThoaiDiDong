@@ -24,29 +24,107 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
+
+                return View();
                
-                IEnumerable<tb_ImportWarehouse> items = db.tb_ImportWarehouse.OrderByDescending(x => x.ImportWarehouseId);
-                if (items != null)
-                {
-                    var pageSize = 10;
-                    if (page == null)
-                    {
-                        page = 1;
-                    }
-                    var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-                    items = items.ToPagedList(pageIndex, pageSize);
-                    ViewBag.PageSize = pageSize;
-                    ViewBag.Page = page;
-                    return View(items);
-                }
-                else
-                {
-                    ViewBag.txt = "Không tồn tại sản phẩm";
-                    return View();
-                }
             }
         }
 
+
+        public ActionResult Partial_WareHouseImportIndex(int? page) 
+        {
+            IEnumerable<tb_ImportWarehouse> items = db.tb_ImportWarehouse.OrderByDescending(x => x.ImportWarehouseId);
+            if (items != null)
+            {
+                var pageSize = 10;
+                if (page == null)
+                {
+                    page = 1;
+                }
+                var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+                items = items.ToPagedList(pageIndex, pageSize);
+                ViewBag.PageSize = pageSize;
+                ViewBag.Page = page;
+                return View(items);
+            }
+            else
+            {
+                ViewBag.txt = "Không tồn tại sản phẩm";
+                return View();
+            }
+        }
+
+
+        public ActionResult SuggestWareHouseImportCustomer(string search)
+        {
+            if (!string.IsNullOrEmpty(search))
+            {
+               
+
+
+                var customerids = db.tb_Products
+ .Where(c => c.Title.Contains(search))
+ .Select(c => c.ProductsId)
+ .ToList();
+
+
+                var productdetail = db.tb_ProductDetail
+.Where(s => customerids.Contains((int)s.ProductsId) || s.Color.Contains(search))
+.Select(s => s.ProductDetailId)
+.ToList();
+
+
+
+                var SupplierIds = db.tb_Supplier
+       .Where(c => c.Name.Contains(search))
+       .Select(c => c.SupplierId)
+       .ToList();
+
+                var import = db.tb_ImportWarehouse
+                    .FirstOrDefault(s => SupplierIds.Contains((int)s.SupplierId) /*|| s.Code.Contains(search)*/);
+
+
+                if (import != null)
+                {
+                    var count = db.tb_ImportWarehouse.Where(s => s.ImportWarehouseId == import.ImportWarehouseId).Count();
+                    ViewBag.Count = count;
+                    ViewBag.Content = search;
+                    return PartialView(new List<tb_ImportWarehouse> { import });
+                }
+                else
+                {
+                    return PartialView();
+                }
+            }
+            else
+            {
+
+                return PartialView();
+            }
+        }
+
+        public ActionResult WareHouseImportExportToday(DateTime ngayxuat)
+        {
+            DateTime selectedDate = ngayxuat;
+            DateTime startDate = selectedDate.Date;
+            DateTime endDate = startDate.AddDays(1);
+
+
+            var ImportWarehouse = db.tb_ImportWarehouse
+                .Where(o => o.CreateDate >= startDate && o.CreateDate < endDate)
+                .ToList();
+
+            if (ImportWarehouse != null && ImportWarehouse.Count > 0)
+            {
+                ViewBag.Date = ngayxuat;
+                ViewBag.Count = ImportWarehouse.Count;
+                return PartialView(ImportWarehouse);
+            }
+            else
+            {
+                return PartialView();
+            }
+        }
 
         public ActionResult ListProduct(int? page)
         {

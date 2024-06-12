@@ -2,26 +2,36 @@
 <div class="card-body">
     <div class="row">
         @if (Model.Any() && Model != null)
+        {
+            foreach (var item in Model)
             {
-                foreach (var item in Model)
+
+
+
+
+                byte[] strImg = null;
+                var CheckImage = item.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault==true);
+
+                if (CheckImage != null)
                 {
-                    var strImg = "";
-                    var checkImg = item.tb_ProductDetailImage.FirstOrDefault(r => r.IsDefault);
-                    //var checkColor=item.Ram.F
-                    var DungLuong="";
+                    strImg = CheckImage.Image;
+                }
+
+                string imgSrc = "";
+                if (strImg != null && strImg.Length > 0)
+                {
+                    string base64String = Convert.ToBase64String(strImg);
+                    imgSrc = $"data:image;base64,{base64String}";
+                }
 
 
-                    if (checkImg != null)
-                    {
-                        strImg = checkImg.Image;
-                    }
                 <div class="col-md-3">
                     <div class="card h-100 ">
 
                         <div class="swiper mySwiper">
                             <div class="swiper-wrapper">
                                 @*<div class="swiper-slide">Slide 1</div>*@
-                                <img class="card-img-top  swiper-slide" src="@strImg" alt="..." />
+                                <img class="card-img-top  swiper-slide" src="@imgSrc" alt="..." />
                             </div>
                             <div class="swiper-pagination"></div>
                         </div>

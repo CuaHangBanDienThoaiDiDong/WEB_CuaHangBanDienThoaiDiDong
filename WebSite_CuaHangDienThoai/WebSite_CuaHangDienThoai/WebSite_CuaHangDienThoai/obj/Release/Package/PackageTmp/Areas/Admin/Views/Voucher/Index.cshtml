@@ -1,0 +1,175 @@
+﻿@model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_Voucher>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = " Danh sách voucher";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/productdetail/index" class="nav-link">@ViewBag.Title</a>
+        </li>
+    </ul>
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quản lý dòng voucher</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Danh sách @ViewBag.Title</h3>
+            <br />
+            <span><label>Tổng số voucher:</label> @ViewBag.Count</span>
+            <div class="card-tools">
+                <a href="/admin/Voucher/add" class="btn btn-primary">Thêm mới</a>
+
+            </div>
+        </div>
+        <div class="card-body">
+
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr class="text-center">
+                        <th><input type="checkbox" id="SelectAll" /></th>
+                        <th>STT</th>
+                        <th>Tên</th>
+                        <th>Mã Voucher</th>
+                        <th>Phần trăm giảm / Đơn hàng</th>
+
+                        <th>Tạo bởi</th>
+                        
+                        <th>Tổng số lượng</th>
+                        <th>Thời gian bắt đầu</th>
+                        <th>Thời gian kết thúc</th>
+                        
+
+
+
+
+                    </tr>
+                </thead>
+                @if (ViewBag.txt == null)
+                {
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+                            foreach (var item in Model)
+                            {
+
+
+                                var checkProductDetail = item.tb_VoucherDetail.Where(x => x.VoucherId == item.VoucherId);
+                                int Count = checkProductDetail.Count();
+                                int remaining = (int)item.Quantity - Count;
+
+
+
+
+                                <tr class="text-center opacity-100 " id="trow_@item.VoucherId">
+                                    <td><input type="checkbox" class="cbkItem" value="@item.VoucherId" /></td>
+                                    <td>@i</td>
+
+                                    <td>
+                                        <a href="/admin/Voucher/Details/@item.VoucherId" class="text-black"> @item.Title</a>
+                                    </td>
+                                    <td>@item.Code</td>
+                                    <td>
+                                        @item.PercentPriceReduction %
+
+                                    </td>
+                                   
+                                    <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                    <td class="text-center">
+                                        @remaining /@item.Quantity
+                                    </td>
+                                    <td class="text-center">
+                                        @if (item.UsedDate.HasValue)
+                                        {
+                                            @item.UsedDate.Value.ToString("dd/MM/yyyy HH:mm")
+                                        }
+
+
+
+                                    </td>
+                                    <td class="text-center">
+                                        @if (item.ModifiedDate.HasValue)
+                                        {
+                                            @item.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm")
+                                        }
+
+                                      
+                                    </td>
+                                    <td>
+
+
+                                        <a href="/admin/Voucher/Details/@item.VoucherId" data-id="@item.VoucherId" class="btn btn-sm btn-primary ">Xem</a>
+                                        <a href="/admin/Voucher/Edit/@item.VoucherId" data-id="@item.VoucherId" class="btn btn-sm btn-primary ">Sửa</a>
+                                    </td>
+                                </tr>
+
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4">Không có bản ghi nào!!!</td>
+                            </tr>
+                        }
+                    </tbody>
+
+                }
+                else
+                {
+                    <tbody>
+                        <tr class="text-center text-danger">
+                            <td>@ViewBag.txt</td>
+                        </tr>
+                    </tbody>
+                }
+
+            </table>
+
+            <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6" style="text-align:right;">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                </div>
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>

@@ -17,11 +17,11 @@ namespace WebSite_CuaHangDienThoai.Controllers
         public ActionResult Index(int? page)
         {
             //IEnumerable<tb_Products> items = db.tb_Products.Where(x => x.IsActive==true).OrderByDescending(x => x.ProductsId );
-            IEnumerable<tb_Products> items = db.tb_Products.Where(x => x.IsActive==true).ToList();
+            IEnumerable<tb_Products> items = db.tb_Products.Where(x => x.IsActive == true).ToList();
             if (items != null)
             {
 
-                
+
 
 
                 var pageSize = 17;
@@ -55,21 +55,21 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
         //Goi y khi tim san phảm
-        //public ActionResult SuggestTop(string searchString)
-        //{
+        public ActionResult SuggestTop(string searchString)
+        {
 
-        //    if (!string.IsNullOrEmpty(searchString))
-        //    {
+            if (!string.IsNullOrEmpty(searchString))
+            {
 
-        //        var products = db.tb_Products.Where(p => p.Title.Contains(searchString)).Take(5).ToList();
-        //        ViewBag.products = products;
-        //        return PartialView(products);
-        //    }
-        //    else
-        //    {
-        //        return PartialView(null);
-        //    }
-        //}
+                var products = db.tb_Products.Where(p => p.Title.Contains(searchString)).Take(5).ToList();
+                ViewBag.products = products;
+                return PartialView(products);
+            }
+            else
+            {
+                return PartialView(null);
+            }
+        }
 
 
         [HttpGet]
@@ -105,7 +105,35 @@ namespace WebSite_CuaHangDienThoai.Controllers
             }
         }
 
+        public ActionResult Partial_SanPhamGoiY() 
+        {
+            try 
+            {
+                var checkPhone = db.tb_Products
+                      .Where(x => x.IsActive == true && x.IsHome == true && x.ProductCategoryId == 1)
+                      .Select(x => x.ProductsId)  
+                      .ToList();
 
+                if (checkPhone != null)
+                {
+
+                   
+                    var items = db.tb_ProductDetail
+                    .Where(pd => pd.ProductsId.HasValue && checkPhone.Contains(pd.ProductsId.Value))
+                    .OrderByDescending(pd => pd.ProductsId)
+                    .Take(15)
+                    .ToList();
+
+                    ViewBag.txt = "abc";
+                    return PartialView(items);
+                }
+           
+                else { return PartialView(); }
+            }catch(Exception ex) 
+            {
+                return RedirectToAction("Index", "Error");
+            }    
+        }
 
 
 

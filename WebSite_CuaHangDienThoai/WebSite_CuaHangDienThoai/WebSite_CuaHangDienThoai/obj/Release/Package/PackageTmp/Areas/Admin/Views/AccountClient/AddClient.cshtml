@@ -1,0 +1,258 @@
+﻿@model WebSite_CuaHangDienThoai.Models.Admin_TokenAddClient
+
+
+@using (Ajax.BeginForm("AddClient", "AccountClient", new AjaxOptions
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "load_data",
+    OnSuccess = "OnSuccessCO",
+    OnFailure = "OnFailure",
+    OnBegin = "OnBeginCO"
+}, new { @Id = "myForm" }))
+{
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        function validateEmail(email) {
+            var emailPattern = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+            return emailPattern.test(email);
+        }
+
+        // Hàm kiểm tra và hiển thị thông báo lỗi
+        function validateForm() {
+            var name = document.getElementById('CustomerName').value.trim();
+            var sdt = document.getElementById('PhoneNumber').value.trim();
+            var email = document.getElementById('Email').value.trim();
+
+            if (!name || !sdt || !email) {
+                // Hiển thị thông báo lỗi
+                showNotification('error', 'Lỗi...', 'Vui lòng điền đầy đủ thông tin.');
+                return false;
+            }
+
+            if (sdt.length !== 10) {
+                // Hiển thị thông báo lỗi
+                showNotification('error', 'Lỗi...', 'Số điện thoại không hợp lệ.');
+                return false;
+            }
+
+            if (!validateEmail(email)) {
+                // Hiển thị thông báo lỗi
+                showNotification('error', 'Lỗi...', 'Vui lòng nhập địa chỉ email hợp lệ.');
+                return false;
+            }
+
+            return true;
+        }
+
+        function showNotification(icon, title, text) {
+            const notification = document.createElement('div');
+            notification.classList.add('notification');
+            notification.innerHTML = `
+                            <div class="notification-content">
+                                <i class="icon ${icon}"></i>
+                                <div class="notification-text">
+                                    <h5>${title}</h5>
+                                    <p>${text}</p>
+                                </div>
+                            </div>
+                        `;
+            document.getElementById('notification-container').appendChild(notification);
+
+            // Xóa thông báo sau một khoảng thời gian
+            setTimeout(() => {
+                notification.remove();
+            }, 3000); // 3 giây
+        }
+
+        function OnBeginCO() {
+            $('#btnRegister').attr("disabled", "disabled");
+        }
+        function submitForm() {
+            // Validate form
+            if (!validateForm()) {
+                return;
+            }
+
+            // Lấy ra form và tạo đối tượng FormData
+            var form = document.getElementById('myForm');
+            var formData = new FormData(form);
+            var newImage = document.getElementById('newImage').files[0];
+            if (newImage) {
+                formData.append('newImage', newImage);
+            }
+            // Gửi formData lên server
+            $.ajax({
+                url: '/Admin/AccountCLient/AddClient',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    // Xử lý phản hồi từ server
+                    OnSuccessCO(response);
+                },
+                error: function (error) {
+                    // Xử lý lỗi
+                    OnFailure(error);
+                }
+            });
+        }
+        function updateSuggestedCustomers(phoneNumber) {
+            if (phoneNumber != null) {
+                $.ajax({
+                    url: '/Admin/Seller/SuggestCustomer',
+                    type: 'GET',
+                    data: { search: phoneNumber },
+                    success: function (response) {
+                        $("#loadDataCustomer").html(response);
+                        var bg = document.querySelector(".bg-sg");
+                        var popup = document.getElementById('popup');
+                        bg.style.display = "none";
+                        popup.style.display = "none";
+                    },
+                    error: function (xhr, status, error) {
+                        showNotification('error', 'Lỗi...', 'Đã xảy ra lỗi khi lấy dữ liệu.');
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        }
+
+        function OnSuccessCO(res) {
+            if (res.success) {
+                if (res.code = 1) {
+                    showNotification('success', 'Thành công', 'Thêm khách hàng thành công.');
+                    var phoneNumber = res.phoneNumber;
+                    $("#searchCustomer", window.parent.document).val(null);
+                    if (phoneNumber != null) {
+                        updateSuggestedCustomers(phoneNumber);
+                     /*   $("#searchCustomer", window.parent.document).val(phoneNumber); */
+                    }
+                }
+            }
+            else {
+                if (res.code = -1) {
+                    showNotification('error', 'Lỗi...', 'Dữ liệu rỗng.');
+                }
+                if (res.code = -2) {
+                    showNotification('error', 'Lỗi...', 'Số điện thoại và mail đã tồn tại .');
+                }
+                if (res.code = -4) {
+                    showNotification('error', 'Lỗi...', 'Email đã tồn tại .');
+                }
+                if (res.code = -3) {
+                    showNotification('error', 'Lỗi...', 'Số điện thoại đã tồn tại .');
+                }
+                if (res.code = -100) {
+                    showNotification('error', 'Lỗi...', 'Lỗi xử lý dữ liệu.');
+                }
+            }
+        }
+
+
+        function submitForm() {
+            // Validate form
+            if (!validateForm()) {
+                return;
+            }
+
+
+            var form = document.getElementById('myForm');
+            var formData = new FormData(form);
+
+
+            $.ajax({
+                url: '/AccountCLient/AddClient',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+
+                    OnSuccessCO(response);
+                },
+                error: function (error) {
+
+                    OnFailure(error);
+                }
+            });
+        }
+
+
+
+
+
+    </script>
+    <script>
+        //var bg = document.querySelector(".bg-sg");
+        //var btnCloseAddClient = document.querySelector(".btnCloseAddClient");
+        //var popup = document.getElementById('popup');
+        //var addClient = document.querySelector('.addClient');
+
+        //btnCloseAddClient.addEventListener("click", function () {
+        //    bg.style.display = "none";
+        //    popup.style.display = "none";
+        //});
+
+    </script>
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                </div>
+                <div class="card-tools">
+                    <div class=" btn btnCloseAddClient">
+                        <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="20" height="20" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                            <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="text-center mt-3">
+                    <img src="~/images/Logo/LogoWeb.png" class="rounded-circle" width="100" />
+                    <h4 class="mb-0">Tạo khách hàng mới</h4>
+                    <span class="text-muted d-block mb-2">Hệ thống bán hàng <span class="text-danger">LTD<span style="color: black; font-family: Poppins-Regular; ">MiniStore</span></span></span>
+
+                    <div class="row gy-3 overflow-hidden">
+                        <div class="col-12">
+                            <div class="form-floating mb-3">
+                                <input class="form-control" name="CustomerName" id="CustomerName" type="text" required autocomplete="off" placeholder="" />
+                                <label for="name" class="form-label">Tên khách hàng</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating mb-3">
+                                <input class="form-control" type="text" name="PhoneNumber" id="PhoneNumber" required autocomplete="off" placeholder="" />
+                                <label for="name" class="form-label">Số điện thoại khách hàng</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10 mt-2">
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" name="Email" id="Email" type="text" required autocomplete="off" placeholder="" />
+                                    <label for="name" class="form-label">Email khách hàng</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-10 d-grid gap-2 col-10 mx-auto">
+                                <button type="button" class="btn btn-success btnRegister" onclick="submitForm();">Đăng ký khách hàng mới</button>
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

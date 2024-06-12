@@ -1,0 +1,399 @@
+﻿
+@{
+    ViewBag.Title = "Quản lý khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+}
+
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/category" class="nav-link">@ViewBag.Title</a>
+        </li>
+    </ul>
+}
+
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quản lý khách hàng</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/he-thong-LTD">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Danh sách @ViewBag.Title</h3>
+            <br />
+            <span><label>Tổng số tài khoản khách hàng:</label> @ViewBag.Count</span>
+            <div class="card-tools">
+                <div class="toggleLockAll" style="display:none;">
+
+                    <label class="toggle" for="myToggle">
+                        <span class="text-center">
+                            Khóa tất cả tài khoản  <i class=\"fas fa-lock-open\"></i>
+                            <input class="toggle__input toggle__inputAll text-center" name="" type="checkbox" id="myToggle">
+                            <div class="toggle__fill"></div>
+                            <i class=\"fas fa-lock text-danger\"></i>
+                        </span>
+                       
+                    </label>
+                </div>
+                <div class="toggleLockSelect" style="display:none;">
+
+                    <label class="toggle" for="myToggle">
+                        Khóa tài khoản đã chọn
+                        <i class=\"fas fa-lock-open\"></i>
+                        <input class=" toggle__inputSelect" name="" type="checkbox" id="myToggle1">
+                        <div class="toggle__fill"></div>
+                        <i class=\"fas fa-lock text-danger\"></i>
+                    </label>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card-body">
+           
+            @if (ViewBag.Count != null)
+            {
+                <div id="loadListCustomer">
+                    @Html.Action("Partail_Index", "AccountClient")
+                </div>
+            }
+            else
+            {
+                <p class="text-danger"></p>
+            }
+        </div>
+        <div class="card-footer">
+
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script>
+        document.getElementById('switchButton').addEventListener('click', function () {
+            console.log("Button clicked"); // Kiểm tra sự kiện click
+            const content1 = document.getElementById('content1');
+            const content2 = document.getElementById('content2');
+
+            console.log('Content 1 classes:', content1.classList);
+            console.log('Content 2 classes:', content2.classList);
+
+            if (content1.classList.contains('hidden')) {
+                content1.classList.remove('hidden');
+                content2.classList.add('hidden');
+            } else {
+                content1.classList.add('hidden');
+                content2.classList.remove('hidden');
+            }
+
+            console.log('After click - Content 1 classes:', content1.classList);
+            console.log('After click - Content 2 classes:', content2.classList);
+        });
+
+
+
+
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            LoadListCustomer();
+            chekClock();
+
+
+            //Start khóa tất cả tài khảoi
+            $('.toggle__inputAll').change(function () {
+                var $toggleLockAll = $('.toggleLockAll');
+                if ($(this).is(':checked')) {
+                    $toggleLockAll.addClass('active');
+                    Swal.fire({
+                        title: "Bạn muốn khóa tất cả tài khoản này ?",
+                        text: "Bạn đang thao tác !",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Chắc, khóa!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/admin/AccountClient/UpdateAllClocks',
+                                type: 'POST',
+                                success: function (rs) {
+                                    if (rs.success) {
+                                        // Kiểm tra xem Clock đã được cập nhật thành công hay không
+                                        if (rs.isAcive) {
+                                            location.reload(true);
+                                            // Nếu Clock đã được cập nhật thành công, cập nhật biểu tượng của nút
+                                            btn.html("<i class=\"fas fa-lock\"></i>");
+                                        }
+                                        else {
+                                            location.reload(true);
+                                            // Nếu Clock không được cập nhật thành công, cập nhật biểu tượng của nút
+                                            btn.html("<i class=\"fas fa-lock-open\"></i>");
+                                        }
+                                        // Hiển thị cảnh báo thành công
+                                        Swal.fire({
+                                            title: "Khóa tài khoản thành công!",
+                                            icon: "success"
+                                        });
+                                    } else {
+                                        // Hiển thị cảnh báo lỗi
+                                        Swal.fire({
+                                            title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                            icon: "error"
+                                        });
+                                    }
+                                },
+                                error: function () {
+                                    // Hiển thị cảnh báo lỗi
+                                    Swal.fire({
+                                        title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                        icon: "error"
+                                    });
+                                }
+                            });
+                        } else {
+                            // Người dùng từ chối cảnh báo, loại bỏ lớp active và reset checkbox
+                            $toggleLockAll.removeClass('active');
+                            setTimeout(function () {
+                                $('.toggle__inputAll').prop('checked', false);
+                            }, 10);
+                        }
+                    });
+                } else {
+                  
+                    $toggleLockAll.addClass('active');
+                    Swal.fire({
+                        title: "Bạn muốn mở khóa tất cả tài khoản này ?",
+                        text: "Bạn đang thao tác !",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Chắc ,mở khóa!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/admin/AccountClient/UpdateAllUnClocks',
+                                type: 'POST',
+                                success: function (rs) {
+                                    if (rs.success) {
+                                        // Kiểm tra xem Clock đã được cập nhật thành công hay không
+                                        if (rs.isAcive) {
+                                            location.reload(true);
+                                            // Nếu Clock đã được cập nhật thành công, cập nhật biểu tượng của nút
+                                            btn.html("<i class=\"fas fa-lock\"></i>");
+                                        }
+                                        else {
+                                            location.reload(true);
+                                            // Nếu Clock không được cập nhật thành công, cập nhật biểu tượng của nút
+                                            btn.html("<i class=\"fas fa-lock-open\"></i>");
+                                        }
+                                        // Hiển thị cảnh báo thành công
+                                        Swal.fire({
+                                            title: "Khóa tài khoản thành công!",
+                                            icon: "success"
+                                        });
+                                    } else {
+                                        // Hiển thị cảnh báo lỗi
+                                        Swal.fire({
+                                            title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                            icon: "error"
+                                        });
+                                    }
+                                },
+                                error: function () {
+                                    // Hiển thị cảnh báo lỗi
+                                    Swal.fire({
+                                        title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                        icon: "error"
+                                    });
+                                }
+                            });
+                        } else {
+                            // Người dùng từ chối cảnh báo, loại bỏ lớp active và reset checkbox
+                            $toggleLockAll.removeClass('active');
+                            setTimeout(function () {
+                                $('.toggle__inputAll').prop('checked', false);
+                            }, 10);
+                        }
+                    });
+                    $toggleLockAll.removeClass('active');
+                }
+            });
+
+            //End khóa tất cả tài khảoi
+
+
+            //Start khóa  tài khảoi chọn
+            $('.cbkItem').change(function () {
+                if ($('.cbkItem:checked').length > 0) {
+                    $('.toggleLockSelect').css('display', 'block');
+                } else {
+                    $('.toggleLockSelect').css('display', 'none');
+                }
+            });
+
+
+            $('.toggle__inputSelect').change( function () {
+                alert("Thuan");
+                var $toggleLockSelect = $('.toggleLockSelect');
+            });
+
+            //End khóa  tài khảoi chọn
+
+
+
+            $('body').on('change', '#SelectAll', function () {
+                var checkStatus = this.checked;
+                var checkbox = $(this).parents('.card-body').find('tr td input:checkbox');
+                checkbox.each(function () {
+                    this.checked = checkStatus;
+                    if (this.checked) {
+                        checkbox.attr('selected', 'checked');
+                    } else {
+                        checkbox.attr('selected', '');
+                    }
+                });
+                if (checkStatus) {
+                    $('.toggleLockAll').show(); // Hiển thị khi checkbox được kiểm tra
+                } else {
+                    $('.toggleLockAll').hide(); // Ẩn khi checkbox không được kiểm tra
+                }
+            });
+
+            $('body').on('click', '.btnClock', function () {
+                var id = $(this).data("id");
+                Swal.fire({
+                    title: "Bạn muốn khóa tài khoản này ?",
+                    text: "Bạn đang thao tác !",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Chắc, khóa!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        $.ajax({
+                            url: '/admin/AccountClient/IsLock',
+                            type: 'POST',
+                            data: { id: id },
+                            success: function (rs) {
+                                if (rs.success) {
+                                    if (rs.Clock) {
+
+                                        location.reload(true);
+                                        btn.html("<i class=\"fas fa-lock\"></i>");
+                                        Swal.fire({
+                                            title: "Khóa tài khoản thành công!",
+                                            /*  text: "Your file has been deleted.",*/
+                                            icon: "success"
+                                        });
+                                    }
+                                    else {
+                                        location.reload(true);
+                                        btn.html("<i class=\"fas fa-lock-open\"></i>");
+                                        Swal.fire({
+                                            title: "Mở khóa tài khoản thành công!",
+                                            /*  text: "Your file has been deleted.",*/
+                                            icon: "success"
+                                        });
+                                    }
+                                }
+                                else {
+                                    Swal.fire({
+                                        title: "Đã xảy ra lỗi khi cố gắng khóa tài khoản!",
+                                        icon: "error"
+                                    });
+                                }
+                               
+                            }
+                        });
+                       
+                    }
+                });
+                //var conf = confirm('Bạn có muốn khóa tài khoản này');
+                //if (conf === true) {
+                //    $.ajax({
+                //        url: '/admin/AccountClient/IsLock',
+                //        type: 'POST',
+                //        data: { id: id },
+                //        success: function (rs) {
+                //            if (rs.success) {
+                //                if (rs.Clock) {
+
+                //                    location.reload(true);
+                //                    btn.html("<i class=\"fas fa-lock\"></i>");
+                //                }
+                //                else {
+                //                    location.reload(true);
+                //                    btn.html("<i class=\"fas fa-lock-open\"></i>");
+
+                //                }
+                //            }
+                //        }
+                //    });
+                //}
+            });
+        });
+
+        function chekClock() {
+            $.ajax({
+                url: '/admin/AccountClient/CheckAllClocks',
+                type: 'GET',
+                success: function (response) {
+                    if (response.success && response.allClocksActive) {
+                        $('.toggle__inputAll').prop('checked', true);
+                    }
+                },
+                error: function () {
+                    console.log("Đã xảy ra lỗi khi kiểm tra trạng thái tài khoản.");
+                }
+            });
+        }
+
+        function LoadListCustomer() {
+
+            $.ajax({
+                url: '/admin/AccountClient/Partail_View',
+                type: 'GET',
+             
+                success: function (rs) {
+                    $('#loadListCustomer').html(rs.Count);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+
+}
+
+
+
+

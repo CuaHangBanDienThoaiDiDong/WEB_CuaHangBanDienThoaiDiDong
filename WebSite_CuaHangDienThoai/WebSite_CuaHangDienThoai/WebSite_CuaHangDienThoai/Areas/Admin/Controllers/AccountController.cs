@@ -32,74 +32,158 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
             return View();
         }
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DangNhap(string Code, string password, string user)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var f_password = MaHoaPass(password);
-
-                var data = db.tb_Staff.SingleOrDefault(s => s.Code.Equals(Code) && s.Password.Equals(f_password));
-
-                if (data != null)
+                if (ModelState.IsValid)
                 {
-                    var checklock = db.tb_Staff.FirstOrDefault(s => s.Code.Equals(Code) && s.Clock == false);
+                    var f_password = MaHoaPass(password);
 
-                    if (checklock != null)
+                    var data = db.tb_Staff.SingleOrDefault(s => s.Code.Equals(Code) && s.Password.Equals(f_password));
+
+                    if (data != null)
                     {
-                        var functionTitle = db.tb_Function
-                                            .Where(func => func.FunctionId == data.FunctionId)
-                                            .Select(func => func.TitLe)
-                                            .FirstOrDefault();
+                        var checklock = db.tb_Staff.FirstOrDefault(s => s.Code.Equals(Code) && s.Clock == false);
 
-                        if (functionTitle != null)
+                        if (checklock != null)
                         {
-                            if (data.Image != null)
+                            var functionTitle = db.tb_Function
+                                                .Where(func => func.FunctionId == data.FunctionId)
+                                                .Select(func => func.TitLe)
+                                                .FirstOrDefault();
+
+                            if (functionTitle != null)
                             {
-                                string base64String = Convert.ToBase64String(data.Image);
-                                Session["userimg"] = base64String;
-                            }
-                            if (functionTitle.Contains("Quản lý kho hàng"))
-                            {
-                                Session["user"] = data;
-                                return RedirectToAction("Index", "Warehouse");
-                            }
-                            else if (functionTitle.Contains("Nhân viên bán hàng"))
-                            {
-                                Session["user"] = data;
-                                return RedirectToAction("Index", "Seller");
-                            }
-                            else if (functionTitle.Contains("admin") || functionTitle.Contains("Quản Lý"))
-                            {
-                                Session["user"] = data;
-                                return RedirectToAction("Index", "HomePage");
+                                if (data.Image != null)
+                                {
+                                    string base64String = Convert.ToBase64String(data.Image);
+                                    Session["userimg"] = base64String;
+                                }
+
+                                string redirectUrl = ""; // Đường dẫn cần redirect
+
+                                if (data.FunctionId== 3 || functionTitle.Contains("Nhân viên kho hàng"))
+                                {
+                                    Session["user"] = data;
+                                    redirectUrl = Url.Action("Index", "Warehouse");
+                                }
+                                else if (data.FunctionId == 4|| functionTitle.Contains("Nhân viên bán hàng"))
+                                {
+                                    Session["user"] = data;
+                                    redirectUrl = Url.Action("Index", "Seller");
+                                }
+                                else if (data.FunctionId == 1 || data.FunctionId == 2 || functionTitle.Contains("admin") || functionTitle.Contains("Quản Lý"))
+                                {
+                                    Session["user"] = data;
+                                    redirectUrl = Url.Action("Index", "HomePage");
+                                }
+                                else
+                                {
+                                    ViewBag.error = "Chức năng không hợp lệ";
+                                    return Json(new { success = false, code = -1 });
+                                }
+
+                                // Trả về JSON với thông tin redirectUrl
+                                return Json(new { success = true, redirectUrl = redirectUrl });
                             }
                             else
                             {
-                                ViewBag.error = "Chức năng không hợp lệ";
+                                ViewBag.error = "Không tìm thấy chức năng của tài khoản";
+                                return Json(new { success = false, code = -2 });
                             }
                         }
                         else
                         {
-                            ViewBag.error = "Không tìm thấy chức năng của tài khoản";
+                            ViewBag.error = "Tài khoản đã bị khóa";
+                            return Json(new { success = false, code = -3 });
                         }
                     }
                     else
                     {
-                        ViewBag.error = "Tài khoản đã bị khóa";
+                        ViewBag.error = "Tài khoản hoặc mật khẩu không đúng";
+                        return Json(new { success = false, code = -4 });
                     }
                 }
                 else
                 {
-                    ViewBag.error = "Tài khoản hoặc mật khẩu không đúng";
+                    return Json(new { success = false, code = -5 });
                 }
             }
-
-            return View();
+            catch (Exception ex)
+            {
+                return Json(new { success = false, code = -100 });
+            }
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DangNhap(string Code, string password, string user)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var f_password = MaHoaPass(password);
+
+        //        var data = db.tb_Staff.SingleOrDefault(s => s.Code.Equals(Code) && s.Password.Equals(f_password));
+
+        //        if (data != null)
+        //        {
+        //            var checklock = db.tb_Staff.FirstOrDefault(s => s.Code.Equals(Code) && s.Clock == false);
+
+        //            if (checklock != null)
+        //            {
+        //                var functionTitle = db.tb_Function
+        //                                    .Where(func => func.FunctionId == data.FunctionId)
+        //                                    .Select(func => func.TitLe)
+        //                                    .FirstOrDefault();
+
+        //                if (functionTitle != null)
+        //                {
+        //                    if (data.Image != null)
+        //                    {
+        //                        string base64String = Convert.ToBase64String(data.Image);
+        //                        Session["userimg"] = base64String;
+        //                    }
+        //                    if (functionTitle.Contains("Quản lý kho hàng"))
+        //                    {
+        //                        Session["user"] = data;
+        //                        return RedirectToAction("Index", "Warehouse");
+        //                    }
+        //                    else if (functionTitle.Contains("Nhân viên bán hàng"))
+        //                    {
+        //                        Session["user"] = data;
+        //                        return RedirectToAction("Index", "Seller");
+        //                    }
+        //                    else if (functionTitle.Contains("admin") || functionTitle.Contains("Quản Lý"))
+        //                    {
+        //                        Session["user"] = data;
+        //                        return RedirectToAction("Index", "HomePage");
+        //                    }
+        //                    else
+        //                    {
+        //                        ViewBag.error = "Chức năng không hợp lệ";
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    ViewBag.error = "Không tìm thấy chức năng của tài khoản";
+        //                }
+        //            }
+        //            else
+        //            {
+        //                ViewBag.error = "Tài khoản đã bị khóa";
+        //            }
+        //        }
+        //        else
+        //        {
+        //            ViewBag.error = "Tài khoản hoặc mật khẩu không đúng";
+        //        }
+        //    }
+
+        //    return View();
+        //}
 
 
         public ActionResult Logout()

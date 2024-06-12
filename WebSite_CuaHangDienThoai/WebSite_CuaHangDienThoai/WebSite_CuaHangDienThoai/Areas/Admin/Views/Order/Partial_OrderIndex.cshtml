@@ -1,0 +1,127 @@
+﻿@model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_Order>
+@using PagedList.Mvc;
+
+<div class="card mb-4">
+    <div class="card-header">
+        Tất cả đơn hàng
+        <span>Ngày đặt:<input type="datetime-local" id="ngayxuat" onchange="getOrderNewToDay()" /></span>
+
+    </div>
+    <div class="card-body p-0" id="loadData">
+        <!-- Billing history table-->
+        <div class="table-responsive table-billing-history">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th class="text-center">STT</th>
+                        <th class="border-gray-200 text-center" scope="col">Mã đơn hàng</th>
+                        <th class="border-gray-200 text-center" scope="col">Tên khách hàng</th>
+                        <th class="border-gray-200 text-center" scope="col">Số điện thoại</th>
+                        <th class="border-gray-200 text-center" scope="col">Tiền</th>
+                        <th class="border-gray-200 text-center" scope="col">Trạng thái thanh toán</th>
+                        <th class="border-gray-200 text-center" scope="col">Loại đơn hàng</th>
+                        <th class="border-gray-200 text-center" scope="col">Ngày tạo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center">@i</td>
+                                <td class="text-center">@item.Code</td>
+                                <td class="text-center">@item.CustomerName</td>
+                                <td class="text-center">@item.Phone</td>
+                                <td class="text-center">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.TotalAmount, 0)</td>
+
+                                <td class="text-center">
+                                    @if (item.TypePayment == 1)
+                                    {
+
+                                        <span class="badge bg-light text-danger">Chờ thành toán</span>
+
+
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success text-dark">Đã thanh toán</span>
+
+
+                                    }
+
+                                </td>
+                                <td class="text-center">Đơn hàng mới  </td>
+                                <td class="text-center">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    <a href="/admin/order/Detail/@item.OrderId" class="btn btn-sm btn-success">Xem</a>
+                                    <a href="#" class="btn btn-sm btn-danger btnCapNhat" data-id="@item.OrderId">Cập nhật</a>
+                                </td>
+
+
+                            </tr>
+                            i++;
+                        }
+
+                    }
+
+
+
+                </tbody>
+            </table>
+            <hr />
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm">
+                            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="1" aria-label="First">
+                                    <span aria-hidden="true">Đầu</span>
+                                </a>
+                            </li>
+                            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="@(Model.PageNumber - 1)" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            @for (int i = Model.PageNumber; i <= Model.PageNumber + 4 && i <= Model.PageCount; i++)
+                            {
+                                <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                                    <a class="page-link" href="#" data-page="@i">@i</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="@(Model.PageNumber + 1)" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="@Model.PageCount" aria-label="Last">
+                                    <span aria-hidden="true">Cuối</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    function getOrderNewToDay() {
+        var ngayxuat = $('#ngayxuat').val(); // Sử dụng jQuery để lấy giá trị của input datetime-local
+        $.ajax({
+            url: '/Admin/Order/GetOrderAll', // Địa chỉ URL của action trong controller
+            type: 'GET',
+            data: { ngayxuat: ngayxuat },
+            success: function (data) {
+                $('#loadData').html(data);
+            },
+            error: function (xhr, status, error) {
+                console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+            }
+        });
+    }
+</script>

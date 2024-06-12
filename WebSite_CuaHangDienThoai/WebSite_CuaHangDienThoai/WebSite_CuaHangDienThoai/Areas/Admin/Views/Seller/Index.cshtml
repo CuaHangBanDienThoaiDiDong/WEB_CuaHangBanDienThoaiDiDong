@@ -156,6 +156,32 @@
                             }
                         }
                         else {
+                            if (rs.Code = -1) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Hết hàng...",
+                                    text: "Số Lượng Không Đủ",
+                                    footer: '<a href="#">Why do I have this issue?</a>'
+                                });
+                            }
+                            if (rs.Code = -2) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Hết hàng...",
+                                    text: "Số Lượng Không Đủ",
+                                    footer: '<a href="#">Why do I have this issue?</a>'
+                                });
+                            }
+                            if (rs.Code = -99) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Lỗi...",
+                                    text: "Mất kết nôi!",
+                                    footer: '<a href="#">Why do I have this issue?</a>'
+                                });
+                            }
+
+
                         }
 
                     }

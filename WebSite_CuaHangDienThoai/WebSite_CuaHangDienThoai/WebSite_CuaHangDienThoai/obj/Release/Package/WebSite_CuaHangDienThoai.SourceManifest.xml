@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<sitemanifest>
-  <IisApp path="E:\CuaHangDienThoaiDiDong\Web\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\obj\Release\Package\PackageTmp" managedRuntimeVersion="v4.0" />
-  <setAcl path="E:\CuaHangDienThoaiDiDong\Web\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\obj\Release\Package\PackageTmp" setAclResourceType="Directory" />
-  <setAcl path="E:\CuaHangDienThoaiDiDong\Web\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\obj\Release\Package\PackageTmp" setAclUser="anonymousAuthenticationUser" setAclResourceType="Directory" />
-</sitemanifest>

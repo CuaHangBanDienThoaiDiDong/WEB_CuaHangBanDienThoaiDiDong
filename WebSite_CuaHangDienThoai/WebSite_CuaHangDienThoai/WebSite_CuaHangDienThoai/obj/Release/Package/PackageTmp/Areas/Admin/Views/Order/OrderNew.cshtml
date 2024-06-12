@@ -1,0 +1,283 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Order>
+@{
+    ViewBag.Title = "Đơn hàng mới";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    body {
+        margin-top: 20px;
+        background-color: #f2f6fc;
+        color: #69707a;
+    }
+
+    .img-account-profile {
+        height: 10rem;
+    }
+
+    .rounded-circle {
+        border-radius: 50% !important;
+    }
+
+    .card {
+        box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
+    }
+
+        .card .card-header {
+            font-weight: 500;
+        }
+
+    .card-header:first-child {
+        border-radius: 0.35rem 0.35rem 0 0;
+    }
+
+    .card-header {
+        padding: 1rem 1.35rem;
+        margin-bottom: 0;
+        background-color: rgba(33, 40, 50, 0.03);
+        border-bottom: 1px solid rgba(33, 40, 50, 0.125);
+    }
+
+    .form-control, .dataTable-input {
+        display: block;
+        width: 100%;
+        padding: 0.875rem 1.125rem;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1;
+        color: #69707a;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #c5ccd6;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: 0.35rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .nav-borders .nav-link.active {
+        color: #0061f2;
+        border-bottom-color: #0061f2;
+    }
+
+    .nav-borders .nav-link {
+        color: #69707a;
+        border-bottom-width: 0.125rem;
+        border-bottom-style: solid;
+        border-bottom-color: transparent;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .fa-2x {
+        font-size: 2em;
+    }
+
+    .table-billing-history th, .table-billing-history td {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+        padding-left: 1.375rem;
+        padding-right: 1.375rem;
+    }
+
+    .table > :not(caption) > * > *, .dataTable-table > :not(caption) > * > * {
+        padding: 0.75rem 0.75rem;
+        background-color: var(--bs-table-bg);
+        border-bottom-width: 1px;
+        box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+    }
+
+    .border-start-primary {
+        border-left-color: #0061f2 !important;
+    }
+
+    .border-start-secondary {
+        border-left-color: #6900c7 !important;
+    }
+
+    .border-start-success {
+        border-left-color: #00ac69 !important;
+    }
+
+    .border-start-lg {
+        border-left-width: 0.25rem !important;
+    }
+
+    .h-100 {
+        height: 100% !important;
+    }
+</style>
+
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/homepage/" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/productcategory" class="nav-link">@ViewBag.Title</a>
+        </li>
+    </ul>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Danh sách đơn hàng mới</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/admin/homepage/">Home</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+<section class="content">
+
+    <div class="card mb-4">
+       <div class="card-header">
+           <span>Ngày xuất:<input type="datetime-local" id="ngayxuat" onchange="getOrderNewToDay()" /></span>
+          
+       </div>
+        <div class="card-body p-0" id="loadData">
+            <!-- Billing history table-->
+            <div class="table-responsive table-billing-history">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">STT</th>
+                            <th class="border-gray-200 text-center" scope="col">Mã đơn hàng</th>
+                            <th class="border-gray-200 text-center" scope="col">Tên khách hàng</th>
+                            <th class="border-gray-200 text-center" scope="col">Số điện thoại</th>
+                            <th class="border-gray-200 text-center" scope="col">Tiền</th>
+                            <th class="border-gray-200 text-center" scope="col">Trạng thái thanh toán</th>
+                            <th class="border-gray-200 text-center" scope="col">Loại đơn hàng</th>
+                            <th class="border-gray-200 text-center" scope="col">Ngày tạo</th>
+                            <th class="border-gray-200 text-center" scope="col">Xác nhận</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+                            foreach (var item in Model)
+                            {
+                                var strCheck = item.Confirm.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                                <tr>
+                                    <td class="text-center">@i</td>
+                                    <td class="text-center">@item.Code</td>
+                                    <td class="text-center">@item.CustomerName</td>
+                                    <td class="text-center">@item.Phone</td>
+                                    <td class="text-center">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.TotalAmount, 0)</td>
+
+                                    <td class="text-center">
+                                        @if (item.TypePayment == 1)
+                                        {
+
+                                            <span class="badge bg-light text-danger">Chờ thành toán</span>
+
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success text-dark">Đã thanh toán </span>
+
+                                        }
+
+                                    </td>
+                                    <td class="text-center">Đơn hàng mới  </td>
+                                    <td class="text-center">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                    <td class="text-center">
+                                        <a href='#' data-id="@item.OrderId" class="btnConFirm">@Html.Raw(strCheck)</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/order/Detail/@item.OrderId" class="btn btn-sm btn-success">Xem</a>
+                                        <a href="#" class="btn btn-sm btn-danger btnConFirm" data-id="@item.OrderId">Cập nhật</a>
+                                    </td>
+
+
+                                </tr>
+                                i++;
+                            }
+
+                        }
+
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+@section scripts{
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script>
+    $(document).ready(function () {
+        $('body').on('click', '.btnConFirm', function (e) {
+            e.preventDefault();
+            var btn = $(this);
+            var id = btn.data("id");
+            $.ajax({
+                url: '/admin/order/IsComfrim',
+                type: 'POST',
+                data: { id: id },
+                success: function (rs) {
+                    if (rs.success) {
+                        if (rs.Confirm) {
+                            btn.html("<i class='fa fa-check text-success'></i>");
+                        } else {
+                            btn.html("<i class='fas fa-times text-danger'></i>");
+                        }
+                    }
+                }
+            });
+        });
+    });
+
+        function getOrderNewToDay() {
+            var ngayxuat = $('#ngayxuat').val(); // Sử dụng jQuery để lấy giá trị của input datetime-local
+            $.ajax({
+                url: '/Admin/Order/GetOrderNewToDay', // Địa chỉ URL của action trong controller
+                type: 'GET',
+                data: { ngayxuat: ngayxuat },
+                success: function (data) {
+                    $('#loadData').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+                }
+            });
+        }
+    </script>
+}
+
+
+
+
+

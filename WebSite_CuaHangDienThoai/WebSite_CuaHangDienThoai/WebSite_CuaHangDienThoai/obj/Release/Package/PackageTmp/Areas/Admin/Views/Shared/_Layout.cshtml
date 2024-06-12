@@ -6,7 +6,7 @@
     <title>@ViewBag.Title</title>
 
 
-
+    <link rel="icon" href="~/images/Logo/LogoWeb.png" @*style="border-radius:20px;height:20px;"*@ />
 
     @*!-- Google Font: Source Sans Pro -->*@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -33,12 +33,23 @@
     <link rel="stylesheet" href="~/Content/clients/dist/css/adminlte.min.css">
 
 
+    <!-- New tem -->
+    <link href="~/Content/assets/plugins/themify-icons/themify-icons.css" rel="stylesheet" />
+    <link href="~/Content/icon/icofont/css/icofont.css" rel="stylesheet" />
+    <link href="~/Content/Css/assets/css/style.css" rel="stylesheet" />
+    <link href="~/Content/Css/assets/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
+    <!-- Cong tac -->
+    <link href="~/Content/CongTac.css" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.1/css/all.css" rel="stylesheet">
     @*@Icon@*@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
 
     <!---SweetAlter-->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.min.css" rel="stylesheet">
+
+
+    <script src="~/Content/assets/js/jquery-3.2.1.min.js"></script>
 
 </head>
 <body class="hold-transition sidebar-mini">
@@ -178,35 +189,51 @@
 
             @*@Html.Partial("_PartiaSideBar")*@
 
-            <div class="sidebar">
-                <!-- Sidebar user (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="~/Content/clients/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        @*<a href="#" class="d-block">Alexander Pierce</a>*@
-
-
-                        @if (Session["user"] != null)
+        <div class="sidebar">
+            <!-- Sidebar user (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
+                <div class="image">
+                    @if (Session["userimg"] != null)
+                    {
+                        var imgBase64 = Session["userimg"] as string;
+                        if (!string.IsNullOrEmpty(imgBase64))
                         {
-                            {
-                                var user = (WebSite_CuaHangDienThoai.Models.tb_Staff)HttpContext.Current.Session["user"];
-                                <apan style="color:white">
-                                    @user.NameStaff - @user.tb_Function.TitLe
-                                </apan>
-                            }
+                            <img src="data:image;base64,@imgBase64" class="img-fluid img-circle" alt="Avatar">
+                        }
+                       
+                    }
+                    else
+                    {
+                        <img src="~/images/Logo/LogoWebpng.png" class="img-fluid img-circle" style="width:70px;height:60px;" alt="LogoWebpng">
+                    }
+                </div>
+                <div class="info">
+                    @if (Session["user"] != null)
+                    {
+                        var user = Session["user"] as WebSite_CuaHangDienThoai.Models.tb_Staff;
+                        if (user != null)
+                        {
+                            <div>
+                                <span class="text-white">@user.NameStaff</span>
+                                <br />
+                                <span class="text-white">@user.tb_Function.TitLe</span>
+                            </div>
                         }
                         else
                         {
-                           @Html.ActionLink( "DangNhap", "Account")
+                            <span class="text-white">Unknown User</span>
                         }
-
-                    </div>
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Đăng nhập", "Account", null, new { @class = "text-white" })
+                    }
                 </div>
-                @Html.Partial("_MenuSideBar")
-                <!-- /.sidebar-menu -->
             </div>
+
+            @Html.Partial("_MenuSideBar")
+            <!-- /.sidebar-menu -->
+        </div>
 
 
         </aside>
@@ -241,9 +268,19 @@
     <!---SweetAlter-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
 
+    <!---New Temp-->
 
-
-
+    <script src="~/Content/Css/assets/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="~/Content/Css/assets/js/modernizr/modernizr.js"></script>
+    <script src="~/Content/Css/assets/pages/widget/amchart/amcharts.min.js"></script>
+    <script src="~/Content/Css/assets/pages/widget/amchart/serial.min.js"></script>
+    <script src="~/Content/Css/assets/pages/todo/todo.js"></script>
+    <script src="~/Content/Css/assets/pages/dashboard/custom-dashboard.js"></script>
+    <script src="~/Content/Css/assets/js/script.js"></script>
+    <script src="~/Content/Css/assets/js/SmoothScroll.js"></script>
+    <script src="~/Content/Css/assets/js/pcoded.min.js"></script>
+    <script src="~/Content/Css/assets/js/demo-12.js"></script>
+    <script src="~/Content/Css/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
     @*jQuery*@
     <script src="~/Content/clients/plugins/jquery/jquery.min.js"></script>
     @*Bootstrap 4*@
@@ -274,24 +311,25 @@
     <!--<-->@*script src="~/Scripts/jquery-3.7.1.js"></script>
         <script src="~/Scripts/jquery-3.7.1.min.js"></script>*@
 
+    <script src="~/Scripts/JsAdmin.js"></script>
 
-
-
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
+    <script src="~/Scripts/CongTac.js"></script>
 
-
-
+    <script src="~/Scripts/JsAadminProduct.js"></script>
 
 
     <script src="~/Scripts/autoNumeric-1.9.45.js"></script>
     @*<script src="~/Content/ckeditor/ckeditor/ckeditor.js"></script>
         <script src="~/Content/ckfinder/ckfinder/ckfinder.js"></script>*@
     @*<script src="~/CKFinderScripts/ckfinder.js"></script>*@
-<script src="~/Content/ckfinder/ckfinder.js"></script>
+    <script src="~/Content/ckfinder/ckfinder.js"></script>
     @*<script src="~/Content/ckeditor/ckeditor.js"></script>
         <script src="~/Content/ckfinder/ckfinder/ckfinder.js"></script>*@
     @RenderSection("scripts", required: false)
