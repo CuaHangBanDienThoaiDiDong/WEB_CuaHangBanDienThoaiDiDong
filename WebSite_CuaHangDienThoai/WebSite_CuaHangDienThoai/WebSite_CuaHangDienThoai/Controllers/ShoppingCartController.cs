@@ -380,13 +380,6 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return PartialView();
         }
 
-
-
-
-
-
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CheckOut(OrderViewVNPay req, tb_Products model)

@@ -37,54 +37,54 @@
 
 
 <section class="content">
-    <div class="card mb-4">
-        <div class="card-header">Đơn hàng xuất ngày @ViewBag.Today</div>
-        <div class="card-body p-0">
-            <div class="table-responsive table-billing-history">
-                <table class="table mb-0">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" id="SelectAll" /></th>
-                            <th>STT</th>
-                            <th class="text-center">Mã đơn hàng</th>
-                            <th class="text-center">Ngày xuất</th>
-                            <th class="text-center">Tên kho</th>
-                            <th class="text-center">Nhân Viên</th>
+    <div id="loadOrderExport">
 
-
-                            <th style="width:150px;"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model != null && Model.Any())
-                        {
-                            var i = 1;
-
-                            foreach (var item in Model)
-                            {
-
-                                <tr id="trow_@item.ExportWareHouseId">
-                                    <td><input type="checkbox" class="cbkItem" value="@item.ExportWareHouseId" /></td>
-                                    <td class="text-center">@i</td>
-                                    @*<td class="text-center">@Html.Action("Partail_CheckCode", "WareHouse", new { id = item.OrderId })   </td>
-                                    <td class="text-center">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
-                                    <td class="text-center">@Html.Action("Partail_WareHouseById", "WareHouse", new { id = item.Idkho })</td>
-                                    <td class="text-center">@Html.Action("Partail_StaffById", "WareHouse", new { MSNV = item.MSNV })</td>*@
-                                </tr>
-                                i++;
-                            }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="4">Không có bản ghi nào!!!</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        </div>
+    </div>
 </section>
 
 
+
+
+@section scripts{
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script>
+    $(document).ready(function () {
+        $(document).on('click', '.pagination a', function (e) {
+            e.preventDefault();
+            var page = $(this).attr('data-page');
+            LoadIndex(page);
+        });
+        LoadIndex(1)
+    });
+
+        function LoadIndex(page) {
+            $.ajax({
+                url: '/admin/Order/Partial_OrderExportToday',
+                type: 'GET',
+                data: { page: page },
+                success: function (rs) {
+                    $('#loadOrderExport').html(rs);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+
+        //function getOrderNewToDay() {
+        //    var ngayxuat = $('#ngayxuat').val(); // Sử dụng jQuery để lấy giá trị của input datetime-local
+        //    $.ajax({
+        //        url: '/Admin/Order/GetOrderNewToDay', // Địa chỉ URL của action trong controller
+        //        type: 'GET',
+        //        data: { ngayxuat: ngayxuat },
+        //        success: function (data) {
+        //            $('#loaddataOrderNewToDay').html(data);
+        //        },
+        //        error: function (xhr, status, error) {
+        //            console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+        //        }
+        //    });
+        //}
+    </script>
+}

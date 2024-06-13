@@ -3922,6 +3922,11 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\Order\SuggestOrderCustomer.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Partial_OrderNew.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\SuggestOrderNewCustomer.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\OrderNewToday.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Partial_OrderExportToday.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
