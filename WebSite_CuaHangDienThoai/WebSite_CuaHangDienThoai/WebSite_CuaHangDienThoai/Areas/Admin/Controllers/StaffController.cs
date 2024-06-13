@@ -124,7 +124,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                             .FirstOrDefault();
                 if (functionTitle != null) 
                 {
-                    if (functionTitle.Contains("admin") || functionTitle.Contains("Quản Lý"))
+                    if (checkStaff.FunctionId == 2 || checkStaff.FunctionId==1 || functionTitle.Contains("Quản Trị Viên") || functionTitle.Contains("Quản Lý"))
                     {
                         Session["user"] = checkStaff;
                         return View();
@@ -283,7 +283,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                             .FirstOrDefault();
                 if (functionTitle != null)
                 {
-                    if (functionTitle.Contains("admin") || functionTitle.Contains("Quản Lý"))
+                    if (checkStaff.FunctionId == 2 || checkStaff.FunctionId == 1 || functionTitle.Contains("Quản Trị Viên") || functionTitle.Contains("Quản Lý"))
                     {
                         if (id > 0)
                         {
@@ -328,7 +328,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                             .FirstOrDefault();
                 if (functionTitle != null)
                 {
-                    if (functionTitle.Contains("admin") || functionTitle.Contains("Quản Lý"))
+                    if (checkStaff.FunctionId == 2 || checkStaff.FunctionId == 1 || functionTitle.Contains("Quản Trị Viên") || functionTitle.Contains("Quản Lý"))
                     {
                         if (id > 0)
                         {

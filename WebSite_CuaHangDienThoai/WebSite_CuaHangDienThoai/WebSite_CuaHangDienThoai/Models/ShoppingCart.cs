@@ -97,7 +97,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public decimal? OriginalPriceTotal { get; set; }
 
         public int? PercentPriceReduction { get; set; }
-        public string Code { get; set; }
+        public string CodeVoucher { get; set; }
 
         public string Color { get; set; }
         public int Capcity { get; set; }

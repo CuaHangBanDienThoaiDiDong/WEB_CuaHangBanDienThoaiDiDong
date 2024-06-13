@@ -16,6 +16,7 @@ using DynamicData.Kernel;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using DynamicData;
+using System.Transactions;
 
 namespace WebSite_CuaHangDienThoai.Controllers
 {
@@ -38,7 +39,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
                     var item = db.tb_Cart.Find(checkId);
                     ViewBag.item = item.CustomerId;
-                  
+
                     return View(item);
 
                 }
@@ -379,19 +380,22 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return PartialView();
         }
 
+
+
+
+
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CheckOut(OrderViewVNPay req, tb_Products model)
         {
-
-
             using (var dbContextTransaction = db.Database.BeginTransaction())
             {
                 var code = new { Success = false, Code = -1, Url = "" };
                 try
                 {
-
-
                     if (ModelState.IsValid)
                     {
                         if (Session["CustomerId"] != null)
@@ -405,7 +409,6 @@ namespace WebSite_CuaHangDienThoai.Controllers
                                 var insufficientItems = ProcessCartItems(cart, idKhach);
                                 if (insufficientItems.Any())
                                 {
-                                    //code = new { Success = false, Code = -2, Url = "" }; // Mã lỗi cho số lượng không đủ
                                     return Json(new { Success = false, Code = -2, InsufficientItems = insufficientItems });
                                 }
 
@@ -413,59 +416,69 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
                                 if (order == null)
                                 {
-                                    code = new { Success = false, Code = -5, Url = "" }; // Mã lỗi chung
-                                    return Json(code);
+                                    return Json(new { Success = false, Code = -5, Url = "" });
                                 }
+                                
 
                                 db.tb_Order.Add(order);
                                 db.SaveChanges();
-                                int Oder = order.OrderId;
-
-                                //foreach (var item in cart.Items)
-                                //{
-                                //    if (item.PercentPriceReduction.HasValue && item.PercentPriceReduction.Value > 0)
-                                //    {
-
-                                //        var checkCode = db.tb_VoucherDetail.FirstOrDefault(x => x.Code == item.Code);
-                                //        var checkVoucher = db.tb_Voucher.FirstOrDefault(x => x.VoucherId == checkCode.VoucherId);
-                                //        int id = checkVoucher.VoucherId;
-
-                                //        UpdateVoucherDetail(item.Code, id, Oder, inforKhachHang);
-                                //    }
-                                //    else 
-                                //    {
-                                //        break;
-                                //    }
-
-                                //}
+                                int OrderId = order.OrderId;
                                 inforKhachHang.NumberofPurchases += 1;
                                 db.Entry(inforKhachHang).State = EntityState.Modified;
                                 db.SaveChanges();
 
 
-                                SendConfirmationEmails(cart, order, inforKhachHang);
-                                cart.ClearCart();
-                                dbContextTransaction.Commit();
-                                code = new { Success = true, Code = 1, Url = "" };
+                                foreach (var item in cart.Items)
+                                {
+                                    if (item.PercentPriceReduction.HasValue && item.PercentPriceReduction > 0)
+                                    {
+                                        if (!UpdateVoucherDetail(item.CodeVoucher, order))
+                                        {
+                                            return Json(new { Success = false, Code = -7, Url = "" }); // Áp dụng voucher thất bại
+                                        }
+                                    }
+                                }
+
+
+
+
+
                                 if (req.TypePayment == 2)
                                 {
+                                    dbContextTransaction.Commit();
                                     var url = UrlPayment(req.TypePaymentVN, order.Code);
                                     code = new { Success = true, Code = req.TypePayment, Url = url };
+                                }
+                                else
+                                {
+                                    SendConfirmationEmails(cart, order, inforKhachHang);
+
+
+                                    cart.ClearCart();
+
+                                    dbContextTransaction.Commit();
+                                   
+
+
+
+
+
+                                    code = new { Success = true, Code = 1, Url = "" };
                                 }
                             }
                             else
                             {
-                                code = new { Success = false, Code = -6, Url = "" }; // Mã lỗi cho giỏ hàng null
+                                code = new { Success = false, Code = -6, Url = "" };
                             }
                         }
                         else
                         {
-                            code = new { Success = false, Code = -3, Url = "" }; // Mã lỗi cho session khách hàng null
+                            code = new { Success = false, Code = -3, Url = "" };
                         }
                     }
                     else
                     {
-                        code = new { Success = false, Code = -4, Url = "" }; // Mã lỗi cho model state không hợp lệ
+                        code = new { Success = false, Code = -4, Url = "" };
                     }
 
                     return Json(code);
@@ -473,38 +486,89 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 catch (Exception ex)
                 {
                     dbContextTransaction.Rollback();
-                    code = new { Success = false, Code = -10, Url = "" };
+                    code = new { Success = false, Code = -100, Url = "" };
                     return Json(code);
-
                 }
-
             }
-            
+        }
+        private bool UpdateVoucherDetail(string codeVoucher, tb_Order order)
+        {
+            try
+            {
+                var voucherDetail = db.tb_VoucherDetail.FirstOrDefault(x => x.Code == codeVoucher && x.Status == false);
+                if (voucherDetail != null)
+                {
+                    var existingOrder = db.tb_Order.FirstOrDefault(o => o.OrderId == order.OrderId);
+                    if (existingOrder != null)
+                    {
+
+                        if (voucherDetail.VoucherId.HasValue) 
+                        {
+                            var existingVoucher = db.tb_Voucher.FirstOrDefault(v => v.VoucherId == voucherDetail.VoucherId);
+                            if (existingVoucher != null)
+                            {
+                                voucherDetail.OrderId = order.OrderId;
+                                voucherDetail.UsedDate = DateTime.Now;
+                                voucherDetail.Status = true;
+                                db.SaveChanges();
+                                return true; // Cập nhật voucher thành công
+                            }
+                            else
+                            {
+                                return false; // Không tìm thấy voucher tương ứng
+                            }
+                        }
+                        else
+                        {
+                            return false; // Không tìm thấy đơn hàng
+                        }
+                    }
+                    else
+                    {
+                        return false; // Không tìm thấy đơn hàng
+                    }
+                }
+                else
+                {
+                    UpdateWarehouseQuantity(order);
+                    return false; // Không tìm thấy voucher hoặc đã được sử dụng
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý ngoại lệ nếu cần
+                return false; // Có lỗi khi cập nhật voucher
+            }
         }
 
-        //private void UpdateVoucherDetail(string code, int orderId, tb_Customer customer)
-        //{
-        //    // Tìm kiếm chi tiết voucher dựa trên mã code
-        //    var voucherDetail = db.tb_VoucherDetail.FirstOrDefault(v => v.Code == code);
 
-        //    if (voucherDetail != null)
+
+
+
+
+        //private void updatevoucherdetail(string code, int orderid, tb_customer customer)
+        //{
+        //    // tìm kiếm chi tiết voucher dựa trên mã code
+        //    var voucherdetail = db.tb_voucherdetail.firstordefault(v => v.code == code);
+
+        //    if (voucherdetail != null)
         //    {
-        //        if (voucherDetail.tb_Voucher == null)
+        //        if (voucherdetail.tb_voucher == null)
         //        {
-        //            Console.WriteLine("Voucher detail not found or already used.");
+        //            console.writeline("voucher detail not found or already used.");
         //        }
         //        else 
         //        {
-        //            voucherDetail.OrderId = orderId;
-        //            voucherDetail.UsedBy = customer.CustomerName; // Sử dụng tên khách hàng
-        //            voucherDetail.UsedDate = DateTime.Now; // Thời gian sử dụng voucher
-        //            voucherDetail.Status = true; // Đánh dấu voucher đã được sử dụng
+        //            voucherdetail.orderid = orderid;
+        //            voucherdetail.usedby = customer.customername; // sử dụng tên khách hàng
+        //            voucherdetail.useddate = datetime.now; // thời gian sử dụng voucher
+        //            voucherdetail.status = true; // đánh dấu voucher đã được sử dụng
 
-        //            // Lưu thay đổi vào cơ sở dữ liệu
-        //            db.SaveChanges();
+        //            // lưu thay đổi vào cơ sở dữ liệu
+        //            db.savechanges();
         //        }
-        //        // Cập nhật các trường thích hợp
-              
+        //        // cập nhật các trường thích hợp
+
         //    }
         //}
 
@@ -517,23 +581,81 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return View();
         }
         #region/* Thanh toán vnpay*/
+        //public string UrlPayment(int TypePaymentVN, string orderCode)
+        //{
+        //    var urlPayment = "";
+        //    var order = db.tb_Order.FirstOrDefault(x => x.Code == orderCode);
+        //    //Get Config Info
+        //    string vnp_Returnurl = ConfigurationManager.AppSettings["vnp_Returnurl"]; //URL nhan ket qua tra ve 
+        //    string vnp_Url = ConfigurationManager.AppSettings["vnp_Url"]; //URL thanh toan cua VNPAY 
+        //    string vnp_TmnCode = ConfigurationManager.AppSettings["vnp_TmnCode"]; //Ma định danh merchant kết nối (Terminal Id)
+        //    string vnp_HashSecret = ConfigurationManager.AppSettings["vnp_HashSecret"]; //Secret Key
+
+        //    //Build URL for VNPAY
+        //    VnPayLibrary vnpay = new VnPayLibrary();
+        //    var Price = (long)order.TotalAmount * 100;
+        //    vnpay.AddRequestData("vnp_Version", VnPayLibrary.VERSION);
+        //    vnpay.AddRequestData("vnp_Command", "pay");
+        //    vnpay.AddRequestData("vnp_TmnCode", vnp_TmnCode);
+        //    vnpay.AddRequestData("vnp_Amount", Price.ToString()); //Số tiền thanh toán. Số tiền không mang các ký tự phân tách thập phân, phần nghìn, ký tự tiền tệ. Để gửi số tiền thanh toán là 100,000 VND (một trăm nghìn VNĐ) thì merchant cần nhân thêm 100 lần (khử phần thập phân), sau đó gửi sang VNPAY là: 10000000
+        //    if (TypePaymentVN == 1)
+        //    {
+        //        vnpay.AddRequestData("vnp_BankCode", "VNPAYQR");
+        //    }
+        //    else if (TypePaymentVN == 2)
+        //    {
+        //        vnpay.AddRequestData("vnp_BankCode", "VNBANK");
+        //    }
+        //    else if (TypePaymentVN == 3)
+        //    {
+        //        vnpay.AddRequestData("vnp_BankCode", "INTCARD");
+        //    }
+
+        //    vnpay.AddRequestData("vnp_CreateDate", order.CreatedDate.ToString("yyyyMMddHHmmss"));
+        //    vnpay.AddRequestData("vnp_CurrCode", "VND");
+        //    vnpay.AddRequestData("vnp_IpAddr", Utils.GetIpAddress());
+        //    vnpay.AddRequestData("vnp_Locale", "vn");
+        //    vnpay.AddRequestData("vnp_OrderInfo", "Thanh toán đơn hàng :" + order.Code);
+        //    vnpay.AddRequestData("vnp_OrderType", "other"); //default value: other
+
+        //    vnpay.AddRequestData("vnp_ReturnUrl", vnp_Returnurl);
+        //    vnpay.AddRequestData("vnp_TxnRef", order.Code); // Mã tham chiếu của giao dịch tại hệ thống của merchant. Mã này là duy nhất dùng để phân biệt các đơn hàng gửi sang VNPAY. Không được trùng lặp trong ngày
+
+        //    //Add Params of 2.1.0 Version
+        //    //Billing
+
+        //    urlPayment = vnpay.CreateRequestUrl(vnp_Url, vnp_HashSecret);
+        //    //log.InfoFormat("VNPAY URL: {0}", paymentUrl);
+        //    return urlPayment;
+        //}
+
+
+
+
+
         public string UrlPayment(int TypePaymentVN, string orderCode)
         {
             var urlPayment = "";
             var order = db.tb_Order.FirstOrDefault(x => x.Code == orderCode);
-            //Get Config Info
-            string vnp_Returnurl = ConfigurationManager.AppSettings["vnp_Returnurl"]; //URL nhan ket qua tra ve 
-            string vnp_Url = ConfigurationManager.AppSettings["vnp_Url"]; //URL thanh toan cua VNPAY 
-            string vnp_TmnCode = ConfigurationManager.AppSettings["vnp_TmnCode"]; //Ma định danh merchant kết nối (Terminal Id)
-            string vnp_HashSecret = ConfigurationManager.AppSettings["vnp_HashSecret"]; //Secret Key
 
-            //Build URL for VNPAY
+            if (order == null) // Kiểm tra xem đơn hàng có tồn tại không
+            {
+                return ""; // Trả về chuỗi rỗng nếu không tìm thấy đơn hàng
+            }
+
+            // Get Config Info
+            string vnp_Returnurl = ConfigurationManager.AppSettings["vnp_Returnurl"]; // URL nhận kết quả trả về 
+            string vnp_Url = ConfigurationManager.AppSettings["vnp_Url"]; // URL thanh toán của VNPAY 
+            string vnp_TmnCode = ConfigurationManager.AppSettings["vnp_TmnCode"]; // Mã định danh merchant kết nối (Terminal Id)
+            string vnp_HashSecret = ConfigurationManager.AppSettings["vnp_HashSecret"]; // Secret Key
+
+            // Build URL for VNPAY
             VnPayLibrary vnpay = new VnPayLibrary();
             var Price = (long)order.TotalAmount * 100;
             vnpay.AddRequestData("vnp_Version", VnPayLibrary.VERSION);
             vnpay.AddRequestData("vnp_Command", "pay");
             vnpay.AddRequestData("vnp_TmnCode", vnp_TmnCode);
-            vnpay.AddRequestData("vnp_Amount", Price.ToString()); //Số tiền thanh toán. Số tiền không mang các ký tự phân tách thập phân, phần nghìn, ký tự tiền tệ. Để gửi số tiền thanh toán là 100,000 VND (một trăm nghìn VNĐ) thì merchant cần nhân thêm 100 lần (khử phần thập phân), sau đó gửi sang VNPAY là: 10000000
+            vnpay.AddRequestData("vnp_Amount", Price.ToString());
             if (TypePaymentVN == 1)
             {
                 vnpay.AddRequestData("vnp_BankCode", "VNPAYQR");
@@ -552,74 +674,81 @@ namespace WebSite_CuaHangDienThoai.Controllers
             vnpay.AddRequestData("vnp_IpAddr", Utils.GetIpAddress());
             vnpay.AddRequestData("vnp_Locale", "vn");
             vnpay.AddRequestData("vnp_OrderInfo", "Thanh toán đơn hàng :" + order.Code);
-            vnpay.AddRequestData("vnp_OrderType", "other"); //default value: other
+            vnpay.AddRequestData("vnp_OrderType", "other");
 
             vnpay.AddRequestData("vnp_ReturnUrl", vnp_Returnurl);
-            vnpay.AddRequestData("vnp_TxnRef", order.Code); // Mã tham chiếu của giao dịch tại hệ thống của merchant. Mã này là duy nhất dùng để phân biệt các đơn hàng gửi sang VNPAY. Không được trùng lặp trong ngày
-
-            //Add Params of 2.1.0 Version
-            //Billing
+            vnpay.AddRequestData("vnp_TxnRef", order.Code);
 
             urlPayment = vnpay.CreateRequestUrl(vnp_Url, vnp_HashSecret);
-            //log.InfoFormat("VNPAY URL: {0}", paymentUrl);
+
             return urlPayment;
         }
+
         #endregion
 
         public ActionResult VnpayReturn()
         {
-            if (Request.QueryString.Count > 0)
+            try
             {
-                string vnp_HashSecret = ConfigurationManager.AppSettings["vnp_HashSecret"]; //Chuoi bi mat
-                var vnpayData = Request.QueryString;
-                VnPayLibrary vnpay = new VnPayLibrary();
-
-                foreach (string s in vnpayData)
+                if (Request.QueryString.Count > 0)
                 {
-                    //get all querystring data
-                    if (!string.IsNullOrEmpty(s) && s.StartsWith("vnp_"))
+                    string vnp_HashSecret = ConfigurationManager.AppSettings["vnp_HashSecret"]; // Chuỗi bí mật
+                    var vnpayData = Request.QueryString;
+                    VnPayLibrary vnpay = new VnPayLibrary();
+
+                    foreach (string s in vnpayData)
                     {
-                        vnpay.AddResponseData(s, vnpayData[s]);
+                        // Lấy tất cả dữ liệu truy vấn querystring
+                        if (!string.IsNullOrEmpty(s) && s.StartsWith("vnp_"))
+                        {
+                            vnpay.AddResponseData(s, vnpayData[s]);
+                        }
                     }
-                }
 
+                    string orderCode = Convert.ToString(vnpay.GetResponseData("vnp_TxnRef"));
+                    string vnp_ResponseCode = vnpay.GetResponseData("vnp_ResponseCode");
+                    string vnp_TransactionStatus = vnpay.GetResponseData("vnp_TransactionStatus");
+                    String vnp_SecureHash = Request.QueryString["vnp_SecureHash"];
+                    String TerminalID = Request.QueryString["vnp_TmnCode"];
+                    long vnp_Amount = Convert.ToInt64(vnpay.GetResponseData("vnp_Amount")) / 100;
+                    String bankCode = Request.QueryString["vnp_BankCode"];
 
-                string orderCode = Convert.ToString(vnpay.GetResponseData("vnp_TxnRef"));
-                long vnpayTranId = Convert.ToInt64(vnpay.GetResponseData("vnp_TransactionNo"));
-                string vnp_ResponseCode = vnpay.GetResponseData("vnp_ResponseCode");
-                string vnp_TransactionStatus = vnpay.GetResponseData("vnp_TransactionStatus");
-                String vnp_SecureHash = Request.QueryString["vnp_SecureHash"];
-                String TerminalID = Request.QueryString["vnp_TmnCode"];
-                long vnp_Amount = Convert.ToInt64(vnpay.GetResponseData("vnp_Amount")) / 100;
-                String bankCode = Request.QueryString["vnp_BankCode"];
-
-                bool checkSignature = vnpay.ValidateSignature(vnp_SecureHash, vnp_HashSecret);
-                if (checkSignature)
-                {
-                    if (vnp_ResponseCode == "00" && vnp_TransactionStatus == "00")
+                    bool checkSignature = vnpay.ValidateSignature(vnp_SecureHash, vnp_HashSecret);
+                    if (checkSignature)
                     {
                         var itemOrder = db.tb_Order.FirstOrDefault(x => x.Code == orderCode);
-                        if (itemOrder != null)
+                        if (vnp_ResponseCode == "00" && vnp_TransactionStatus == "00")
                         {
-                            itemOrder.TypePayment = 2;//đã thanh toán
+                            if (itemOrder != null)
+                            {
+                                itemOrder.TypePayment = 2; // Đã thanh toán
+                                db.tb_Order.Attach(itemOrder);
+                                db.Entry(itemOrder).State = System.Data.Entity.EntityState.Modified;
+                                db.SaveChanges();
 
-                            db.tb_Order.Attach(itemOrder);
-                            db.Entry(itemOrder).State = System.Data.Entity.EntityState.Modified;
-                            db.SaveChanges();
+                            }
+                            ViewBag.InnerText = "Giao dịch được thực hiện thành công. Cảm ơn quý khách đã sử dụng dịch vụ";
                         }
-                        //Thanh toan thanh cong
-                        ViewBag.InnerText = "Giao dịch được thực hiện thành công. Cảm ơn quý khách đã sử dụng dịch vụ";
+                        else
+                        {
+                            if (itemOrder != null)
+                            {
+                                UpdateWarehouseQuantity(itemOrder);
+                                return RedirectToAction("CheckOutFailVnpay", "ShoppingCart");
+                            }
+                            ViewBag.InnerText = "Có lỗi xảy ra trong quá trình xử lý. Mã lỗi: " + vnp_ResponseCode;
+                        }
+                        ViewBag.ThanhToanThanhCong = "Số tiền thanh toán (VND): " + vnp_Amount.ToString();
+                        return View();
                     }
-                    else
-                    {
-                        ViewBag.InnerText = "Có lỗi xảy ra trong quá trình xử lý.Mã lỗi: " + vnp_ResponseCode;
-                    }
-                    ViewBag.ThanhToanThanhCong = "Số tiền thanh toán (VND):" + vnp_Amount.ToString();
                 }
-
+                return RedirectToAction("Index", "Error"); // Redirect đến trang lỗi nếu không có query string hoặc xác thực không thành công
             }
-            //var a = UrlPayment(0, "DH64050");
-            return View();
+            catch (Exception ex)
+            {
+                // Redirect đến trang lỗi nếu có ngoại lệ xảy ra
+                return RedirectToAction("Index", "Error");
+            }
         }
 
 
@@ -627,44 +756,89 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
 
 
+        // Hàm cập nhật số lượng sản phẩm trong kho
+        private void UpdateWarehouseQuantity(tb_Order itemOrder)
+        {
+            var orderDetails = db.tb_OrderDetail.Where(od => od.OrderId == itemOrder.OrderId).ToList();
 
-        //private List<ShoppingCartItem> ProcessCartItems(ShoppingCart cart, int customerId)
-        //{
-        //    List<ShoppingCartItem> insufficientItems = new List<ShoppingCartItem>();
+            foreach (var orderDetail in orderDetails)
+            {
+                // Lấy thông tin sản phẩm chi tiết từ đơn hàng
+                int productDetailId = (int)orderDetail.ProductDetailId;
+                int quantity = orderDetail.Quantity;
 
-        //    foreach (var item in cart.Items)
-        //    {
-        //        var warehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == item.ProductDetailId);
+                // Cập nhật số lượng sản phẩm trong kho
+                var warehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == productDetailId);
+                if (warehouseDetail != null)
+                {
+                    // Trả lại số lượng sản phẩm vào kho
+                    warehouseDetail.QuanTity += quantity;
+                    db.Entry(warehouseDetail).State = System.Data.Entity.EntityState.Modified;
+                }
+                else
+                {
+                    // Xử lý khi không tìm thấy sản phẩm trong kho (nếu cần)
+                }
+            }
+            // Lưu thay đổi vào cơ sở dữ liệu
+            db.SaveChanges();
 
-        //        if (warehouseDetail != null && warehouseDetail.QuanTity >= item.SoLuong)
-        //        {
-        //            warehouseDetail.QuanTity -= item.SoLuong;
-        //            DeleteCartSucces(customerId, item.ProductDetailId);
-        //            db.Entry(warehouseDetail).State = System.Data.Entity.EntityState.Modified;
-        //            db.SaveChanges();
-        //        }
-        //        else
-        //        {
-        //            // Nếu số lượng không đủ, thêm sản phẩm vào danh sách không đủ số lượng
-        //            insufficientItems.Add(item);
-        //        }
-        //    }
+            RestoreCartItems(itemOrder);
 
-        //    return insufficientItems; // Trả về danh sách sản phẩm không đủ số lượng
-        //}
-
+            DeleteOrderAndOrderDetails(itemOrder);
 
 
+        }
+
+        private void RestoreCartItems(tb_Order itemOrder)
+        {
+            var orderDetails = db.tb_OrderDetail.Where(od => od.OrderId == itemOrder.OrderId).ToList();
+            int customerId = (int)itemOrder.CustomerId;
+
+
+            var cart = db.tb_Cart.FirstOrDefault(c => c.CustomerId == customerId);
+            if (cart == null)
+            {
+                // Tạo mới giỏ hàng nếu chưa tồn tại
+                cart = new tb_Cart { CustomerId = customerId };
+                db.tb_Cart.Add(cart);
+                db.SaveChanges();
+            }
+            foreach (var orderDetail in orderDetails)
+            {
+                var cartItem = new tb_CartItem
+                {
+                    CartId = cart.CartId,
+                    ProductDetailId = (int)orderDetail.ProductDetailId,
+                    Quantity = orderDetail.Quantity,
+                    Price = orderDetail.Price,
+                    PriceTotal = orderDetail.Price * orderDetail.Quantity,
+                    TemPrice = orderDetail.Price // Giá tạm thời nếu cần thiết
+                };
+
+                db.tb_CartItem.Add(cartItem);
+            }
+            db.SaveChanges();
+        }
+        private void DeleteOrderAndOrderDetails(tb_Order itemOrder)
+        {
+            var orderDetails = db.tb_OrderDetail.Where(od => od.OrderId == itemOrder.OrderId).ToList();
+            foreach (var orderDetail in orderDetails)
+            {
+                db.tb_OrderDetail.Remove(orderDetail);
+            }
+            db.tb_Order.Remove(itemOrder);
+            db.SaveChanges();
+        }
 
         private List<ShoppingCartItem> ProcessCartItems(ShoppingCart cart, int customerId)
         {
             List<ShoppingCartItem> insufficientItems = new List<ShoppingCartItem>();
-            List<int> rollbackQuantities = new List<int>(); // Danh sách tạm thời lưu trữ số lượng cần rollback
-            List<ShoppingCartItem> removedItems = new List<ShoppingCartItem>(); // Danh sách tạm thời lưu trữ các mặt hàng đã bị xóa
+            List<int> rollbackQuantities = new List<int>();
+            List<ShoppingCartItem> removedItems = new List<ShoppingCartItem>();
 
             try
             {
-                // Tạo một bản sao của danh sách cart.Items để lặp qua
                 var itemsCopy = new List<ShoppingCartItem>(cart.Items);
 
                 foreach (var item in itemsCopy)
@@ -673,124 +847,71 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
                     if (warehouseDetail != null && warehouseDetail.QuanTity >= item.SoLuong)
                     {
-                        // Lưu trạng thái ban đầu của số lượng sản phẩm
                         rollbackQuantities.Add((int)warehouseDetail.QuanTity);
 
-                        // Trừ số lượng sản phẩm trong kho hàng
                         warehouseDetail.QuanTity -= item.SoLuong;
                         db.Entry(warehouseDetail).State = System.Data.Entity.EntityState.Modified;
 
-                        // Xóa sản phẩm khỏi giỏ hàng
                         DeleteCartSucces(customerId, item.ProductDetailId);
 
-                        // Lưu thay đổi vào cơ sở dữ liệu
-                        db.SaveChanges();
                         removedItems.Add(item);
                     }
                     else
                     {
-                        // Lưu các thông tin của sản phẩm bị xóa vào danh sách tạm thời removedItems
-                      
-
-                        // Lấy số lượng ban đầu của sản phẩm trước khi thực hiện bất kỳ thay đổi nào
-                        var originalQuantity = rollbackQuantities[removedItems.Count - 1];
-
-                        // Lấy số lượng hiện tại của sản phẩm trong kho hàng
-                        var currentWarehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == item.ProductDetailId);
-                        if (currentWarehouseDetail != null)
-                        {
-                            var currentQuantity = currentWarehouseDetail.QuanTity;
-
-                            // Tính toán số lượng cần phải rollback
-                            var quantityToRollback = originalQuantity - currentQuantity;
-
-                            // Rollback số lượng sản phẩm trong kho hàng
-                            currentWarehouseDetail.QuanTity += quantityToRollback;
-                            db.Entry(currentWarehouseDetail).State = System.Data.Entity.EntityState.Modified;
-                        }
-                        // Rollback số lượng sản phẩm đã trừ
-                        for (int i = 0; i < rollbackQuantities.Count; i++)
-                        {
-                            // Lấy sản phẩm tương ứng từ giỏ hàng
-                            var currentItem = removedItems[i];
-
-                            if (currentItem != null)
-                            {
-                                // Tìm warehouse detail của sản phẩm trong cơ sở dữ liệu
-                                var rollbackWarehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == currentItem.ProductDetailId);
-
-                                if (rollbackWarehouseDetail != null)
-                                {
-                                    // Gán giá trị số lượng rollback cho warehouse detail
-                                    rollbackWarehouseDetail.QuanTity = rollbackQuantities[i];
-
-                                    // Cập nhật trạng thái của warehouse detail
-                                    db.Entry(rollbackWarehouseDetail).State = System.Data.Entity.EntityState.Modified;
-                                }
-                            }
-                        }
-
-                        // Lưu các thay đổi vào cơ sở dữ liệu
-                        db.SaveChanges();
-
-                        // Rollback các sản phẩm đã xóa nếu có lỗi xảy ra
-                        foreach (var removedItem in removedItems)
-                        {
-                            cart.AddToCart(removedItem, removedItem.SoLuong); // Thêm lại các sản phẩm đã bị xóa vào giỏ hàng
-                        }
                         insufficientItems.Add(item);
                     }
+                }
 
+                // Kiểm tra nếu có sản phẩm không đủ hàng
+                if (insufficientItems.Any())
+                {
+                    // Rollback lại số lượng sản phẩm đã giảm
+                    foreach (var removedItem in removedItems)
+                    {
+                        var originalQuantity = rollbackQuantities[removedItems.IndexOf(removedItem)];
+                        var currentWarehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == removedItem.ProductDetailId);
+                        if (currentWarehouseDetail != null)
+                        {
+                            currentWarehouseDetail.QuanTity += removedItem.SoLuong;
+                            db.Entry(currentWarehouseDetail).State = System.Data.Entity.EntityState.Modified;
+                        }
+                    }
+
+                    // Lưu thay đổi vào cơ sở dữ liệu
+                    db.SaveChanges();
+                }
+                else
+                {
+                    // Nếu tất cả sản phẩm đều đủ hàng, lưu thay đổi và commit giao dịch
+                    db.SaveChanges();
                 }
             }
             catch (Exception ex)
             {
-                // Xử lý ngoại lệ và in ra thông báo lỗi
                 Console.WriteLine(ex.Message);
                 if (ex.InnerException != null)
                 {
                     Console.WriteLine(ex.InnerException.Message);
                 }
 
-                // Rollback số lượng sản phẩm đã trừ
-                for (int i = 0; i < rollbackQuantities.Count; i++)
+                // Rollback lại số lượng sản phẩm đã giảm
+                foreach (var removedItem in removedItems)
                 {
-                    // Lấy sản phẩm tương ứng từ giỏ hàng
-                    var currentItem = removedItems[i];
-
-                    if (currentItem != null)
+                    var originalQuantity = rollbackQuantities[removedItems.IndexOf(removedItem)];
+                    var currentWarehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == removedItem.ProductDetailId);
+                    if (currentWarehouseDetail != null)
                     {
-                        // Tìm warehouse detail của sản phẩm trong cơ sở dữ liệu
-                        var rollbackWarehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == currentItem.ProductDetailId);
-
-                        if (rollbackWarehouseDetail != null)
-                        {
-                            // Gán giá trị số lượng rollback cho warehouse detail
-                            rollbackWarehouseDetail.QuanTity = rollbackQuantities[i];
-
-                            // Cập nhật trạng thái của warehouse detail
-                            db.Entry(rollbackWarehouseDetail).State = System.Data.Entity.EntityState.Modified;
-                        }
+                        currentWarehouseDetail.QuanTity += removedItem.SoLuong;
+                        db.Entry(currentWarehouseDetail).State = System.Data.Entity.EntityState.Modified;
                     }
                 }
 
-                // Lưu các thay đổi vào cơ sở dữ liệu
+                // Lưu thay đổi vào cơ sở dữ liệu
                 db.SaveChanges();
-
-                // Rollback các sản phẩm đã xóa nếu có lỗi xảy ra
-                foreach (var removedItem in removedItems)
-                {
-                    cart.AddToCart(removedItem, removedItem.SoLuong); // Thêm lại các sản phẩm đã bị xóa vào giỏ hàng
-                }
             }
 
-            return insufficientItems; // Trả về danh sách sản phẩm không đủ số lượng
+            return insufficientItems;
         }
-
-
-
-
-
 
         private tb_Order CreateOrder(ShoppingCart cart, tb_Customer customerInfo, int typePayment)
         {
@@ -810,21 +931,16 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 Success = false,
                 Code = GenerateOrderCode(),
                 CustomerId = customerInfo.CustomerId,
-                
-            };
-       
 
-          
+            };
             decimal totalAmount = 0;
             int totalQuantity = 0;
             foreach (var item in cart.Items)
             {
-               
-                if (item.PercentPriceReduction.HasValue && item.PercentPriceReduction.Value > 0)
-                {
-                    totalAmount += item.PriceTotal; 
 
-                  
+                if (item.PercentPriceReduction.HasValue && item.PercentPriceReduction.Value > 0 && item.CodeVoucher != null)
+                {
+                    totalAmount += item.PriceTotal;
 
                 }
                 else
@@ -834,7 +950,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 totalQuantity += item.SoLuong;
             }
 
-           
+
             order.TotalAmount = totalAmount;
             order.Quantity = totalQuantity;
 
@@ -843,59 +959,60 @@ namespace WebSite_CuaHangDienThoai.Controllers
             {
                 ProductDetailId = row.ProductDetailId,
                 Quantity = row.SoLuong,
-                Price = row.PriceTotal 
+                Price = row.PriceTotal
             }));
 
             return order;
-        } 
-
-
-
-
-
-private void UpdateVoucherDetail(string voucherCode,int voucherId, int orderId, tb_Customer customerInfo)
-    {
-        try
-        {
-            // Truy vấn dữ liệu từ bảng tb_VoucherDetail kèm theo dữ liệu từ bảng tb_Voucherx
-            var voucherDetail = db.tb_VoucherDetail
-                .Include(vd => vd.tb_Voucher)
-                .FirstOrDefault(vd => vd.Code == voucherCode && vd.Status == false &&vd.VoucherId== voucherId);
-
-            if (voucherDetail != null)
-            {
-                // Kiểm tra xem voucherDetail có chứa dữ liệu từ bảng tb_Voucher hay không
-                if (voucherDetail.tb_Voucher != null)
-                {
-                    // Cập nhật thông tin cho voucherDetail
-                    voucherDetail.OrderId = orderId;
-                    voucherDetail.Status = true;
-                    voucherDetail.UsedDate = DateTime.Now;
-                    voucherDetail.UsedBy = customerInfo.CustomerName;
-                    voucherDetail.CreatedDate = DateTime.Now;
-                        voucherDetail.VoucherId = voucherId;    
-                    // Cập nhật bảng tb_VoucherDetail trong cơ sở dữ liệu
-                    db.SaveChanges();
-                }
-                else
-                {
-                    Console.WriteLine("Voucher detail not found or already used.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Voucher detail not found or already used.");
-            }
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            if (ex.InnerException != null)
-            {
-                Console.WriteLine(ex.InnerException.Message);
-            }
-        }
-    }
+
+      
+
+
+
+
+        //private void UpdateVoucherDetail(string voucherCode, int voucherId, int orderId, tb_Customer customerInfo)
+        //{
+        //    try
+        //    {
+        //        // Truy vấn dữ liệu từ bảng tb_VoucherDetail kèm theo dữ liệu từ bảng tb_Voucherx
+        //        var voucherDetail = db.tb_VoucherDetail
+        //            .Include(vd => vd.tb_Voucher)
+        //            .FirstOrDefault(vd => vd.Code == voucherCode && vd.Status == false && vd.VoucherId == voucherId);
+
+        //        if (voucherDetail != null)
+        //        {
+        //            // Kiểm tra xem voucherDetail có chứa dữ liệu từ bảng tb_Voucher hay không
+        //            if (voucherDetail.tb_Voucher != null)
+        //            {
+        //                // Cập nhật thông tin cho voucherDetail
+        //                voucherDetail.OrderId = orderId;
+        //                voucherDetail.Status = true;
+        //                voucherDetail.UsedDate = DateTime.Now;
+        //                voucherDetail.UsedBy = customerInfo.CustomerName;
+        //                voucherDetail.CreatedDate = DateTime.Now;
+        //                voucherDetail.VoucherId = voucherId;
+        //                // Cập nhật bảng tb_VoucherDetail trong cơ sở dữ liệu
+        //                db.SaveChanges();
+        //            }
+        //            else
+        //            {
+        //                Console.WriteLine("Voucher detail not found or already used.");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("Voucher detail not found or already used.");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //        if (ex.InnerException != null)
+        //        {
+        //            Console.WriteLine(ex.InnerException.Message);
+        //        }
+        //    }
+        //}
 
 
 
@@ -903,7 +1020,8 @@ private void UpdateVoucherDetail(string voucherCode,int voucherId, int orderId, 
 
 
 
-    private string GenerateOrderCode()
+
+        private string GenerateOrderCode()
         {
             Random ran = new Random();
             return "DH" + string.Concat(Enumerable.Range(0, 5).Select(_ => ran.Next(0, 10)));
@@ -977,7 +1095,10 @@ private void UpdateVoucherDetail(string voucherCode,int voucherId, int orderId, 
         {
             return View();
         }
-
+        public ActionResult CheckOutFailVnpay()
+        {
+            return View();
+        }
 
 
 
@@ -1003,7 +1124,8 @@ private void UpdateVoucherDetail(string voucherCode,int voucherId, int orderId, 
                                voucherDetail.ModifiedDate,
                                voucherDetail.UsedBy,
                                voucherDetail.UsedDate,
-                               voucherDetail.Quantity
+                               voucherDetail.Quantity,
+                               chiTiet.Status
                            }).ToList();
           
 
@@ -1068,7 +1190,7 @@ private void UpdateVoucherDetail(string voucherCode,int voucherId, int orderId, 
                     item.PercentPriceReduction = PercentPriceReduction;
                     decimal discountAmount = item.PriceTotal * PercentPriceReduction / 100;
                     item.PriceTotal -= discountAmount;
-                    item.Code = Code;
+                    item.CodeVoucher = Code;
                 }
 
                 Session["Cart"] = cart; // Cập nhật lại session

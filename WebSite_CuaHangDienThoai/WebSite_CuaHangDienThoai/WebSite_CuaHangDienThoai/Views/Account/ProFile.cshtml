@@ -244,8 +244,9 @@
                     @if (OrderId != null)
                     {
                         @Html.Action("Partial_Order", "Order", new { id = Model.CustomerId })
+
                     }
-else 
+                    else
                     {
                         <p class="text-danger">Không có lịch sử mua hàng</p>
                     }
@@ -286,6 +287,7 @@ else
         }
         reader.readAsDataURL(event.target.files[0]);
     }
+
     document.addEventListener("DOMContentLoaded", function () {
         var bg = document.querySelector(".bg-sg");
         var popup = document.getElementById('popup');
@@ -311,6 +313,44 @@ else
             popup.classList.add('hidden');
             bg.style.display = "none";
         });
+
+
+        
     });
 
+    $(document).ready(function () {
+        var bg = $(".bg-sg");
+        var popup = $('#popup');
+        var btnClose = $('.btnClose');
+
+        btnClose.on('click', function () {
+            bg.hide();
+            popup.addClass('hidden');
+        });
+
+        bg.on("click", function () {
+            bg.hide();
+            popup.addClass('hidden');
+        });
+
+        // Sử dụng event delegation
+        $(document).on('click', '.btnCancelOrder', function () {
+            popup.removeClass('hidden');
+            bg.show();
+            var orderId = $(this).data("id");
+
+            $.ajax({
+                url: '/order/Partial_CancelOrder',
+                type: 'post',
+                data: { id: orderId },
+                success: function (response) {
+                    $("#loadOrderCancel").html(response);
+
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    alert("Có lỗi xảy ra khi gửi yêu cầu cập nhật đơn hàng.");
+                }
+            });
+        });
+    });
 </script>

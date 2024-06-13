@@ -98,6 +98,29 @@
 
 
                 }
+                if (res.Code == -7) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi giảm giá ..",
+                        text: "Áp dụng voucher thất bại",
+
+                    });
+                    $('#btnCheckOut').prop("disabled", false);
+                    $('#load_send').css("display", "none");
+
+                }
+                if (res.Code == -100) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi hệ thống..",
+                        text: "Mua hàng thất bại",
+
+                    });
+                    $('#btnCheckOut').prop("disabled", false);
+                    $('#load_send').css("display", "none");
+
+
+                }
 
             }
         }

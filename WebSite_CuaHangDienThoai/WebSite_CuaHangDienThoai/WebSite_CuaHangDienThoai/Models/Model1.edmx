@@ -932,7 +932,7 @@
               <PropertyRef Name="VoucherId" />
             </Principal>
             <Dependent Role="tb_VoucherDetail">
-              <PropertyRef Name="OrderId" />
+              <PropertyRef Name="VoucherId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2227,7 +2227,7 @@
               <PropertyRef Name="VoucherId" />
             </Principal>
             <Dependent Role="tb_VoucherDetail">
-              <PropertyRef Name="OrderId" />
+              <PropertyRef Name="VoucherId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

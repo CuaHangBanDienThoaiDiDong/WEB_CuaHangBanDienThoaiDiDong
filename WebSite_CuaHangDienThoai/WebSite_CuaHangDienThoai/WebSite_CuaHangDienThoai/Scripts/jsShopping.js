@@ -96,12 +96,44 @@
         var typingTimer;
         var doneTypingInterval = 1500;
 
+        //$("#voucherCode").on("input", function () {
+        //    clearTimeout(typingTimer); // Xóa timeout
+
+        //    var voucherCode = $(this).val().trim();
+        //    if (voucherCode.length >= 5) {
+        //        typingTimer = setTimeout(function () {
+        //            $.ajax({
+        //                url: '/ShoppingCart/GetVoucher',
+        //                type: 'GET',
+        //                dataType: 'json',
+        //                data: { Code: voucherCode },
+        //                success: function (voucher) {
+        //                    if (voucher.length > 0) {
+        //                        var percentPriceReduction = voucher[0].PercentPriceReduction;
+        //                        showVoucherInfo(voucher[0].Title, voucher[0].CreatedBy, voucher[0].CreatedDate, percentPriceReduction);
+
+        //                        $(".btnApllyVoucher").removeClass("d-none").attr("data-percent", percentPriceReduction).attr("data-code", voucherCode);
+        //                        $(".btnRemoveVoucher").removeClass("d-none");
+        //                    } else {
+        //                        $(".loadVoucher").html("<p>Không tìm thấy mã giảm giá</p>");
+        //                        $(".btnApllyVoucher").addClass("d-none").attr("data-percent", "0");
+        //                        $(".btnRemoveVoucher").addClass("d-none");
+        //                    }
+        //                },
+        //                error: function () {
+        //                    console.log("Lỗi khi gửi yêu cầu kiểm tra mã giảm giá.");
+        //                }
+        //            });
+        //        }, doneTypingInterval);
+        //    }
+        //});
         $("#voucherCode").on("input", function () {
             clearTimeout(typingTimer); // Xóa timeout
 
-            var voucherCode = $(this).val().trim();
-            if (voucherCode.length >= 5) {
-                typingTimer = setTimeout(function () {
+            var doneTypingInterval = 500; // Độ trễ để gửi request (milisecond)
+            typingTimer = setTimeout(function () {
+                var voucherCode = $("#voucherCode").val().trim();
+                if (voucherCode.length >= 5) {
                     $.ajax({
                         url: '/ShoppingCart/GetVoucher',
                         type: 'GET',
@@ -110,33 +142,51 @@
                         success: function (voucher) {
                             if (voucher.length > 0) {
                                 var percentPriceReduction = voucher[0].PercentPriceReduction;
-                                showVoucherInfo(voucher[0].Title, voucher[0].CreatedBy, voucher[0].CreatedDate, percentPriceReduction);
+                                showVoucherInfo(voucher[0].Title, percentPriceReduction);
 
-                                $(".btnApllyVoucher").removeClass("d-none").attr("data-percent", percentPriceReduction).attr("data-code", voucherCode);
-                                $(".btnRemoveVoucher").removeClass("d-none");
+                                var currentDate = new Date(); // Ngày hiện tại
+
+                                if (voucher[0].Status === true) {
+                                    $(".loadVoucher").html('<p class="text-danger">Mã giảm giá đã được sử dụng</p>');
+                                    $(".btnApllyVoucher, .btnRemoveVoucher").addClass("d-none");
+                                } else if (voucher[0].UsedDate && voucher[0].ModifiedDate && currentDate >= new Date(voucher[0].UsedDate) && currentDate <= new Date(voucher[0].ModifiedDate)) {
+                                    $(".loadVoucher").html('<p class="text-success">Mã giảm giá còn hạn sử dụng</p>');
+                                    $(".btnApllyVoucher").removeClass("d-none").attr("data-percent", percentPriceReduction).attr("data-code", voucherCode);
+                                    $(".btnRemoveVoucher").removeClass("d-none");
+                                } else {
+                                    $(".loadVoucher").html('<p class="text-danger">Mã giảm giá đã hết hạn sử dụng</p>');
+                                    $(".btnApllyVoucher, .btnRemoveVoucher").addClass("d-none");
+                                }
                             } else {
                                 $(".loadVoucher").html("<p>Không tìm thấy mã giảm giá</p>");
-                                $(".btnApllyVoucher").addClass("d-none").attr("data-percent", "0");
+                                $(".btnApllyVoucher").addClass("d-none").attr("data-percent", "0").attr("data-code", "");
                                 $(".btnRemoveVoucher").addClass("d-none");
                             }
                         },
                         error: function () {
                             console.log("Lỗi khi gửi yêu cầu kiểm tra mã giảm giá.");
+                            // Xử lý lỗi ở đây
                         }
                     });
-                }, doneTypingInterval);
-            }
+                } else {
+                    // Nếu input trống, ẩn các nút áp dụng và loại bỏ mã giảm giá
+                    $(".loadVoucher").html("");
+                    $(".btnApllyVoucher, .btnRemoveVoucher").addClass("d-none");
+                }
+            }, doneTypingInterval);
         });
 
-        function showVoucherInfo(title, createdBy, createdDate, percentPriceReduction) {
+        function showVoucherInfo(title, percentPriceReduction) {
             var voucherInfo = `
-          <div class="d-flex justify-content-between">
-              <p class="mb-2">Chương trình giảm: ${title}</p>
-              <p class="mb-2 text-success">${percentPriceReduction}% /đơn hàng</p>
-          </div>
-      `;
+        <div class="d-flex justify-content-between">
+            <p class="mb-2">Chương trình giảm: ${title}</p>
+            <p class="mb-2 text-success">${percentPriceReduction}% / đơn hàng</p>
+        </div>
+    `;
             $(".loadVoucher").html(voucherInfo);
         }
+
+
 
         function updatePriceWithDiscount(percentPriceReduction,code ) {
             $.ajax({

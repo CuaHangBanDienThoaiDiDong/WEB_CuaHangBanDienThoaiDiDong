@@ -25,6 +25,11 @@
                         }
                     });
 
+                    // Chờ 2 giây trước khi chuyển hướng
+                    setTimeout(function () {
+                        window.location.href = '/dang-nhap';
+                    }, 2000);
+
                     Toast.fire({
                         icon: "success",
                         title: "Khôi phục mật khẩu thành công"
@@ -61,7 +66,7 @@
                     Swal.fire({
                         icon: "error",
                         title: "Lỗi",
-                        text: "Không tìm thấy tài khoản"
+                        text: "Mã khôi phục không hợp lệ"
                     });
                 }
                 if (res.code === -100) {
@@ -178,45 +183,52 @@
             <input type="hidden" name="token" value="@ViewBag.Token" />
         }
     </div>
-
-    <div class="form-group">
-        <span> Mã Code</span>
-        <div class="col-md-12 d-flex">
-            <input type="text" id="Code" name="Code" class="form-control" autocomplete="new-password" placeholder="KP- ####" />
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Cập nhập mật khẩu</h3>
         </div>
-    </div>
+        <div class="card-body">
+            <div class="form-group">
+                <span> Mã Code</span>
+                <div class="col-md-12 d-flex">
+                    <input type="text" id="Code" name="Code" class="form-control" autocomplete="new-password" placeholder="KP- ####" />
+                </div>
+            </div>
 
-    <div class="form-group">
-        <span> Mật Khẩu</span>
-        <div class="col-12 input-group input-group-custom">
-            <input type="password" id="Password" name="Password" class="form-control" autocomplete="new-password" placeholder="Nhập Mật Khẩu" />
-            <div class="input-group-append">
-                <button type="button" class="btn" onclick="togglePasswordVisibility('Password', 'togglePasswordBtn')">
-                    <i id="togglePasswordBtn" class="far fa-eye"></i>
-                </button>
+            <div class="form-group">
+                <span> Mật Khẩu</span>
+                <div class="col-12 input-group input-group-custom border border-5 rounded-2">
+                    <input type="password" id="Password" name="Password" style="border:none" class="form-control" autocomplete="new-password" placeholder="Nhập Mật Khẩu" />
+                    <div class="input-group-append">
+                        <button type="button" class="btn" onclick="togglePasswordVisibility('Password', 'togglePasswordBtn')">
+                            <i id="togglePasswordBtn" class="far fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span> Nhập lại mật khẩu </span>
+                <div class="col-12 input-group input-group-custom border border-5 rounded-2">
+                    <input type="password" id="ConfirmPassword" name="ConfirmPassword" style="border:none" class="form-control" autocomplete="new-password" placeholder="Nhập Lại Mật Khẩu" />
+                    <div class="input-group-append">
+                        <button type="button" class="btn" onclick="togglePasswordVisibility('ConfirmPassword', 'toggleConfirmPasswordBtn')">
+                            <i id="toggleConfirmPasswordBtn" class="far fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" id="load_send"></div>
+            <div class="form-group pt-2 d-flex justify-content-center">
+                @*<button type="submit" class="btn btn-block btn-success col-8 btnForgotPass">Xác nhận</button>*@
+                <button type="button" class="btn btn-success btnRegister col-8" onclick="submitForm();">Xác nhận cập nhật </button>
             </div>
         </div>
-    </div>
+</div>
+        
+        }
 
-    <div class="form-group">
-        <span> Nhập lại mật khẩu </span>
-        <div class="col-12 input-group input-group-custom">
-            <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Nhập Lại Mật Khẩu" />
-            <div class="input-group-append">
-                <button type="button" class="btn" onclick="togglePasswordVisibility('ConfirmPassword', 'toggleConfirmPasswordBtn')">
-                    <i id="toggleConfirmPasswordBtn" class="far fa-eye"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group" id="load_send"></div>
-    <div class="form-group pt-2 d-flex justify-content-center">
-        @*<button type="submit" class="btn btn-block btn-success col-8 btnForgotPass">Xác nhận</button>*@
-        <button type="button" class="btn btn-success btnRegister col-8" onclick="submitForm();">Xác nhận cập nhật </button>
-    </div>
-}
-
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -556,6 +556,12 @@ namespace WebSite_CuaHangDienThoai.Controllers
                             var customerIdClaim = claims.FirstOrDefault(c => c.Type == "CustomerId");
                             if (customerIdClaim != null && int.TryParse(customerIdClaim.Value, out int customerId))
                             {
+                                var checkCode = db.tb_Customer.FirstOrDefault(r => r.Code == req.Code.Trim());
+                                if (checkCode == null)
+                                {
+                                    return Json(new { success = false, code = -3 });
+
+                                }
                                 var checkClient = db.tb_Customer.FirstOrDefault(row => row.CustomerId == customerId && row.Code == req.Code.Trim());
                                 if (checkClient != null)
                                 {
@@ -574,7 +580,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                                     }
 
                                     // Chuyển hướng về trang chủ
-                                    return RedirectToAction("Index", "Home");
+                                    return Json(new { success = true, code = 1 });
                                 }
                                 else
                                 {
@@ -760,7 +766,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                         CustomerName = KhachHang.CustomerName,
                         Email = KhachHang.Email,
                         Code = KhachHang.Code,
-                        Password = MaHoaPass(KhachHang.Password),
+                        Password = KhachHang.Password,
                         Birthday = KhachHang.Birthday,
                         Loaction = KhachHang.Loaction,
                         NumberofPurchases = (int)KhachHang.NumberofPurchases,

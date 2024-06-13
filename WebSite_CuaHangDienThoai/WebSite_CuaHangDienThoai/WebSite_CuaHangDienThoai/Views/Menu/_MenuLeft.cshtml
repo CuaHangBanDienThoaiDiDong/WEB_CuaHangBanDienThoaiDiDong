@@ -5,10 +5,17 @@
 {
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column sidebar_categories" style="margin-left:-10px" data-widget="treeview" role="menu" data-accordion="false">
-            @foreach (var item in Model.AllCategories)
-            {
-                if (ViewBag.CateId == item.ProductCategoryId)
+            <li class="nav-item ">
+                <a href="/san-pham" class="nav-link text-danger" onclick="toggleSubmenu(this)">
+                    <span class="angle-icon"><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+                  Tất cả
+                    <span class="arrow-icon " style="padding-left:20%"><i class="right fas fa-angle-left "></i></span>
+                </a>
+            </li>
+                @foreach (var item in Model.AllCategories)
                 {
+                    if (ViewBag.CateId == item.ProductCategoryId)
+                    {
                     <li class="nav-item ">
 
                         <a href="#" class="nav-link text-danger" onclick="toggleSubmenu(this)">
@@ -38,19 +45,19 @@
 
                 }
             }
-            @if (Model.Accessories != null)
-            {
-                foreach (var product in Model.Accessories)
+                @if (Model.Accessories != null)
                 {
-                    <li>
-                        <h3>@product.Title</h3>
+                    foreach (var product in Model.Accessories)
+                    {
+                        <li>
+                            <h3>@product.Title</h3>
 
-                    </li>
+                        </li>
+                    }
                 }
-            }
 
 
-        </ul>
+            </ul>
     </nav>
 
 

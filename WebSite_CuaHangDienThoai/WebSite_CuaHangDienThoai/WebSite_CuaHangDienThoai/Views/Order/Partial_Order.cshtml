@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Order>
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+<link href="~/Content/Css/Client/Order.css" rel="stylesheet" />
 @if (ViewBag.Count != null && Model != null && Model.Any())
 {
     <div id="popup" class="hidden">
@@ -164,7 +165,45 @@
 }
 else
 {
-
+    <p class="text-danger">Không tìm thấy bảng ghi nào !!!!</p>
 
 }
 
+<script>
+
+    $(document).ready(function () {
+        var bg = $(".bg-sg");
+        var popup = $('#popup');
+        var btnClose = $('.btnClose');
+
+        btnClose.on('click', function () {
+            bg.hide();
+            popup.addClass('hidden');
+        });
+
+        bg.on("click", function () {
+            bg.hide();
+            popup.addClass('hidden');
+        });
+
+        // Sử dụng event delegation
+        $(document).on('click', '.btnCancelOrder', function () {
+            popup.removeClass('hidden');
+            bg.show();
+            var orderId = $(this).data("id");
+
+            $.ajax({
+                url: '/order/Partial_CancelOrder',
+                type: 'post',
+                data: { id: orderId },
+                success: function (response) {
+                    $("#loadOrderCancel").html(response);
+
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    alert("Có lỗi xảy ra khi gửi yêu cầu cập nhật đơn hàng.");
+                }
+            });
+        });
+    });
+</script>

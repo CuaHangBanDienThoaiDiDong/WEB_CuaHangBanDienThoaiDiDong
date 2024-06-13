@@ -3900,13 +3900,6 @@
     <Content Include="Areas\Admin\Views\Seller\_CustomerSuggestions.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\SuggestCustomer.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\Partail_SellerIndex.cshtml" />
-    <EntityDeploy Include="Models\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Admin\Views\AccountClient\AddClient.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\AddClient.cshtml" />
     <Content Include="Areas\Admin\Views\Bill\Partial_IndexBill.cshtml" />
@@ -3922,6 +3915,13 @@
     <Content Include="Areas\Admin\Views\Order\Partial_OrderIndex.cshtml" />
     <Content Include="Areas\Admin\Views\WareHouseImport\Partial_WareHouseImportIndex.cshtml" />
     <Content Include="Areas\Admin\Views\WareHouseImport\WareHouseImportExportToday.cshtml" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
@@ -4488,6 +4488,7 @@
     <Content Include="Views\Account\ProfileNew.cshtml" />
     <Content Include="Views\Account\Partail_EditPassWord.cshtml" />
     <Content Include="Views\Product\Partial_SanPhamGoiY.cshtml" />
+    <Content Include="Views\ShoppingCart\CheckOutFailVnpay.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
