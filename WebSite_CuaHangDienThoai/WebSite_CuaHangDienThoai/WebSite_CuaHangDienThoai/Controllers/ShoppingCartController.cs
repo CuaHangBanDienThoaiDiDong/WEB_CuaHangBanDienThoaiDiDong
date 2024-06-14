@@ -836,7 +836,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
                 foreach (var item in itemsCopy)
                 {
-                    var warehouseDetail = db.tb_WarehouseDetail.SingleOrDefault(w => w.ProductDetailId == item.ProductDetailId);
+                    var warehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == item.ProductDetailId);
 
                     if (warehouseDetail != null && warehouseDetail.QuanTity >= item.SoLuong)
                     {

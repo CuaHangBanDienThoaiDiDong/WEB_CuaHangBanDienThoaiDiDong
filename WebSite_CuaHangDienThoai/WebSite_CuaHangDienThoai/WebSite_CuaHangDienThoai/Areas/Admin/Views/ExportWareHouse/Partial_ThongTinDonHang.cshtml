@@ -4,26 +4,26 @@
     <div class="card-header">
 
 
-<div class="card-title">
-    <div class="row">
-        <div class="col-lg-12">
-            <ol class="breadcrumb">
-                <li class="col-lg-6">
-                    <a href="#" class="text-black">Thông tin đơn hàng </a>
-                    <span style="color:orangered"> @Model.Code </span>|
-                    Ngày đặt <span class="text-danger">@Model.CreatedDate.ToString("dd/MM/yyyy")</span>
-                </li>
-                <li class="col-lg-6 text-right">
-                    <!-- Đặt class text-right để căn phải -->
-                    <!-- Nếu muốn căn phải, sử dụng CSS "text-align: right;" ở đây -->
-                </li>
-            </ol>
+        <div class="card-title">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ol class="breadcrumb">
+                        <li class="col-lg-6">
+                            <a href="#" class="text-black">Thông tin đơn hàng </a>
+                            <span style="color:orangered"> @Model.Code </span>|
+                            Ngày đặt <span class="text-danger">@Model.CreatedDate.ToString("dd/MM/yyyy")</span>
+                        </li>
+                        <li class="col-lg-6 text-right">
+                            <!-- Đặt class text-right để căn phải -->
+                            <!-- Nếu muốn căn phải, sử dụng CSS "text-align: right;" ở đây -->
+                        </li>
+                    </ol>
 
-            <hr class="col-lg-4" /> <!-- Đảm bảo cùng với số cột trước -->
+                    <hr class="col-lg-4" /> <!-- Đảm bảo cùng với số cột trước -->
+                </div>
+            </div>
+
         </div>
-    </div>
-
-</div>
         <div class="card-tools">
 
             @if (ViewBag.ExportWareHouse != null)
@@ -105,30 +105,42 @@ else
     $(document).ready(function () {
         $('.btnExportWareHouse').click(function () {
             var orderId = $(this).data('id');
-            alert("thuan");
+         
             $.ajax({
-                url: '/Admin/ExportWareHouse/Partial_ExportWareHouse', 
+                url: '/Admin/ExportWareHouse/Partial_ExportWareHouse',
                 type: 'POST',
                 dataType: 'json',
                 data: { Orderid: orderId },
                 success: function (res) {
                     if (res.Success) {
                         if (res.Code == 1) {
+                            //Swal.fire({
+                            //    icon: 'success',
+                            //    title: 'Xuất đơn hàng thành công',
+                            //    text: 'Đơn hàng đã có trên hệ thống'
+                            //}); setTimeout(function () {
+                            //    window.location.href = '/Admin/ExportWareHouse/';
+                            //}, 1000).then((result) => {
+                            //    if (result.isConfirmed) {
+                            //        window.location.href = '/Admin/ExportWareHouse/';
+                            //    } else {
+                            //        setTimeout(function () {
+                            //            window.location.href = '/Admin/ExportWareHouse/';
+                            //        }, 1500);// Chờ 1 giây và hiển thị lại thông báo
+                            //    }
+                            //});
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Xuất đơn hàng thành công',
                                 text: 'Đơn hàng đã có trên hệ thống'
-                            }); setTimeout(function () {
-                                window.location.href = '/Admin/ExportWareHouse/';
-                            }, 1000).then((result) => {
+                            }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = '/Admin/ExportWareHouse/';
-                                } else {
-                                    setTimeout(function () {
-                                        window.location.href = '/Admin/ExportWareHouse/';
-                                    }, 1500);// Chờ 1 giây và hiển thị lại thông báo
+                                    window.location.href = '/Admin/ExportWareHouse/DownloadInvoice?filePath=' + encodeURIComponent(res.FilePath);
                                 }
                             });
+
+
+
                         }
 
                     } else {
@@ -171,6 +183,14 @@ else
                                 icon: "warning",
                                 title: "Lỗi tìm...",
                                 text: "Đơn hàng lập lại 2 lần ",
+                                /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                            });
+                        }
+                        if (res.Code == -7) {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Lỗi ...",
+                                text: "Hóa đơn tạo lỗi ",
                                 /*footer: '<a href="#">Why do I have this issue?</a>'*/
                             });
                         }

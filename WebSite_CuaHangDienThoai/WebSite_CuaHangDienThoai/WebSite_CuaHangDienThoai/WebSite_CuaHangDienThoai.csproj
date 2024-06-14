@@ -57,6 +57,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\ckfinder_aspnet_2.1\ckfinder\bin\Release\CKFinder.dll</HintPath>
     </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=3.0.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.3.0.2\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml.Framework, Version=3.0.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.Framework.3.0.2\lib\net46\DocumentFormat.OpenXml.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="DynamicData, Version=8.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DynamicData.8.3.27\lib\net462\DynamicData.dll</HintPath>
     </Reference>
@@ -71,6 +77,9 @@
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.11.61.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.61\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="ImageProcessor, Version=2.8.0.152, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ImageProcessor.2.8.0\lib\net452\ImageProcessor.dll</HintPath>
@@ -3403,6 +3412,7 @@
     <Content Include="Content\LayOut\StyleSheet3.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\templates\HoaDon.html" />
     <Content Include="Content\templates\send1.html" />
     <Content Include="Content\templates\send2.html" />
     <Content Include="Content\templates\SendForgotPass.html" />
@@ -4520,6 +4530,7 @@
     <Folder Include="Areas\Admin\Views\ProductDetailImage\" />
     <Folder Include="Areas\Seller\Data\" />
     <Folder Include="Models\NewFolder1\" />
+    <Folder Include="Order\" />
     <Folder Include="Uploads\flash\" />
     <Folder Include="Uploads\images\Products\DongHoThongMinh\" />
     <Folder Include="Uploads\_thumbs\Images\setting\" />
