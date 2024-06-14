@@ -157,6 +157,37 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
 
+        public ActionResult ListProductW(int? page)
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                IEnumerable<tb_ProductDetail> items = db.tb_ProductDetail.OrderByDescending(x => x.ProductsId);
+                if (items != null)
+                {
+                    var pageSize = 10;
+                    if (page == null)
+                    {
+                        page = 1;
+                    }
+                    var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+                    items = items.ToPagedList(pageIndex, pageSize);
+                    ViewBag.PageSize = pageSize;
+                    ViewBag.Page = page;
+                    return PartialView(items);
+                }
+                else
+                {
+                    ViewBag.txt = "Không tồn tại sản phẩm";
+                    return View();
+                }
+            }
+          
+        }
+
         public ActionResult Details(int? id)
         {
             var item = db.tb_ImportWarehouse.Find(id);
@@ -443,6 +474,63 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 return View();
             }
                 
+        }
+        public ActionResult SuggestProduct(string search)
+        {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var ProductCategoryId = db.tb_ProductCategory
+          .Where(c => c.Title.Contains(search))
+          .Select(c => c.ProductCategoryId)
+          .ToList();
+
+                var ProductCompanyId = db.tb_ProductCompany
+                    .Where(c => c.Title.Contains(search))
+                    .Select(c => c.ProductCompanyId)
+                    .ToList();
+
+                var Products = db.tb_Products
+                    .Where(p => p.Title.Contains(search) ||
+                                ProductCategoryId.Contains((int)p.ProductCategoryId) ||
+                                ProductCompanyId.Contains((int)p.ProductCompanyId))
+                    .ToList();
+
+              
+                var productIds = Products.Select(p => p.ProductsId).ToList();
+
+             
+                var ProductDetail = db.tb_ProductDetail
+                    .Where(s => productIds.Contains((int)s.ProductsId))
+                    .ToList();
+
+                if (ProductDetail.Any())
+                {
+                    var count = ProductDetail.Count();
+                    ViewBag.Count = count;
+                    ViewBag.Content = search;
+                    return PartialView(ProductDetail);
+                }
+                else
+                {
+                    return PartialView();
+                }
+            }
+            else
+            {
+                return PartialView();
+            }
+        }
+        public ActionResult AddWareHouse()
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                return View();
+            }
+
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

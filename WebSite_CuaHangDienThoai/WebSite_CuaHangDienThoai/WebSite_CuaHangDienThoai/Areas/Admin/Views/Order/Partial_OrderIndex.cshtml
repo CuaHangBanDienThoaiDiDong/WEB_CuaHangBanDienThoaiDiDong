@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-3">
                 <div class="d-flex align-items-cente border border-1 rounded-1">
-                    <span class="m-1"><label class="text-danger ">Ngày xuất:</label> <input type="datetime-local" style="border:none" id="ngayxuatOrder" onchange="getOrderNewToDay()" /></span>
+                    <span class="m-1"><label class="text-danger ">Ngày xuất:</label> <input type="datetime-local" style="border:none" id="ngayxuatOrder" onchange="getOrderAll()" /></span>
 
                 </div>
             </div>
@@ -18,7 +18,7 @@
                 <div class="d-flex align-items-center border border-1 rounded-1" style="max-height: 40px; overflow: hidden;">
                     <div class="input-group m-1">
                         <input type="text" class="form-control border-0" id="searchOrder" placeholder="Nhập Số điện thoại, mã đơn hàng, tên khách">
-                        <button class="btn" type="button" id="clearInputOrder">
+                        <button class="btn" type="button" id="clearInputOrderAll">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-octagon" viewBox="0 0 16 16">
                                 <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1z" />
                                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
@@ -33,6 +33,7 @@
         </div>
 
     </div>
+  
     <div class="card-body p-0" id="loadDataOrder">
         <!-- Billing history table-->
         <div class="table-responsive table-billing-history">
@@ -137,52 +138,52 @@
             </div>
         </div>
     </div>
-<script>
-    $(document).ready(function () {
-        originalContent = $('#loadDataOrder').html();
-        $('#clearInputOrder').click(function () {
-            $("#searchOrder").val(""); // Xóa nội dung trong ô tìm kiếm
-            resetToOriginalContent(); // Đặt lại nội dung ban đầu
-        });
+    <script>
+        $(document).ready(function () {
+            originalContent = $('#loadDataOrder').html();
+            $('#clearInputOrderAll').click(function () {
+                $("#searchOrder").val(""); // Xóa nội dung trong ô tìm kiếm
+                resetOrderAll(); // Đặt lại nội dung ban đầu
+            });
 
-        $('#searchOrder').on('input', function () {
-            var keyword = $(this).val().trim();
-            if (keyword.length > 0) {
-                // Gọi action SuggestBillCustomer với keyword
-                $.ajax({
-                    url: '/Admin/Order/SuggestOrderCustomer',
-                    type: 'GET',
-                    data: { search: keyword },
-                    success: function (response) {
-                        $('#loadDataOrder').html(response);
-                    },
-                    error: function () {
-                        // Xử lý lỗi nếu có
-                        console.log('Đã xảy ra lỗi khi tải dữ liệu.');
-                    }
-                });
-            } else {
-                resetToOriginalContent(); // Đặt lại nội dung ban đầu nếu không có keyword
-            }
-        });
+            $('#searchOrder').on('input', function () {
+                var keyword = $(this).val().trim();
+                if (keyword.length > 0) {
+                    // Gọi action SuggestBillCustomer với keyword
+                    $.ajax({
+                        url: '/Admin/Order/SuggestOrderCustomer',
+                        type: 'GET',
+                        data: { search: keyword },
+                        success: function (response) {
+                            $('#loadDataOrder').html(response);
+                        },
+                        error: function () {
+                            // Xử lý lỗi nếu có
+                            console.log('Đã xảy ra lỗi khi tải dữ liệu.');
+                        }
+                    });
+                } else {
+                    resetOrderAll(); // Đặt lại nội dung ban đầu nếu không có keyword
+                }
+            });
 
-    });
-    function getOrderNewToDay() {
-        var ngayxuat = $('#ngayxuatOrder').val(); // Sử dụng jQuery để lấy giá trị của input datetime-local
-        $.ajax({
-            url: '/Admin/Order/GetOrderAll', // Địa chỉ URL của action trong controller
-            type: 'GET',
-            data: { ngayxuat: ngayxuat },
-            success: function (data) {
-                $('#loadDataOrder').html(data);
-            },
-            error: function (xhr, status, error) {
-                console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
-            }
         });
-    }
+        function getOrderAll() {
+            var ngayxuat = $('#ngayxuatOrder').val(); // Sử dụng jQuery để lấy giá trị của input datetime-local
+            $.ajax({
+                url: '/Admin/Order/GetOrderAll', // Địa chỉ URL của action trong controller
+                type: 'GET',
+                data: { ngayxuat: ngayxuat },
+                success: function (data) {
+                    $('#loadDataOrder').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+                }
+            });
+        }
 
-    function resetToOriginalContent() {
-        $('#loadDataOrder').html(originalContent);
-    }
-</script>
+        function resetOrderAll() {
+            $('#loadDataOrder').html(originalContent);
+        }
+    </script>

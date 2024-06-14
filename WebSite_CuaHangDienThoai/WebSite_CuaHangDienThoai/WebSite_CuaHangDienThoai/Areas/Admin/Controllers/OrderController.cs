@@ -1,6 +1,7 @@
 ﻿using PagedList;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -24,30 +25,53 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
         //Start All Order
-        public ActionResult Partial_OrderIndex(int? page)
+
+
+
+
+        public ActionResult AllOrder()
         {
-            IEnumerable<tb_Order> items = db.tb_Order.OrderByDescending(x => x.OrderId);
-            if (items != null)
+            if (Session["user"] == null)
             {
-                var pageSize = 10;
-                if (page == null)
-                {
-                    page = 1;
-                }
-                var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-                items = items.ToPagedList(pageIndex, pageSize);
-                ViewBag.PageSize = pageSize;
-                ViewBag.Page = page;
-                return PartialView(items);
+                return RedirectToAction("DangNhap", "Account");
             }
             else
             {
-                ViewBag.txt = "Không tồn tại sản phẩm";
-                return PartialView();
+                return View();
             }
         }
 
-        public ActionResult SuggestOrderCustomer(string search)
+
+
+
+
+
+    
+  
+    public ActionResult Partial_OrderIndex(int? page)
+    {
+        IEnumerable<tb_Order> items = db.tb_Order.OrderByDescending(x => x.OrderId);
+        if (items != null)
+        {
+            var pageSize = 10;
+            if (page == null)
+            {
+                page = 1;
+            }
+            var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+            items = items.ToPagedList(pageIndex, pageSize);
+            ViewBag.PageSize = pageSize;
+            ViewBag.Page = page;
+            return PartialView(items);
+        }
+        else
+        {
+            ViewBag.txt = "Không tồn tại sản phẩm";
+            return PartialView();
+        }
+    }
+
+    public ActionResult SuggestOrderCustomer(string search)
         {
             if (!string.IsNullOrEmpty(search))
             {
@@ -127,8 +151,25 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
+        public ActionResult OrderNewWarehouse()
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                //var item = db.tb_Order.ToList();
+
+                return View();
+            }
+
+        }
+
         public ActionResult Partial_OrderNew(int? page)
         {
+
+
             if (Session["user"] == null)
             {
                 return RedirectToAction("DangNhap", "Account");
@@ -175,41 +216,38 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     .ToList();
 
                 var orders = db.tb_Order
-                    .Where(s => customerIds.Contains((int)s.CustomerId) || s.Code.Contains(search) && s.Confirm == false)
-                    .ToList();
+                    .Where(s => (customerIds.Contains((int)s.CustomerId) || s.Code.Contains(search)) && s.Confirm == false)
+                    .OrderByDescending(s => s.CreatedDate) // Sắp xếp theo CreatedDate giảm dần
+                    .ToList(); // Lấy toàn bộ danh sách
 
                 if (orders.Any())
                 {
-                    var count = orders.Count();
-                    ViewBag.Count = count;
+                    ViewBag.Count = orders.Count(); // Số lượng đơn hàng
                     ViewBag.Content = search;
-                    return PartialView(orders);
+                    return PartialView(orders); // Trả về danh sách đơn hàng
                 }
                 else
                 {
-                    return PartialView();
+                    return PartialView(); // Trả về PartialView rỗng
                 }
             }
             else
             {
-                return PartialView();
+                return PartialView(); // Trả về PartialView rỗng
             }
         }
 
-        // kiem ngày theo tất cả đơn hàng
 
 
 
         public ActionResult OrderNewToday(DateTime ngayxuat)
         {
-            // Lấy ngày từ datetime-local
+
             DateTime selectedDate = ngayxuat;
 
-            // Lấy ngày bắt đầu và ngày kết thúc của ngày đã chọn
+         
             DateTime startDate = selectedDate.Date;
-            DateTime endDate = startDate.AddDays(1); // Tăng ngày lên 1 để lấy đến cuối ngày
-
-            // Truy vấn để lấy danh sách đơn hàng trong khoảng thời gian startDate và endDate
+            DateTime endDate = startDate.AddDays(1); 
             var orders = db.tb_Order
                 .Where(o => o.CreatedDate >= startDate && o.CreatedDate < endDate && o.Confirm == false)
                 .ToList();
@@ -221,7 +259,6 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
-                // Trả về partial view mặc định nếu không có đơn hàng nào
                 return PartialView();
             }
         }
@@ -289,6 +326,29 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 }
              }
         }
+
+
+        public ActionResult OrderExportTodayWareHouse()
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2 || row.FunctionId == 3));
+                if (item == null)
+                {
+                    return RedirectToAction("NonRole", "HomePage");
+                }
+                else
+                {
+                    return View();
+                }
+            }
+        }
+
         public ActionResult Partial_OrderExportToday(int? page)
         {
             
@@ -306,14 +366,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 }
                 else
                 {
-                    DateTime today = DateTime.Today;
-                    DateTime startOfDay = today.Date;
-                    DateTime endOfDay = today.Date.AddDays(1).AddTicks(-1);
-
-                    IEnumerable<tb_ExportWareHouse> items = db.tb_ExportWareHouse
-                        .Where(row => row.CreatedDate >= startOfDay && row.CreatedDate <= endOfDay)
-                        .OrderByDescending(x => x.OrderId);
-
+                    IEnumerable<tb_ExportWareHouse> items = db.tb_ExportWareHouse.OrderByDescending(x => x.WarehouseId);
                     if (items != null)
                     {
                         var pageSize = 10;
@@ -347,21 +400,27 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         {
             if (!string.IsNullOrEmpty(search))
             {
-                var customerIds = db.tb_Customer
-                    .Where(c => c.PhoneNumber.Contains(search) || c.CustomerName.Contains(search))
-                    .Select(c => c.CustomerId)
-                    .ToList();
+                var customerIds = db.tb_Staff
+      .Where(c => c.Code.Contains(search) || c.NameStaff.Contains(search))
+      .Select(c => c.StaffId)
+      .ToList();
 
                 var orders = db.tb_Order
-                    .Where(s => customerIds.Contains((int)s.CustomerId) || s.Code.Contains(search) && s.Confirm == false)
+                    .Where(s => (customerIds.Contains((int)s.CustomerId) || s.Code.Contains(search)) && s.Confirm == true)
+                    .ToList();
+
+                var orderIds = orders.Select(o => o.OrderId).ToList(); // Lấy danh sách OrderId từ các đơn hàng
+
+                var ordersExport = db.tb_ExportWareHouse
+                    .Where(s => customerIds.Contains((int)s.StaffId) || orderIds.Contains((int)s.OrderId))
                     .ToList();
 
                 if (orders.Any())
                 {
-                    var count = orders.Count();
+                    var count = ordersExport.Count();
                     ViewBag.Count = count;
                     ViewBag.Content = search;
-                    return PartialView(orders);
+                    return PartialView(ordersExport);
                 }
                 else
                 {
@@ -374,23 +433,15 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
 
-
-
-
-        // End Dơn hang xuất
-
-
-        public ActionResult GetOrderNewToDay(DateTime ngayxuat)
+        public ActionResult GetOrderExportDay(DateTime ngayxuat)
         {
-            // Lấy ngày từ datetime-local
+
             DateTime selectedDate = ngayxuat;
 
-            // Lấy ngày bắt đầu và ngày kết thúc của ngày đã chọn
             DateTime startDate = selectedDate.Date;
-            DateTime endDate = startDate.AddDays(1); // Tăng ngày lên 1 để lấy đến cuối ngày
+            DateTime endDate = startDate.AddDays(1);
 
-            // Truy vấn để lấy danh sách đơn hàng trong khoảng thời gian startDate và endDate
-            var orders = db.tb_Order
+            var orders = db.tb_ExportWareHouse
                 .Where(o => o.CreatedDate >= startDate && o.CreatedDate < endDate)
                 .ToList();
 
@@ -401,10 +452,16 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
-                // Trả về partial view mặc định nếu không có đơn hàng nào
+
                 return PartialView();
             }
         }
+
+
+        // End Dơn hang xuất
+
+
+
 
 
 
@@ -424,6 +481,11 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             return Json(new { success = false });
         }
 
+        public PartialViewResult LoadOrderNewPartial()
+        {
+            var model = db.tb_Order.Where(x => x.Confirm == false);
+    return PartialView(model);
+        }
 
     }
 }

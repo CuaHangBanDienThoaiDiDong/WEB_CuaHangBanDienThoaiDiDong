@@ -5,7 +5,7 @@
     <table class="table mb-0">
         <thead>
             <tr>
-                <th class="text-center">STT</th>
+               
                 <th class="border-gray-200 text-center" scope="col">Mã đơn hàng</th>
                 <th class="border-gray-200 text-center" scope="col">Tên khách hàng</th>
                 <th class="border-gray-200 text-center" scope="col">Số điện thoại</th>
@@ -69,3 +69,29 @@ else
         Không tồn tại bảng ghi !!!
     </p>
 }
+
+
+<script>
+    
+
+        $('body').off('click', '.btnConFirm').on('click', '.btnConFirm', function (e) {
+            e.preventDefault();
+            var btn = $(this);
+            var id = btn.data("id");
+            $.ajax({
+                url: '/admin/order/IsComfrim',
+                type: 'POST',
+                data: { id: id },
+                success: function (rs) {
+                    if (rs.success) {
+                        if (rs.Confirm) {
+                            btn.html("<i class='fa fa-check text-success'></i>");
+                        } else {
+                            btn.html("<i class='fas fa-times text-danger'></i>");
+                        }
+                        loadOrderNewPartial();
+                    }
+                }
+            });
+        });
+</script>

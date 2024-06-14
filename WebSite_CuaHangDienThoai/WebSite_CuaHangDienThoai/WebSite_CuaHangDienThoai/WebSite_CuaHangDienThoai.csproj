@@ -3887,7 +3887,6 @@
     <Content Include="Areas\Admin\Views\AccountClient\Partial_Order.cshtml" />
     <Content Include="Areas\Admin\Views\AccountClient\Partail_Ordertail.cshtml" />
     <Content Include="Areas\Admin\Views\AccountClient\Partail_TrangThaiDonHang.cshtml" />
-    <Content Include="Areas\Admin\Views\Order\GetOrderNewToDay.cshtml" />
     <Content Include="Areas\Admin\Views\Order\GetOrderAll.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCategory\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\Index.cshtml" />
@@ -3927,6 +3926,19 @@
     <Content Include="Areas\Admin\Views\Order\SuggestOrderNewCustomer.cshtml" />
     <Content Include="Areas\Admin\Views\Order\OrderNewToday.cshtml" />
     <Content Include="Areas\Admin\Views\Order\Partial_OrderExportToday.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\SuggestOrderExport.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouse\Pratial_WareHouseIndex.cshtml" />
+    <Content Include="Areas\Admin\Views\ExportWareHouse\Partial_ExportWareHouseIndex.cshtml" />
+    <Content Include="Areas\Admin\Views\ExportWareHouse\StaffIndex.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\GetOrderExportDay.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\LoadOrderNewPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\AllOrder.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\OrderNewWarehouse.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\OrderExportTodayWareHouse.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\AddWareHouse.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\SuggestProduct.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\SuggestProduct.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\SuggestProductLeft.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />

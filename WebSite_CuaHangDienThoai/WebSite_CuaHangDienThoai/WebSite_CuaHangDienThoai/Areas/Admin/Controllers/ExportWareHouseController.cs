@@ -23,6 +23,28 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
              
         }
+        public ActionResult StaffIndex()
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                return View();
+            }
+
+        }
+
+
+        public ActionResult Partial_ExportWareHouseIndex()
+        {
+            return PartialView();
+            
+        }
+
+
+
 
         public ActionResult Partial_ThongTinDonHang(string code)
         {

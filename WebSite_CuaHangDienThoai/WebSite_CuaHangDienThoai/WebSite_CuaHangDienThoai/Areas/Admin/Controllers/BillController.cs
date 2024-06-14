@@ -73,38 +73,36 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
 
-
         public ActionResult SuggestBillCustomer(string search)
         {
             if (!string.IsNullOrEmpty(search))
             {
                 var customerIds = db.tb_Customer
-         .Where(c => c.PhoneNumber.Contains(search) || c.CustomerName.Contains(search))
-         .Select(c => c.CustomerId)
-         .ToList();
+                    .Where(c => c.PhoneNumber.Contains(search) || c.CustomerName.Contains(search))
+                    .Select(c => c.CustomerId)
+                    .ToList();
 
-                var seller = db.tb_Seller
-                    .FirstOrDefault(s => customerIds.Contains(s.CustomerId) || s.Code.Contains(search));
+                var sellers = db.tb_Seller
+                    .Where(s => customerIds.Contains(s.CustomerId) || s.Code.Contains(search))
+                    .ToList();
 
-
-                if (seller != null)
+                if (sellers.Any())
                 {
-                    var count = db.tb_Seller  .Where(s =>s.SellerId== seller.SellerId).Count();
-                    ViewBag.Count = count;
+                    ViewBag.Count = sellers.Count; // Số lượng hóa đơn
                     ViewBag.Content = search;
-                    return PartialView(new List<tb_Seller> { seller });
+                    return PartialView(sellers); // Trả về danh sách hóa đơn
                 }
                 else
                 {
-                    return PartialView();
+                    return PartialView(); // Trả về PartialView rỗng
                 }
             }
             else
             {
-
-                return PartialView();
+                return PartialView(); // Trả về PartialView rỗng
             }
         }
+
 
 
 

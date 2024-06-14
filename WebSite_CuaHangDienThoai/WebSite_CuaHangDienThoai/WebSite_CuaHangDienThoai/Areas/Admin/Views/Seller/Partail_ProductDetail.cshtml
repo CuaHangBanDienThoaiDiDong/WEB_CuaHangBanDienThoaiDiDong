@@ -1,21 +1,9 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
 
-<div class="card">
-    <div class="card-header">
-        <h2 class="card-title">Danh sách sản phẩm</h2>
-
-    </div>
-    <div class="col-lg-12 text-right nav-search   search-suggestions" style="display: block">
-        @*<div class="row ">
-                <div class="col-lg-12 search-suggestions" style="display: block;">
-
-
-                </div>
-
-            </div>*@
-    </div>
-    <div class="card-body loadListSortProductDetail">
-        @if (Model.Any() && Model != null)
+<div class="">
+    
+    <div class=" loadListSortProductDetail">
+        @if ( Model != null)
         {
             <div style="overflow-x:auto;">
                 <!-- Bảng chứa thead -->
@@ -77,10 +65,12 @@
                                             <img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" />
                                         </td>
                                         <td>
-                                            <a href="/admin/Products/Detail/@item.ProductsId" style="color:black">
-                                                <span class="text-danger"> @item.tb_Products.Title</span>
+                                            <a href="/chi-tiet/@item.tb_Products.Alias-p@(item.ProductsId)"style="border-bottom:none" target="_blank">
+
+                                                <span class="text-danger">
+                                                    @item.tb_Products.Title
+                                                </span>
                                                 <br /> @item.Color/@Capacity
-                                                <br />@item.tb_Products.tb_ProductCategory.Title
                                             </a>
                                         </td>
                                         @*<td>@item.Color/@Capacity</td>*@
@@ -88,8 +78,8 @@
 
                                             @if (item.PriceSale > 0)
                                             {
-                                                <span style=" text-decoration: line-through;">
-                                                    @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price)
+                                                <span style=" text-decoration: line-through;"> 
+                                                    @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price) 
                                                 </span>
                                                 <span class="text-danger">
                                                     @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.PriceSale)

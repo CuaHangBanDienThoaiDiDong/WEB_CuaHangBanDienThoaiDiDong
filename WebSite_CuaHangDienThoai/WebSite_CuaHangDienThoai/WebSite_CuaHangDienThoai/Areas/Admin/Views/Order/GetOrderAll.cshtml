@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Order>
-@if (ViewBag.Count != null)
+@if (Model != null && Model.Any())
 {
-    <div class="table-responsive table-billing-history">
+    <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
         <table class="table mb-0">
             <thead>
                 <tr>
@@ -13,61 +13,47 @@
                     <th class="border-gray-200 text-center" scope="col">Trạng thái thanh toán</th>
                     <th class="border-gray-200 text-center" scope="col">Loại đơn hàng</th>
                     <th class="border-gray-200 text-center" scope="col">Ngày tạo</th>
-                    <th class="border-gray-200 text-center" scope="col">Xác nhận</th>
+                    <th class="border-gray-200 text-center" scope="col"></th> <!-- Thêm cột trống để giữ cân đối với nút cập nhật -->
                 </tr>
             </thead>
             <tbody>
-                @if (Model != null && Model.Any())
-                {
-
+                @{
+                    int i = 1;
                     foreach (var item in Model)
                     {
-                        var strCheck = item.Confirm.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
                         <tr>
-
+                            <td class="text-center">@i</td>
                             <td class="text-center">@item.Code</td>
                             <td class="text-center">@item.CustomerName</td>
                             <td class="text-center">@item.Phone</td>
-                            <td class="text-center">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.TotalAmount, 0)</td>
-
+                            <td class="text-center">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.TotalAmount, 0) đ</td>
                             <td class="text-center">
                                 @if (item.TypePayment == 1)
                                 {
-
-                                    <span class="badge bg-light text-danger">Chờ thành toán</span>
-
+                                    <span class="badge bg-light text-danger">Chờ thanh toán</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-success text-dark">Đã thanh toán </span>
-
+                                    <span class="badge bg-success text-dark">Đã thanh toán</span>
                                 }
-
                             </td>
-                            <td class="text-center">Đơn hàng mới  </td>
+                            <td class="text-center">Đơn hàng mới</td>
                             <td class="text-center">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                             <td class="text-center">
-                                <a href='#' data-id="@item.OrderId" class="btnConFirm">@Html.Raw(strCheck)</a>
-                            </td>
-                            <td>
                                 <a href="/admin/order/Detail/@item.OrderId" class="btn btn-sm btn-success">Xem</a>
-                                <a href="#" class="btn btn-sm btn-danger btnConFirm" data-id="@item.OrderId">Cập nhật</a>
+                                <a href="#" class="btn btn-sm btn-danger btnCapNhat" data-id="@item.OrderId">Cập nhật</a>
                             </td>
-
-
                         </tr>
-
+                        i++;
                     }
-
                 }
-
-
-
             </tbody>
         </table>
     </div>
 }
 else
 {
-    <p class="text-danger">Không tồn tại bảng ghi nào !!!</p>
+    <p class="text-danger">
+        Không tồn tại bản ghi !!!
+    </p>
 }

@@ -1,24 +1,21 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Order>
-
 @if (Model != null && Model.Any())
 {
-    <table class="table mb-0">
-        <thead>
-            <tr>
-                <th class="text-center">STT</th>
-                <th class="border-gray-200 text-center" scope="col">Mã đơn hàng</th>
-                <th class="border-gray-200 text-center" scope="col">Tên khách hàng</th>
-                <th class="border-gray-200 text-center" scope="col">Số điện thoại</th>
-                <th class="border-gray-200 text-center" scope="col">Tiền</th>
-                <th class="border-gray-200 text-center" scope="col">Trạng thái thanh toán</th>
-                <th class="border-gray-200 text-center" scope="col">Loại đơn hàng</th>
-                <th class="border-gray-200 text-center" scope="col">Ngày tạo</th>
-                <th class="border-gray-200 text-center" scope="col">Hành động</th>
-            </tr>
-        </thead>
-    </table>
-    <div class="table-responsive" style="max-height:600px; overflow-y: auto;">
+    <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
         <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th class="text-center">STT</th>
+                    <th class="border-gray-200 text-center" scope="col">Mã đơn hàng</th>
+                    <th class="border-gray-200 text-center" scope="col">Tên khách hàng</th>
+                    <th class="border-gray-200 text-center" scope="col">Số điện thoại</th>
+                    <th class="border-gray-200 text-center" scope="col">Tiền</th>
+                    <th class="border-gray-200 text-center" scope="col">Trạng thái thanh toán</th>
+                    <th class="border-gray-200 text-center" scope="col">Loại đơn hàng</th>
+                    <th class="border-gray-200 text-center" scope="col">Ngày tạo</th>
+                    <th class="border-gray-200 text-center" scope="col"></th> <!-- Thêm cột trống để giữ cân đối với nút cập nhật -->
+                </tr>
+            </thead>
             <tbody>
                 @{
                     int i = 1;
@@ -33,7 +30,7 @@
                             <td class="text-center">
                                 @if (item.TypePayment == 1)
                                 {
-                                    <span class="badge bg-light text-danger">Chờ thành toán</span>
+                                    <span class="badge bg-light text-danger">Chờ thanh toán</span>
                                 }
                                 else
                                 {
@@ -42,7 +39,7 @@
                             </td>
                             <td class="text-center">Đơn hàng mới</td>
                             <td class="text-center">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
-                            <td>
+                            <td class="text-center">
                                 <a href="/admin/order/Detail/@item.OrderId" class="btn btn-sm btn-success">Xem</a>
                                 <a href="#" class="btn btn-sm btn-danger btnCapNhat" data-id="@item.OrderId">Cập nhật</a>
                             </td>
@@ -57,6 +54,6 @@
 else
 {
     <p class="text-danger">
-        Không tồn tại bảng ghi !!!
+        Không tồn tại bản ghi !!!
     </p>
 }
