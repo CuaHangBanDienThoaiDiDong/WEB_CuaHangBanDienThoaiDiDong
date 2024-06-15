@@ -261,6 +261,12 @@
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="zxing, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.9\lib\net48\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.9\lib\net48\zxing.presentation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure">
@@ -3412,7 +3418,9 @@
     <Content Include="Content\LayOut\StyleSheet3.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\templates\DonHang.html" />
     <Content Include="Content\templates\HoaDon.html" />
+    <Content Include="Content\templates\PhieuNhap.html" />
     <Content Include="Content\templates\send1.html" />
     <Content Include="Content\templates\send2.html" />
     <Content Include="Content\templates\SendForgotPass.html" />
@@ -3451,6 +3459,7 @@
     <Content Include="images\Logo\LogoWeb.jpg" />
     <Content Include="images\Logo\LogoWeb.png" />
     <Content Include="images\Logo\LogoWebpng.png" />
+    <Content Include="images\Logo\logoWEnMew.png" />
     <Content Include="images\Logo\OPPO42-b_5.jpg" />
     <Content Include="images\Logo\samsungnew-220x48-1.png" />
     <Content Include="images\Logo\vivo-logo-220-220x48-3.png" />
@@ -3949,6 +3958,8 @@
     <Content Include="Areas\Admin\Views\WareHouseImport\SuggestProduct.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\SuggestProduct.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\SuggestProductLeft.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\ListProductWareHouse.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\StaffIndex.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />

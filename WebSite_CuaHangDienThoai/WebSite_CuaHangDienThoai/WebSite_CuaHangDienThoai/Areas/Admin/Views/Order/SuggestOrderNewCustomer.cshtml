@@ -2,8 +2,10 @@
 
 @if (Model != null)
 {
-    <div class="card-body p-0" id="loadDataOrderNew">
-        <!-- Billing history table-->
+    <div class="table-responsive" style="max-height: 600px; overflow-y: auto;" id="loadDataOrderNew">
+      <span>
+          Số lượng tất cả đơn hàng  : <span class="text-danger">@ViewBag.Count </span> tìm theo <span class="text-danger">@ViewBag.Content</span>
+      </span>
         <div class="table-responsive table-billing-history">
             <table class="table mb-0" style="table-layout: fixed; width: 100%;">
                 <thead>

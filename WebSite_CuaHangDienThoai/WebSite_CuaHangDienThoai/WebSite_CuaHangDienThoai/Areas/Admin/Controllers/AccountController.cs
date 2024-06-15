@@ -68,7 +68,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                 if (data.FunctionId== 3 || functionTitle.Contains("Nhân viên kho hàng"))
                                 {
                                     Session["user"] = data;
-                                    redirectUrl = Url.Action("Index", "Warehouse");
+                                    redirectUrl = Url.Action("StaffIndex", "WareHouseImport");
                                 }
                                 else if (data.FunctionId == 4|| functionTitle.Contains("Nhân viên bán hàng"))
                                 {

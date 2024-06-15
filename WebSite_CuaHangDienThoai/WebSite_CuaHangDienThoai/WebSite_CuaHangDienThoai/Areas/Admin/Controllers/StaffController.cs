@@ -194,7 +194,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                             model.ModifiedDate = DateTime.Now;
                                             model.Clock = false;
                                             model.FunctionId = req.FunctionId;
-                                            model.StoreId = req.StoreId;
+                                            model.StoreId =5;
                                             model.Password = MaHoaPass(pass);
 
                                             db.tb_Staff.Add(model);

@@ -15,27 +15,20 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using CKFinder.Settings;
 
-//using DocumentFormat.OpenXml.Packaging;
-//using DocumentFormat.OpenXml.Wordprocessing;
-//using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
-//using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
-//using A = DocumentFormat.OpenXml.Drawing;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
+using ZXing;
+using ZXing.QrCode;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 
 
 
-using System;
-using System.IO;
-using System.Linq;
-using System.Web.Mvc;
+
 using ImageProcessor.Processors;
 using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using ZXing.QrCode.Internal;
+using System.Drawing.Imaging;
 
 namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 {
@@ -298,6 +291,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
         // Action để tải hóa đơn
+
+        ////Start Xuat Word
         public ActionResult DownloadInvoice(string filePath)
         {
             try
@@ -318,15 +313,38 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 return Content("Lỗi khi tải hóa đơn: " + ex.Message);
             }
         }
-     
-        private string ExportInvoice(int orderId)
+
+        
+
+        private string GetCapacity(int capacity)
+        {
+            if (capacity > 1999)
+            {
+                return "2 Tb";
+            }
+            else if (capacity > 999)
+            {
+                return "1 Tb";
+            }
+            else
+            {
+                return capacity + " Gb";
+            }
+        }
+
+
+        //endXuat Word
+
+
+
+        public string ExportInvoice(int orderId)
         {
             var order = db.tb_Order.Find(orderId);
             if (order != null)
             {
                 try
                 {
-                    string templatePath = Server.MapPath("~/Content/templates/HoaDon.html");
+                    string templatePath = Server.MapPath("~/Content/templates/DonHang.html");
                     string htmlContent = System.IO.File.ReadAllText(templatePath);
 
                     // Thay thế các biến trong template HTML bằng giá trị thực tế
@@ -346,14 +364,14 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     foreach (var detail in orderDetails)
                     {
                         string productRow = $@"
-                <tr>
-                    <td>{index}</td>
-                    <td>{detail.tb_ProductDetail.tb_Products.Title}</td>
-                    <td>{GetCapacity((int)detail.tb_ProductDetail.Capacity)} / {detail.tb_ProductDetail.Color}</td>
-                    <td>{detail.Quantity}</td>
-                    <td>{WebSite_CuaHangDienThoai.Common.Common.FormatNumber(detail.tb_ProductDetail.PriceSale > 0 ? detail.tb_ProductDetail.PriceSale : detail.tb_ProductDetail.Price)}</td>
-                    <td>{WebSite_CuaHangDienThoai.Common.Common.FormatNumber(detail.Quantity * (detail.tb_ProductDetail.PriceSale > 0 ? detail.tb_ProductDetail.PriceSale : detail.tb_ProductDetail.Price))} đ</td>
-                </tr>";
+                    <tr>
+                        <td>{index}</td>
+                        <td>{detail.tb_ProductDetail.tb_Products.Title}</td>
+                        <td>{GetCapacity((int)detail.tb_ProductDetail.Capacity)} / {detail.tb_ProductDetail.Color}</td>
+                        <td>{detail.Quantity}</td>
+                        <td>{WebSite_CuaHangDienThoai.Common.Common.FormatNumber(detail.tb_ProductDetail.PriceSale > 0 ? detail.tb_ProductDetail.PriceSale : detail.tb_ProductDetail.Price)}</td>
+                        <td>{WebSite_CuaHangDienThoai.Common.Common.FormatNumber(detail.Quantity * (detail.tb_ProductDetail.PriceSale > 0 ? detail.tb_ProductDetail.PriceSale : detail.tb_ProductDetail.Price))} đ</td>
+                    </tr>";
                         productRows += productRow;
                         index++;
                     }
@@ -364,7 +382,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     decimal total = order.TotalAmount;
                     htmlContent = htmlContent.Replace("#{{totalOrder}}", WebSite_CuaHangDienThoai.Common.Common.FormatNumber(order.TotalAmount) + " đ");
 
-                    string fileName = $"Invoice_{order.Code}.docx";
+                    string fileName = $"LTD_{order.Code}.docx";
                     string folderPath = Server.MapPath("~/Order");
 
                     if (!Directory.Exists(folderPath))
@@ -375,8 +393,9 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     string filePath = Path.Combine(folderPath, fileName);
 
                     // Chuyển đổi HTML sang Word
-                    string logoPath = Server.MapPath("~/images/Logo/LogoWebpng.png");
-                    ConvertHTMLToWord(htmlContent, filePath, logoPath);
+                    string logoPath = Server.MapPath("~/images/Logo/logoWEnMew.png");
+
+                    ConvertHTMLToWord(htmlContent, filePath, logoPath, order.Code);
 
                     return filePath;
                 }
@@ -390,30 +409,99 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             return null;
         }
 
-        private string GetImageBase64(string imagePath)
+
+        //private void ConvertHTMLToWord(string htmlContent, string wordFilePath, string logoPath, string qrCodeContent)
+        //{
+        //    // Thay thế placeholder với hình ảnh logo và mã QR code
+        //    string logoPlaceholder = "#{{Image}}";
+        //    string qrCodePlaceholder = "#{{QRCode}}";
+
+        //    if (System.IO.File.Exists(logoPath))
+        //    {
+        //        string logoBase64 = Convert.ToBase64String(System.IO.File.ReadAllBytes(logoPath));
+        //        string imgTag = $"<img src='data:image/png;base64,{logoBase64}' style='width: 100px; height: 100px;' />";
+        //        htmlContent = htmlContent.Replace(logoPlaceholder, imgTag);
+        //    }
+
+        //    if (!string.IsNullOrEmpty(qrCodeContent))
+        //    {
+        //        using (MemoryStream qrCodeStream = GenerateQRCode(qrCodeContent))
+        //        {
+        //            string qrCodeBase64 = Convert.ToBase64String(qrCodeStream.ToArray());
+        //            string imgTag = $"<img src='data:image/png;base64,{qrCodeBase64}' style='max-width: 50px; max-height: 50px;' />";
+        //            htmlContent = htmlContent.Replace(qrCodePlaceholder, imgTag);
+        //        }
+        //    }
+
+        //    using (MemoryStream memStream = new MemoryStream())
+        //    {
+        //        // Tạo một tài liệu Word mới
+        //        using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(memStream, WordprocessingDocumentType.Document))
+        //        {
+        //            // Tạo phần main của tài liệu
+        //            MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
+        //            mainPart.Document = new Document();
+        //            Body body = mainPart.Document.AppendChild(new Body());
+
+        //            // Chuyển đổi HTML thành Open XML và thêm vào tài liệu Word
+        //            string altChunkId = "AltChunkId1";
+        //            AlternativeFormatImportPart chunk = mainPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.Html, altChunkId);
+        //            using (StreamWriter streamWriter = new StreamWriter(chunk.GetStream()))
+        //            {
+        //                streamWriter.Write(htmlContent);
+        //            }
+
+        //            AltChunk altChunk = new AltChunk();
+        //            altChunk.Id = altChunkId;
+        //            body.Append(altChunk);
+
+        //            // Lưu tài liệu Word xuống tệp
+        //            mainPart.Document.Save();
+        //        }
+
+        //        // Lưu tài liệu Word xuống tệp
+        //        using (FileStream fileStream = new FileStream(wordFilePath, FileMode.Create))
+        //        {
+        //            memStream.Position = 0;
+        //            memStream.CopyTo(fileStream);
+        //        }
+        //    }
+        //}
+
+
+
+        public void ConvertHTMLToWord(string htmlContent, string wordFilePath, string logoPath, string qrCodeContent)
         {
-            byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
-            string base64String = Convert.ToBase64String(imageBytes);
-            string mimeType = "image/" + Path.GetExtension(imagePath).TrimStart('.');
-            return $"data:{mimeType};base64,{base64String}";
-        }
-        private void ConvertHTMLToWord(string htmlContent, string wordFilePath, string logoPath)
-        {
+            // Thay thế placeholder với hình ảnh logo và mã QR code
+            string logoPlaceholder = "#{{Image}}";
+            string qrCodePlaceholder = "#{{QRCode}}";
+
+            if (System.IO.File.Exists(logoPath))
+            {
+                string logoBase64 = Convert.ToBase64String(System.IO.File.ReadAllBytes(logoPath));
+                string imgTag = $"<img src='data:image/png;base64,{logoBase64}' style='width: 100px; height: 100px;' />";
+                htmlContent = htmlContent.Replace(logoPlaceholder, imgTag);
+            }
+
+            if (!string.IsNullOrEmpty(qrCodeContent))
+            {
+                using (MemoryStream qrCodeStream = GenerateQRCode(qrCodeContent))
+                {
+                    string qrCodeBase64 = Convert.ToBase64String(qrCodeStream.ToArray());
+                    string imgTag = $"<img src='data:image/png;base64,{qrCodeBase64}' style='width: 50px; height: 50px;' />";
+                    htmlContent = htmlContent.Replace(qrCodePlaceholder, imgTag);
+                }
+            }
+
             using (MemoryStream memStream = new MemoryStream())
             {
                 // Tạo một tài liệu Word mới
-                using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(memStream, DocumentFormat.OpenXml.WordprocessingDocumentType.Document))
+                using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(memStream, WordprocessingDocumentType.Document))
                 {
                     // Tạo phần main của tài liệu
                     MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
                     mainPart.Document = new Document();
                     Body body = mainPart.Document.AppendChild(new Body());
-
-                    // Thêm hình ảnh logo vào tài liệu Word
-                    if (System.IO.File.Exists(logoPath))
-                    {
-                        AddImageToBody(mainPart, logoPath);
-                    }
 
                     // Chuyển đổi HTML thành Open XML và thêm vào tài liệu Word
                     string altChunkId = "AltChunkId1";
@@ -438,18 +526,89 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     memStream.CopyTo(fileStream);
                 }
             }
+
+            // Chỉnh sửa tài liệu Word để đảm bảo hình ảnh có kích thước đúng
+            FixImageSizes(wordFilePath);
         }
 
-        // Hàm thêm hình ảnh vào tài liệu Word
-        private void AddImageToBody(MainDocumentPart mainPart, string imagePath)
+        private void FixImageSizes(string wordFilePath)
         {
-            string imagePartId = "imageId";
-            ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Png, imagePartId);
-
-            using (FileStream stream = new FileStream(imagePath, FileMode.Open))
+            using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(wordFilePath, true))
             {
-                imagePart.FeedData(stream);
+                foreach (var image in wordDocument.MainDocumentPart.Document.Descendants<DocumentFormat.OpenXml.Drawing.Blip>())
+                {
+                    if (image.Embed != null)
+                    {
+                        var imagePart = wordDocument.MainDocumentPart.GetPartById(image.Embed.Value) as ImagePart;
+                        if (imagePart != null)
+                        {
+                            using (var imageStream = imagePart.GetStream())
+                            {
+                                using (var bitmap = new System.Drawing.Bitmap(imageStream))
+                                {
+                                    var width = bitmap.Width * 9525; // 1 pixel = 9525 EMUs
+                                    var height = bitmap.Height * 9525;
+
+                                    var drawing = image.Ancestors<DocumentFormat.OpenXml.Drawing.Wordprocessing.Inline>().FirstOrDefault();
+                                    if (drawing != null)
+                                    {
+                                        drawing.Extent.Cx = width;
+                                        drawing.Extent.Cy = height;
+
+                                        var extents = drawing.Descendants<DocumentFormat.OpenXml.Drawing.Extents>().FirstOrDefault();
+                                        if (extents != null)
+                                        {
+                                            extents.Cx = width;
+                                            extents.Cy = height;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                wordDocument.MainDocumentPart.Document.Save();
             }
+        }
+
+        private void AddQRCodeToBody(MainDocumentPart mainPart, string qrCodeContent)
+        {
+            // Tạo mã QR Code và lưu vào MemoryStream
+            using (MemoryStream qrCodeStream = GenerateQRCode(qrCodeContent))
+            {
+                // Thêm hình ảnh QR Code vào tài liệu Word
+                AddImageToBody(mainPart, qrCodeStream, "rIdQrCode");
+            }
+        }
+        private MemoryStream GenerateQRCode(string qrCodeContent)
+        {
+            // Khởi tạo đối tượng BarcodeWriter để tạo mã QR
+            BarcodeWriter barcodeWriter = new BarcodeWriter();
+            barcodeWriter.Format = BarcodeFormat.QR_CODE;
+            barcodeWriter.Options = new QrCodeEncodingOptions
+            {
+                Height = 50,
+                Width = 50,
+                Margin = 0,
+                ErrorCorrection = ErrorCorrectionLevel.H
+            };
+
+            // Tạo mã QR từ qrCodeContent
+            var qrCodeBitmap = barcodeWriter.Write(qrCodeContent);
+
+            // Chuyển đổi mã QR thành MemoryStream
+            using (MemoryStream ms = new MemoryStream())
+            {
+                qrCodeBitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                return new MemoryStream(ms.ToArray());
+            }
+        }
+
+        private void AddImageToBody(MainDocumentPart mainPart, Stream imageStream, string relationshipId)
+        {
+            ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Png, relationshipId);
+            imagePart.FeedData(imageStream);
 
             var element = new Drawing(
                 new DW.Inline(
@@ -474,14 +633,14 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                     new PIC.NonVisualDrawingProperties()
                                     {
                                         Id = (UInt32Value)0U,
-                                        Name = "New Bitmap Image.png"
+                                        Name = "QR Code"
                                     },
                                     new PIC.NonVisualPictureDrawingProperties()
                                 ),
                                 new PIC.BlipFill(
                                     new A.Blip()
                                     {
-                                        Embed = imagePartId,
+                                        Embed = relationshipId,
                                         CompressionState = A.BlipCompressionValues.Print
                                     },
                                     new A.Stretch(
@@ -510,22 +669,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
             mainPart.Document.Body.AppendChild(new Paragraph(new Run(element)));
         }
-       
-        private string GetCapacity(int capacity)
-        {
-            if (capacity > 1999)
-            {
-                return "2 Tb";
-            }
-            else if (capacity > 999)
-            {
-                return "1 Tb";
-            }
-            else
-            {
-                return capacity + " Gb";
-            }
-        }
+
 
 
 

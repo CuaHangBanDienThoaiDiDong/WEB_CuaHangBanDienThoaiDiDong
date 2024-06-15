@@ -9,8 +9,7 @@
             <th>Cửa hàng</th>
             <th>Địa chỉ</th>
             <th>Thành phố</th>
-            <th>Hoạt động</th>
-
+           
             <th>Tác vụ</th>
 
 
@@ -38,9 +37,7 @@
                             @Html.Action("Partial_Provinces", "ProvincesVN", new { id = item.idProvinces })
                         </td>
 
-                        <td class="text-center">
-                            <a href='#' data-id="@item.StoreId" class="btnIsStatus">@Html.Raw(strCheckIsStatus)</a>
-                        </td>
+                     
 
                         <td>
                             @*<a href="/admin/Product/edit/@item.ProductId" class="btn btn-sm btn-primary">Sửa</a>

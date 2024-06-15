@@ -119,6 +119,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             if (orders != null && orders.Count > 0)
             {
                 ViewBag.Count = orders.Count;
+                ViewBag.Date = ngayxuat;
                 return PartialView(orders);
             }
             else
@@ -255,6 +256,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             if (orders != null && orders.Count > 0)
             {
                 ViewBag.Count = orders.Count;
+                ViewBag.Date = ngayxuat;
                 return PartialView(orders);
             }
             else
@@ -418,7 +420,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 if (orders.Any())
                 {
                     var count = ordersExport.Count();
-                    ViewBag.Count = count;
+                  ViewBag.Date=DateTime.Now;  
+                ViewBag.Count = count;
                     ViewBag.Content = search;
                     return PartialView(ordersExport);
                 }
@@ -447,6 +450,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
             if (orders != null && orders.Count > 0)
             {
+                ViewBag.Date = ngayxuat;
                 ViewBag.Count = orders.Count;
                 return PartialView(orders);
             }

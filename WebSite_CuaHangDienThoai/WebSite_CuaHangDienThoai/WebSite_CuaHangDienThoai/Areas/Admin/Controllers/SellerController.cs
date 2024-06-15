@@ -5,6 +5,31 @@ using System.Web;
 using System.Web.Mvc;
 using WebSite_CuaHangDienThoai.Models;
 
+
+
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.IO;
+using System.Windows.Forms;
+using Newtonsoft.Json;
+using CKFinder.Settings;
+
+using ZXing;
+using ZXing.QrCode;
+using A = DocumentFormat.OpenXml.Drawing;
+using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
+
+
+
+
+using ImageProcessor.Processors;
+using System.Text.RegularExpressions;
+using DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using ZXing.QrCode.Internal;
+using System.Drawing.Imaging;
+
 namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 {
     public class SellerController : Controller
@@ -326,7 +351,14 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
 
+        //Strart In Bill
 
+
+
+
+
+
+        //End In Bill
 
 
         [HttpPost]
@@ -501,7 +533,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
-
+        //Cho dữ liệu ch có kahsc hhjafng
         public ActionResult AddClient()
         {
             if (Session["user"] == null)

@@ -20,7 +20,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
-                IEnumerable<tb_Store> items = db.tb_Store.OrderByDescending(x => x.StoreId);
+                IEnumerable<tb_Store> items = db.tb_Store.Where(x=>x.IsStatus==true).OrderByDescending(x => x.StoreId);
                 if (items != null)
                 {
 
@@ -52,7 +52,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
-                IEnumerable<tb_Store> items = db.tb_Store.OrderByDescending(x => x.StoreId);
+                IEnumerable<tb_Store> items = db.tb_Store.Where(x => x.IsStatus == true).OrderByDescending(x => x.StoreId);
                 if (items != null)
                 {
                     var pageSize = 10;

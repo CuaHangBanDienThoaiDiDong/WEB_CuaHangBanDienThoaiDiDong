@@ -68,27 +68,37 @@
             if (res.Success) {
                 if (res.Code == 1) {
                   
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
-                        }
-                       
-                    });
+                    //const Toast = Swal.mixin({
+                    //    toast: true,
+                    //    position: "top-end",
+                    //    showConfirmButton: false,
+                    //    timer: 3000,
+                    //    timerProgressBar: true,
+                    //    didOpen: (toast) => {
+                    //        toast.onmouseenter = Swal.stopTimer;
+                    //        toast.onmouseleave = Swal.resumeTimer;
+                    //    }
 
-                    Toast.fire({
-                        icon: "success",
-                        title: "Nhập kho thành công"
+                    //});
+
+                    //Toast.fire({
+                    //    icon: "success",
+                    //    title: "Nhập kho thành công"
+                    //});
+                    //setTimeout(function () {
+                    //    $('#btnAddToWarehouse').prop('disabled', true);
+                    //    location.href = "/admin/WareHouseImport/index";
+                    //}, 3000);
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Nhập hàng thành công',
+                        text: 'Số lượng đã cập nhập trên hệ thống'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/Admin/WareHouseImport/DownloadInvoice?filePath=' + encodeURIComponent(res.FilePath);
+                        }
                     });
-                    setTimeout(function () {
-                        $('#btnAddToWarehouse').prop('disabled', true);
-                        location.href = "/admin/WareHouseImport/index";
-                    }, 3000);
                 } else {
                 }
             }
@@ -151,6 +161,7 @@
                         text: "Lưu phiếu nhập thất bại",
                     });
                 }
+
                 if (res.Code == -10) {
                     Swal.fire({
                         icon: "warning",
