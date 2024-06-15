@@ -29,6 +29,7 @@ using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using ZXing.QrCode.Internal;
 using System.Drawing.Imaging;
+using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 {
@@ -217,6 +218,11 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 var customer = db.tb_Customer
               .FirstOrDefault(c => c.PhoneNumber.Contains(search) || c.CustomerName.Contains(search));
 
+                SellerCart cart = (SellerCart)Session["SellerCart"];
+                if (cart.Items.Count > 0)
+                {
+                    ViewBag.Data=cart.Items;
+                }
                 if (customer != null)
                 {
                     return PartialView(new List<tb_Customer> { customer });
@@ -242,7 +248,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 {
                     if (Session["user"] == null)
                     {
-                        return Json(new { success = false, code = -99, redirectTo = Url.Action("DangNhap", "Account") });
+                        return Json(new { success = false, code = -99 });
                     }
                     else
                     {
@@ -253,93 +259,96 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                             if (customer != null)
                             {
                                 SellerCart cart = (SellerCart)Session["SellerCart"];
-                                if (cart != null)
+                                if (cart.Items.Count < 0)
                                 {
-                                    foreach (var item in cart.Items)
+                                    return Json(new { success = false, code = -3 }); // Không có sản phẩm trong phiếu
+                                }
+                                else 
+                                {
+                                    if (cart != null && cart.Items.Count > 0)
                                     {
-                                        var checkQuantityPro = db.tb_ProductDetail.Find(item.ProductDetailId);
-                                        var warehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == item.ProductDetailId);
-                                        if (warehouseDetail != null)
+
+                                        foreach (var item in cart.Items)
                                         {
-                                            if (warehouseDetail.QuanTity >= item.SoLuong)
+                                            var checkQuantityPro = db.tb_ProductDetail.Find(item.ProductDetailId);
+                                            var warehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == item.ProductDetailId);
+                                            if (warehouseDetail != null)
                                             {
-                                                warehouseDetail.QuanTity -= item.SoLuong;
-                                                db.Entry(checkQuantityPro).State = System.Data.Entity.EntityState.Modified;
-                                                db.SaveChanges();
-
-
-
+                                                if (warehouseDetail.QuanTity >= item.SoLuong)
+                                                {
+                                                    warehouseDetail.QuanTity -= item.SoLuong;
+                                                    db.Entry(checkQuantityPro).State = System.Data.Entity.EntityState.Modified;
+                                                    db.SaveChanges();
+                                                }
+                                                else
+                                                {
+                                                    var productName = db.tb_ProductDetail.FirstOrDefault(p => p.ProductDetailId == checkQuantityPro.ProductDetailId)?.tb_Products.Title;
+                                                    return Json(new { success = false, code = -7, productName = productName }); // Kho không đủ số lượng
+                                                }
                                             }
                                             else
                                             {
-                                                return Json(new { success = false, code = -7 });//Kho không đủ số lượng
+                                                var productName = db.tb_ProductDetail.FirstOrDefault(p => p.ProductDetailId == checkQuantityPro.ProductDetailId)?.tb_Products.Title;
+                                                return Json(new { success = false, code = -7, productName = productName }); // Kho không đủ số lượng
                                             }
+                                        }
+
+                                        tb_Seller seller = new tb_Seller
+                                        {
+                                            CustomerId = customer.CustomerId,
+                                            Phone = customer.PhoneNumber,
+                                            StaffId = nvSession.StaffId,
+                                            TypePayment = 0,
+                                            CreatedDate = DateTime.Now,
+                                            CreatedBy = nvSession.NameStaff,
+                                            Code = "HD" + new Random().Next(0, 9999).ToString("D4")
+                                        };
+
+                                        cart.Items.ForEach(x => seller.tb_SellerDetail.Add(new tb_SellerDetail
+                                        {
+                                            ProductDetailId = x.ProductDetailId,
+                                            Quantity = x.SoLuong,
+                                            Price = x.Price
+                                        }));
+
+                                        seller.TotalAmount = cart.GetPriceTotal();
+
+                                        db.tb_Seller.Add(seller);
+                                        db.SaveChanges();
+
+                                        customer.NumberofPurchases += 1;
+                                        db.Entry(customer).State = System.Data.Entity.EntityState.Modified;
+                                        db.SaveChanges();
+
+                                        cart.ClearCart();
+                                        Session["SellerCart"] = cart; // Cập nhật lại session
+
+                                        string invoicePath = ExportInvoice(seller.SellerId);
+                                        if (!string.IsNullOrEmpty(invoicePath))
+                                        {
+                                            dbContextTransaction.Commit();
+                                            return Json(new { success = true, code = 1, filePath = invoicePath });
                                         }
                                         else
                                         {
-                                            return Json(new { success = false, code = -7 });//Kho không đủ số lượng
+                                            return Json(new { success = false, code = -7, filePath = invoicePath });
                                         }
                                     }
-
-                                    tb_Seller seller = new tb_Seller();
-                                    seller.CustomerId = customer.CustomerId;
-                                    seller.Phone = customer.PhoneNumber;
-                                    seller.StaffId = nvSession.StaffId;
-
-                                    cart.Items.ForEach(x => seller.tb_SellerDetail.Add(new tb_SellerDetail
+                                    else
                                     {
-                                        ProductDetailId = x.ProductDetailId,
-                                        Quantity = x.SoLuong,
-                                        Price = x.Price,
-
-                                    }));
-
-
-
-
-                                    seller.TotalAmount = cart.GetPriceTotal();  
-                                  
-
-
-
-
-                                    //seller.TypePayment = req.TypePayment;
-                                    seller.TypePayment = 0;
-                                    seller.CreatedDate = DateTime.Now;
-                                    seller.ModifiedDate = null;
-                                    seller.CreatedBy = nvSession.NameStaff;
-                                    Random rd = new Random();
-                                    seller.Code = "HD" + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9) + rd.Next(0, 9);
-
-                                    db.tb_Seller.Add(seller);
-                                    db.SaveChanges();
-
-
-                                    customer.NumberofPurchases += 1;
-                                    db.Entry(customer).State = System.Data.Entity.EntityState.Modified;
-                                    db.SaveChanges();
-
-                                    cart.ClearCart();
-                                    db.Entry(customer).State = System.Data.Entity.EntityState.Modified;
-                                    db.SaveChanges();
-                                    dbContextTransaction.Commit();
-
-
-                                    return Json(new { success = true, code = 1 });
+                                        return Json(new { success = false, code = -3 }); // Không có sản phẩm trong phiếu
+                                    }
                                 }
-                                else
-                                {
-                                    return Json(new { success = false, code = -3 });// Không có sản phẩm trong phiếu
-                                }
+                              
                             }
                             else
                             {
-                                return Json(new { success = false, code = -1 });//Không tìm thấy khách hàng
+                                return Json(new { success = false, code = -1 }); // Không tìm thấy khách hàng
                             }
                         }
                         else
                         {
-                            return Json(new { success = false, code = -1 });//Không tìm thấy khách hàng
+                            return Json(new { success = false, code = -1 }); // Không tìm thấy khách hàng
                         }
                     }
                 }
@@ -351,15 +360,341 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
 
+
+
         //Strart In Bill
 
+        public string ExportInvoice(int sellerId)
+        {
+
+            if (sellerId < 0) 
+            {
+                return null;
+            }
+
+            var seller = db.tb_Seller.Find(sellerId);
+            if (seller != null)
+            {
+                var customer =db.tb_Customer.Find(seller.CustomerId);
+                if (customer == null) {
+                    return null;
+                }
+
+                try
+                {
+                    string templatePath = Server.MapPath("~/Content/templates/HoaDon.html");
+                    string htmlContent = System.IO.File.ReadAllText(templatePath);
+
+                    // Thay thế các biến trong template HTML bằng giá trị thực tế
+                    htmlContent = htmlContent.Replace("#{{Code}}", seller.Code);
+                    htmlContent = htmlContent.Replace("#{{CreatedDate}}", seller.CreatedDate.ToString("dd/MM/yyyy"));
+                    htmlContent = htmlContent.Replace("#{{CustomerName}}", customer.CustomerName);
+                    htmlContent = htmlContent.Replace("#{{Phone}}", seller.Phone);
+
+                    // Lấy chi tiết đơn hàng
+                    var sellerDetail = db.tb_SellerDetail
+                        .Where(od => od.SellerId == seller.SellerId)
+                        .ToList();
+
+                    string productRows = "";
+                    int index = 1;
+
+                    foreach (var detail in sellerDetail)
+                    {
+                        string productRow = $@"
+                    <tr>
+                        <td>{index}</td>
+                        <td>{detail.tb_ProductDetail.tb_Products.Title}</td>
+                        <td>{GetCapacity((int)detail.tb_ProductDetail.Capacity)} / {detail.tb_ProductDetail.Color}</td>
+                        <td>{detail.Quantity}</td>
+                        <td>{WebSite_CuaHangDienThoai.Common.Common.FormatNumber(detail.tb_ProductDetail.PriceSale > 0 ? detail.tb_ProductDetail.PriceSale : detail.tb_ProductDetail.Price)}</td>
+                        <td>{WebSite_CuaHangDienThoai.Common.Common.FormatNumber(detail.Quantity * (detail.tb_ProductDetail.PriceSale > 0 ? detail.tb_ProductDetail.PriceSale : detail.tb_ProductDetail.Price))} đ</td>
+                    </tr>";
+                        productRows += productRow;
+                        index++;
+                    }
+
+                    htmlContent = htmlContent.Replace("#{{ProductRows}}", productRows);
+
+                    // Tính tổng tiền thanh toán
+                    decimal total = seller.TotalAmount;
+                    htmlContent = htmlContent.Replace("#{{TotalAmountSeller}}", WebSite_CuaHangDienThoai.Common.Common.FormatNumber(seller.TotalAmount) + " đ");
+
+                    string fileName = $"LTD_HD_{seller.Code}.docx";
+                    string folderPath = Server.MapPath("~/Order");
+
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+
+                    string filePath = Path.Combine(folderPath, fileName);
+
+                    // Chuyển đổi HTML sang Word
+                    string logoPath = Server.MapPath("~/images/Logo/logoWEnMew.png");
+
+                    ConvertHTMLToWord(htmlContent, filePath, logoPath, seller.Code);
+
+                    return filePath;
+                }
+                catch (Exception ex)
+                {
+                    // Xử lý nếu có lỗi
+                    // Có thể ghi log hoặc thông báo lỗi ở đây
+                    return null;
+                }
+            }
+            return null;
+        }
+
+
+        public ActionResult DownloadInvoice(string filePath)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(filePath) && System.IO.File.Exists(filePath))
+                {
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                    string fileName = Path.GetFileName(filePath);
+                    return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
+                }
+                else
+                {
+                    return HttpNotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content("Lỗi khi tải hóa đơn: " + ex.Message);
+            }
+        }
+
+
+
+        private string GetCapacity(int capacity)
+        {
+            if (capacity > 1999)
+            {
+                return "2 Tb";
+            }
+            else if (capacity > 999)
+            {
+                return "1 Tb";
+            }
+            else
+            {
+                return capacity + " Gb";
+            }
+        }
+
+
+
+
+        public void ConvertHTMLToWord(string htmlContent, string wordFilePath, string logoPath, string qrCodeContent)
+        {
+            // Thay thế placeholder với hình ảnh logo và mã QR code
+            string logoPlaceholder = "#{{Image}}";
+            string qrCodePlaceholder = "#{{QRCode}}";
+
+            if (System.IO.File.Exists(logoPath))
+            {
+                string logoBase64 = Convert.ToBase64String(System.IO.File.ReadAllBytes(logoPath));
+                string imgTag = $"<img src='data:image/png;base64,{logoBase64}' style='width: 100px; height: 100px;' />";
+                htmlContent = htmlContent.Replace(logoPlaceholder, imgTag);
+            }
+
+            if (!string.IsNullOrEmpty(qrCodeContent))
+            {
+                using (MemoryStream qrCodeStream = GenerateQRCode(qrCodeContent))
+                {
+                    string qrCodeBase64 = Convert.ToBase64String(qrCodeStream.ToArray());
+                    string imgTag = $"<img src='data:image/png;base64,{qrCodeBase64}' style='width: 50px; height: 50px;' />";
+                    htmlContent = htmlContent.Replace(qrCodePlaceholder, imgTag);
+                }
+            }
+
+            using (MemoryStream memStream = new MemoryStream())
+            {
+                // Tạo một tài liệu Word mới
+                using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(memStream, WordprocessingDocumentType.Document))
+                {
+                    // Tạo phần main của tài liệu
+                    MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
+                    mainPart.Document = new Document();
+                    Body body = mainPart.Document.AppendChild(new Body());
+
+                    // Chuyển đổi HTML thành Open XML và thêm vào tài liệu Word
+                    string altChunkId = "AltChunkId1";
+                    AlternativeFormatImportPart chunk = mainPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.Html, altChunkId);
+                    using (StreamWriter streamWriter = new StreamWriter(chunk.GetStream()))
+                    {
+                        streamWriter.Write(htmlContent);
+                    }
+
+                    AltChunk altChunk = new AltChunk();
+                    altChunk.Id = altChunkId;
+                    body.Append(altChunk);
+
+                    // Lưu tài liệu Word xuống tệp
+                    mainPart.Document.Save();
+                }
+
+                // Lưu tài liệu Word xuống tệp
+                using (FileStream fileStream = new FileStream(wordFilePath, FileMode.Create))
+                {
+                    memStream.Position = 0;
+                    memStream.CopyTo(fileStream);
+                }
+            }
+
+            // Chỉnh sửa tài liệu Word để đảm bảo hình ảnh có kích thước đúng
+            FixImageSizes(wordFilePath);
+        }
+
+        private void FixImageSizes(string wordFilePath)
+        {
+            using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(wordFilePath, true))
+            {
+                foreach (var image in wordDocument.MainDocumentPart.Document.Descendants<DocumentFormat.OpenXml.Drawing.Blip>())
+                {
+                    if (image.Embed != null)
+                    {
+                        var imagePart = wordDocument.MainDocumentPart.GetPartById(image.Embed.Value) as ImagePart;
+                        if (imagePart != null)
+                        {
+                            using (var imageStream = imagePart.GetStream())
+                            {
+                                using (var bitmap = new System.Drawing.Bitmap(imageStream))
+                                {
+                                    var width = bitmap.Width * 9525; // 1 pixel = 9525 EMUs
+                                    var height = bitmap.Height * 9525;
+
+                                    var drawing = image.Ancestors<DocumentFormat.OpenXml.Drawing.Wordprocessing.Inline>().FirstOrDefault();
+                                    if (drawing != null)
+                                    {
+                                        drawing.Extent.Cx = width;
+                                        drawing.Extent.Cy = height;
+
+                                        var extents = drawing.Descendants<DocumentFormat.OpenXml.Drawing.Extents>().FirstOrDefault();
+                                        if (extents != null)
+                                        {
+                                            extents.Cx = width;
+                                            extents.Cy = height;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                wordDocument.MainDocumentPart.Document.Save();
+            }
+        }
+
+        private void AddQRCodeToBody(MainDocumentPart mainPart, string qrCodeContent)
+        {
+            // Tạo mã QR Code và lưu vào MemoryStream
+            using (MemoryStream qrCodeStream = GenerateQRCode(qrCodeContent))
+            {
+                // Thêm hình ảnh QR Code vào tài liệu Word
+                AddImageToBody(mainPart, qrCodeStream, "rIdQrCode");
+            }
+        }
+        private MemoryStream GenerateQRCode(string qrCodeContent)
+        {
+            // Khởi tạo đối tượng BarcodeWriter để tạo mã QR
+            BarcodeWriter barcodeWriter = new BarcodeWriter();
+            barcodeWriter.Format = BarcodeFormat.QR_CODE;
+            barcodeWriter.Options = new QrCodeEncodingOptions
+            {
+                Height = 50,
+                Width = 50,
+                Margin = 0,
+                ErrorCorrection = ErrorCorrectionLevel.H
+            };
+
+            // Tạo mã QR từ qrCodeContent
+            var qrCodeBitmap = barcodeWriter.Write(qrCodeContent);
+
+            // Chuyển đổi mã QR thành MemoryStream
+            using (MemoryStream ms = new MemoryStream())
+            {
+                qrCodeBitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                return new MemoryStream(ms.ToArray());
+            }
+        }
+
+        private void AddImageToBody(MainDocumentPart mainPart, Stream imageStream, string relationshipId)
+        {
+            ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Png, relationshipId);
+            imagePart.FeedData(imageStream);
+
+            var element = new Drawing(
+                new DW.Inline(
+                    new DW.Extent() { Cx = 990000L, Cy = 792000L },
+                    new DW.EffectExtent()
+                    {
+                        LeftEdge = 0L,
+                        TopEdge = 0L,
+                        RightEdge = 0L,
+                        BottomEdge = 0L
+                    },
+                    new DW.DocProperties()
+                    {
+                        Id = (UInt32Value)1U,
+                        Name = "Picture 1"
+                    },
+                    new DW.NonVisualGraphicFrameDrawingProperties(new A.GraphicFrameLocks() { NoChangeAspect = true }),
+                    new A.Graphic(
+                        new A.GraphicData(
+                            new PIC.Picture(
+                                new PIC.NonVisualPictureProperties(
+                                    new PIC.NonVisualDrawingProperties()
+                                    {
+                                        Id = (UInt32Value)0U,
+                                        Name = "QR Code"
+                                    },
+                                    new PIC.NonVisualPictureDrawingProperties()
+                                ),
+                                new PIC.BlipFill(
+                                    new A.Blip()
+                                    {
+                                        Embed = relationshipId,
+                                        CompressionState = A.BlipCompressionValues.Print
+                                    },
+                                    new A.Stretch(
+                                        new A.FillRectangle()
+                                    )
+                                ),
+                                new PIC.ShapeProperties(
+                                    new A.Transform2D(
+                                        new A.Offset() { X = 0L, Y = 0L },
+                                        new A.Extents() { Cx = 990000L, Cy = 792000L }
+                                    ),
+                                    new A.PresetGeometry(new A.AdjustValueList()) { Preset = A.ShapeTypeValues.Rectangle }
+                                )
+                            )
+                        )
+                        { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" }
+                    )
+                )
+                {
+                    DistanceFromTop = (UInt32Value)0U,
+                    DistanceFromBottom = (UInt32Value)0U,
+                    DistanceFromLeft = (UInt32Value)0U,
+                    DistanceFromRight = (UInt32Value)0U,
+                    EditId = "50D07946"
+                });
+
+            mainPart.Document.Body.AppendChild(new Paragraph(new Run(element)));
+        }
 
 
 
 
 
         //End In Bill
-
 
         [HttpPost]
         public ActionResult AddListProduct(int id, int soluong)
@@ -392,7 +727,9 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                             CategoryName = checkSanPham.tb_Products.tb_ProductCategory.Title,
                             Capcity = (int)checkSanPham.Capacity,
                             Color = checkSanPham.Color,
-                            SoLuong = 1,
+                            SoLuong = soluong, // Thay đổi ở đây
+                            ProductsId = checkSanPham.tb_Products.ProductsId,
+                            Alias = checkSanPham.tb_Products.Alias,
                         };
 
                         if (checkSanPham.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault) != null)
@@ -430,19 +767,6 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             return Json(code);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         [HttpPost]
         public ActionResult UpdateQuantityCartItem(int id, int quantity)
         {
@@ -450,10 +774,12 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             if (cart != null)
             {
                 cart.UpSoLuong(id, quantity);
+                Session["SellerCart"] = cart; // Cập nhật lại session
                 return Json(new { Success = true });
             }
             return Json(new { Success = false });
         }
+
         [HttpPost]
         public ActionResult DeleteCartItem(int id)
         {
@@ -461,16 +787,12 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             SellerCart cart = (SellerCart)Session["SellerCart"];
             if (cart != null)
             {
-
                 cart.Remove(id);
                 Session["SellerCart"] = cart; // Cập nhật lại session
                 code = new { Success = true, Code = 1, Url = "" };
             }
             return Json(code);
         }
-
-
-
         public ActionResult Partial_TotalPriceCheckOut()
         {
 

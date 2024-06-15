@@ -19,7 +19,6 @@ namespace WebSite_CuaHangDienThoai.Models
         {
             this.tb_ExportWareHouse = new HashSet<tb_ExportWareHouse>();
             this.tb_OrderDetail = new HashSet<tb_OrderDetail>();
-            this.tb_Return = new HashSet<tb_Return>();
             this.tb_VoucherDetail = new HashSet<tb_VoucherDetail>();
         }
     
@@ -49,8 +48,6 @@ namespace WebSite_CuaHangDienThoai.Models
         public virtual ICollection<tb_ExportWareHouse> tb_ExportWareHouse { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_OrderDetail> tb_OrderDetail { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tb_Return> tb_Return { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_VoucherDetail> tb_VoucherDetail { get; set; }
     }

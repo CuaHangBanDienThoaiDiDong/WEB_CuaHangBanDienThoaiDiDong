@@ -53,7 +53,6 @@
             margin-top: 2rem;
         }
 
-
         .qr-code {
             margin-top: 2rem;
             display: flex;
@@ -70,7 +69,6 @@
     <div class="container invoice-container">
         <div class="row">
             <div class="col-1">
-
                 <!--<img src="../../images/Logo/LogoWeb.png" style="max-width: 150px" />-->
                 #{{Image}}
             </div>
@@ -87,22 +85,20 @@
         <hr />
         <div>
             <div class="row">
-                <div class="col-4">   #{{QRCode}}</div>
+                <div class="col-4">#{{QRCode}}</div>
                 <div class="col-4">
                     <h2 style="color: red; text-align: center">Hóa đơn</h2>
-                 
                 </div>
-               
             </div>
         </div>
         <hr />
         <div class="row">
             <div class="col-12">
                 <span><b>Họ tên người mua hàng : </b> #{{CustomerName}} </span><br />
-                <span><b>Địa chỉ giao hàng : </b> #{{Address}}</span><br />
+                <span><b>Số điện thoại khách hàng : </b> #{{Phone}}</span><br />
                 <span><b>Ngày mua mua hàng : </b> #{{CreatedDate}}</span><br />
 
-                                                                         <span><b>Mã đơn hàng : </b>#{{Code}}</span><br />
+                <span><b>Mã đơn hàng : </b>#{{Code}}</span><br />
             </div>
         </div>
         <hr />
@@ -128,7 +124,7 @@
             <div class="invoice-footer">
                 <p style="text-align: left">
                     <b>Tổng cộng tiền thanh toán :</b>
-                    <span style="color: red">   #{{totalOrder}} đ</span>
+                    <span style="color: red"> #{{TotalAmountSeller}} </span>
                 </p>
             </div>
 
@@ -143,11 +139,8 @@
                         <br />
                         <small>WebSite:http://giathuan1711-001-site1.btempurl.com/</small>
                     </div>
-
                 </div>
             </div>
-
-
         </div>
     </div>
 </body>

@@ -19,7 +19,6 @@ namespace WebSite_CuaHangDienThoai.Models
         {
             this.tb_ProductDetail = new HashSet<tb_ProductDetail>();
             this.tb_ProductImage = new HashSet<tb_ProductImage>();
-            this.tb_ReturnDetail = new HashSet<tb_ReturnDetail>();
         }
     
         public int ProductsId { get; set; }
@@ -65,7 +64,5 @@ namespace WebSite_CuaHangDienThoai.Models
         public virtual ICollection<tb_ProductDetail> tb_ProductDetail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_ProductImage> tb_ProductImage { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tb_ReturnDetail> tb_ReturnDetail { get; set; }
     }
 }

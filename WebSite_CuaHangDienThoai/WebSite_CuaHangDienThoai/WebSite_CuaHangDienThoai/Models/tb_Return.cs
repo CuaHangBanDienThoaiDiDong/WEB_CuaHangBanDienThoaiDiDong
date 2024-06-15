@@ -29,7 +29,6 @@ namespace WebSite_CuaHangDienThoai.Models
         public string Satus { get; set; }
     
         public virtual tb_Customer tb_Customer { get; set; }
-        public virtual tb_Order tb_Order { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_ReturnDetail> tb_ReturnDetail { get; set; }
     }

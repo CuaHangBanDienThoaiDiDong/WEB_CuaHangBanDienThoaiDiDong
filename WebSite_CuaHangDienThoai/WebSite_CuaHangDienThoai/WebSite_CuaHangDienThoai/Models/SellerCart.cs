@@ -87,6 +87,7 @@ namespace WebSite_CuaHangDienThoai.Models
 
     public class SellerCartItem
     {
+        public int ProductsId { get; set; }
         public int ProductDetailId { get; set; }
         public string ProductName { get; set; }
         public string Alias { get; set; }

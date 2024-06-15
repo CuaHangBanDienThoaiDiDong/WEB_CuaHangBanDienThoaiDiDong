@@ -112,6 +112,17 @@
           <Property Name="QuanTity" Type="int" />
           <Property Name="ImportWarehouseId" Type="int" />
         </EntityType>
+        <EntityType Name="tb_Message">
+          <Key>
+            <PropertyRef Name="MessageId" />
+          </Key>
+          <Property Name="MessageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SenderId" Type="int" Nullable="false" />
+          <Property Name="ReceiverId" Type="int" Nullable="false" />
+          <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="IsRead" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="tb_Order">
           <Key>
             <PropertyRef Name="OrderId" />
@@ -272,7 +283,7 @@
           <Property Name="ReturnId" Type="int" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
-          <Property Name="ProductsId" Type="int" />
+          <Property Name="ProductDetailId" Type="int" />
         </EntityType>
         <EntityType Name="tb_Review">
           <Key>
@@ -436,6 +447,14 @@
           <Property Name="QuanTity" Type="int" />
           <Property Name="WarehouseId" Type="int" />
         </EntityType>
+        <EntityType Name="UserTokens">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Token" Type="char" MaxLength="4000" />
+          <Property Name="ExpiryDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="Wards">
           <Key>
             <PropertyRef Name="idWards" />
@@ -516,6 +535,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__tb_Messag__Recei__4CF5691D">
+          <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="1" />
+          <End Role="tb_Message" Type="Self.tb_Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Staff">
+              <PropertyRef Name="StaffId" />
+            </Principal>
+            <Dependent Role="tb_Message">
+              <PropertyRef Name="ReceiverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_Messag__Sende__4C0144E4">
+          <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="1" />
+          <End Role="tb_Message" Type="Self.tb_Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="tb_Message">
+              <PropertyRef Name="SenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Wards__idDistric__68487DD7">
           <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
           <End Role="Wards" Type="Self.Wards" Multiplicity="*" />
@@ -525,6 +568,20 @@
             </Principal>
             <Dependent Role="Wards">
               <PropertyRef Name="idDistricts" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTokens_Users">
+          <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserTokens" Type="Self.UserTokens" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Staff">
+              <PropertyRef Name="StaffId" />
+            </Principal>
+            <Dependent Role="UserTokens">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -709,14 +766,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="ReturnDetailtoProductDetai">
-          <End Role="tb_Products" Type="Self.tb_Products" Multiplicity="0..1" />
+          <End Role="tb_ProductDetail" Type="Self.tb_ProductDetail" Multiplicity="0..1" />
           <End Role="tb_ReturnDetail" Type="Self.tb_ReturnDetail" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="tb_Products">
-              <PropertyRef Name="ProductsId" />
+            <Principal Role="tb_ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
             </Principal>
             <Dependent Role="tb_ReturnDetail">
-              <PropertyRef Name="ProductsId" />
+              <PropertyRef Name="ProductDetailId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -741,18 +798,6 @@
             </Principal>
             <Dependent Role="tb_Return">
               <PropertyRef Name="CustomerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ReturntoOrder">
-          <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="0..1" />
-          <End Role="tb_Return" Type="Self.tb_Return" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tb_Order">
-              <PropertyRef Name="OrderId" />
-            </Principal>
-            <Dependent Role="tb_Return">
-              <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -983,6 +1028,7 @@
           <EntitySet Name="tb_Function" EntityType="Self.tb_Function" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_ImportWarehouse" EntityType="Self.tb_ImportWarehouse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_ImportWarehouseDetail" EntityType="Self.tb_ImportWarehouseDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_Message" EntityType="Self.tb_Message" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_Order" EntityType="Self.tb_Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_OrderDetail" EntityType="Self.tb_OrderDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_ProductCategory" EntityType="Self.tb_ProductCategory" Schema="dbo" store:Type="Tables" />
@@ -1005,6 +1051,7 @@
           <EntitySet Name="tb_VoucherDetail" EntityType="Self.tb_VoucherDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_Warehouse" EntityType="Self.tb_Warehouse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_WarehouseDetail" EntityType="Self.tb_WarehouseDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserTokens" EntityType="Self.UserTokens" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Wards" EntityType="Self.Wards" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="CartItemtoCart" Association="Self.CartItemtoCart">
             <End Role="tb_Cart" EntitySet="tb_Cart" />
@@ -1030,9 +1077,21 @@
             <End Role="Provinces" EntitySet="Provinces" />
             <End Role="Districts" EntitySet="Districts" />
           </AssociationSet>
+          <AssociationSet Name="FK__tb_Messag__Recei__4CF5691D" Association="Self.FK__tb_Messag__Recei__4CF5691D">
+            <End Role="tb_Staff" EntitySet="tb_Staff" />
+            <End Role="tb_Message" EntitySet="tb_Message" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_Messag__Sende__4C0144E4" Association="Self.FK__tb_Messag__Sende__4C0144E4">
+            <End Role="tb_Customer" EntitySet="tb_Customer" />
+            <End Role="tb_Message" EntitySet="tb_Message" />
+          </AssociationSet>
           <AssociationSet Name="FK__Wards__idDistric__68487DD7" Association="Self.FK__Wards__idDistric__68487DD7">
             <End Role="Districts" EntitySet="Districts" />
             <End Role="Wards" EntitySet="Wards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTokens_Users" Association="Self.FK_UserTokens_Users">
+            <End Role="tb_Staff" EntitySet="tb_Staff" />
+            <End Role="UserTokens" EntitySet="UserTokens" />
           </AssociationSet>
           <AssociationSet Name="GioHangtoKhachHang" Association="Self.GioHangtoKhachHang">
             <End Role="tb_Customer" EntitySet="tb_Customer" />
@@ -1095,7 +1154,7 @@
             <End Role="tb_ProductImage" EntitySet="tb_ProductImage" />
           </AssociationSet>
           <AssociationSet Name="ReturnDetailtoProductDetai" Association="Self.ReturnDetailtoProductDetai">
-            <End Role="tb_Products" EntitySet="tb_Products" />
+            <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
             <End Role="tb_ReturnDetail" EntitySet="tb_ReturnDetail" />
           </AssociationSet>
           <AssociationSet Name="ReturnDetailtoReturn" Association="Self.ReturnDetailtoReturn">
@@ -1104,10 +1163,6 @@
           </AssociationSet>
           <AssociationSet Name="ReturntoKhachHang" Association="Self.ReturntoKhachHang">
             <End Role="tb_Customer" EntitySet="tb_Customer" />
-            <End Role="tb_Return" EntitySet="tb_Return" />
-          </AssociationSet>
-          <AssociationSet Name="ReturntoOrder" Association="Self.ReturntoOrder">
-            <End Role="tb_Order" EntitySet="tb_Order" />
             <End Role="tb_Return" EntitySet="tb_Return" />
           </AssociationSet>
           <AssociationSet Name="ReviewDetailtoKhachHang" Association="Self.ReviewDetailtoKhachHang">
@@ -1257,6 +1312,7 @@
           <Property Name="Clock" Type="Boolean" />
           <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="tb_Cart" Relationship="Self.GioHangtoKhachHang" FromRole="tb_Customer" ToRole="tb_Cart" />
+          <NavigationProperty Name="tb_Message" Relationship="Self.FK__tb_Messag__Sende__4C0144E4" FromRole="tb_Customer" ToRole="tb_Message" />
           <NavigationProperty Name="tb_Order" Relationship="Self.OrdertKhachHang" FromRole="tb_Customer" ToRole="tb_Order" />
           <NavigationProperty Name="tb_Return" Relationship="Self.ReturntoKhachHang" FromRole="tb_Customer" ToRole="tb_Return" />
           <NavigationProperty Name="tb_ReviewDetail" Relationship="Self.ReviewDetailtoKhachHang" FromRole="tb_Customer" ToRole="tb_ReviewDetail" />
@@ -1320,6 +1376,19 @@
           <NavigationProperty Name="tb_ImportWarehouse" Relationship="Self.ImportWarehouseDetailToImportWarehouse" FromRole="tb_ImportWarehouseDetail" ToRole="tb_ImportWarehouse" />
           <NavigationProperty Name="tb_ProductDetail" Relationship="Self.ImportWarehouseDetailToProductdtail" FromRole="tb_ImportWarehouseDetail" ToRole="tb_ProductDetail" />
         </EntityType>
+        <EntityType Name="tb_Message">
+          <Key>
+            <PropertyRef Name="MessageId" />
+          </Key>
+          <Property Name="MessageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SenderId" Type="Int32" Nullable="false" />
+          <Property Name="ReceiverId" Type="Int32" Nullable="false" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsRead" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tb_Customer" Relationship="Self.FK__tb_Messag__Sende__4C0144E4" FromRole="tb_Message" ToRole="tb_Customer" />
+          <NavigationProperty Name="tb_Staff" Relationship="Self.FK__tb_Messag__Recei__4CF5691D" FromRole="tb_Message" ToRole="tb_Staff" />
+        </EntityType>
         <EntityType Name="tb_Order">
           <Key>
             <PropertyRef Name="OrderId" />
@@ -1347,7 +1416,6 @@
           <NavigationProperty Name="tb_Customer" Relationship="Self.OrdertKhachHang" FromRole="tb_Order" ToRole="tb_Customer" />
           <NavigationProperty Name="tb_ExportWareHouse" Relationship="Self.ExportWareHousetoOrder" FromRole="tb_Order" ToRole="tb_ExportWareHouse" />
           <NavigationProperty Name="tb_OrderDetail" Relationship="Self.OrderDetailtoOrder" FromRole="tb_Order" ToRole="tb_OrderDetail" />
-          <NavigationProperty Name="tb_Return" Relationship="Self.ReturntoOrder" FromRole="tb_Order" ToRole="tb_Return" />
           <NavigationProperty Name="tb_VoucherDetail" Relationship="Self.VoucherDetailtoOrder" FromRole="tb_Order" ToRole="tb_VoucherDetail" />
         </EntityType>
         <EntityType Name="tb_OrderDetail">
@@ -1414,6 +1482,7 @@
           <NavigationProperty Name="tb_OrderDetail" Relationship="Self.OrderDetailtoProductDetai" FromRole="tb_ProductDetail" ToRole="tb_OrderDetail" />
           <NavigationProperty Name="tb_ProductDetailImage" Relationship="Self.ProductDetailImageToProductDetail" FromRole="tb_ProductDetail" ToRole="tb_ProductDetailImage" />
           <NavigationProperty Name="tb_Products" Relationship="Self.ProductDetaiToProducts" FromRole="tb_ProductDetail" ToRole="tb_Products" />
+          <NavigationProperty Name="tb_ReturnDetail" Relationship="Self.ReturnDetailtoProductDetai" FromRole="tb_ProductDetail" ToRole="tb_ReturnDetail" />
           <NavigationProperty Name="tb_Review" Relationship="Self.ReviewDetailtoProductDetai" FromRole="tb_ProductDetail" ToRole="tb_Review" />
           <NavigationProperty Name="tb_SellerDetail" Relationship="Self.SellerToProductDetail" FromRole="tb_ProductDetail" ToRole="tb_SellerDetail" />
           <NavigationProperty Name="tb_WarehouseDetail" Relationship="Self.WarehouseDetailetoProductDetail" FromRole="tb_ProductDetail" ToRole="tb_WarehouseDetail" />
@@ -1482,7 +1551,6 @@
           <NavigationProperty Name="tb_ProductCompany" Relationship="Self.ProductCompanytoProductDetai" FromRole="tb_Products" ToRole="tb_ProductCompany" />
           <NavigationProperty Name="tb_ProductDetail" Relationship="Self.ProductDetaiToProducts" FromRole="tb_Products" ToRole="tb_ProductDetail" />
           <NavigationProperty Name="tb_ProductImage" Relationship="Self.ProductstoProductImage" FromRole="tb_Products" ToRole="tb_ProductImage" />
-          <NavigationProperty Name="tb_ReturnDetail" Relationship="Self.ReturnDetailtoProductDetai" FromRole="tb_Products" ToRole="tb_ReturnDetail" />
         </EntityType>
         <EntityType Name="tb_Return">
           <Key>
@@ -1496,7 +1564,6 @@
           <Property Name="CustomerId" Type="Int32" />
           <Property Name="Satus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tb_Customer" Relationship="Self.ReturntoKhachHang" FromRole="tb_Return" ToRole="tb_Customer" />
-          <NavigationProperty Name="tb_Order" Relationship="Self.ReturntoOrder" FromRole="tb_Return" ToRole="tb_Order" />
           <NavigationProperty Name="tb_ReturnDetail" Relationship="Self.ReturnDetailtoReturn" FromRole="tb_Return" ToRole="tb_ReturnDetail" />
         </EntityType>
         <EntityType Name="tb_ReturnDetail">
@@ -1507,8 +1574,8 @@
           <Property Name="ReturnId" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="ProductsId" Type="Int32" />
-          <NavigationProperty Name="tb_Products" Relationship="Self.ReturnDetailtoProductDetai" FromRole="tb_ReturnDetail" ToRole="tb_Products" />
+          <Property Name="ProductDetailId" Type="Int32" />
+          <NavigationProperty Name="tb_ProductDetail" Relationship="Self.ReturnDetailtoProductDetai" FromRole="tb_ReturnDetail" ToRole="tb_ProductDetail" />
           <NavigationProperty Name="tb_Return" Relationship="Self.ReturnDetailtoReturn" FromRole="tb_ReturnDetail" ToRole="tb_Return" />
         </EntityType>
         <EntityType Name="tb_Review">
@@ -1609,8 +1676,10 @@
           <NavigationProperty Name="tb_ExportWareHouse" Relationship="Self.ExportWareHousetoStaff" FromRole="tb_Staff" ToRole="tb_ExportWareHouse" />
           <NavigationProperty Name="tb_Function" Relationship="Self.StafftoFunction" FromRole="tb_Staff" ToRole="tb_Function" />
           <NavigationProperty Name="tb_ImportWarehouse" Relationship="Self.ImportWarehouseToStaff" FromRole="tb_Staff" ToRole="tb_ImportWarehouse" />
+          <NavigationProperty Name="tb_Message" Relationship="Self.FK__tb_Messag__Recei__4CF5691D" FromRole="tb_Staff" ToRole="tb_Message" />
           <NavigationProperty Name="tb_Role" Relationship="Self.RoletoStaff" FromRole="tb_Staff" ToRole="tb_Role" />
           <NavigationProperty Name="tb_Seller" Relationship="Self.Sellerto" FromRole="tb_Staff" ToRole="tb_Seller" />
+          <NavigationProperty Name="UserTokens" Relationship="Self.FK_UserTokens_Users" FromRole="tb_Staff" ToRole="UserTokens" />
           <NavigationProperty Name="tb_Store" Relationship="Self.NewStaffToStoreFK" FromRole="tb_Staff" ToRole="tb_Store" />
         </EntityType>
         <EntityType Name="tb_Store">
@@ -1705,6 +1774,15 @@
           <NavigationProperty Name="tb_ProductDetail" Relationship="Self.WarehouseDetailetoProductDetail" FromRole="tb_WarehouseDetail" ToRole="tb_ProductDetail" />
           <NavigationProperty Name="tb_Warehouse" Relationship="Self.WarehouseDetailetoWarehouse" FromRole="tb_WarehouseDetail" ToRole="tb_Warehouse" />
         </EntityType>
+        <EntityType Name="UserTokens">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Token" Type="String" MaxLength="4000" FixedLength="true" Unicode="false" />
+          <Property Name="ExpiryDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tb_Staff" Relationship="Self.FK_UserTokens_Users" FromRole="UserTokens" ToRole="tb_Staff" />
+        </EntityType>
         <EntityType Name="Wards">
           <Key>
             <PropertyRef Name="idWards" />
@@ -1796,6 +1874,18 @@
             </Principal>
             <Dependent Role="tb_CartItem">
               <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_Messag__Sende__4C0144E4">
+          <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="1" />
+          <End Role="tb_Message" Type="Self.tb_Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="tb_Message">
+              <PropertyRef Name="SenderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1967,6 +2057,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__tb_Messag__Recei__4CF5691D">
+          <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="1" />
+          <End Role="tb_Message" Type="Self.tb_Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Staff">
+              <PropertyRef Name="StaffId" />
+            </Principal>
+            <Dependent Role="tb_Message">
+              <PropertyRef Name="ReceiverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="OrderDetailtoOrder">
           <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="0..1" />
           <End Role="tb_OrderDetail" Type="Self.tb_OrderDetail" Multiplicity="*" />
@@ -1975,18 +2077,6 @@
               <PropertyRef Name="OrderId" />
             </Principal>
             <Dependent Role="tb_OrderDetail">
-              <PropertyRef Name="OrderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ReturntoOrder">
-          <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="0..1" />
-          <End Role="tb_Return" Type="Self.tb_Return" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tb_Order">
-              <PropertyRef Name="OrderId" />
-            </Principal>
-            <Dependent Role="tb_Return">
               <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2063,6 +2153,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="ReturnDetailtoProductDetai">
+          <End Role="tb_ProductDetail" Type="Self.tb_ProductDetail" Multiplicity="0..1" />
+          <End Role="tb_ReturnDetail" Type="Self.tb_ReturnDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Principal>
+            <Dependent Role="tb_ReturnDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="ReviewDetailtoProductDetai">
           <End Role="tb_ProductDetail" Type="Self.tb_ProductDetail" Multiplicity="0..1" />
           <End Role="tb_Review" Type="Self.tb_Review" Multiplicity="*" />
@@ -2107,18 +2209,6 @@
               <PropertyRef Name="ProductsId" />
             </Principal>
             <Dependent Role="tb_ProductImage">
-              <PropertyRef Name="ProductsId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ReturnDetailtoProductDetai">
-          <End Role="tb_Products" Type="Self.tb_Products" Multiplicity="0..1" />
-          <End Role="tb_ReturnDetail" Type="Self.tb_ReturnDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tb_Products">
-              <PropertyRef Name="ProductsId" />
-            </Principal>
-            <Dependent Role="tb_ReturnDetail">
               <PropertyRef Name="ProductsId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2180,6 +2270,20 @@
             </Principal>
             <Dependent Role="tb_Seller">
               <PropertyRef Name="StaffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTokens_Users">
+          <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserTokens" Type="Self.UserTokens" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Staff">
+              <PropertyRef Name="StaffId" />
+            </Principal>
+            <Dependent Role="UserTokens">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2254,6 +2358,7 @@
           <EntitySet Name="tb_Function" EntityType="Self.tb_Function" />
           <EntitySet Name="tb_ImportWarehouse" EntityType="Self.tb_ImportWarehouse" />
           <EntitySet Name="tb_ImportWarehouseDetail" EntityType="Self.tb_ImportWarehouseDetail" />
+          <EntitySet Name="tb_Message" EntityType="Self.tb_Message" />
           <EntitySet Name="tb_Order" EntityType="Self.tb_Order" />
           <EntitySet Name="tb_OrderDetail" EntityType="Self.tb_OrderDetail" />
           <EntitySet Name="tb_ProductCategory" EntityType="Self.tb_ProductCategory" />
@@ -2276,6 +2381,7 @@
           <EntitySet Name="tb_VoucherDetail" EntityType="Self.tb_VoucherDetail" />
           <EntitySet Name="tb_Warehouse" EntityType="Self.tb_Warehouse" />
           <EntitySet Name="tb_WarehouseDetail" EntityType="Self.tb_WarehouseDetail" />
+          <EntitySet Name="UserTokens" EntityType="Self.UserTokens" />
           <EntitySet Name="Wards" EntityType="Self.Wards" />
           <AssociationSet Name="FK__Districts__idPro__656C112C" Association="Self.FK__Districts__idPro__656C112C">
             <End Role="Provinces" EntitySet="Provinces" />
@@ -2304,6 +2410,10 @@
           <AssociationSet Name="CartItemtoProducdetai" Association="Self.CartItemtoProducdetai">
             <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
             <End Role="tb_CartItem" EntitySet="tb_CartItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_Messag__Sende__4C0144E4" Association="Self.FK__tb_Messag__Sende__4C0144E4">
+            <End Role="tb_Customer" EntitySet="tb_Customer" />
+            <End Role="tb_Message" EntitySet="tb_Message" />
           </AssociationSet>
           <AssociationSet Name="OrdertKhachHang" Association="Self.OrdertKhachHang">
             <End Role="tb_Customer" EntitySet="tb_Customer" />
@@ -2361,13 +2471,13 @@
             <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
             <End Role="tb_ImportWarehouseDetail" EntitySet="tb_ImportWarehouseDetail" />
           </AssociationSet>
+          <AssociationSet Name="FK__tb_Messag__Recei__4CF5691D" Association="Self.FK__tb_Messag__Recei__4CF5691D">
+            <End Role="tb_Staff" EntitySet="tb_Staff" />
+            <End Role="tb_Message" EntitySet="tb_Message" />
+          </AssociationSet>
           <AssociationSet Name="OrderDetailtoOrder" Association="Self.OrderDetailtoOrder">
             <End Role="tb_Order" EntitySet="tb_Order" />
             <End Role="tb_OrderDetail" EntitySet="tb_OrderDetail" />
-          </AssociationSet>
-          <AssociationSet Name="ReturntoOrder" Association="Self.ReturntoOrder">
-            <End Role="tb_Order" EntitySet="tb_Order" />
-            <End Role="tb_Return" EntitySet="tb_Return" />
           </AssociationSet>
           <AssociationSet Name="VoucherDetailtoOrder" Association="Self.VoucherDetailtoOrder">
             <End Role="tb_Order" EntitySet="tb_Order" />
@@ -2393,6 +2503,10 @@
             <End Role="tb_Products" EntitySet="tb_Products" />
             <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
           </AssociationSet>
+          <AssociationSet Name="ReturnDetailtoProductDetai" Association="Self.ReturnDetailtoProductDetai">
+            <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
+            <End Role="tb_ReturnDetail" EntitySet="tb_ReturnDetail" />
+          </AssociationSet>
           <AssociationSet Name="ReviewDetailtoProductDetai" Association="Self.ReviewDetailtoProductDetai">
             <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
             <End Role="tb_Review" EntitySet="tb_Review" />
@@ -2408,10 +2522,6 @@
           <AssociationSet Name="ProductstoProductImage" Association="Self.ProductstoProductImage">
             <End Role="tb_Products" EntitySet="tb_Products" />
             <End Role="tb_ProductImage" EntitySet="tb_ProductImage" />
-          </AssociationSet>
-          <AssociationSet Name="ReturnDetailtoProductDetai" Association="Self.ReturnDetailtoProductDetai">
-            <End Role="tb_Products" EntitySet="tb_Products" />
-            <End Role="tb_ReturnDetail" EntitySet="tb_ReturnDetail" />
           </AssociationSet>
           <AssociationSet Name="ReturnDetailtoReturn" Association="Self.ReturnDetailtoReturn">
             <End Role="tb_Return" EntitySet="tb_Return" />
@@ -2432,6 +2542,10 @@
           <AssociationSet Name="Sellerto" Association="Self.Sellerto">
             <End Role="tb_Staff" EntitySet="tb_Staff" />
             <End Role="tb_Seller" EntitySet="tb_Seller" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTokens_Users" Association="Self.FK_UserTokens_Users">
+            <End Role="tb_Staff" EntitySet="tb_Staff" />
+            <End Role="UserTokens" EntitySet="UserTokens" />
           </AssociationSet>
           <AssociationSet Name="NewStaffToStoreFK" Association="Self.NewStaffToStoreFK">
             <End Role="tb_Store" EntitySet="tb_Store" />
@@ -2574,6 +2688,18 @@
                 <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
                 <ScalarProperty Name="QuanTity" ColumnName="QuanTity" />
                 <ScalarProperty Name="ImportWarehouseId" ColumnName="ImportWarehouseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_Message">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Message">
+              <MappingFragment StoreEntitySet="tb_Message">
+                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+                <ScalarProperty Name="SenderId" ColumnName="SenderId" />
+                <ScalarProperty Name="ReceiverId" ColumnName="ReceiverId" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2745,7 +2871,7 @@
                 <ScalarProperty Name="ReturnId" ColumnName="ReturnId" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
+                <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2919,6 +3045,15 @@
                 <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
                 <ScalarProperty Name="QuanTity" ColumnName="QuanTity" />
                 <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserTokens">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.UserTokens">
+              <MappingFragment StoreEntitySet="UserTokens">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -18,9 +18,9 @@ namespace WebSite_CuaHangDienThoai.Models
         public int ReturnId { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
-        public Nullable<int> ProductsId { get; set; }
+        public Nullable<int> ProductDetailId { get; set; }
     
-        public virtual tb_Products tb_Products { get; set; }
+        public virtual tb_ProductDetail tb_ProductDetail { get; set; }
         public virtual tb_Return tb_Return { get; set; }
     }
 }

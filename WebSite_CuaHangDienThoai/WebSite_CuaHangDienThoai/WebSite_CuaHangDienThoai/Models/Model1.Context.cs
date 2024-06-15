@@ -35,6 +35,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public virtual DbSet<tb_Function> tb_Function { get; set; }
         public virtual DbSet<tb_ImportWarehouse> tb_ImportWarehouse { get; set; }
         public virtual DbSet<tb_ImportWarehouseDetail> tb_ImportWarehouseDetail { get; set; }
+        public virtual DbSet<tb_Message> tb_Message { get; set; }
         public virtual DbSet<tb_Order> tb_Order { get; set; }
         public virtual DbSet<tb_OrderDetail> tb_OrderDetail { get; set; }
         public virtual DbSet<tb_ProductCategory> tb_ProductCategory { get; set; }
@@ -57,6 +58,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public virtual DbSet<tb_VoucherDetail> tb_VoucherDetail { get; set; }
         public virtual DbSet<tb_Warehouse> tb_Warehouse { get; set; }
         public virtual DbSet<tb_WarehouseDetail> tb_WarehouseDetail { get; set; }
+        public virtual DbSet<UserTokens> UserTokens { get; set; }
         public virtual DbSet<Wards> Wards { get; set; }
     }
 }

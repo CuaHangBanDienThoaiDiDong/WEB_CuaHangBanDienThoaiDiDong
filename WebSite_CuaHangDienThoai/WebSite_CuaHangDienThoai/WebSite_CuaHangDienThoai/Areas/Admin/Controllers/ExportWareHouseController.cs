@@ -333,12 +333,15 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
 
 
-        //endXuat Word
 
 
 
         public string ExportInvoice(int orderId)
         {
+            if (orderId < 0) 
+            {
+                return null;
+            }
             var order = db.tb_Order.Find(orderId);
             if (order != null)
             {
@@ -408,66 +411,6 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             return null;
         }
-
-
-        //private void ConvertHTMLToWord(string htmlContent, string wordFilePath, string logoPath, string qrCodeContent)
-        //{
-        //    // Thay thế placeholder với hình ảnh logo và mã QR code
-        //    string logoPlaceholder = "#{{Image}}";
-        //    string qrCodePlaceholder = "#{{QRCode}}";
-
-        //    if (System.IO.File.Exists(logoPath))
-        //    {
-        //        string logoBase64 = Convert.ToBase64String(System.IO.File.ReadAllBytes(logoPath));
-        //        string imgTag = $"<img src='data:image/png;base64,{logoBase64}' style='width: 100px; height: 100px;' />";
-        //        htmlContent = htmlContent.Replace(logoPlaceholder, imgTag);
-        //    }
-
-        //    if (!string.IsNullOrEmpty(qrCodeContent))
-        //    {
-        //        using (MemoryStream qrCodeStream = GenerateQRCode(qrCodeContent))
-        //        {
-        //            string qrCodeBase64 = Convert.ToBase64String(qrCodeStream.ToArray());
-        //            string imgTag = $"<img src='data:image/png;base64,{qrCodeBase64}' style='max-width: 50px; max-height: 50px;' />";
-        //            htmlContent = htmlContent.Replace(qrCodePlaceholder, imgTag);
-        //        }
-        //    }
-
-        //    using (MemoryStream memStream = new MemoryStream())
-        //    {
-        //        // Tạo một tài liệu Word mới
-        //        using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(memStream, WordprocessingDocumentType.Document))
-        //        {
-        //            // Tạo phần main của tài liệu
-        //            MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
-        //            mainPart.Document = new Document();
-        //            Body body = mainPart.Document.AppendChild(new Body());
-
-        //            // Chuyển đổi HTML thành Open XML và thêm vào tài liệu Word
-        //            string altChunkId = "AltChunkId1";
-        //            AlternativeFormatImportPart chunk = mainPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.Html, altChunkId);
-        //            using (StreamWriter streamWriter = new StreamWriter(chunk.GetStream()))
-        //            {
-        //                streamWriter.Write(htmlContent);
-        //            }
-
-        //            AltChunk altChunk = new AltChunk();
-        //            altChunk.Id = altChunkId;
-        //            body.Append(altChunk);
-
-        //            // Lưu tài liệu Word xuống tệp
-        //            mainPart.Document.Save();
-        //        }
-
-        //        // Lưu tài liệu Word xuống tệp
-        //        using (FileStream fileStream = new FileStream(wordFilePath, FileMode.Create))
-        //        {
-        //            memStream.Position = 0;
-        //            memStream.CopyTo(fileStream);
-        //        }
-        //    }
-        //}
-
 
 
         public void ConvertHTMLToWord(string htmlContent, string wordFilePath, string logoPath, string qrCodeContent)
@@ -672,6 +615,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
+        //endXuat Word
 
 
         public ActionResult Partial_OrderDetail(int id)

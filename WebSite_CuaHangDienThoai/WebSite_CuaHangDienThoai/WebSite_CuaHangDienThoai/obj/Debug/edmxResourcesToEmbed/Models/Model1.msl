@@ -118,6 +118,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="tb_Message">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Message">
+        <MappingFragment StoreEntitySet="tb_Message">
+          <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+          <ScalarProperty Name="SenderId" ColumnName="SenderId" />
+          <ScalarProperty Name="ReceiverId" ColumnName="ReceiverId" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+          <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="tb_Order">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Order">
         <MappingFragment StoreEntitySet="tb_Order">
@@ -286,7 +298,7 @@
           <ScalarProperty Name="ReturnId" ColumnName="ReturnId" />
           <ScalarProperty Name="Price" ColumnName="Price" />
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-          <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
+          <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -460,6 +472,15 @@
           <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
           <ScalarProperty Name="QuanTity" ColumnName="QuanTity" />
           <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserTokens">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.UserTokens">
+        <MappingFragment StoreEntitySet="UserTokens">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Token" ColumnName="Token" />
+          <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

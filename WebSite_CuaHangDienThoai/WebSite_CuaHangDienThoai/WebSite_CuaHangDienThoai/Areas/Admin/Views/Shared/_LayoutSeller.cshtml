@@ -227,11 +227,13 @@
                             var user = Session["user"] as WebSite_CuaHangDienThoai.Models.tb_Staff;
                             if (user != null)
                             {
-                                <div>
-                                    <span class="text-white">@user.NameStaff</span>
-                                    <br />
-                                    <span class="text-white">@user.tb_Function.TitLe</span>
-                                </div>
+                                <a href="@Url.Action("Staff", "Account", new { code = user.Code, id = user.StaffId })" target="_blank">
+                                    <div>
+                                        <span class="text-white">@user.NameStaff</span>
+                                        <br />
+                                        <span class="text-white">@user.tb_Function.TitLe</span>
+                                    </div>
+                                </a>
                             }
                             else
                             {

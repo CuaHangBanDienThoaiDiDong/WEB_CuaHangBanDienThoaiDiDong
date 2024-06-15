@@ -3398,6 +3398,7 @@
     <Content Include="Content\Css\assets\pages\widget\amchart\worldLow.min.js" />
     <Content Include="Content\Css\Client\bootstrap.min.css" />
     <Content Include="Content\Css\Client\CartIndex.css" />
+    <Content Include="Content\Css\Client\chat.css" />
     <Content Include="Content\Css\Client\LayOut.css" />
     <Content Include="Content\Css\Client\LayOutSearch.css" />
     <Content Include="Content\Css\Client\LoginClient.css" />
@@ -3933,13 +3934,6 @@
     <Content Include="Areas\Admin\Views\Order\Partial_OrderIndex.cshtml" />
     <Content Include="Areas\Admin\Views\WareHouseImport\Partial_WareHouseImportIndex.cshtml" />
     <Content Include="Areas\Admin\Views\WareHouseImport\WareHouseImportExportToday.cshtml" />
-    <EntityDeploy Include="Models\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Admin\Views\Order\SuggestOrderCustomer.cshtml" />
     <Content Include="Areas\Admin\Views\Order\Partial_OrderNew.cshtml" />
     <Content Include="Areas\Admin\Views\Order\SuggestOrderNewCustomer.cshtml" />
@@ -3960,6 +3954,17 @@
     <Content Include="Areas\Admin\Views\Seller\SuggestProductLeft.cshtml" />
     <Content Include="Areas\Admin\Views\WareHouseImport\ListProductWareHouse.cshtml" />
     <Content Include="Areas\Admin\Views\WareHouseImport\StaffIndex.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\Staff.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\Partial_Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\EditImageStaff.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\Partail_EditPassWordStaff.cshtml" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
@@ -4246,6 +4251,7 @@
     <Compile Include="Common\Common.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
@@ -4274,6 +4280,7 @@
     <Compile Include="Models\AuthorizeSessionAttribute.cs" />
     <Compile Include="Models\CLient_EditCustomerViewModel.cs" />
     <Compile Include="Models\Client_EditPassWord.cs" />
+    <Compile Include="Models\CLient_EditStaffViewModel.cs" />
     <Compile Include="Models\Client_TokenReview.cs" />
     <Compile Include="Models\Common\Filter.cs" />
     <Compile Include="Models\CompanyModel.cs" />
@@ -4310,6 +4317,7 @@
     </Compile>
     <Compile Include="Models\ReturnAndCancelOrder.cs" />
     <Compile Include="Models\SellerCart.cs" />
+    <Compile Include="Models\Staff_EditPassWord.cs" />
     <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -4332,6 +4340,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tb_ImportWarehouseDetail.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tb_Message.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tb_Order.cs">
@@ -4408,6 +4419,10 @@
     <Compile Include="Models\Token\Client\Client_TokenAccount.cs" />
     <Compile Include="Models\ShoppingCart.cs" />
     <Compile Include="Models\UniqueCompanyTitlesViewModel.cs" />
+    <Compile Include="Models\UserExtensions.cs" />
+    <Compile Include="Models\UserTokens.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Wards.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -4527,6 +4542,7 @@
     <Content Include="Views\Account\Partail_EditPassWord.cshtml" />
     <Content Include="Views\Product\Partial_SanPhamGoiY.cshtml" />
     <Content Include="Views\ShoppingCart\CheckOutFailVnpay.cshtml" />
+    <Content Include="Views\Chat\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
