@@ -69,11 +69,24 @@
     <Property Name="Clock" Type="Boolean" />
     <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
     <NavigationProperty Name="tb_Cart" Relationship="Self.GioHangtoKhachHang" FromRole="tb_Customer" ToRole="tb_Cart" />
-    <NavigationProperty Name="tb_Message" Relationship="Self.FK__tb_Messag__Sende__4C0144E4" FromRole="tb_Customer" ToRole="tb_Message" />
+    <NavigationProperty Name="tb_CustomerMessageDetail" Relationship="Self.FK__tb_Custom__Custo__67A95F59" FromRole="tb_Customer" ToRole="tb_CustomerMessageDetail" />
     <NavigationProperty Name="tb_Order" Relationship="Self.OrdertKhachHang" FromRole="tb_Customer" ToRole="tb_Order" />
     <NavigationProperty Name="tb_Return" Relationship="Self.ReturntoKhachHang" FromRole="tb_Customer" ToRole="tb_Return" />
     <NavigationProperty Name="tb_ReviewDetail" Relationship="Self.ReviewDetailtoKhachHang" FromRole="tb_Customer" ToRole="tb_ReviewDetail" />
     <NavigationProperty Name="tb_Seller" Relationship="Self.SellertoCustomer" FromRole="tb_Customer" ToRole="tb_Seller" />
+  </EntityType>
+  <EntityType Name="tb_CustomerMessageDetail">
+    <Key>
+      <PropertyRef Name="DetailId" />
+    </Key>
+    <Property Name="DetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MessageId" Type="Int32" Nullable="false" />
+    <Property Name="CustomerId" Type="Int32" Nullable="false" />
+    <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsRead" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="tb_Customer" Relationship="Self.FK__tb_Custom__Custo__67A95F59" FromRole="tb_CustomerMessageDetail" ToRole="tb_Customer" />
+    <NavigationProperty Name="tb_Message" Relationship="Self.FK__tb_Custom__Messa__66B53B20" FromRole="tb_CustomerMessageDetail" ToRole="tb_Message" />
   </EntityType>
   <EntityType Name="tb_ExportWareHouse">
     <Key>
@@ -138,13 +151,11 @@
       <PropertyRef Name="MessageId" />
     </Key>
     <Property Name="MessageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="SenderId" Type="Int32" Nullable="false" />
-    <Property Name="ReceiverId" Type="Int32" Nullable="false" />
     <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="IsRead" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="tb_Customer" Relationship="Self.FK__tb_Messag__Sende__4C0144E4" FromRole="tb_Message" ToRole="tb_Customer" />
-    <NavigationProperty Name="tb_Staff" Relationship="Self.FK__tb_Messag__Recei__4CF5691D" FromRole="tb_Message" ToRole="tb_Staff" />
+    <NavigationProperty Name="tb_CustomerMessageDetail" Relationship="Self.FK__tb_Custom__Messa__66B53B20" FromRole="tb_Message" ToRole="tb_CustomerMessageDetail" />
+    <NavigationProperty Name="tb_StaffMessageDetail" Relationship="Self.FK__tb_StaffM__Messa__61F08603" FromRole="tb_Message" ToRole="tb_StaffMessageDetail" />
   </EntityType>
   <EntityType Name="tb_Order">
     <Key>
@@ -433,11 +444,24 @@
     <NavigationProperty Name="tb_ExportWareHouse" Relationship="Self.ExportWareHousetoStaff" FromRole="tb_Staff" ToRole="tb_ExportWareHouse" />
     <NavigationProperty Name="tb_Function" Relationship="Self.StafftoFunction" FromRole="tb_Staff" ToRole="tb_Function" />
     <NavigationProperty Name="tb_ImportWarehouse" Relationship="Self.ImportWarehouseToStaff" FromRole="tb_Staff" ToRole="tb_ImportWarehouse" />
-    <NavigationProperty Name="tb_Message" Relationship="Self.FK__tb_Messag__Recei__4CF5691D" FromRole="tb_Staff" ToRole="tb_Message" />
     <NavigationProperty Name="tb_Role" Relationship="Self.RoletoStaff" FromRole="tb_Staff" ToRole="tb_Role" />
     <NavigationProperty Name="tb_Seller" Relationship="Self.Sellerto" FromRole="tb_Staff" ToRole="tb_Seller" />
+    <NavigationProperty Name="tb_StaffMessageDetail" Relationship="Self.FK__tb_StaffM__Staff__62E4AA3C" FromRole="tb_Staff" ToRole="tb_StaffMessageDetail" />
     <NavigationProperty Name="UserTokens" Relationship="Self.FK_UserTokens_Users" FromRole="tb_Staff" ToRole="UserTokens" />
     <NavigationProperty Name="tb_Store" Relationship="Self.NewStaffToStoreFK" FromRole="tb_Staff" ToRole="tb_Store" />
+  </EntityType>
+  <EntityType Name="tb_StaffMessageDetail">
+    <Key>
+      <PropertyRef Name="DetailId" />
+    </Key>
+    <Property Name="DetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MessageId" Type="Int32" Nullable="false" />
+    <Property Name="StaffId" Type="Int32" Nullable="false" />
+    <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsRead" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="tb_Message" Relationship="Self.FK__tb_StaffM__Messa__61F08603" FromRole="tb_StaffMessageDetail" ToRole="tb_Message" />
+    <NavigationProperty Name="tb_Staff" Relationship="Self.FK__tb_StaffM__Staff__62E4AA3C" FromRole="tb_StaffMessageDetail" ToRole="tb_Staff" />
   </EntityType>
   <EntityType Name="tb_Store">
     <Key>
@@ -634,15 +658,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__tb_Messag__Sende__4C0144E4">
+  <Association Name="FK__tb_Custom__Custo__67A95F59">
     <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="1" />
-    <End Role="tb_Message" Type="Self.tb_Message" Multiplicity="*" />
+    <End Role="tb_CustomerMessageDetail" Type="Self.tb_CustomerMessageDetail" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="tb_Customer">
         <PropertyRef Name="CustomerId" />
       </Principal>
-      <Dependent Role="tb_Message">
-        <PropertyRef Name="SenderId" />
+      <Dependent Role="tb_CustomerMessageDetail">
+        <PropertyRef Name="CustomerId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -691,6 +715,18 @@
       </Principal>
       <Dependent Role="tb_Seller">
         <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tb_Custom__Messa__66B53B20">
+    <End Role="tb_Message" Type="Self.tb_Message" Multiplicity="1" />
+    <End Role="tb_CustomerMessageDetail" Type="Self.tb_CustomerMessageDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Message">
+        <PropertyRef Name="MessageId" />
+      </Principal>
+      <Dependent Role="tb_CustomerMessageDetail">
+        <PropertyRef Name="MessageId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -814,15 +850,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__tb_Messag__Recei__4CF5691D">
-    <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="1" />
-    <End Role="tb_Message" Type="Self.tb_Message" Multiplicity="*" />
+  <Association Name="FK__tb_StaffM__Messa__61F08603">
+    <End Role="tb_Message" Type="Self.tb_Message" Multiplicity="1" />
+    <End Role="tb_StaffMessageDetail" Type="Self.tb_StaffMessageDetail" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="tb_Staff">
-        <PropertyRef Name="StaffId" />
+      <Principal Role="tb_Message">
+        <PropertyRef Name="MessageId" />
       </Principal>
-      <Dependent Role="tb_Message">
-        <PropertyRef Name="ReceiverId" />
+      <Dependent Role="tb_StaffMessageDetail">
+        <PropertyRef Name="MessageId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1030,6 +1066,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK__tb_StaffM__Staff__62E4AA3C">
+    <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="1" />
+    <End Role="tb_StaffMessageDetail" Type="Self.tb_StaffMessageDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Staff">
+        <PropertyRef Name="StaffId" />
+      </Principal>
+      <Dependent Role="tb_StaffMessageDetail">
+        <PropertyRef Name="StaffId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_UserTokens_Users">
     <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -1111,6 +1159,7 @@
     <EntitySet Name="tb_Cart" EntityType="Self.tb_Cart" />
     <EntitySet Name="tb_CartItem" EntityType="Self.tb_CartItem" />
     <EntitySet Name="tb_Customer" EntityType="Self.tb_Customer" />
+    <EntitySet Name="tb_CustomerMessageDetail" EntityType="Self.tb_CustomerMessageDetail" />
     <EntitySet Name="tb_ExportWareHouse" EntityType="Self.tb_ExportWareHouse" />
     <EntitySet Name="tb_Function" EntityType="Self.tb_Function" />
     <EntitySet Name="tb_ImportWarehouse" EntityType="Self.tb_ImportWarehouse" />
@@ -1132,6 +1181,7 @@
     <EntitySet Name="tb_Seller" EntityType="Self.tb_Seller" />
     <EntitySet Name="tb_SellerDetail" EntityType="Self.tb_SellerDetail" />
     <EntitySet Name="tb_Staff" EntityType="Self.tb_Staff" />
+    <EntitySet Name="tb_StaffMessageDetail" EntityType="Self.tb_StaffMessageDetail" />
     <EntitySet Name="tb_Store" EntityType="Self.tb_Store" />
     <EntitySet Name="tb_Supplier" EntityType="Self.tb_Supplier" />
     <EntitySet Name="tb_Voucher" EntityType="Self.tb_Voucher" />
@@ -1168,9 +1218,9 @@
       <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
       <End Role="tb_CartItem" EntitySet="tb_CartItem" />
     </AssociationSet>
-    <AssociationSet Name="FK__tb_Messag__Sende__4C0144E4" Association="Self.FK__tb_Messag__Sende__4C0144E4">
+    <AssociationSet Name="FK__tb_Custom__Custo__67A95F59" Association="Self.FK__tb_Custom__Custo__67A95F59">
       <End Role="tb_Customer" EntitySet="tb_Customer" />
-      <End Role="tb_Message" EntitySet="tb_Message" />
+      <End Role="tb_CustomerMessageDetail" EntitySet="tb_CustomerMessageDetail" />
     </AssociationSet>
     <AssociationSet Name="OrdertKhachHang" Association="Self.OrdertKhachHang">
       <End Role="tb_Customer" EntitySet="tb_Customer" />
@@ -1187,6 +1237,10 @@
     <AssociationSet Name="SellertoCustomer" Association="Self.SellertoCustomer">
       <End Role="tb_Customer" EntitySet="tb_Customer" />
       <End Role="tb_Seller" EntitySet="tb_Seller" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tb_Custom__Messa__66B53B20" Association="Self.FK__tb_Custom__Messa__66B53B20">
+      <End Role="tb_Message" EntitySet="tb_Message" />
+      <End Role="tb_CustomerMessageDetail" EntitySet="tb_CustomerMessageDetail" />
     </AssociationSet>
     <AssociationSet Name="ExportWareHousetoOrder" Association="Self.ExportWareHousetoOrder">
       <End Role="tb_Order" EntitySet="tb_Order" />
@@ -1228,9 +1282,9 @@
       <End Role="tb_ProductDetail" EntitySet="tb_ProductDetail" />
       <End Role="tb_ImportWarehouseDetail" EntitySet="tb_ImportWarehouseDetail" />
     </AssociationSet>
-    <AssociationSet Name="FK__tb_Messag__Recei__4CF5691D" Association="Self.FK__tb_Messag__Recei__4CF5691D">
-      <End Role="tb_Staff" EntitySet="tb_Staff" />
+    <AssociationSet Name="FK__tb_StaffM__Messa__61F08603" Association="Self.FK__tb_StaffM__Messa__61F08603">
       <End Role="tb_Message" EntitySet="tb_Message" />
+      <End Role="tb_StaffMessageDetail" EntitySet="tb_StaffMessageDetail" />
     </AssociationSet>
     <AssociationSet Name="OrderDetailtoOrder" Association="Self.OrderDetailtoOrder">
       <End Role="tb_Order" EntitySet="tb_Order" />
@@ -1299,6 +1353,10 @@
     <AssociationSet Name="Sellerto" Association="Self.Sellerto">
       <End Role="tb_Staff" EntitySet="tb_Staff" />
       <End Role="tb_Seller" EntitySet="tb_Seller" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tb_StaffM__Staff__62E4AA3C" Association="Self.FK__tb_StaffM__Staff__62E4AA3C">
+      <End Role="tb_Staff" EntitySet="tb_Staff" />
+      <End Role="tb_StaffMessageDetail" EntitySet="tb_StaffMessageDetail" />
     </AssociationSet>
     <AssociationSet Name="FK_UserTokens_Users" Association="Self.FK_UserTokens_Users">
       <End Role="tb_Staff" EntitySet="tb_Staff" />

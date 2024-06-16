@@ -67,6 +67,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="tb_CustomerMessageDetail">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_CustomerMessageDetail">
+        <MappingFragment StoreEntitySet="tb_CustomerMessageDetail">
+          <ScalarProperty Name="DetailId" ColumnName="DetailId" />
+          <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+          <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="tb_ExportWareHouse">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_ExportWareHouse">
         <MappingFragment StoreEntitySet="tb_ExportWareHouse">
@@ -122,8 +134,6 @@
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Message">
         <MappingFragment StoreEntitySet="tb_Message">
           <ScalarProperty Name="MessageId" ColumnName="MessageId" />
-          <ScalarProperty Name="SenderId" ColumnName="SenderId" />
-          <ScalarProperty Name="ReceiverId" ColumnName="ReceiverId" />
           <ScalarProperty Name="Content" ColumnName="Content" />
           <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
           <ScalarProperty Name="IsRead" ColumnName="IsRead" />
@@ -389,6 +399,18 @@
           <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
           <ScalarProperty Name="StoreId" ColumnName="StoreId" />
           <ScalarProperty Name="Image" ColumnName="Image" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_StaffMessageDetail">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_StaffMessageDetail">
+        <MappingFragment StoreEntitySet="tb_StaffMessageDetail">
+          <ScalarProperty Name="DetailId" ColumnName="DetailId" />
+          <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+          <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+          <ScalarProperty Name="IsRead" ColumnName="IsRead" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

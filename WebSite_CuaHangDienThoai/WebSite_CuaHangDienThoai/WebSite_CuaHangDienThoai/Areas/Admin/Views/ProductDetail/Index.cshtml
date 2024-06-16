@@ -1,10 +1,9 @@
-﻿@model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
+﻿@model PagedList.IPagedList<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "Sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-
 
 @section naviheader{
     <!-- Left navbar links -->
@@ -20,7 +19,7 @@
         </li>
     </ul>
 }
-<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -38,21 +37,17 @@
     </div><!-- /.container-fluid -->
 </section>
 
-
 <section class="content">
-
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Danh sách @ViewBag.Title</h3>
-
             <div class="card-tools">
                 <a href="/admin/products/add" class="btn btn-primary">Thêm mới</a>
                 <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
             </div>
         </div>
         <div class="card-body">
-
             <table class="table table-hover">
                 <thead>
                     <tr class="text-center">
@@ -63,145 +58,116 @@
                         <th>Dòng sản phẩm</th>
                         <th>Loại sản phẩm</th>
                         <th>Hãng</th>
-
                         <th>Ram/Dung Lượng  </th>
                         <th>Màu</th>
-
                         <th style="width:150px;"></th>
                     </tr>
                 </thead>
-                @if (ViewBag.txt == null)
-                {
-                    <tbody>
-                        @if (Model != null && Model.Any())
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = Model.PageNumber * Model.PageSize - Model.PageSize + 1;
+                        foreach (var item in Model)
                         {
-                            var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
-                            foreach (var item in Model)
+                            byte[] strImg = null;
+                            var CheckImage = item.tb_ProductDetailImage.SingleOrDefault(x => x.IsDefault == true);
+
+                            if (CheckImage != null)
                             {
-
-
-
-                                byte[] strImg = null;
-                                var CheckImage = item.tb_ProductDetailImage.SingleOrDefault(x => x.IsDefault == true);
-
-                                if (CheckImage != null)
-                                {
-                                    strImg = CheckImage.Image;
-                                }
-
-                                string imgSrc = "";
-                                if (strImg != null && strImg.Length > 0)
-                                {
-                                    string base64String = Convert.ToBase64String(strImg);
-                                    imgSrc = $"data:image;base64,{base64String}";
-                                }
-                                <tr class="text-center" id="trow_@item.ProductsId">
-                                    <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
-                                    <td>@i</td>
-                                    <td style="width:20%"><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" style="width:50%" /></td>
-                                    <td> <a href="/admin/Products/Detail/@item.ProductsId"> @item.Title</a>  </td>
-                                    <td>@item.tb_Products.Title</td>
-                                    <td>@item.tb_Products.tb_ProductCategory.Title</td>
-                                    <td>
-                                        @item.tb_Products.tb_ProductCompany.Title
-
-                                    </td>
-                                    <td>
-
-                                        <span>
-
-                                            @if (item.Capacity >= 999)
-                                            {
-                                                <span>1Tb</span>
-                                            }
-                                            else if (item.Capacity == 2999)
-                                            {
-                                                <span>2Tb</span>
-                                            }
-                                            else
-                                            {
-                                                <span>@item.Capacity</span>
-                                            }
-
-                                        </span>
-                                        <p>Thêm </p>
-
-
-
-                                    </td>
-                                    <td><p>@item.Color</p></td>
-
-                                    <td>
-
-
-                                        <a href="/admin/ProductDetail/Detail/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Xem</a>
-                                        <a href="/admin/ProductDetail/Edit/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Sửa</a>
-                                    </td>
-                                </tr>
-
-
-
-                                i++;
+                                strImg = CheckImage.Image;
                             }
+
+                            string imgSrc = "";
+                            if (strImg != null && strImg.Length > 0)
+                            {
+                                string base64String = Convert.ToBase64String(strImg);
+                                imgSrc = $"data:image;base64,{base64String}";
+                            }
+                            <tr class="text-center" id="trow_@item.ProductsId">
+                                <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
+                                <td>@i</td>
+                                <td style="width:20%"><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" style="width:50%" /></td>
+                                <td><a href="/admin/Products/Detail/@item.ProductsId"> @item.Title</a></td>
+                                <td>@item.tb_Products.Title</td>
+                                <td>@item.tb_Products.tb_ProductCategory.Title</td>
+                                <td>@item.tb_Products.tb_ProductCompany.Title</td>
+                                <td>
+                                    @if (item.Capacity >= 999)
+                                    {
+                                        <span>1Tb</span>
+                                    }
+                                    else if (item.Capacity == 2999)
+                                    {
+                                        <span>2Tb</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@item.Capacity</span>
+                                    }
+                                </td>
+                                <td>@item.Color</td>
+                                <td>
+                                    <a href="/admin/ProductDetail/Detail/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-primary">Xem</a>
+                                    <a href="/admin/ProductDetail/Edit/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-primary">Sửa</a>
+                                </td>
+                            </tr>
+                            i++;
                         }
-
-                    </tbody>
-
-                }
-                else
-                {
-                    <tbody>
+                    }
+                    else
+                    {
                         <tr class="text-center text-danger">
-                            <td>@ViewBag.txt</td>
+                            <td colspan="10">Không có dữ liệu</td>
                         </tr>
-                    </tbody>
-                }
-
+                    }
+                </tbody>
             </table>
+            <!-- Phân trang -->
+            @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })*@
 
-            <hr />
-            <div class="row">
-                <div class="col-12 d-flex justify-content-center">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-sm">
-                            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
-                                <a class="page-link" href="#" data-page="1" aria-label="First">
-                                    <span aria-hidden="true">Đầu</span>
-                                </a>
-                            </li>
-                            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
-                                <a class="page-link" href="#" data-page="@(Model.PageNumber - 1)" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            @for (int i = Model.PageNumber; i <= Model.PageNumber + 4 && i <= Model.PageCount; i++)
-                            {
-                                <li class="page-item @(Model.PageNumber == i ? "active" : "")">
-                                    <a class="page-link" href="#" data-page="@i">@i</a>
+
+            @if (Model.PageCount > 1)
+            {
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-sm">
+                                <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                    <a class="page-link" href="@Url.Action("Index", new { page = 1 })" aria-label="First">
+                                        <span aria-hidden="true">Đầu</span>
+                                    </a>
                                 </li>
-                            }
-                            <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
-                                <a class="page-link" href="#" data-page="@(Model.PageNumber + 1)" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                            <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
-                                <a class="page-link" href="#" data-page="@Model.PageCount" aria-label="Last">
-                                    <span aria-hidden="true">Cuối</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                                <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                    <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                @for (int i = Model.PageNumber; i <= Model.PageNumber + 4 && i <= Model.PageCount; i++)
+                                {
+                                    <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                                    </li>
+                                }
+                                <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                    <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                    <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount })" aria-label="Last">
+                                        <span aria-hidden="true">Cuối</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
-            </div>
+            }
 
         </div>
         <!-- /.card-body -->
-        <div class="card-footer">
-
-        </div>
+        <div class="card-footer"></div>
         <!-- /.card-footer-->
     </div>
     <!-- /.card -->
-
 </section>

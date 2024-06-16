@@ -9,6 +9,14 @@ namespace WebSite_CuaHangDienThoai
         {
             
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+
+            routes.MapRoute(
+               name: "TinNhan",
+               url: "tin-nhan/p{id}",
+               defaults: new { controller = "Chat", action = "Mess", id = UrlParameter.Optional },
+               namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+           );
             //// Huy don hang thnah cong
             routes.MapRoute(
              name: "HuyDonHangThanhCong",

@@ -60,6 +60,17 @@
     <Property Name="Clock" Type="bit" />
     <Property Name="Image" Type="varbinary(max)" />
   </EntityType>
+  <EntityType Name="tb_CustomerMessageDetail">
+    <Key>
+      <PropertyRef Name="DetailId" />
+    </Key>
+    <Property Name="DetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MessageId" Type="int" Nullable="false" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Timestamp" Type="datetime" Nullable="false" />
+    <Property Name="IsRead" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="tb_ExportWareHouse">
     <Key>
       <PropertyRef Name="ExportWareHouseId" />
@@ -112,8 +123,6 @@
       <PropertyRef Name="MessageId" />
     </Key>
     <Property Name="MessageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="SenderId" Type="int" Nullable="false" />
-    <Property Name="ReceiverId" Type="int" Nullable="false" />
     <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Timestamp" Type="datetime" Nullable="false" />
     <Property Name="IsRead" Type="bit" Nullable="false" />
@@ -365,6 +374,17 @@
     <Property Name="StoreId" Type="int" />
     <Property Name="Image" Type="varbinary(max)" />
   </EntityType>
+  <EntityType Name="tb_StaffMessageDetail">
+    <Key>
+      <PropertyRef Name="DetailId" />
+    </Key>
+    <Property Name="DetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MessageId" Type="int" Nullable="false" />
+    <Property Name="StaffId" Type="int" Nullable="false" />
+    <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Timestamp" Type="datetime" Nullable="false" />
+    <Property Name="IsRead" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="tb_Store">
     <Key>
       <PropertyRef Name="StoreId" />
@@ -530,27 +550,51 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__tb_Messag__Recei__4CF5691D">
-    <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="1" />
-    <End Role="tb_Message" Type="Self.tb_Message" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tb_Staff">
-        <PropertyRef Name="StaffId" />
-      </Principal>
-      <Dependent Role="tb_Message">
-        <PropertyRef Name="ReceiverId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__tb_Messag__Sende__4C0144E4">
+  <Association Name="FK__tb_Custom__Custo__67A95F59">
     <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="1" />
-    <End Role="tb_Message" Type="Self.tb_Message" Multiplicity="*" />
+    <End Role="tb_CustomerMessageDetail" Type="Self.tb_CustomerMessageDetail" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="tb_Customer">
         <PropertyRef Name="CustomerId" />
       </Principal>
-      <Dependent Role="tb_Message">
-        <PropertyRef Name="SenderId" />
+      <Dependent Role="tb_CustomerMessageDetail">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tb_Custom__Messa__66B53B20">
+    <End Role="tb_Message" Type="Self.tb_Message" Multiplicity="1" />
+    <End Role="tb_CustomerMessageDetail" Type="Self.tb_CustomerMessageDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Message">
+        <PropertyRef Name="MessageId" />
+      </Principal>
+      <Dependent Role="tb_CustomerMessageDetail">
+        <PropertyRef Name="MessageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tb_StaffM__Messa__61F08603">
+    <End Role="tb_Message" Type="Self.tb_Message" Multiplicity="1" />
+    <End Role="tb_StaffMessageDetail" Type="Self.tb_StaffMessageDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Message">
+        <PropertyRef Name="MessageId" />
+      </Principal>
+      <Dependent Role="tb_StaffMessageDetail">
+        <PropertyRef Name="MessageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tb_StaffM__Staff__62E4AA3C">
+    <End Role="tb_Staff" Type="Self.tb_Staff" Multiplicity="1" />
+    <End Role="tb_StaffMessageDetail" Type="Self.tb_StaffMessageDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Staff">
+        <PropertyRef Name="StaffId" />
+      </Principal>
+      <Dependent Role="tb_StaffMessageDetail">
+        <PropertyRef Name="StaffId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1019,6 +1063,7 @@
     <EntitySet Name="tb_Cart" EntityType="Self.tb_Cart" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_CartItem" EntityType="Self.tb_CartItem" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Customer" EntityType="Self.tb_Customer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_CustomerMessageDetail" EntityType="Self.tb_CustomerMessageDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_ExportWareHouse" EntityType="Self.tb_ExportWareHouse" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Function" EntityType="Self.tb_Function" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_ImportWarehouse" EntityType="Self.tb_ImportWarehouse" Schema="dbo" store:Type="Tables" />
@@ -1040,6 +1085,7 @@
     <EntitySet Name="tb_Seller" EntityType="Self.tb_Seller" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_SellerDetail" EntityType="Self.tb_SellerDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Staff" EntityType="Self.tb_Staff" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_StaffMessageDetail" EntityType="Self.tb_StaffMessageDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Store" EntityType="Self.tb_Store" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Supplier" EntityType="Self.tb_Supplier" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Voucher" EntityType="Self.tb_Voucher" Schema="dbo" store:Type="Tables" />
@@ -1072,13 +1118,21 @@
       <End Role="Provinces" EntitySet="Provinces" />
       <End Role="Districts" EntitySet="Districts" />
     </AssociationSet>
-    <AssociationSet Name="FK__tb_Messag__Recei__4CF5691D" Association="Self.FK__tb_Messag__Recei__4CF5691D">
-      <End Role="tb_Staff" EntitySet="tb_Staff" />
-      <End Role="tb_Message" EntitySet="tb_Message" />
-    </AssociationSet>
-    <AssociationSet Name="FK__tb_Messag__Sende__4C0144E4" Association="Self.FK__tb_Messag__Sende__4C0144E4">
+    <AssociationSet Name="FK__tb_Custom__Custo__67A95F59" Association="Self.FK__tb_Custom__Custo__67A95F59">
       <End Role="tb_Customer" EntitySet="tb_Customer" />
+      <End Role="tb_CustomerMessageDetail" EntitySet="tb_CustomerMessageDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tb_Custom__Messa__66B53B20" Association="Self.FK__tb_Custom__Messa__66B53B20">
       <End Role="tb_Message" EntitySet="tb_Message" />
+      <End Role="tb_CustomerMessageDetail" EntitySet="tb_CustomerMessageDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tb_StaffM__Messa__61F08603" Association="Self.FK__tb_StaffM__Messa__61F08603">
+      <End Role="tb_Message" EntitySet="tb_Message" />
+      <End Role="tb_StaffMessageDetail" EntitySet="tb_StaffMessageDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tb_StaffM__Staff__62E4AA3C" Association="Self.FK__tb_StaffM__Staff__62E4AA3C">
+      <End Role="tb_Staff" EntitySet="tb_Staff" />
+      <End Role="tb_StaffMessageDetail" EntitySet="tb_StaffMessageDetail" />
     </AssociationSet>
     <AssociationSet Name="FK__Wards__idDistric__68487DD7" Association="Self.FK__Wards__idDistric__68487DD7">
       <End Role="Districts" EntitySet="Districts" />

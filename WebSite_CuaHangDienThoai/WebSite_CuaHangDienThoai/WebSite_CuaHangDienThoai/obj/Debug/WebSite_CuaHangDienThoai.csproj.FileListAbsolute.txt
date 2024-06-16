@@ -1462,3 +1462,5 @@ D:\CuaHangBanDienThoaiDiDong\Web\WebSite_CuaHangDienThoai\WebSite_CuaHangDienTho
 D:\CuaHangBanDienThoaiDiDong\Web\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\bin\zxing.presentation.dll
 D:\CuaHangBanDienThoaiDiDong\Web\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\bin\zxing.xml
 D:\CuaHangBanDienThoaiDiDong\Web\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\bin\zxing.presentation.xml
+D:\CuaHangBanDienThoaiDiDong\Web\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\bin\Microsoft.AspNet.Identity.Core.dll
+D:\CuaHangBanDienThoaiDiDong\Web\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\WebSite_CuaHangDienThoai\bin\Microsoft.AspNet.Identity.Core.xml

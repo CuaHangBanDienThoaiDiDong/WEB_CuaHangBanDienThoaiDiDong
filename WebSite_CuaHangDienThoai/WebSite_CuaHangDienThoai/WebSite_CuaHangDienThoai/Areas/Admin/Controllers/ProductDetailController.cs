@@ -18,27 +18,41 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         // GET: Admin/ProductDetail
         public ActionResult Index(int? page)
         {
-
-            IEnumerable<tb_ProductDetail> items = db.tb_ProductDetail.OrderByDescending(x => x.ProductsId);
-            if (items != null)
+            if (Session["user"] == null)
             {
-                var pageSize = 10;
-                if (page == null)
-                {
-                    page = 1;
-                }
-                var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-                items = items.ToPagedList(pageIndex, pageSize);
-                ViewBag.PageSize = pageSize;
-                ViewBag.Page = page;
-                return View(items);
+                return RedirectToAction("DangNhap", "Account");
             }
             else
             {
-                ViewBag.txt = "Không tồn tại sản phẩm";
-                return View();
+                var nvSession = (tb_Staff)Session["user"];
+                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
+
+                var functionTitle = db.tb_Function
+                                       .Where(func => func.FunctionId == checkStaff.FunctionId)
+                                       .Select(func => func.TitLe)
+                                       .FirstOrDefault();
+
+                var items = db.tb_ProductDetail.OrderByDescending(x => x.ProductsId).ToList();
+
+                int pageSize = 10;
+                int pageNumber = (page ?? 1);
+
+                return View(items.ToPagedList(pageNumber, pageSize));
             }
         }
+
+        // Other actions...
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+
 
 
 

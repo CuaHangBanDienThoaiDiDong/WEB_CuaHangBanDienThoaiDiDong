@@ -328,7 +328,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                             .FirstOrDefault();
                 if (functionTitle != null)
                 {
-                    if (checkStaff.FunctionId == 2 || checkStaff.FunctionId == 1 || functionTitle.Contains("Quản Trị Viên") || functionTitle.Contains("Quản Lý"))
+                    if (checkStaff.FunctionId == 2 || checkStaff.FunctionId == 1 )
                     {
                         if (id > 0)
                         {

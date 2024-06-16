@@ -2,6 +2,12 @@
 
     ShowCount();
 
+  
+
+    // Set interval to update count every 5 seconds
+    setInterval(function () {
+        updateUnreadMessagesCount();
+    }, 3000);
 
     // Gọi hàm chọn nút đầu tiên và gọi hàm loadPriceForByCapcityColor khi trang được tải
     selectFirstButtonAndLoadPrice();
@@ -813,6 +819,22 @@ function loadPhanTramSale(productId, dungLuong) {
 
 
 
+
+function updateUnreadMessagesCount() {
+    $.ajax({
+        url: '/Chat/ShowCountMess', 
+        type: 'GET',
+        success: function (response) {
+            // Update unread messages count in the span
+            $('#unreadMessagesCount').text(response.Count);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error while fetching unread messages count:', error);
+        }
+    });
+}
+
+// Call the function initially
 
 
 

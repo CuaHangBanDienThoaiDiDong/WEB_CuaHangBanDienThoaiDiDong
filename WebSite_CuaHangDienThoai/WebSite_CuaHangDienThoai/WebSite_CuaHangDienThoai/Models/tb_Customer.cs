@@ -18,7 +18,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public tb_Customer()
         {
             this.tb_Cart = new HashSet<tb_Cart>();
-            this.tb_Message = new HashSet<tb_Message>();
+            this.tb_CustomerMessageDetail = new HashSet<tb_CustomerMessageDetail>();
             this.tb_Order = new HashSet<tb_Order>();
             this.tb_Return = new HashSet<tb_Return>();
             this.tb_ReviewDetail = new HashSet<tb_ReviewDetail>();
@@ -31,6 +31,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public string PhoneNumber { get; set; }
         [Required(ErrorMessage = "Tên không được để trống")]
         public string CustomerName { get; set; }
+
         [Required(ErrorMessage = "Email không được để trống")]
         [StringLength(150, ErrorMessage = "Email không được vượt quá 150 ký tự")]
         [EmailAddress(ErrorMessage = "Email không đúng định dạng")]
@@ -46,7 +47,7 @@ namespace WebSite_CuaHangDienThoai.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_Cart> tb_Cart { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tb_Message> tb_Message { get; set; }
+        public virtual ICollection<tb_CustomerMessageDetail> tb_CustomerMessageDetail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_Order> tb_Order { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -451,6 +451,12 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return View();
         }
 
+
+        public ActionResult NonAccount() 
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult Forgot(string Email = "")
         {
@@ -458,7 +464,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
             {
                 if (!string.IsNullOrEmpty(Email))
                 {
-                    var FindClient = db.tb_Customer.SingleOrDefault(x => x.Email == Email);
+                    var FindClient = db.tb_Customer.FirstOrDefault(x => x.Email == Email);
                     if (FindClient != null)
                     {
                         // Tạo token với claim CustomerId
@@ -489,7 +495,8 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     }
                 }
                 // Nếu không tìm thấy người dùng hoặc email trống, trả về view
-                return View();
+              
+                return RedirectToAction("NonAccount", "Account");
             }
             catch (Exception ex)
             {
@@ -919,7 +926,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         }
 
-
+     
 
     }
 }

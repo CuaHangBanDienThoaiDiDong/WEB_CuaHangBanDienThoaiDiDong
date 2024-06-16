@@ -14,14 +14,21 @@ namespace WebSite_CuaHangDienThoai.Models
     
     public partial class tb_Message
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public tb_Message()
+        {
+            this.tb_CustomerMessageDetail = new HashSet<tb_CustomerMessageDetail>();
+            this.tb_StaffMessageDetail = new HashSet<tb_StaffMessageDetail>();
+        }
+    
         public int MessageId { get; set; }
-        public int SenderId { get; set; }
-        public int ReceiverId { get; set; }
         public string Content { get; set; }
         public System.DateTime Timestamp { get; set; }
         public bool IsRead { get; set; }
     
-        public virtual tb_Customer tb_Customer { get; set; }
-        public virtual tb_Staff tb_Staff { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_CustomerMessageDetail> tb_CustomerMessageDetail { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_StaffMessageDetail> tb_StaffMessageDetail { get; set; }
     }
 }
