@@ -238,7 +238,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             if (item != null)
             {
                 ViewBag.Supplier = item.tb_Supplier.Name;
-                return View(item);
+                return PartialView(item);
             }
             else
             {
@@ -254,14 +254,60 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 return RedirectToAction("DangNhap", "Account");
             }
 
-            var item = db.tb_ImportWarehouse.Find(id);
-            if (item == null)
+            tb_Staff nvSession = (tb_Staff)Session["user"];
+            var role = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2 || row.FunctionId == 3));
+            if (role == null)
+            {
+                
+                
+                return RedirectToAction("NonRole", "HomePage");
+            }
+
+
+
+            var wareHouse = db.tb_ImportWarehouse.Find(id);
+            Admin_TokenEditImportWareHouse viewModel = new Admin_TokenEditImportWareHouse
+            {
+                ImportWareHosue = wareHouse.ImportWarehouseId,
+                WarehouseId = (int)wareHouse.WarehouseId,
+                SupplierId = (int)wareHouse.SupplierId,
+                CreatedBy = wareHouse.CreatedBy,
+                CreatedDate = (DateTime)wareHouse.CreateDate,
+                StaffId = (int)wareHouse.StaffId,
+                Staff = db.tb_Staff.FirstOrDefault(x => x.StaffId == wareHouse.StaffId)
+            };
+
+            var checkItem = db.tb_ImportWarehouseDetail.Where(x => x.ImportWarehouseId == id)
+                          .Select(detail => new Admin_TokenEditImportWareHouseItem
+                          {
+                              ImportWarehouseDetailId = detail.ImportWarehouseDetailId,
+                              ImportWareHosueId = (int)detail.ImportWarehouseId,
+                              Quantity = (int)detail.QuanTity,
+                              ProductDetailId = (int)detail.ProductDetailId,
+                              Product = db.tb_ProductDetail.FirstOrDefault(p => p.ProductDetailId == detail.ProductDetailId)
+                          }).ToList();
+
+            if (viewModel == null)
             {
                 return HttpNotFound();
             }
+            viewModel.Items = checkItem;
+            Session["Admin_TokenEditImportWareHouse_" + id] = viewModel;
+            ViewBag.SupplierList = new SelectList(db.tb_Supplier.ToList(), "SupplierId", "Name", wareHouse.SupplierId);
+            return PartialView(viewModel);
+        }
+        public ActionResult Partail_ListProductForEdit(int id)
+        {
+            Admin_TokenEditImportWareHouse checkItem = (Admin_TokenEditImportWareHouse)Session["Admin_TokenEditImportWareHouse_" + id];
 
-            ViewBag.SupplierList = new SelectList(db.tb_Supplier.ToList(), "SupplierId", "Name", item.SupplierId);
-            return View(item);
+            if (checkItem != null && checkItem.Items.Any())
+            {
+                int count = checkItem.Items.Count;
+                ViewBag.Count = count;
+                return PartialView("_ListProductForEdit", checkItem); 
+            }
+
+            return PartialView("_ListProductForEdit");
         }
 
         [HttpPost]
@@ -281,7 +327,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
 
-                    result = new { Success = true, Message = "Edit successful" };
+                    result = new { Success = true, Message = "Edit successful" }; 
                 }
                 catch (Exception ex)
                 {
@@ -290,6 +336,46 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             return Json(result);
         }
+
+
+        [HttpPost]
+        public ActionResult DeleteItemImportWareHouse(int id, int ImportWarehouseDetailId)
+        {
+            try
+            {
+                if (Session["Admin_TokenEditImportWareHouse_" + id] != null)
+                {
+                    Admin_TokenEditImportWareHouse viewModel = (Admin_TokenEditImportWareHouse)Session["Admin_TokenEditImportWareHouse_" + id];
+                    if (viewModel != null)
+                    {
+                        if (viewModel.Items.Count > 1)
+                        {
+                            viewModel.Items.RemoveAll(x => x.ImportWarehouseDetailId == ImportWarehouseDetailId);
+
+                            Session["Admin_TokenEditImportWareHouse_" + id] = viewModel;
+
+                            return Json(new { success = true, code = 1, message = "Xóa sản phẩm thành công" });
+                        }
+                        else { return Json(new { success = false, message = "Bắt buộc 1 sản phẩm" }); }
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Không tìm thấy hóa đơn trong session" });
+                    }
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Không tìm thấy hóa đơn trong session" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Đã xảy ra lỗi khi xóa sản phẩm: " + ex.Message });
+            }
+        }
+
+
+
 
         [HttpPost]
         public ActionResult UpdateQuanTityForEdit(int id, int ImportWareHouseDetailId, int ImportWareHouseId, int IdWareHouse, int quantity)
@@ -370,18 +456,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
 
 
-        public ActionResult Partail_ListProductForEdit(int id) 
-        {
-            var checkItem= db.tb_ImportWarehouseDetail.Where(x => x.ImportWarehouseId == id).ToList();
-            ViewBag.Count = checkItem.Count();
-            if (checkItem == null)
-            {
-                return HttpNotFound();
-            }
+      
 
-       
-            return PartialView(checkItem);
-        }
 
 
         public ActionResult Partail_ListProduct() 
@@ -489,11 +565,6 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             return Json(code);
         }
-
-
-
-
-
 
         public ActionResult Partial_QuantityProductDtail(int id) {
             var item = db.tb_WarehouseDetail.FirstOrDefault(x => x.ProductDetailId == id);

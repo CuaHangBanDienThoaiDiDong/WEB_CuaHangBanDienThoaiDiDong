@@ -231,6 +231,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                             Id = detail.Id,
                                             SellerId = detail.SellerId,
                                             Price = detail.Price,
+                                            
                                             Quantity = detail.Quantity,
                                             ProductDetailId = detail.ProductDetailId,
                                             Product = db.tb_ProductDetail.FirstOrDefault(p => p.ProductDetailId == detail.ProductDetailId)

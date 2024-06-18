@@ -28,8 +28,19 @@ namespace WebSite_CuaHangDienThoai.Models
         }
         public decimal GetPriceTotal()
         {
-            return Items.Sum(x => x.Price);
+            return Items.Sum(item =>
+            {
+                if (item.Product.PriceSale > 0)
+                {
+                    return (decimal)item.Product.PriceSale * item.Quantity;
+                }
+                else
+                {
+                    return (decimal)item.Product.Price * item.Quantity;
+                }
+            });
         }
+
         public int GetTongSoLuong()
         {
             return Items.Sum(x => x.Quantity);

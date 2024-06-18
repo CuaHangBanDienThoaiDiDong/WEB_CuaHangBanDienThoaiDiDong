@@ -2,20 +2,21 @@
 
 @model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_ImportWarehouse>
 @using PagedList.Mvc;
+
+
 <div class="card">
     <div class="card-header">
-        
         <div class="row">
             <div class="col-3">
-                <div class="d-flex align-items-cente @*border border-1 rounded-1*@">
-                    <span class="m-1"><label class="text-danger ">Ngày xuất:</label> <input type="datetime-local" style="border:none" id="ngayxuatWareHouseImport" onchange="getOrderNewToDay()" /></span>
-
+                <div class="d-flex align-items-center">
+                    <span class="m-1">
+                        <label class="text-danger">Ngày xuất:</label>
+                        <input type="datetime-local" style="border:none" id="ngaynhapWareHouseImport" onchange="getImport()" />
+                    </span>
                 </div>
             </div>
-
             <div class="col-6">
-                <div class="d-flex align-items-center @*border border-1 rounded-1*@">
-
+                <div class="d-flex align-items-center">
                     <div class="input-group">
                         <input type="text" class="form-control border-0" id="searchWareHouseImport" placeholder="Nhập Số điện thoại, mã đơn hàng, tên khách">
                         <button class="btn" type="button" id="clearInputWareHouseImport">
@@ -26,26 +27,11 @@
                         </button>
                     </div>
                 </div>
-
-
             </div>
         </div>
-        @*<div class="card-tools">
-
-            <a href="/admin/WareHouseImport/add" class="btn btn-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clipboard2-plus" viewBox="0 0 16 16">
-                    <path d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5z" />
-                    <path d="M3 2.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 0 0-1h-.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1H12a.5.5 0 0 0 0 1h.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5z" />
-                    <path d="M8.5 6.5a.5.5 0 0 0-1 0V8H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V9H10a.5.5 0 0 0 0-1H8.5z" />
-                </svg>
-                Tạo phiếu nhập
-            </a>
-            <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
-        </div>*@
     </div>
     <div class="card-body" id="loadDataSuggestWareHouseImport">
-
-        <table class="table table-hover table-striped ">
+        <table class="table table-hover table-striped">
             <thead>
                 <tr class="text-center">
                     <th><input type="checkbox" id="SelectAll" /></th>
@@ -56,72 +42,47 @@
                     <th>Người nhận</th>
                     <th>Ngày nhận</th>
                     <th>Tác vụ</th>
-
-
-
                 </tr>
             </thead>
-            @if (ViewBag.txt == null)
-            {
-                <tbody>
-                    @if (Model != null && Model.Any())
+            <tbody>
+                @if (ViewBag.txt == null)
+                {
+                    if (Model != null && Model.Any())
                     {
                         var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
                         foreach (var item in Model)
                         {
-
-                            //var checkQuantity = item.tb_ImportWarehouse.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId);
-
-
-
-
-
-
-                            <tr class="text-center opacity-100 " id="trow_@item.ImportWarehouseId">
+                            <tr class="text-center opacity-100" id="trow_@item.ImportWarehouseId">
                                 <td><input type="checkbox" class="cbkItem" value="@item.ImportWarehouseId" /></td>
                                 <td>@i</td>
-
-                                <td> <a href="/admin/Products/Detail/@item.ImportWarehouseId" style="color:black"> @item.ImportWarehouseId</a>  </td>
-                                <td>
-                                    @item.tb_Warehouse.tb_Store.Location
-                                </td>
-                                <td>
-                                    @item.tb_Supplier.Name
-                                </td>
+                                <td><a href="/admin/Products/Detail/@item.ImportWarehouseId" style="color:black">@item.ImportWarehouseId</a></td>
+                                <td>@item.tb_Warehouse.tb_Store.Location</td>
+                                <td>@item.tb_Supplier.Name</td>
                                 <td>@item.CreatedBy</td>
+                                <td>@(item.CreateDate.HasValue ? item.CreateDate.Value.ToString("dd/MM/yyyy") : "Không có dữ liệu")</td>
                                 <td>
-                                    @(item.CreateDate.HasValue ? item.CreateDate.Value.ToString("dd/MM/yyyy") : "Không có dữ liệu")
-                                </td>
-                                <td>
-                                    <a href="/admin/WareHouseImport/Details/@item.ImportWarehouseId" data-id="@item.ImportWarehouseId" class="btn btn-sm btn-primary ">Xem</a>
-                                    <a href="/admin/WareHouseImport/Edit/@item.ImportWarehouseId" data-id="@item.ImportWarehouseId" class="btn btn-sm btn-primary ">Sửa</a>
+                                    <button class="btn btn-sm btn-success btnViewPhieuNhap" data-id="@item.ImportWarehouseId">Xem</button>
+                                    <button class="btn btn-sm btn-danger btnEditPhieuNhap" data-id="@item.ImportWarehouseId">Cập nhập</button>
                                 </td>
                             </tr>
-
-
                             i++;
                         }
                     }
                     else
                     {
                         <tr>
-                            <td colspan="4">Không có bản ghi nào!!!</td>
+                            <td colspan="8">Không có bản ghi nào!!!</td>
                         </tr>
                     }
-                </tbody>
-
-            }
-            else
-            {
-                <tbody>
+                }
+                else
+                {
                     <tr class="text-center text-danger">
                         <td>@ViewBag.txt</td>
                     </tr>
-                </tbody>
-            }
-
+                }
+            </tbody>
         </table>
-
         <hr />
         <div class="row">
             <div class="col-12 d-flex justify-content-center">
@@ -157,117 +118,254 @@
                 </nav>
             </div>
         </div>
-
     </div>
     <!-- /.card-body -->
-    <div class="card-footer">
-
-    </div>
+    <div class="card-footer"></div>
     <!-- /.card-footer-->
 </div>
+
+
+<style>
+    .bg-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        z-index: 1000;
+    }
+
+    #popupView {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        display: none;
+        z-index: 9999;
+    }
+
+    .bg-overlay-edit {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        z-index: 3000;
+    }
+
+    #popupViewEdit {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        display: none;
+        width: auto;
+        z-index: 9999;
+    }
+
+    #notification-container {
+        position: relative;
+        z-index: 9999;
+        display: inline-block;
+        width: 200px;
+        padding: 10px;
+        right: 20px;
+        top: 20px;
+    }
+</style>
+@*strart view*@
+<div class="bg-overlay" id="overlay"></div>
+
+<div id="popupView">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-tools">
+                <div class="btn btnCloseViewPhieuNhaphang">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                        <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="loadDataPhieuNhaphang">
+                <p id="popupContent">Loading...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Én view*@
+
+
+
+@*strart Edir*@
+<div class="bg-overlay-edit" id="overlayeditNewNew"></div>
+
+<div id="popupViewEdit">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-tools">
+                <div class="btn btnCloseEditViewPhieuNhaphang">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                        <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="loadDataEditPhieuNhaphang">
+                <p id="popupContentEdit">Loading...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Én Edir*@
+
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    var originalContent;
-
     $(document).ready(function () {
-        originalContent = $('#loadDataSuggestWareHouseImport').html();
-        LoadIndex(1);
+        // Xử lý sự kiện khi nút "Cập nhật" được nhấn
+        $('.btnViewPhieuNhap').click(function () {
+            // Lấy ID của phiếu nhập từ thuộc tính data-id
+            var importWarehouseId = $(this).data('id');
 
-        $(document).on('click', '.pagination a', function (e) {
-            e.preventDefault();
-            var page = $(this).attr('data-page');
-            LoadIndex(page);
-        });
+            // Hiển thị popup
+            $('#overlay').fadeIn();
+            $('#popupView').fadeIn();
 
-        $('#clearInputWareHouseImport').click(function () {
-            $("#searchWareHouseImport").val(""); // Xóa nội dung trong ô tìm kiếm
-            resetToOriginalContent(); // Đặt lại nội dung ban đầu
-        });
-
-        $('#searchWareHouseImport').on('input', function () {
-            var keyword = $(this).val().trim();
-            if (keyword.length > 0) {
-                // Gọi action SuggestWareHouseImportCustomer với keyword
-                $.ajax({
-                    url: '/Admin/WareHouseImport/SuggestWareHouseImportCustomer',
-                    type: 'GET',
-                    data: { search: keyword },
-                    success: function (response) {
-                        $('#loadDataSuggestWareHouseImport').html(response);
-                    },
-                    error: function () {
-                        // Xử lý lỗi nếu có
-                        console.log('Đã xảy ra lỗi khi tải dữ liệu.');
-                    }
-                });
-            } else {
-                resetToOriginalContent(); // Đặt lại nội dung ban đầu nếu không có keyword
-            }
-        });
-
-        if (typeof $ === 'undefined') {
-            console.error('jQuery is not loaded');
-            return;
-        }
-
-        // Select elements using jQuery
-        var bg = $(".bg-sg");
-        var popup = $("#popupWareHouseImport");
-
-        var btnCapNhatWareHouseImport = $('.btnCapNhatWareHouseImport');
-
-        btnCapNhatWareHouseImport.each(function () {
-            $(this).on('click', function (e) {
-                e.preventDefault();
-
-                bg.show();
-                popup.show();
-
-                var id = $(this).data('id');
-                if (id != null) {
-                    $.ajax({
-                        url: '/admin/WareHouseImport/Edit',
-                        type: 'GET',
-                        data: { id: id },
-                        success: function (response) {
-                            $("#loadDataSellerEdit").html(response);
-                        },
-                        error: function (xhr, status, error) {
-                            console.error(xhr.responseText);
-                        }
-                    });
+            // Load dữ liệu cho popup, ví dụ AJAX
+            $.ajax({
+                url: '/admin/WareHouseImport/Details/' + importWarehouseId,
+                type: 'GET',
+                success: function (data) {
+                    $('#popupContent').html(data);
+                },
+                error: function () {
+                    $('#popupContent').text('Đã xảy ra lỗi khi tải dữ liệu!');
                 }
             });
         });
-
+        var bg = $(".bg-overlay");
         bg.on('click', function () {
-            bg.hide();
-            popup.hide();
+            $('#overlay').fadeOut();
+            $('#popupView').fadeOut();
         });
-
-        $('.btnCloseEditWareHouseImport').on('click', function () {
-            bg.hide();
-            popup.hide();
+        // Xử lý sự kiện khi nút đóng popup được nhấn
+        $('.btnCloseViewPhieuNhaphang').click(function () {
+            // Ẩn popup
+            $('#overlay').fadeOut();
+            $('#popupView').fadeOut();
         });
     });
 
-    function getOrderNewToDay() {
-        var ngayxuat = $('#ngayxuatWareHouseImport').val(); // Sử dụng jQuery để lấy giá trị của input datetime-local
-        $.ajax({
-            url: '/Admin/WareHouseImport/WareHouseImportExportToday', // Địa chỉ URL của action trong controller
-            type: 'GET',
-            data: { ngayxuat: ngayxuat },
-            success: function (data) {
-                $('#loadDataSuggestWareHouseImportloadDataSuggestWareHouseImport').html(data);
-            },
-            error: function (xhr, status, error) {
-                console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+
+    //start view edit
+    $(document).ready(function () {
+        loadSupplierData();
+
+
+        $("#listSupplier").change(function () {
+            var idSupplier = $(this).val();
+            if (idSupplier && idSupplier !== "-Chọn nhà cung cấp-") {
+                $.ajax({
+                    url: '/admin/WareHouseImport/Partial_Supplier',
+                    type: 'GET',
+                    data: { id: idSupplier },
+                    success: function (response) {
+                        $('#load_data_Supplier').html(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error: " + status + " - " + error);
+                        console.error(xhr.responseText);
+                        alert('Đã xảy ra lỗi khi tải thông tin nhà cung cấp: ' + xhr.responseText);
+                    }
+                });
             }
         });
-    }
+        $('.btnEditPhieuNhap').click(function () {
+            var importWarehouseId = $(this).data('id');
+            $('#overlayeditNewNew').fadeIn();
+            $('#popupViewEdit').fadeIn();
+            $.ajax({
+                url: '/admin/WareHouseImport/Edit/' + importWarehouseId,
+                type: 'GET',
+                success: function (data) {
+                    $('#popupContentEdit').html(data);
+                },
+                error: function () {
+                    $('#popupContentEdit').text('Đã xảy ra lỗi khi tải dữ liệu!');
+                }
+            });
+        });
+        var bg = $(".bg-overlay-edit");
+        bg.on('click', function () {
+            $('#overlayeditNewNew').fadeOut();
+            $('#popupViewEdit').fadeOut();
+        });
+        // Xử lý sự kiện khi nút đóng popup được nhấn
+        $('.btnCloseEditViewPhieuNhaphang').click(function () {
+            // Ẩn popup
+            $('#overlayeditNewNew').fadeOut();
+            $('#popupViewEdit').fadeOut();
+        });
 
-    function resetToOriginalContent() {
-        $('#loadDataSuggestWareHouseImport').html(originalContent);
+
+
+        $("#listSupplier").change(function () {
+            var idSupplier = $(this).val();
+            if (idSupplier && idSupplier !== "-Chọn nhà cung cấp-") {
+                $.ajax({
+                    url: '/admin/WareHouseImport/Partial_Supplier',
+                    type: 'GET',
+                    data: { id: idSupplier },
+                    success: function (response) {
+                        $('#load_data_Supplier').html(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error: " + status + " - " + error);
+                        console.error(xhr.responseText);
+                        alert('Đã xảy ra lỗi khi tải thông tin nhà cung cấp: ' + xhr.responseText);
+                    }
+                });
+            }
+        });
+    });
+
+
+
+
+    function loadSupplierData() {
+        var idSupplier = $("#listSupplier").val();
+        console.log("okkkk123")
+        if (idSupplier !== "-Chọn nhà cung cấp-") {
+            $.ajax({
+                url: '/admin/WareHouseImport/Partial_Supplier',
+                type: 'GET',
+                data: { id: idSupplier },
+                success: function (response) {
+                    $('#load_data_Supplier').html(response);
+                    console.log("thuan ")
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error: " + status + " - " + error);
+                    console.error(xhr.responseText);
+                    alert('Đã xảy ra lỗi khi tải thông tin nhà cung cấp: ' + xhr.responseText);
+                }
+            });
+        }
+
     }
+    //End view edit
 </script>
+

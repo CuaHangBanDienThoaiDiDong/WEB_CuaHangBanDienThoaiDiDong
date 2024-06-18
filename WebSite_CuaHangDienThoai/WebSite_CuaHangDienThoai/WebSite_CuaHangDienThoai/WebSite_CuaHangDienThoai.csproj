@@ -3971,6 +3971,7 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\WareHouseImport\_ListProductForEdit.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
@@ -3994,6 +3995,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\JsAadminProduct.js" />
     <Content Include="Scripts\JsAdmin.js" />
+    <Content Include="Scripts\jsCount.js" />
     <Content Include="Scripts\jsSeller.js" />
     <Content Include="Scripts\jsShopping.js" />
     <Content Include="Scripts\JsShoppingCart.js" />
@@ -4274,6 +4276,7 @@
     </Compile>
     <Compile Include="Models\Admin_TokenAddClient.cs" />
     <Compile Include="Models\Admin_TokenEditBill.cs" />
+    <Compile Include="Models\Admin_TokenEditImportWareHouse.cs" />
     <Compile Include="Models\Admin_TokenFunction.cs" />
     <Compile Include="Models\Admin_TokenImportWareHouse.cs" />
     <Compile Include="Models\Admin_TokenProductDetail.cs" />

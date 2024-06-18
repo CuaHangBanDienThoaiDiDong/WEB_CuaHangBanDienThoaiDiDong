@@ -206,7 +206,17 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
 
+        public ActionResult ShowCountOrderNew()
+        {
 
+            var ordernew = db.tb_Order.Count(x => x.Confirm ==  false);
+           
+
+                return Json(new { Count = ordernew }, JsonRequestBehavior.AllowGet);
+           
+
+           
+        }
         public ActionResult SuggestOrderNewCustomer(string search)
         {
             if (!string.IsNullOrEmpty(search))

@@ -1,4 +1,4 @@
-﻿@model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_Seller>
+﻿d@model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_Seller>
 @using PagedList.Mvc;
 
 
@@ -113,7 +113,7 @@
         @if (ViewBag.txt == null)
         {
             <tbody>
-                @if (Model != null && Model.Any())
+                @if (Model != null )
                 {
                     var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
                     foreach (var item in Model)
