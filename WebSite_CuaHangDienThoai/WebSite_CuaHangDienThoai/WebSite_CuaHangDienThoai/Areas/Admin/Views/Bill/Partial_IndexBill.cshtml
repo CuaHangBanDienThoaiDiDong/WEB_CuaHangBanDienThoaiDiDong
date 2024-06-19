@@ -1,4 +1,4 @@
-﻿d@model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_Seller>
+﻿@model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_Seller>
 @using PagedList.Mvc;
 
 
@@ -113,7 +113,7 @@
         @if (ViewBag.txt == null)
         {
             <tbody>
-                @if (Model != null )
+                @if (Model != null)
                 {
                     var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
                     foreach (var item in Model)
@@ -137,6 +137,12 @@
                                 }
                             </td>
                             <td>
+                                <button class="btn btn-sm btn-primary btnInBillLai" data-id="@item.SellerId">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                                        <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1" />
+                                        <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                    </svg>
+                                </button>
                                 <a href="/admin/Bill/Detail/@item.SellerId" target="_blank" class="btn btn-sm btn-success">Xem</a>
 
                                 <button class="btn btn-sm btn-danger btnCapNhatBill" data-id="@item.SellerId">Cập nhật</button>
@@ -164,6 +170,7 @@
         }
 
     </table>
+
     <hr />
     <div class="row">
         <div class="col-12 d-flex justify-content-center">
@@ -199,45 +206,35 @@
             </nav>
         </div>
     </div>
+
+
 </div>
 
 
-
-<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    function LoadIndex(page) {
-        $.ajax({
-            url: '/Admin/Bill/Partial_IndexBill',
-            type: 'GET',
-            data: { page: page },
-            success: function (rs) {
-                $('#loaddata').html(rs);
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
-    }
 
-    var originalContent;
+
 
     $(document).ready(function () {
+        var originalContent = ''; // Biến lưu trữ nội dung ban đầu của #loadDataSuggestBill
+
+        // Hàm để đặt lại nội dung gợi ý ban đầu
+        function resetToOriginalContent() {
+            $('#loadDataSuggestBill').html(originalContent);
+        }
+
+        // Lấy nội dung ban đầu của #loadDataSuggestBill khi tài liệu đã sẵn sàng
         originalContent = $('#loadDataSuggestBill').html();
-        LoadIndex(1);
 
-        $(document).on('click', '.pagination a', function (e) {
-            e.preventDefault();
-            var page = $(this).attr('data-page');
-            LoadIndex(page);
-        });
-
+        // Xử lý khi click vào nút #clearInputBill
         $('#clearInputBill').click(function () {
             $("#searchBill").val(""); // Xóa nội dung trong ô tìm kiếm
-            resetToOriginalContent(); // Đặt lại nội dung ban đầu
+            resetToOriginalContent(); // Đặt lại nội dung gợi ý ban đầu
         });
-
         $('#searchBill').on('input', function () {
             var keyword = $(this).val().trim();
             if (keyword.length > 0) {
@@ -246,6 +243,9 @@
                     url: '/Admin/Bill/SuggestBillCustomer',
                     type: 'GET',
                     data: { search: keyword },
+                    beforeSend: function () {
+                        $('#loaddata').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+                    },
                     success: function (response) {
                         $('#loadDataSuggestBill').html(response);
                     },
@@ -303,6 +303,96 @@
             bg.hide();
             popup.hide();
         });
+        $('.btnInBillLai').on('click', function () {
+            var sellerId = $(this).data('id');
+            $.ajax({
+                url: '/Admin/Bill/InBillLaiNew/' + sellerId,
+                type: 'GET',
+                success: function (response) {
+                    console.log("Response từ server:", response);
+
+                    if (response.success) {
+                        if (response.Code === 1) {
+
+                            var encodedFilePath = encodeURIComponent(response.FilePath);
+                            window.location.href = '/Admin/Bill/DownBill?filePath=' + encodedFilePath;
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
+
+                            Toast.fire({
+                                icon: "success",
+                                title: "Hóa đơn in lại thành công"
+                            });
+                        } else {
+                            handleErrorResponse(response);
+                        }
+                    } else {
+                        handleErrorResponse(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Lỗi khi gọi Ajax:", xhr.responseText);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi...",
+                        text: "Không thể kết nối tới máy chủ. Vui lòng thử lại sau!",
+                    });
+                }
+            });
+        });
+
+
+
+
+
+        function handleErrorResponse(response) {
+            var errorMessage = "Đã xảy ra lỗi khi in hóa đơn.";  // Đây là thông báo mặc định
+
+            // Kiểm tra mã lỗi từ máy chủ và cập nhật thông báo lỗi chi tiết
+            switch (response.Code) {
+                case -1:
+                    errorMessage = "Không có phiên đăng nhập.";
+                    break;
+                case -2:
+                    errorMessage = "ID hóa đơn không hợp lệ.";
+                    break;
+                case -10:
+                    errorMessage = "Lỗi khi in hóa đơn.";
+                    break;
+                case -100:
+                    errorMessage = "Lỗi nội bộ khi xử lý yêu cầu.";
+                    break;
+                default:
+                    break;
+            }
+
+            // Hiển thị cửa sổ thông báo lỗi với thông báo chi tiết
+            Swal.fire({
+                icon: "error",
+                title: "Lỗi...",
+                text: errorMessage
+            });
+        }
+
+
+        //function showNotification(type, title, message) {
+        //    // Hàm hiển thị thông báo
+        //    // Có thể sử dụng thư viện như Swal.fire() hoặc bootstrap toast để hiển thị thông báo
+        //    console.log(type, title, message); // Thay bằng code hiển thị thông báo thực tế
+        //}
+
+
+
+
     });
 
     function getOrderNewToDay() {
@@ -311,6 +401,9 @@
             url: '/Admin/Bill/BillExportToday', // Địa chỉ URL của action trong controller
             type: 'GET',
             data: { ngayxuat: ngayxuat },
+            beforeSend: function () {
+                $('#loaddata').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+            },
             success: function (data) {
                 $('#loadDataSuggestBill').html(data);
             },
@@ -320,7 +413,5 @@
         });
     }
 
-    function resetToOriginalContent() {
-        $('#loadDataSuggestBill').html(originalContent);
-    }
+
 </script>

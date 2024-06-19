@@ -21,7 +21,7 @@ namespace WebSite_CuaHangDienThoai.Models
     {
         public int ImportWarehouseDetailId { get; set; }
         public int ImportWareHosueId { get; set; }
-        public decimal QuanTity { get; set; }
+        //public decimal QuanTity { get; set; }
         public int Quantity { get; set; }
         public int ProductDetailId { get; set; }
         public tb_ProductDetail Product { get; set; }

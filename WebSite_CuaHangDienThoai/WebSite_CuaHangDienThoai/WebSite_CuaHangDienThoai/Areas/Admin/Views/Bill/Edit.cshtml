@@ -50,7 +50,7 @@
 </section>
 
 <section class="content">
-    <div id="alter" style="position: fixed; top: 20px; right: 30px; z-index: 9999; display: block;">
+    <div id="alter" style="position: fixed; top: 20px; right: 30px; z-index: 9999; display: none;">
         <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <strong class="mr-auto">Thông báo</strong>
@@ -143,8 +143,9 @@
                 <div class="row">
                     <div class="col-1"></div>
                     <div class="col-10 d-grid gap-2 col-10 mx-auto">
-                        <button type="button" class="btn btn-success btnUpdateHD123" onclick="submitForm();">Lưu hóa đơn @Model.Code</button>
+                        <button type="button" class="btn btn-success" id="saveButton">Lưu hóa đơn @Model.Code</button>
                     </div>
+
                     <div class="col-1"></div>
                 </div>
             </div>
@@ -153,120 +154,19 @@
 
     </div>
 </section>
-
 <script>
-
-     function submitForm() {
-     var isValid = true;
-     var errorMessage = "";
-
-     // Lấy giá trị các trường
-         var phoneNumber = $('#Phone').val();
-
-
-     // Kiểm tra từng trường
-     if (!phoneNumber) {
-         isValid = false;
-         errorMessage += "Số điện thoại không được để trống.\n";
-     } else if (phoneNumber.length !== 10) {
-         isValid = false;
-         errorMessage += "Số điện thoại không hợp lệ.\n";
-     }
-
-     // Hiển thị thông báo lỗi nếu không hợp lệ
-     if (!isValid) {
-         Swal.fire({
-             icon: 'error',
-             title: 'Lỗi',
-             text: errorMessage
-         });
-         return;
-     }
-
-     // Nếu hợp lệ, thực hiện gửi dữ liệu bằng AJAX
-     var form = $('#editBill')[0];
-     var formData = new FormData(form);
-
-   $.ajax({
-    url: '@Url.Action("Edit", "Bill")',
-    type: 'POST',
-    data: formData,
-    processData: false,
-    contentType: false,
-    success: function(response) {
-        if (response.success) {
-            showNotification('success', 'Cập nhật thành công', 'Hóa đơn đã được cập nhật.');
-            setTimeout(function () {
-                location.reload();
-            }, 3000);
-        } else if (response.code === -3) {
-            showNotification('error', 'Lỗi', 'Dữ liệu không hợp lệ. Không tìm thấy hóa đơn.');
-        } else if (response.code === -4) {
-            showNotification('error', 'Lỗi', 'Dữ liệu không hợp lệ. Hóa phải có ít nhất 1 sản phẩm.');
-        } else if (response.code === -2) {
-            showNotification('error', 'Lỗi', 'Dữ liệu không hợp lệ. Không tìm thấy hóa đơn.');
-        } else if (response.code === -6) {
-            showNotification('error', 'Lỗi', 'Dữ liệu không hợp lệ. Số điện thoại không tồn tại.');
-        } else {
-            showNotification('error', 'Lỗi', 'Đã xảy ra lỗi. Vui lòng thử lại.');
-        }
-    },
-    error: function() {
-        showNotification('error', 'Lỗi', 'Không thể kết nối tới máy chủ. Vui lòng thử lại sau.');
-    }
-});
- }
-
-
-
-
-
-
-
   $(document).ready(function () {
     var sellerId = @Model.SellerId;
 
     loadListItem(sellerId);
     updateTotalPrice(sellerId);
 
-      @*$(document).off('click', '.deleteSellerItem').on('click', '.deleteSellerItem', function () {
-          var itemId = $(this).data('id');
-          var sellerId = $(this).data('sellerid');
-
-          if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
-              deleteItem(sellerId, itemId);
-          }
-      });
-    function deleteItem(sellerId, itemId) {
-        $.ajax({
-            url: '@Url.Action("DeleteItem", "Bill")', // Đảm bảo đường dẫn URL là chính xác
-            type: 'POST', // Phương thức HTTP là POST
-            data: { sellerId: sellerId, productDetailId: itemId }, // Truyền dữ liệu
-            success: function (response) {
-                if (response.success) {
-                    // Xóa thành công, cập nhật lại danh sách sản phẩm và tổng tiền
-                    loadListItem(sellerId);
-                    updateTotalPrice(sellerId);
-                    showNotification('success', 'Xóa thành công', response.message);
-                } else {
-                    // Hiển thị thông báo lỗi
-                    showNotification('error', 'Lỗi', response.message);
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error(xhr.responseText);
-                showNotification('error', 'Lỗi', 'Đã xảy ra lỗi khi xóa sản phẩm.');
-            }
-        });
-    }*@
-
     function updateTotalPrice(sellerId) {
         $.ajax({
             url: '@Url.Action("GetTotalPrice", "Bill")',
-            type: 'GET', // Phương thức HTTP là GET
-            data: { sellerId: sellerId }, // Truyền dữ liệu
+            type: 'GET',
+            data: { sellerId: sellerId },
             success: function (response) {
-                // Cập nhật tổng tiền
                 $('#loadTotal').html('   <label>Tổng tiền</label><br/><p class="form-control">' + response + '</p>');
             },
             error: function (xhr, status, error) {
@@ -280,11 +180,11 @@
         if (sellerId != null) {
             $.ajax({
                 url: '@Url.Action("Partail_ListProductEdit", "Bill")',
-                type: 'GET', // Phương thức HTTP là GET
-                data: { sellerId: sellerId }, // Truyền dữ liệu
+                type: 'GET',
+                data: { sellerId: sellerId },
                 success: function (response) {
                     $("#loadListItem").html(response);
-                    attachDeleteItemEvent();
+                    attachDeleteItemEvent(); // Bắt sự kiện xóa mục
                 },
                 error: function (xhr, status, error) {
                     console.error(xhr.responseText);
@@ -294,34 +194,181 @@
         }
     }
 
+    function submitForm() {
+        var isValid = true;
+        var errorMessage = "";
 
-      function showNotification(type, title, message) {
-          var alertDiv = $('#alter .toast');
+        var phoneNumber = $('#Phone').val();
 
-          // Xóa các lớp CSS hiện tại
-          alertDiv.removeClass('alert-success alert-danger');
+        if (!phoneNumber) {
+            isValid = false;
+            errorMessage += "Số điện thoại không được để trống.\n";
+        } else if (phoneNumber.length !== 10) {
+            isValid = false;
+            errorMessage += "Số điện thoại không hợp lệ.\n";
+        }
 
-          // Thêm lớp CSS tương ứng với loại thông báo (success hoặc danger)
-          if (type === 'success') {
-              alertDiv.addClass('alert-success');
-          } else if (type === 'error') {
-              alertDiv.addClass('alert-danger');
-          }
+        if (!isValid) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: errorMessage
+            });
+            return;
+        }
 
-          // Thiết lập nội dung thông báo
-          $('#alertMessage').html('<strong>' + title + '</strong>: ' + message);
+        var form = $('#editBill')[0];
+        var formData = new FormData(form);
 
-          // Hiển thị thông báo
-          $('#alter').toast('show');
+        $.ajax({
+            url: '@Url.Action("Edit", "Bill")',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.Code === 1) {
+                    if (confirm("Hóa đơn đã có trong hệ thống ")) {
+                           window.location.href = '@Url.Action("DownBill", "Bill")?filePath=' + encodeURIComponent(response.FilePath);
+                    }
 
-          // Tự động ẩn thông báo sau 3 giây
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Lỗi AJAX:", xhr.responseText);
+                showNotification('error', 'Lỗi', 'Không thể kết nối tới máy chủ. Vui lòng thử lại sau.');
+            }
+        });
+    }
+
+      function downloadFile(fileName, fileBytes) {
+          var blob = new Blob([fileBytes], { type: "application/octet-stream" });
+          var url = window.URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
           setTimeout(function () {
-              $('#alter').toast('hide');
-          }, 1500);
+              document.body.removeChild(a);
+              window.URL.revokeObjectURL(url);
+          }, 0);
       }
 
+    function handleErrorCode(code) {
+        switch (code) {
+            case -3:
+                showNotification('error', 'Lỗi', 'Dữ liệu không hợp lệ. Không tìm thấy hóa đơn.');
+                break;
+            case -4:
+                showNotification('error', 'Lỗi', 'Dữ liệu không hợp lệ. Hóa đơn phải có ít nhất 1 sản phẩm.');
+                break;
+            case -2:
+                showNotification('error', 'Lỗi', 'Dữ liệu không hợp lệ. Không tìm thấy hóa đơn.');
+                break;
+            case -6:
+                showNotification('error', 'Lỗi', 'Dữ liệu không hợp lệ. Số điện thoại không tồn tại.');
+                break;
+            default:
+                showNotification('error', 'Lỗi', 'Đã xảy ra lỗi. Vui lòng thử lại.');
+                break;
+        }
+    }
+
+    function showNotification(type, title, message) {
+        var alertDiv = $('#alert .toast');
+
+        alertDiv.removeClass('alert-success alert-danger');
+
+        if (type === 'success') {
+            alertDiv.addClass('alert-success');
+        } else if (type === 'error') {
+            alertDiv.addClass('alert-danger');
+        }
+
+        $('#alertMessage').html('<strong>' + title + '</strong>: ' + message);
+
+        $('#alert').toast('show');
+
+        setTimeout(function () {
+            $('#alert').toast('hide');
+        }, 1500);
+    }
+      //update so luong
+
+      $(document).on('input', '.Update_Quantity_For_Edit_Bill', function () {
+          var input = $(this);
+          var newQuantity = input.val().trim(); // Lấy giá trị và loại bỏ khoảng trắng ở hai đầu
+
+          // Kiểm tra và lưu trữ giá trị ban đầu nếu chưa có
+          if (!input.data('original-value')) {
+              input.data('original-value', input.val()); // Lưu giá trị ban đầu
+          }
+
+          // Xử lý khi số lượng là rỗng hoặc bằng 0
+          if (newQuantity === "" || parseInt(newQuantity) === 0) {
+              // Hiển thị cảnh báo và yêu cầu xác nhận
+              if (confirm("Số lượng không thể nhỏ hơn 0. Bạn có muốn khôi phục lại số lượng cũ không?")) {
+                  // Khôi phục lại số lượng cũ
+                  input.val(input.data('original-value'));
+              } else {
+                  // Không đồng ý, giữ nguyên giá trị nhập vào và không cập nhật
+                  return;
+              }
+          } else {
+              // Nếu số lượng hợp lệ, tiến hành cập nhật
+              updateQuantity(input);
+          }
+      });
+
+      // Hàm cập nhật số lượng
+      function updateQuantity(input) {
+          var productDetailId = input.attr('id');
+          var importWarehouseDetailId = input.data('importwarehousedetailid');
+          var importWarehouseId = input.data('importwarehousedid');
+          var newQuantity = input.val().trim();
+
+          // Lưu giá trị ban đầu của số lượng
+          if (!input.data('original-quantity')) {
+              input.data('original-quantity', newQuantity);
+          }
+
+        
+          $.ajax({
+              url: '/Admin/Bill/UpdateQuantityForEditNew', // Đổi đường dẫn tới action của bạn
+              type: 'POST',
+              data: {
+                  productId: productDetailId,
+                  sellerId: importWarehouseId,
+                  sellerDetailId: importWarehouseDetailId,
+                  newQuantity: newQuantity
+              },
+              success: function (response) {
+                  if (response.success) {
+                      alert("Cập nhật số lượng thành công");
+
+                      
+                      updateTotalPrice(importWarehouseId);
+                  } else {
+                      alert("Lỗi: " + response.errorMessage);
+                      // Khôi phục lại giá trị ban đầu của số lượng
+                      input.val(input.data('original-quantity'));
+                  }
+              },
+              error: function (xhr, status, error) {
+                  alert("Lỗi: Không thể kết nối tới máy chủ. Vui lòng thử lại sau.");
+                  // Xử lý lỗi và khôi phục lại giá trị ban đầu của số lượng
+                  input.val(input.data('original-quantity'));
+              }
+          });
+      }
+
+
+
+
+    // Bắt sự kiện khi click vào nút Lưu hóa đơn
+    $('#saveButton').click(function () {
+        submitForm(); // Gọi hàm xử lý submit form của bạn
+    });
 });
-
-
-
 </script>

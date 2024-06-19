@@ -2,6 +2,28 @@
 
 @if (Model != null)
 {
+    <div class="bg-sg" style="display: none ">
+        <div id="notification-container" style="background-color:white "></div>
+    </div>
+    <div id="popupBill" style="display:none">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-tools">
+                    <div class="btn btnCloseEditBill">
+                        <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                            <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="loadDataSellerEdit">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 
     <table class="table table-hover ">
@@ -50,6 +72,12 @@
                                 }
                             </td>
                             <td>
+                                <button class="btn btn-sm btn-primary btnInBillLai" data-id="@item.SellerId">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                                        <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1" />
+                                        <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                    </svg>
+                                </button>
                                 <a href="/admin/Bill/Detail/@item.SellerId" target="_blank" class="btn btn-sm btn-success">Xem</a>
 
                                 <button class="btn btn-sm btn-danger btnCapNhatBill" data-id="@item.SellerId">Cập nhật</button>
@@ -107,76 +135,139 @@ else
 
 }
 
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
 
 
-    //Start CheckOut
+    var originalContent;
+    function resetToOriginalContent() {
+        $('#loadDataSuggestBill').html(originalContent);
+    }
     $(document).ready(function () {
-        $('.btnCheckOutSeller').click(function () {
-            var customerId = $(this).data('id');
-            alert
+        originalContent = $('#loadDataSuggestBill').html();
+
+
+        // Xử lý sự kiện click trang
+
+
+        $('#clearInputBill').click(function () {
+            $("#searchBill").val(""); // Xóa nội dung trong ô tìm kiếm
+            resetToOriginalContent();
+        });
+
+        $('#searchBill').on('input', function () {
+            var keyword = $(this).val().trim();
+            if (keyword.length > 0) {
+                // Gọi action SuggestBillCustomer với keyword
+                $.ajax({
+                    url: '/Admin/Bill/SuggestBillCustomer',
+                    type: 'GET',
+                    data: { search: keyword },
+                    beforeSend: function () {
+                        $('#loaddata').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+                    },
+                    success: function (response) {
+                        $('#loadDataSuggestBill').html(response);
+                    },
+                    error: function () {
+                        // Xử lý lỗi nếu có
+                        console.log('Đã xảy ra lỗi khi tải dữ liệu.');
+                    }
+                });
+            } else {
+                resetToOriginalContent(); // Đặt lại nội dung ban đầu nếu không có keyword
+            }
+        });
+
+        if (typeof $ === 'undefined') {
+            console.error('jQuery is not loaded');
+            return;
+        }
+
+        // Select elements using jQuery
+        var bg = $(".bg-sg");
+        var popup = $("#popupBill");
+
+        var btnCapNhatBill = $('.btnCapNhatBill');
+
+        btnCapNhatBill.each(function () {
+            $(this).on('click', function (e) {
+                e.preventDefault();
+
+                bg.show();
+                popup.show();
+
+                var id = $(this).data('id');
+                if (id != null) {
+                    $.ajax({
+                        url: '/admin/Bill/Edit',
+                        type: 'GET',
+                        data: { id: id },
+                        success: function (response) {
+                            $("#loadDataSellerEdit").html(response);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
+
+        bg.on('click', function () {
+            bg.hide();
+            popup.hide();
+        });
+
+        $('.btnCloseEditBill').on('click', function () {
+            bg.hide();
+            popup.hide();
+        });
+        $('.btnInBillLai').on('click', function () {
+            var sellerId = $(this).data('id');
             $.ajax({
-                url: '/Admin/Seller/CheckOutSeller',
-                type: 'POST',
-                data: { CustomerId: customerId },
+                url: '/Admin/Bill/InBillLaiNew/' + sellerId,
+                type: 'GET',
                 success: function (response) {
+                    console.log("Response từ server:", response);
+
                     if (response.success) {
-                        if (response.code === 1) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Thành công',
-                                text: 'Xuất hóa đơn thành công'
+                        if (response.Code === 1) {
+
+                            var encodedFilePath = encodeURIComponent(response.FilePath);
+                            window.location.href = '/Admin/Bill/DownBill?filePath=' + encodedFilePath;
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
                             });
-                            setTimeout(function () {
-                                window.location.reload();
-                            }, 1500);
+
+                            Toast.fire({
+                                icon: "success",
+                                title: "Hóa đơn in lại thành công"
+                            });
+                        } else {
+                            handleErrorResponse(response);
                         }
                     } else {
-                        if (response.code === -1) {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Lỗi ...",
-                                text: "Không tìm thấy khách hàng"
-                            });
-                        } else if (response.code === -3) {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Lỗi ...",
-                                text: "Phiếu chưa có sản phẩm"
-                            });
-                        } else if (response.code === -7) {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Lỗi ...",
-                                text: "Kho không đủ sản phẩm"
-                            });
-                        } else if (response.code === -99) {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Lỗi ...",
-                                text: "Lỗi hệ thống"
-                            });
-                            // window.location.href = response.redirectTo;
-                        } else {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Máy chủ không phản hồi",
-                                text: "Có lỗi xảy ra trong quá trình xuất hóa đơn"
-                            });
-                        }
+                        handleErrorResponse(response);
                     }
-
                 },
                 error: function (xhr, status, error) {
+                    console.error("Lỗi khi gọi Ajax:", xhr.responseText);
                     Swal.fire({
                         icon: "error",
-                        title: "Máy chủ không phản hồi ",
-                        text: "Đã xảy ra lỗi khi thực hiện yêu cầu!",
-                        /* footer: '<a href="#">Why do I have this issue?</a>'*/
-                    }); setTimeout(function () {
-                        window.location.url = "/admin/Account/DangNhap";
-                    }, 1500)
-
+                        title: "Lỗi...",
+                        text: "Không thể kết nối tới máy chủ. Vui lòng thử lại sau!",
+                    });
                 }
             });
         });
@@ -185,28 +276,64 @@ else
 
 
 
-        var bg = document.querySelector(".bg-sg");
-        var popup = document.getElementById('popup');
-        var addClient = document.querySelector('.addClient');
+        function handleErrorResponse(response) {
+            var errorMessage = "Đã xảy ra lỗi khi in hóa đơn.";  // Đây là thông báo mặc định
+
+            // Kiểm tra mã lỗi từ máy chủ và cập nhật thông báo lỗi chi tiết
+            switch (response.Code) {
+                case -1:
+                    errorMessage = "Không có phiên đăng nhập.";
+                    break;
+                case -2:
+                    errorMessage = "ID hóa đơn không hợp lệ.";
+                    break;
+                case -10:
+                    errorMessage = "Lỗi khi in hóa đơn.";
+                    break;
+                case -100:
+                    errorMessage = "Lỗi nội bộ khi xử lý yêu cầu.";
+                    break;
+                default:
+                    break;
+            }
+
+            // Hiển thị cửa sổ thông báo lỗi với thông báo chi tiết
+            Swal.fire({
+                icon: "error",
+                title: "Lỗi...",
+                text: errorMessage
+            });
+        }
 
 
-        addClient.addEventListener('click', function () {
-            bg.style.display = "block";
-            popup.style.display = "block";
-        });
+        //function showNotification(type, title, message) {
+        //    // Hàm hiển thị thông báo
+        //    // Có thể sử dụng thư viện như Swal.fire() hoặc bootstrap toast để hiển thị thông báo
+        //    console.log(type, title, message); // Thay bằng code hiển thị thông báo thực tế
+        //}
 
 
 
-        bg.addEventListener("click", function () {
-            bg.style.display = "none";
-            popup.style.display = "none";
-        });
+
     });
 
-    //End CheckOut
+    function getOrderNewToDay() {
+        var ngayxuat = $('#ngayxuatBill').val(); // Sử dụng jQuery để lấy giá trị của input datetime-local
+        $.ajax({
+            url: '/Admin/Bill/BillExportToday', // Địa chỉ URL của action trong controller
+            type: 'GET',
+            data: { ngayxuat: ngayxuat },
+            beforeSend: function () {
+                $('#loaddata').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+            },
+            success: function (data) {
+                $('#loadDataSuggestBill').html(data);
+            },
+            error: function (xhr, status, error) {
+                console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+            }
+        });
+    }
 
 
-    document.addEventListener("DOMContentLoaded", function () {
-
-    });
 </script>

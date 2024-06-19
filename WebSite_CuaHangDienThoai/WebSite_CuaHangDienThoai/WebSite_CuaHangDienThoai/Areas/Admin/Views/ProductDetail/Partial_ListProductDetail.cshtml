@@ -49,7 +49,12 @@
                         <td>@i</td>
                         <td style="width:20%"><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" style="width:50%" /></td>
                         <td> <a href="/admin/Products/Detail/@item.ProductsId"> @item.Title</a>  </td>
-                        <td>@item.tb_Products.Title</td>
+                        <td>
+                            <a href="/chi-tiet/@item.tb_Products.Alias-p@(item.ProductsId)" target="_blank">
+                                @item.tb_Products.Title
+                            </a>
+                               
+                        </td>
                         <td>@item.tb_Products.tb_ProductCategory.Title</td>
                         <td>
                             @item.tb_Products.tb_ProductCompany.Title

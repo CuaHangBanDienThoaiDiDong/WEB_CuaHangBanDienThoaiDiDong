@@ -81,115 +81,172 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <script>
-$(document).ready(function () {
-    loadSupplierData(); // Load dữ liệu nhà cung cấp ban đầu
-    var importWareHouseId = @Model.ImportWareHosue;
-    loadListItem(importWareHouseId); // Load danh sách sản phẩm ban đầu
+    $(document).ready(function () {
+        // Load dữ liệu nhà cung cấp và danh sách sản phẩm ban đầu
+        loadSupplierData();
+        var importWareHouseId = @Model.ImportWareHosue;
+        loadListItem(importWareHouseId);
 
-    // Xử lý khi thay đổi nhà cung cấp
-    $("#listSupplier").change(function () {
-        var idSupplier = $(this).val();
-        if (idSupplier && idSupplier !== "-Chọn nhà cung cấp-") {
-            $.ajax({
-                url: '/admin/WareHouseImport/Partial_Supplier',
-                type: 'GET',
-                data: { id: idSupplier },
-                success: function (response) {
-                    $('#load_data_Supplier').html(response);
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error: " + status + " - " + error);
-                    console.error(xhr.responseText);
-                    showNotification('danger', 'Lỗi', 'Đã xảy ra lỗi khi tải thông tin nhà cung cấp: ' + xhr.responseText);
-                }
-            });
-        }
-    });
-
-    // Hàm tải danh sách sản phẩm
-    function loadListItem(id) {
-        if (id != null) {
-            $.ajax({
-                url: '@Url.Action("Partail_ListProductForEdit", "WareHouseImport")',
-                type: 'GET',
-                data: { id: id },
-                success: function (response) {
-                    $("#loadListItem").html(response);
-                    attachDeleteItemEvent(); // Gắn sự kiện xóa sản phẩm
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr.responseText);
-                    showNotification('danger', 'Lỗi', 'Đã xảy ra lỗi khi tải lại danh sách sản phẩm.');
-                }
-            });
-        }
-    }
-
-    // Hàm tải dữ liệu nhà cung cấp
-    function loadSupplierData() {
-        var idSupplier = $("#listSupplier").val();
-        if (idSupplier !== "-Chọn nhà cung cấp-") {
-            $.ajax({
-                url: '/admin/WareHouseImport/Partial_Supplier',
-                type: 'GET',
-                data: { id: idSupplier },
-                success: function (response) {
-                    $('#load_data_Supplier').html(response);
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error: " + status + " - " + error);
-                    console.error(xhr.responseText);
-                    showNotification('danger', 'Lỗi', 'Đã xảy ra lỗi khi tải thông tin nhà cung cấp: ' + xhr.responseText);
-                }
-            });
-        }
-    }
-
-    // Hàm xử lý khi submit biểu mẫu
-    function submitForm(event) {
-        event.preventDefault(); // Ngăn chặn hành động submit mặc định
-        var form = $('#editBill')[0];
-        var formData = new FormData(form);
-
-        $.ajax({
-            url: '@Url.Action("Edit", "WareHouseImport")',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                if (response.success) {
-                    showNotification('success', 'Cập nhật thành công', 'Hóa đơn đã được cập nhật.');
-                    setTimeout(function() {
-                        location.reload();
-                    }, 3000); // Tải lại trang sau 3 giây
-                } else {
-                    var errorMessage = getErrorMessage(response.code); // Lấy thông báo lỗi dựa trên mã lỗi từ server
-                    showNotification('danger', 'Lỗi', errorMessage);
-                }
-            },
-            error: function (xhr, status, error) {
-                showNotification('danger', 'Lỗi', 'Không thể kết nối tới máy chủ. Vui lòng thử lại sau.');
+        // Xử lý khi thay đổi nhà cung cấp
+        $("#listSupplier").change(function () {
+            var idSupplier = $(this).val();
+            if (idSupplier && idSupplier !== "-Chọn nhà cung cấp-") {
+                $.ajax({
+                    url: '/admin/WareHouseImport/Partial_Supplier',
+                    type: 'GET',
+                    data: { id: idSupplier },
+                    success: function (response) {
+                        $('#load_data_Supplier').html(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Lỗi: " + status + " - " + error);
+                        console.error(xhr.responseText);
+                        showNotification('danger', 'Lỗi', 'Đã xảy ra lỗi khi tải thông tin nhà cung cấp: ' + xhr.responseText);
+                    }
+                });
             }
         });
-    }
 
-    // Hàm hiển thị thông báo
-    function showNotification(type, title, message) {
-        var alertDiv = $('#alert');
-        alertDiv.removeClass();
-        alertDiv.addClass('alert alert-' + type);
-        $('#alertMessage').html('<strong>' + title + '</strong>: ' + message);
-        alertDiv.show();
-        setTimeout(function() {
-            alertDiv.hide();
-        }, 3000); // Ẩn thông báo sau 3 giây
-    }
+        // Hàm tải danh sách sản phẩm
+        function loadListItem(id) {
+            if (id != null) {
+                $.ajax({
+                    url: '@Url.Action("Partail_ListProductForEdit", "WareHouseImport")',
+                    type: 'GET',
+                    data: { id: id },
+                    success: function (response) {
+                        $("#loadListItem").html(response);
+                        attachDeleteItemEvent(); // Gắn sự kiện xóa sản phẩm
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                        showNotification('danger', 'Lỗi', 'Đã xảy ra lỗi khi tải lại danh sách sản phẩm.');
+                    }
+                });
+            }
+        }
 
-    // Gắn sự kiện submit cho biểu mẫu
-    $('#editBill').on('submit', submitForm);
-});
+        // Hàm tải dữ liệu nhà cung cấp
+        function loadSupplierData() {
+            var idSupplier = $("#listSupplier").val();
+            if (idSupplier !== "-Chọn nhà cung cấp-") {
+                $.ajax({
+                    url: '/admin/WareHouseImport/Partial_Supplier',
+                    type: 'GET',
+                    data: { id: idSupplier },
+                    success: function (response) {
+                        $('#load_data_Supplier').html(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Lỗi: " + status + " - " + error);
+                        console.error(xhr.responseText);
+                        showNotification('danger', 'Lỗi', 'Đã xảy ra lỗi khi tải thông tin nhà cung cấp: ' + xhr.responseText);
+                    }
+                });
+            }
+        }
+
+        $(document).on('input', '.Update_Quantity_For_Edit', function () {
+            var input = $(this);
+            var newQuantity = input.val().trim(); // Lấy giá trị và loại bỏ khoảng trắng ở hai đầu
+
+            // Kiểm tra và lưu trữ giá trị ban đầu nếu chưa có
+            if (!input.data('original-value')) {
+                input.data('original-value', input.val()); // Lưu giá trị ban đầu
+            }
+
+            // Xử lý khi số lượng là rỗng hoặc bằng 0
+            if (newQuantity === "" || parseInt(newQuantity) === 0) {
+                // Hiển thị cảnh báo và yêu cầu xác nhận
+                if (confirm("Số lượng không thể nhỏ hơn 0. Bạn có muốn khôi phục lại số lượng cũ không?")) {
+                    // Khôi phục lại số lượng cũ
+                    input.val(input.data('original-value'));
+                } else {
+                    // Không đồng ý, giữ nguyên giá trị nhập vào và không cập nhật
+                    return;
+                }
+            } else {
+                // Nếu số lượng hợp lệ, tiến hành cập nhật
+                updateQuantity(input);
+            }
+        });
+        // Hàm cập nhật số lượng
+        function updateQuantity(input) {
+            var importWareHosueId = input.data('importwarehousedid');
+            var importWarehouseDetailId = input.data('importwarehousedetailid');
+            var newQuantity = input.val().trim();
+
+            // Gọi ajax cập nhật số lượng
+            $.ajax({
+                url: '/Admin/WareHouseImport/UpdateQuantityForEditNew',
+                type: 'POST',
+                data: {
+                    productDetailId: input.attr('id'),
+                    importWarehouseDetailId: importWarehouseDetailId,
+                    importWarehouseId: importWareHosueId,
+                    quantity: newQuantity
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert("Cập nhật số lượng thành công");
+                        /*showNotification('success', 'Cập nhật thành công', response.message);*/
+                       
+                    } else {
+                       /* showNotification('danger', 'Lỗi', response.message);*/
+                        alert("Lỗi cập nhật số lượng thành công");
+                        input.val(input.data('original-quantity'));
+                    }
+                },
+                error: function (xhr, status, error) {
+                    showNotification('danger', 'Lỗi', 'Không thể kết nối tới máy chủ. Vui lòng thử lại sau.');
+                    // Khôi phục lại giá trị ban đầu
+                    input.val(input.data('original-quantity'));
+                }
+            });
+        }
+
+        // Sự kiện submit biểu mẫu chỉnh sửa
+        $('#editBill').on('submit', function (event) {
+            event.preventDefault(); // Ngăn chặn hành động submit mặc định
+            var form = $(this)[0];
+            var formData = new FormData(form);
+            $.ajax({
+                url: '@Url.Action("Edit", "WareHouseImport")',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.Code === 1) {
+                        if (confirm("Hóa đơn đã có trong hệ thống ")) {
+                            window.location.href = '@Url.Action("DownloadInvoice", "WareHouseImport")?filePath=' + encodeURIComponent(response.FilePath);
+                        }
+                    }
+                },
+                error: function (xhr, status, error) {
+                    showNotification('danger', 'Lỗi', 'Không thể kết nối tới máy chủ. Vui lòng thử lại sau.');
+                }
+            });
+        });
+
+        // Hàm hiển thị thông báo
+        function showNotification(type, title, message) {
+            var alertDiv = $('#alert');
+            alertDiv.removeClass().addClass('alert alert-' + type);
+            $('#alertMessage').html('<strong>' + title + '</strong>: ' + message);
+            alertDiv.show();
+            setTimeout(function () {
+                alertDiv.hide();
+            }, 3000); // Ẩn thông báo sau 3 giây
+        }
+
+        // Gắn sự kiện xóa sản phẩm
+        function attachDeleteItemEvent() {
+            // Code gắn sự kiện xóa sản phẩm ở đây nếu cần thiết
+        }
+    });
 </script>
+
 
 @*<script>
     $(document).ready(function () {

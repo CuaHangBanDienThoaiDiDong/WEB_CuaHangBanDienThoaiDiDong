@@ -310,15 +310,24 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
             return PartialView("_ListProductForEdit");
         }
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Admin_TokenEditImportWareHouse model)
         {
+            // Kiểm tra xác thực
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, code = -1, message = "Dữ liệu không hợp lệ." });
+            }
+
             using (var dbContextTransaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    // Kiểm tra xem người dùng đã đăng nhập chưa
+                    // Kiểm tra đăng nhập
                     if (Session["user"] == null)
                     {
                         return RedirectToAction("DangNhap", "Account");
@@ -331,7 +340,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     var importWarehouse = db.tb_ImportWarehouse.Find(model.ImportWareHosue);
                     if (importWarehouse == null)
                     {
-                        return Json(new { success = false, code = -2 }); // Không tìm thấy hóa đơn nhập kho
+                        return Json(new { success = false, code = -2, message = "Không tìm thấy hóa đơn nhập kho." });
                     }
 
                     // Cập nhật thông tin hóa đơn nhập kho
@@ -353,16 +362,58 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     var viewModel = Session[sessionKey] as Admin_TokenEditImportWareHouse;
                     if (viewModel == null || viewModel.Items.Count < 1)
                     {
-                        return Json(new { success = false, code = -4 }); // Hóa đơn phải có ít nhất 1 sản phẩm
+                        return Json(new { success = false, code = -4, message = "Hóa đơn phải có ít nhất 1 sản phẩm." });
                     }
 
+                    // Lấy các chi tiết nhập kho hiện tại từ database
                     var existingDetails = db.tb_ImportWarehouseDetail.Where(d => d.ImportWarehouseId == importWarehouse.ImportWarehouseId).ToList();
 
-                    // Xóa các chi tiết không còn trong viewModel từ tb_ImportWarehouseDetail và tb_WarehouseDetail
+                    // Duyệt qua các chi tiết nhập kho hiện tại trong database
                     foreach (var detail in existingDetails.ToList())
                     {
-                        if (!viewModel.Items.Any(item => item.ImportWarehouseDetailId == detail.ImportWarehouseDetailId))
+                        // Tìm chi tiết nhập kho tương ứng từ viewModel
+                        var viewModelDetail = viewModel.Items.FirstOrDefault(item => item.ImportWarehouseDetailId == detail.ImportWarehouseDetailId);
+                        if (viewModelDetail != null)
                         {
+                            // Nếu số lượng có sự thay đổi
+                            if (detail.QuanTity != viewModelDetail.Quantity)
+                            {
+                                // Tính toán sự thay đổi số lượng
+                                int oldQuantity = (int)detail.QuanTity; // Số lượng hiện tại
+                                int newQuantity = viewModelDetail.Quantity; // Số lượng mới
+                                int quantityChange = newQuantity - oldQuantity; // Thay đổi số lượng
+
+                                // Cập nhật số lượng trong chi tiết nhập kho
+                                detail.QuanTity = newQuantity;
+                                db.Entry(detail).State = EntityState.Modified;
+
+                                // Cập nhật số lượng trong tb_WarehouseDetail
+                                if (detail.ProductDetailId != null)
+                                {
+                                    var warehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == detail.ProductDetailId);
+                                    if (warehouseDetail != null)
+                                    {
+                                        warehouseDetail.QuanTity += quantityChange; // Cập nhật số lượng tồn kho
+                                        db.Entry(warehouseDetail).State = EntityState.Modified;
+                                    }
+                                    else
+                                    {
+                                        // Trường hợp không tìm thấy tb_WarehouseDetail
+                                        return Json(new { success = false, code = -5, message = $"Không tìm thấy sản phẩm với ProductDetailId = {detail.ProductDetailId} trong kho." });
+                                    }
+                                }
+                                else
+                                {
+                                    // Trường hợp ProductDetailId không có giá trị
+                                    return Json(new { success = false, code = -6, message = "Chi tiết nhập kho không có ProductDetailId." });
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // Trường hợp không tìm thấy chi tiết nhập kho trong viewModel
+                          
+                            // Xóa chi tiết nhập kho cũ trong tb_WarehouseDetail
                             if (detail.ProductDetailId != null)
                             {
                                 var warehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == detail.ProductDetailId);
@@ -370,21 +421,19 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                 {
                                     warehouseDetail.QuanTity -= detail.QuanTity; // Giảm số lượng tồn kho
                                     db.Entry(warehouseDetail).State = EntityState.Modified;
+                                    db.tb_ImportWarehouseDetail.Remove(detail);
                                 }
                                 else
                                 {
-                                    return Json(new { success = false, code = -3 });
+                                    // Trường hợp không tìm thấy tb_WarehouseDetail
+                                    return Json(new { success = false, code = -5, message = $"Không tìm thấy sản phẩm với ProductDetailId = {detail.ProductDetailId} trong kho." });
                                 }
-                                db.tb_ImportWarehouseDetail.Remove(detail);
                             }
                             else
                             {
-                                return Json(new { success = false, code = -3 });
+                                // Trường hợp ProductDetailId không có giá trị
+                                return Json(new { success = false, code = -6, message = "Chi tiết nhập kho không có ProductDetailId." });
                             }
-                          
-
-                            // Cập nhật lại số lượng trong tb_WarehouseDetail nếu ProductDetailId không null
-                            
                         }
                     }
 
@@ -392,17 +441,157 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     db.SaveChanges();
                     dbContextTransaction.Commit();
 
-                    return Json(new { success = true, code = 1 }); // Chỉnh sửa thành công
+                    // Xuất hóa đơn và trả về đường dẫn file
+                    string invoicePath = ExportInvoice(model.ImportWareHosue);
+                    if (!string.IsNullOrEmpty(invoicePath))
+                    {
+                        return Json(new { success = true, code = 1, filePath = invoicePath });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, code = -7, message = "Không thể xuất hóa đơn." });
+                    }
                 }
                 catch (Exception ex)
                 {
                     // Rollback transaction nếu có lỗi
                     dbContextTransaction.Rollback();
-                    return Json(new { success = false, code = -100, message = ex.Message }); // Lỗi ngoại lệ
+                    return Json(new { success = false, code = -100, message = $"Lỗi ngoại lệ: {ex.Message}" });
                 }
             }
         }
 
+
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(Admin_TokenEditImportWareHouse model)
+        //{
+        //    using (var dbContextTransaction = db.Database.BeginTransaction())
+        //    {
+        //        try
+        //        {
+        //            // Kiểm tra xem người dùng đã đăng nhập chưa
+        //            if (Session["user"] == null)
+        //            {
+        //                return RedirectToAction("DangNhap", "Account");
+        //            }
+
+        //            // Lấy thông tin người dùng từ session
+        //            tb_Staff nvSession = (tb_Staff)Session["user"];
+
+        //            // Lấy thông tin nhập kho cần chỉnh sửa từ database
+        //            var importWarehouse = db.tb_ImportWarehouse.Find(model.ImportWareHosue);
+        //            if (importWarehouse == null)
+        //            {
+        //                return Json(new { success = false, code = -2 }); // Không tìm thấy hóa đơn nhập kho
+        //            }
+
+        //            // Cập nhật thông tin hóa đơn nhập kho
+        //            importWarehouse.WarehouseId = model.WarehouseId;
+        //            importWarehouse.SupplierId = model.SupplierId;
+        //            importWarehouse.CreatedBy = model.CreatedBy;
+        //            importWarehouse.CreateDate = model.CreatedDate;
+        //            importWarehouse.StaffId = model.StaffId;
+        //            importWarehouse.ModifiedDate = DateTime.Now;
+        //            importWarehouse.Modifeby = nvSession.NameStaff;
+
+        //            db.Entry(importWarehouse).State = EntityState.Modified;
+
+        //            // Lưu thông tin hóa đơn nhập kho vào database
+        //            db.SaveChanges();
+
+        //            // Xử lý chi tiết nhập kho
+        //            var sessionKey = "Admin_TokenEditImportWareHouse_" + model.ImportWareHosue;
+        //            var viewModel = Session[sessionKey] as Admin_TokenEditImportWareHouse;
+        //            if (viewModel == null || viewModel.Items.Count < 1)
+        //            {
+        //                return Json(new { success = false, code = -4 }); // Hóa đơn phải có ít nhất 1 sản phẩm
+        //            }
+
+        //            var existingDetails = db.tb_ImportWarehouseDetail.Where(d => d.ImportWarehouseId == importWarehouse.ImportWarehouseId).ToList();
+
+        //            // Xóa các chi tiết không còn trong viewModel từ tb_ImportWarehouseDetail và tb_WarehouseDetail
+        //            foreach (var detail in existingDetails.ToList())
+        //            {
+        //                if (!viewModel.Items.Any(item => item.ImportWarehouseDetailId == detail.ImportWarehouseDetailId))
+        //                {
+        //                    if (detail.ProductDetailId != null)
+        //                    {
+        //                        var warehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == detail.ProductDetailId);
+        //                        if (warehouseDetail != null)
+        //                        {
+        //                            warehouseDetail.QuanTity -= detail.QuanTity; // Giảm số lượng tồn kho
+        //                            db.Entry(warehouseDetail).State = EntityState.Modified;
+        //                        }
+        //                        else
+        //                        {
+        //                            return Json(new { success = false, code = -3 });
+        //                        }
+        //                        db.tb_ImportWarehouseDetail.Remove(detail);
+        //                    }
+        //                    else
+        //                    {
+        //                        return Json(new { success = false, code = -3 });
+        //                    }
+
+
+        //                }
+
+        //            }
+
+        //            // Lưu các thay đổi vào database
+        //            db.SaveChanges();
+        //            dbContextTransaction.Commit();
+
+        //            string invoicePath = ExportInvoice(model.ImportWareHosue);
+        //            if (!string.IsNullOrEmpty(invoicePath))
+        //            {
+
+        //                return Json(new { Success = true, Code = 1, FilePath = invoicePath });
+        //            }
+        //            else
+        //            {
+        //                return Json(new { Success = false, Code = -7, FilePath = invoicePath });
+
+        //            }
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // Rollback transaction nếu có lỗi
+        //            dbContextTransaction.Rollback();
+        //            return Json(new { success = false, code = -100, message = ex.Message }); // Lỗi ngoại lệ
+        //        }
+        //    }
+        //}
+
+        [HttpPost]
+        public ActionResult UpdateQuantityForEditNew(int productDetailId, int importWarehouseDetailId, int importWarehouseId, int quantity)
+     {
+            
+            var sessionKey = "Admin_TokenEditImportWareHouse_" + importWarehouseId;
+            var viewModel = Session[sessionKey] as Admin_TokenEditImportWareHouse;
+
+            if (viewModel == null)
+            {
+                return Json(new { success = false, message = "Không tìm thấy thông tin hóa đơn trong session." });
+            }
+
+          
+            var itemToUpdate = viewModel.Items.FirstOrDefault(item => item.ImportWarehouseDetailId == importWarehouseDetailId && item.ProductDetailId == productDetailId);
+            if (itemToUpdate != null)
+            {
+                itemToUpdate.Quantity = quantity;
+
+              
+                Session[sessionKey] = viewModel;
+
+                return Json(new { success = true, message = "Cập nhật số lượng thành công." });
+            }
+
+            return Json(new { success = false, message = "Không tìm thấy sản phẩm cần cập nhật." });
+        }
 
         [HttpPost]
         public ActionResult DeleteItemImportWareHouse(int id, int ImportWarehouseDetailId)

@@ -11,11 +11,12 @@
                     <thead>
                         <tr class="">
                             @*<th><input type="checkbox" id="SelectAll" /></th>*@
-                            <th>STT</th>
+                            
                             <th>Hình ảnh</th>
                             <th>Sản phẩm</th>
                             @*<th>Màu/Dung lượng</th>*@
-                            <th>Giá/Giá Giảm</th>
+                            <th class="text-center">Giá/Giá Giảm</th>
+                            <th>Kho</th>
 
 
                             <th></th>
@@ -60,7 +61,7 @@
 
                                     <tr class="text-center opacity-100 " id="trow_@item.ProductsId">
                                         @*<td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>*@
-                                        <td>@i</td>
+                                      
                                         <td style="width:50px">
                                             <img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" />
                                         </td>
@@ -81,6 +82,8 @@
                                                 <span style=" text-decoration: line-through;"> 
                                                     @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price) 
                                                 </span>
+
+                                                <br />
                                                 <span class="text-danger">
                                                     @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.PriceSale)
                                                 </span>
@@ -92,7 +95,22 @@
                                                 </span>
                                             }
                                         </td>
+                                        <td>
+                                            @{
+                                                var checkWareHouse = item.tb_WarehouseDetail.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId);
 
+
+                                            }
+
+                                            
+                                            @if (checkWareHouse != null) {
+                                            <p>@checkWareHouse.QuanTity</p>
+                                            }
+else 
+                                            {
+                                            <p class="text-danger">Hết hàng</p>
+                                            }
+                                        </td>
 
                                         <td>
                                             <button class="red_button btn-success   border-0 btn-0 btnAddListSeller" data-id="@item.ProductDetailId">

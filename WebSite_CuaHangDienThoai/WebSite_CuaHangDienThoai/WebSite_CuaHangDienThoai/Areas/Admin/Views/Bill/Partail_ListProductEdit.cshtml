@@ -95,7 +95,13 @@
                                     }
 
                                 </td>
-                                <td class="text-center">@item.Quantity</td>
+                                <td class="text-center">
+                                    <input type="number" class="form-control Update_Quantity_For_Edit_Bill"
+                                           style="width:90%" id="@item.ProductDetailId"
+                                           data-importwarehousedetailid="@item.Id"
+                                           data-importwarehousedid="@item.SellerId"
+                                           value="@item.Quantity" />
+                                </td>
                                 <td class="text-center">
                                     <div class="btn deleteSellerItem" data-id="@item.Id" data-SellerId="@Model.SellerId">
                                         <svg xmlns="http://www.w3.org/2000/svg" style=" color:red;" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">

@@ -206,15 +206,18 @@
                 </div>
                 @*End tab bán hang*@
                 @*Start tab hóa đơn*@
-                <div class="tab-pane fade " id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
-                   @Html.Action("Partial_IndexBill", "Bill")
-                </div>
+            <div class="tab-pane fade " id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
+                <p id="loadBill">
+                    Loading...
+                </p>
+                @*@Html.Action("Partial_IndexBill", "Bill")*@
+            </div>
                 @*End tab hóa đơn*@
                 @*Start tab kho hàng*@
                 <div class="tab-pane fade " id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
-                    <div id="loaddata">
+                    <p id="loaddata">
 
-                    </div>
+                    </p>
 
                      @*@Html.Action("Partail_ProductDetail", "WareHouseImport")*@
                 </div>
@@ -228,32 +231,66 @@
 </div>
 
 <script>
-    function LoadIndex(page) {
-        $.ajax({
-            url: '/admin/ProductDetail/Partial_ListProductDetail',
-            type: 'GET',
-            data: { page: page },
-            success: function (rs) {
-                $('#loaddata').html(rs);
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
-    }
-    $(document).ready(function () { 
+    $(document).ready(function () {
+        // Clear customer search input
         $("#clearinputCustomer").click(function () {
             $("#searchCustomer").val("");
             $("#loadDataCustomer").html('<div class="row"><div class="col-md-6"><b class="card-text" style="color:red">Khách hàng:</b></div></div>');
         });
+        function LoadBill(page) {
+            $.ajax({
+                url: '/Admin/Bill/Partial_IndexBill',
+                type: 'GET',
+                data: { page: page },
+                beforeSend: function () {
+                    $('#loadBill').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+                },
+                success: function (rs) {
+                    $('#loadBill').html(rs);
+                },
+                error: function (error) {
+                    console.log('Error:', error);
+                    $('#loadBill').html('<div class="text-danger">Error loading data.</div>');
+                }
+            });
+        }
 
-        LoadIndex(1)
+   
+        LoadBill(1);
 
-        $(document).on('click', '.pagination a', function (e) {
+      
+        $(document).on('click', '#loadBill .pagination a', function (e) {
             e.preventDefault();
-            var page = $(this).attr('data-page');
+            var page = $(this).data('page');
+            LoadBill(page);
+        });
+
+        function LoadIndex(page) {
+            $.ajax({
+                url: '/admin/ProductDetail/Partial_ListProductDetail',
+                type: 'GET',
+                data: { page: page },
+                beforeSend: function () {
+                    $('#loaddata').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+                },
+                success: function (rs) {
+                    $('#loaddata').html(rs);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+        LoadIndex(1);
+        $(document).on('click', '#loaddata .pagination a', function (e) {
+            e.preventDefault();
+            var page = $(this).data('page');
             LoadIndex(page);
         });
+
     });
+
+
+
 
 </script>
