@@ -347,70 +347,106 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     // Lấy danh sách chi tiết hiện tại từ cơ sở dữ liệu
                     var existingDetails = db.tb_SellerDetail.Where(d => d.SellerId == seller.SellerId).ToList();
                     var newDetails = viewModel.Items;
-                    
-                    // Xóa các chi tiết không còn trong danh sách mới
-                    foreach (var existingDetail in existingDetails)
-                    {
-                        if (!newDetails.Any(d => d.ProductDetailId == existingDetail.ProductDetailId))
-                        {
-                            // Cập nhật lại số lượng trong tb_ImportWarehouseDetail
-                            var importDetail = db.tb_ImportWarehouseDetail
-                                .FirstOrDefault(x => x.ProductDetailId == existingDetail.ProductDetailId);
 
-                            if (importDetail != null)
+                    foreach (var detail in existingDetails.ToList())
+                    {
+                        if (!viewModel.Items.Any(x => x.Id == detail.Id))
+                        {
+                            if (detail.ProductDetailId != null)
                             {
-                                importDetail.QuanTity += existingDetail.Quantity;
-                                db.Entry(importDetail).State = EntityState.Modified;
+                                var existingDetail = existingDetails.FirstOrDefault(d => d.ProductDetailId == detail.ProductDetailId);
+                                if (existingDetail!=null)
+                                {
+                                    existingDetail.Price = detail.Price;
+                                    existingDetail.Quantity = detail.Quantity;
+                                    db.Entry(existingDetail).State = EntityState.Modified;
+                                }
+                                else
+                                {
+                                    return Json(new { success = false, code = -3 });
+                                }
+                                var warehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == detail.ProductDetailId);
+                                if (warehouseDetail != null)
+                                {
+                                    warehouseDetail.QuanTity += detail.Quantity; // Tăng số lượng tồn kho
+                                    db.Entry(warehouseDetail).State = EntityState.Modified;
+                                }
+                                else
+                                {
+                                    return Json(new { success = false, code = -3 });
+                                }
+                                db.tb_SellerDetail.Remove(detail);
+                            }
+                            else
+                            {
+                                return Json(new { success = false, code = -3 });
                             }
 
-                            db.tb_SellerDetail.Remove(existingDetail);
+
+                            // Cập nhật lại số lượng trong tb_WarehouseDetail nếu ProductDetailId không null
+
                         }
                     }
+                    //foreach (var existingDetail in existingDetails)
+                    //{
+                    //    if (!newDetails.Any(d => d.ProductDetailId == existingDetail.ProductDetailId))
+                    //    {
+                    //        // Cập nhật lại số lượng trong tb_ImportWarehouseDetail
+                    //        var importDetail = db.tb_ImportWarehouseDetail
+                    //            .FirstOrDefault(x => x.ProductDetailId == existingDetail.ProductDetailId);
 
-                    // Cập nhật hoặc thêm các chi tiết mới
-                    foreach (var detail in newDetails)
-                    {
-                        var existingDetail = existingDetails.FirstOrDefault(d => d.ProductDetailId == detail.ProductDetailId);
+                    //        if (importDetail != null)
+                    //        {
+                    //            importDetail.QuanTity += existingDetail.Quantity;
+                    //            db.Entry(importDetail).State = EntityState.Modified;
+                    //        }
 
-                        if (existingDetail != null)
-                        {
-                            // Điều chỉnh số lượng trong tb_ImportWarehouseDetail
-                            var importDetail = db.tb_ImportWarehouseDetail
-                                .FirstOrDefault(x => x.ProductDetailId == existingDetail.ProductDetailId);
+                    //        db.tb_SellerDetail.Remove(existingDetail);
+                    //    }
+                    //}
 
-                            if (importDetail != null)
-                            {
-                                importDetail.QuanTity += existingDetail.Quantity - detail.Quantity;
-                                db.Entry(importDetail).State = EntityState.Modified;
-                            }
+                    //// Cập nhật hoặc thêm các chi tiết mới
+                    //foreach (var detail in newDetails)
+                    //{
+                    //    var existingDetail = existingDetails.FirstOrDefault(d => d.ProductDetailId == detail.ProductDetailId);
 
-                            existingDetail.Price = detail.Price;
-                            existingDetail.Quantity = detail.Quantity;
-                            db.Entry(existingDetail).State = EntityState.Modified;
-                        }
-                        else
-                        {
-                            var newDetail = new tb_SellerDetail
-                            {
-                                SellerId = seller.SellerId,
-                                Price = detail.Price,
-                                Quantity = detail.Quantity,
-                                ProductDetailId = detail.ProductDetailId
-                            };
+                    //    if (existingDetail != null)
+                    //    {
+                    //        // Điều chỉnh số lượng trong tb_ImportWarehouseDetail
+                    //        var importDetail = db.tb_WarehouseDetail
+                    //            .FirstOrDefault(x => x.ProductDetailId == existingDetail.ProductDetailId);
 
-                            db.tb_SellerDetail.Add(newDetail);
+                    //        if (importDetail != null)
+                    //        {
+                    //            importDetail.QuanTity += existingDetail.Quantity - detail.Quantity;
+                    //            db.Entry(importDetail).State = EntityState.Modified;
+                    //        }
 
-                            // Điều chỉnh số lượng trong tb_ImportWarehouseDetail
-                            var importDetail = db.tb_ImportWarehouseDetail
-                                .FirstOrDefault(x => x.ProductDetailId == detail.ProductDetailId);
+                            
+                    //    }
+                    //    else
+                    //    {
+                    //        var newDetail = new tb_SellerDetail
+                    //        {
+                    //            SellerId = seller.SellerId,
+                    //            Price = detail.Price,
+                    //            Quantity = detail.Quantity,
+                    //            ProductDetailId = detail.ProductDetailId
+                    //        };
 
-                            if (importDetail != null)
-                            {
-                                importDetail.QuanTity -= detail.Quantity;
-                                db.Entry(importDetail).State = EntityState.Modified;
-                            }
-                        }
-                    }
+                    //        db.tb_SellerDetail.Add(newDetail);
+
+                    //        // Điều chỉnh số lượng trong tb_ImportWarehouseDetail
+                    //        var importDetail = db.tb_WarehouseDetail
+                    //            .FirstOrDefault(x => x.ProductDetailId == detail.ProductDetailId);
+
+                    //        if (importDetail != null)
+                    //        {
+                    //            importDetail.QuanTity -= detail.Quantity;
+                    //            db.Entry(importDetail).State = EntityState.Modified;
+                    //        }
+                    //    }
+                    //}
 
                     db.SaveChanges();
                     dbContextTransaction.Commit();

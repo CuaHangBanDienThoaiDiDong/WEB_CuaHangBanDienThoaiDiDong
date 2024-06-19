@@ -37,6 +37,7 @@ using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using System.Runtime.Remoting.Channels;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 {
@@ -309,32 +310,97 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
             return PartialView("_ListProductForEdit");
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(tb_ImportWarehouse model)
+        public ActionResult Edit(Admin_TokenEditImportWareHouse model)
         {
-            var result = new { Success = false, Message = "Error" };
-            if (ModelState.IsValid)
+            using (var dbContextTransaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    tb_Staff nvSession = (tb_Staff)Session["user"];
-                    var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
-                    model.Modifeby = checkStaff.NameStaff + "-" + checkStaff.Code;
-                    model.ModifiedDate = DateTime.Now;
+                    // Kiểm tra xem người dùng đã đăng nhập chưa
+                    if (Session["user"] == null)
+                    {
+                        return RedirectToAction("DangNhap", "Account");
+                    }
 
-                    db.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                    // Lấy thông tin người dùng từ session
+                    tb_Staff nvSession = (tb_Staff)Session["user"];
+
+                    // Lấy thông tin nhập kho cần chỉnh sửa từ database
+                    var importWarehouse = db.tb_ImportWarehouse.Find(model.ImportWareHosue);
+                    if (importWarehouse == null)
+                    {
+                        return Json(new { success = false, code = -2 }); // Không tìm thấy hóa đơn nhập kho
+                    }
+
+                    // Cập nhật thông tin hóa đơn nhập kho
+                    importWarehouse.WarehouseId = model.WarehouseId;
+                    importWarehouse.SupplierId = model.SupplierId;
+                    importWarehouse.CreatedBy = model.CreatedBy;
+                    importWarehouse.CreateDate = model.CreatedDate;
+                    importWarehouse.StaffId = model.StaffId;
+                    importWarehouse.ModifiedDate = DateTime.Now;
+                    importWarehouse.Modifeby = nvSession.NameStaff;
+
+                    db.Entry(importWarehouse).State = EntityState.Modified;
+
+                    // Lưu thông tin hóa đơn nhập kho vào database
                     db.SaveChanges();
 
-                    result = new { Success = true, Message = "Edit successful" }; 
+                    // Xử lý chi tiết nhập kho
+                    var sessionKey = "Admin_TokenEditImportWareHouse_" + model.ImportWareHosue;
+                    var viewModel = Session[sessionKey] as Admin_TokenEditImportWareHouse;
+                    if (viewModel == null || viewModel.Items.Count < 1)
+                    {
+                        return Json(new { success = false, code = -4 }); // Hóa đơn phải có ít nhất 1 sản phẩm
+                    }
+
+                    var existingDetails = db.tb_ImportWarehouseDetail.Where(d => d.ImportWarehouseId == importWarehouse.ImportWarehouseId).ToList();
+
+                    // Xóa các chi tiết không còn trong viewModel từ tb_ImportWarehouseDetail và tb_WarehouseDetail
+                    foreach (var detail in existingDetails.ToList())
+                    {
+                        if (!viewModel.Items.Any(item => item.ImportWarehouseDetailId == detail.ImportWarehouseDetailId))
+                        {
+                            if (detail.ProductDetailId != null)
+                            {
+                                var warehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == detail.ProductDetailId);
+                                if (warehouseDetail != null)
+                                {
+                                    warehouseDetail.QuanTity -= detail.QuanTity; // Giảm số lượng tồn kho
+                                    db.Entry(warehouseDetail).State = EntityState.Modified;
+                                }
+                                else
+                                {
+                                    return Json(new { success = false, code = -3 });
+                                }
+                                db.tb_ImportWarehouseDetail.Remove(detail);
+                            }
+                            else
+                            {
+                                return Json(new { success = false, code = -3 });
+                            }
+                          
+
+                            // Cập nhật lại số lượng trong tb_WarehouseDetail nếu ProductDetailId không null
+                            
+                        }
+                    }
+
+                    // Lưu các thay đổi vào database
+                    db.SaveChanges();
+                    dbContextTransaction.Commit();
+
+                    return Json(new { success = true, code = 1 }); // Chỉnh sửa thành công
                 }
                 catch (Exception ex)
                 {
-                    result = new { Success = false, Message = ex.Message };
+                    // Rollback transaction nếu có lỗi
+                    dbContextTransaction.Rollback();
+                    return Json(new { success = false, code = -100, message = ex.Message }); // Lỗi ngoại lệ
                 }
             }
-            return Json(result);
         }
 
 
