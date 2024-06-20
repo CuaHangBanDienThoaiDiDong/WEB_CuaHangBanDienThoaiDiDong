@@ -13,5 +13,12 @@ namespace WebSite_CuaHangDienThoai.Controllers
         {
             return View();
         }
+
+
+        public ActionResult LienHe() 
+        
+        {
+            return View();
+        }
     }
 }

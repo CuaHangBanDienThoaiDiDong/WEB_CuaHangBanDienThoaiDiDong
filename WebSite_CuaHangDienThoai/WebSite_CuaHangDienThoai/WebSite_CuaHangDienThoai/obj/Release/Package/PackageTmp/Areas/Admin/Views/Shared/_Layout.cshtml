@@ -183,8 +183,10 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="/Home/index" target="_blank" class="brand-link">
-                <img src="~/Content/clients/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">Trang quảng trị</span>
+                @*<img src="~/Content/clients/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">*@
+                <img src="~/images/Logo/LogoWebpng.png" class="brand-image img-circle elevation-3"  alt="LogoWebpng">
+                <span class="brand-text font-weight-light"> LTD<span style="color: white; font-family: Poppins-Regular; ">MiniStore</span></span>
+               
             </a>
 
             @*@Html.Partial("_PartiaSideBar")*@
@@ -193,6 +195,7 @@
             <!-- Sidebar user (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
                 <div class="image">
+                   
                     @if (Session["userimg"] != null)
                     {
                         var imgBase64 = Session["userimg"] as string;
@@ -213,11 +216,15 @@
                         var user = Session["user"] as WebSite_CuaHangDienThoai.Models.tb_Staff;
                         if (user != null)
                         {
-                            <div>
-                                <span class="text-white">@user.NameStaff</span>
-                                <br />
-                                <span class="text-white">@user.tb_Function.TitLe</span>
-                            </div>
+                          @*<a href="/tai-khoan/@user.Code-p@(user.StaffId)" target="_blank">*@
+
+                    <a href="@Url.Action("Staff", "Account", new { code = user.Code, id = user.StaffId })" target="_blank">
+                        <div>
+                            <span class="text-white">@user.NameStaff</span>
+                            <br />
+                            <span class="text-white">@user.tb_Function.TitLe</span>
+                        </div>
+                    </a>
                         }
                         else
                         {
@@ -228,7 +235,7 @@
                     {
                         @Html.ActionLink("Đăng nhập", "Account", null, new { @class = "text-white" })
                     }
-                </div>
+                        </div>
             </div>
 
             @Html.Partial("_MenuSideBar")
@@ -264,7 +271,7 @@
         <!-- /.control-sidebar -->
     </div>
 
-
+    <script src="~/Scripts/jsCount.js"></script>
     <!---SweetAlter-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
 

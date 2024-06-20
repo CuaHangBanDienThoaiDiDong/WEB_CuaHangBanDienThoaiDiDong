@@ -134,7 +134,7 @@
         //    }
         //});
         $("#voucherCode").on("input", function () {
-            clearTimeout(typingTimer); // Xóa timeout
+            clearTimeout(typingTimer); // Xóa timeout trước đó
 
             var doneTypingInterval = 500; // Độ trễ để gửi request (milisecond)
             typingTimer = setTimeout(function () {
@@ -151,15 +151,21 @@
                                 showVoucherInfo(voucher[0].Title, percentPriceReduction);
 
                                 var currentDate = new Date(); // Ngày hiện tại
+                                var startDate = voucher[0].UsedDate ? new Date(voucher[0].UsedDate) : null; // Ngày bắt đầu
+                                var endDate = voucher[0].ModifiedDate ? new Date(voucher[0].ModifiedDate) : null; // Ngày kết thúc
 
                                 if (voucher[0].Status === true) {
                                     $(".loadVoucher").html('<p class="text-danger">Mã giảm giá đã được sử dụng</p>');
                                     $(".btnApllyVoucher, .btnRemoveVoucher").addClass("d-none");
-                                } else if (voucher[0].UsedDate && voucher[0].ModifiedDate && currentDate >= new Date(voucher[0].UsedDate) && currentDate <= new Date(voucher[0].ModifiedDate)) {
+                                } else if (startDate && endDate && currentDate >= startDate && currentDate <= endDate) {
                                     $(".loadVoucher").html('<p class="text-success">Mã giảm giá còn hạn sử dụng</p>');
                                     $(".btnApllyVoucher").removeClass("d-none").attr("data-percent", percentPriceReduction).attr("data-code", voucherCode);
                                     $(".btnRemoveVoucher").removeClass("d-none");
-                                } else {
+                                } else if (currentDate < startDate) {
+                                    $(".loadVoucher").html('<p>Không tìm thấy mã giảm giá hoặc mã giảm giá chưa bắt đầu</p>');
+                                    $(".btnApllyVoucher").addClass("d-none").attr("data-percent", "0").attr("data-code", "");
+                                    $(".btnRemoveVoucher").addClass("d-none");
+                                } else if (currentDate > endDate) {
                                     $(".loadVoucher").html('<p class="text-danger">Mã giảm giá đã hết hạn sử dụng</p>');
                                     $(".btnApllyVoucher, .btnRemoveVoucher").addClass("d-none");
                                 }
@@ -181,6 +187,68 @@
                 }
             }, doneTypingInterval);
         });
+        $("#voucherCode").on("input", function () {
+            clearTimeout(typingTimer); // Xóa timeout nếu có
+
+            var doneTypingInterval = 500; // Độ trễ để gửi request (milisecond)
+            typingTimer = setTimeout(function () {
+                var voucherCode = $("#voucherCode").val().trim();
+                if (voucherCode.length >= 5) {
+                    $.ajax({
+                        url: '/ShoppingCart/GetVoucher',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: { Code: voucherCode },
+                        success: function (data) {
+                            if (data.hasOwnProperty('error')) {
+                                // Xử lý khi không tìm thấy mã giảm giá
+                                $(".loadVoucher").html("<p>" + data.error + "</p>");
+                                $(".btnApplyVoucher").addClass("d-none").attr("data-percent", "0").attr("data-code", "");
+                                $(".btnRemoveVoucher").addClass("d-none");
+                            } else {
+                                // Hiển thị thông tin mã giảm giá
+                                var percentPriceReduction = data.PercentPriceReduction;
+                                showVoucherInfo(data.Title, percentPriceReduction);
+
+                                var currentDate = new Date(); // Lấy ngày hiện tại
+
+                                var usedDate = data.UsedDate ? new Date(data.UsedDate) : null;
+                                var modifiedDate = data.ModifiedDate ? new Date(data.ModifiedDate) : null;
+
+                                if (data.Status === true) {
+                                    $(".loadVoucher").html('<p class="text-danger">Mã giảm giá đã được sử dụng</p>');
+                                    $(".btnApplyVoucher, .btnRemoveVoucher").addClass("d-none");
+                                } else if (usedDate && modifiedDate && currentDate <= modifiedDate) {
+                                    $(".loadVoucher").html('<p class="text-success">Mã giảm giá còn hạn sử dụng</p>');
+                                    $(".btnApllyVoucher").removeClass("d-none").attr("data-percent", percentPriceReduction).attr("data-code", voucherCode);
+                                    $(".btnRemoveVoucher").removeClass("d-none");
+                                } else {
+                                    $(".loadVoucher").html('<p class="text-danger">Mã giảm giá đã hết hạn sử dụng</p>');
+                                    $(".btnApplyVoucher, .btnRemoveVoucher").addClass("d-none");
+                                }
+                            }
+                        },
+                        error: function () {
+                            console.log("Lỗi khi gửi yêu cầu kiểm tra mã giảm giá.");
+                            // Xử lý lỗi khi gọi API
+                            $(".loadVoucher").html("<p>Có lỗi xảy ra khi kiểm tra mã giảm giá. Vui lòng thử lại sau.</p>");
+                            $(".btnApplyVoucher").addClass("d-none").attr("data-percent", "0").attr("data-code", "");
+                            $(".btnRemoveVoucher").addClass("d-none");
+                        }
+                    });
+
+                } else {
+                    // Nếu input trống, ẩn các nút áp dụng và nút xóa
+                    $(".loadVoucher").html("");
+                    $(".btnApplyVoucher, .btnRemoveVoucher").addClass("d-none");
+                }
+            }, doneTypingInterval); // Thực hiện hành động sau khi nhập xong sau 500ms
+        });
+
+
+
+
+
 
         function showVoucherInfo(title, percentPriceReduction) {
             var voucherInfo = `
@@ -191,6 +259,18 @@
     `;
             $(".loadVoucher").html(voucherInfo);
         }
+
+    //    function showVoucherInfo(title, percentPriceReduction) {
+    //        var voucherInfo = `
+    //    <div class="d-flex justify-content-between">
+    //        <p class="mb-2">Chương trình giảm: ${title}</p>
+    //        <p class="mb-2 text-success">${percentPriceReduction}% / đơn hàng</p>
+    //    </div>
+    //`;
+    //        $(".btnApllyVoucher").removeClass("d-none").attr("data-percent", percentPriceReduction).attr("data-code", voucherCode);
+    //        $(".btnRemoveVoucher").removeClass("d-none");
+    //        $(".loadVoucher").html(voucherInfo);
+    //    }
 
 
 
@@ -239,6 +319,7 @@
             var percentPriceReduction = $(this).attr("data-percent");
             var code = $(this).attr("data-code");
             updatePriceWithDiscount(percentPriceReduction, code);
+            $(".btnApplyVoucher").addClass("d-none").attr("data-percent", "0").attr("data-code", "");
         });
 
         $(".btnRemoveVoucher").on("click", function () {

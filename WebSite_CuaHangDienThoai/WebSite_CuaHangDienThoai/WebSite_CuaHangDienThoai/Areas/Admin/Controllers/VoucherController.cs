@@ -414,6 +414,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                     return RedirectToAction("Edit", new { id = viewModel.VoucherId });
                                 }
                             }
+                            dbContextTransaction.Commit();  
                             return RedirectToAction("Index");
                         }
                     }

@@ -1,0 +1,100 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Order>
+
+@if (Model != null)
+{
+    <table class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+        <span>
+            Số lượng đơn hàng mới   : <span class="text-danger">@ViewBag.Count </span> của ngày<span class="text-danger">@ViewBag.Date</span>
+        </span>
+        <thead>
+            <tr>
+
+                <th class="border-gray-200 text-center" scope="col">Mã đơn hàng</th>
+                <th class="border-gray-200 text-center" scope="col">Tên khách hàng</th>
+                <th class="border-gray-200 text-center" scope="col">Số điện thoại</th>
+                <th class="border-gray-200 text-center" scope="col">Tiền</th>
+                <th class="border-gray-200 text-center" scope="col">Trạng thái thanh toán</th>
+                <th class="border-gray-200 text-center" scope="col">Loại đơn hàng</th>
+                <th class="border-gray-200 text-center" scope="col">Ngày tạo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+
+                foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td class="text-center">@item.Code</td>
+                        <td class="text-center">@item.CustomerName</td>
+                        <td class="text-center">@item.Phone</td>
+                        <td class="text-center">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.TotalAmount, 0) đ</td>
+
+                        <td class="text-center">
+                            @if (item.TypePayment == 1)
+                            {
+
+                                <span class="badge bg-light text-danger">Chờ thành toán</span>
+
+
+                            }
+                            else
+                            {
+                                <span class="badge bg-success text-dark">Đã thanh toán</span>
+
+
+                            }
+
+                        </td>
+                        <td class="text-center">Đơn hàng mới  </td>
+                        <td class="text-center">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <a href="/admin/order/Detail/@item.OrderId" class="btn btn-sm btn-success">Xem</a>
+                            <a href="#" class="btn btn-sm btn-danger btnCapNhat" data-id="@item.OrderId">Cập nhật</a>
+                        </td>
+
+
+                    </tr>
+
+                }
+
+            }
+
+
+
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-danger">
+        Không tồn tại bảng ghi !!!
+    </p>
+}
+
+
+<script>
+    
+
+        $('body').off('click', '.btnConFirm').on('click', '.btnConFirm', function (e) {
+            e.preventDefault();
+            var btn = $(this);
+            var id = btn.data("id");
+            $.ajax({
+                url: '/admin/order/IsComfrim',
+                type: 'POST',
+                data: { id: id },
+                success: function (rs) {
+                    if (rs.success) {
+                        if (rs.Confirm) {
+                            btn.html("<i class='fa fa-check text-success'></i>");
+                        } else {
+                            btn.html("<i class='fas fa-times text-danger'></i>");
+                        }
+                        loadOrderNewPartial();
+                    }
+                }
+            });
+        });
+</script>

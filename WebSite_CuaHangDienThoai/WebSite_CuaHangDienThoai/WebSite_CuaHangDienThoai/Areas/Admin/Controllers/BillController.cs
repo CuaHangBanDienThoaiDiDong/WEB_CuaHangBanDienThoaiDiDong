@@ -69,6 +69,28 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
 
         }
+        public ActionResult IndexAdmin()
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2 || row.FunctionId == 2));
+                if (item == null)
+                {
+                    return RedirectToAction("NonRole", "HomePage");
+                }
+                else
+                {
+
+                    return View();
+                }
+            }
+
+        }
 
 
         public ActionResult Partial_IndexBill(int? page)
@@ -255,6 +277,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     CreatedBy = seller.CreatedBy,
                     CreatedDate = seller.CreatedDate,
                     TypePayment = seller.TypePayment,
+
                     StaffId = seller.StaffId,
                     Customer = db.tb_Customer.FirstOrDefault(x => x.CustomerId == seller.CustomerId),
                 };

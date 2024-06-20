@@ -41,7 +41,51 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
 
-        // Other actions...
+         public ActionResult SuggestProductDetail(string search)
+      {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var ProductCategoryId = db.tb_ProductCategory
+          .Where(c => c.Title.Contains(search))
+          .Select(c => c.ProductCategoryId)
+          .ToList();
+
+                var ProductCompanyId = db.tb_ProductCompany
+                    .Where(c => c.Title.Contains(search))
+                    .Select(c => c.ProductCompanyId)
+                    .ToList();
+
+                var Products = db.tb_Products
+                    .Where(p => p.Title.Contains(search) ||
+                                ProductCategoryId.Contains((int)p.ProductCategoryId) ||
+                                ProductCompanyId.Contains((int)p.ProductCompanyId))
+                    .ToList();
+
+
+                var productIds = Products.Select(p => p.ProductsId).ToList();
+
+
+                var ProductDetail = db.tb_ProductDetail
+                    .Where(s => productIds.Contains((int)s.ProductsId))
+                    .ToList();
+
+                if (ProductDetail.Any())
+                {
+                    var count = ProductDetail.Count();
+                    ViewBag.Count = count;
+                    ViewBag.Content = search;
+                    return PartialView(ProductDetail);
+                }
+                else
+                {
+                    return PartialView();
+                }
+            }
+            else
+            {
+                return PartialView();
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {

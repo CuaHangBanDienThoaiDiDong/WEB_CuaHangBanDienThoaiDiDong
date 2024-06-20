@@ -1,0 +1,339 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Seller>
+
+@if (Model != null)
+{
+    <div class="bg-sg" style="display: none ">
+        <div id="notification-container" style="background-color:white "></div>
+    </div>
+    <div id="popupBill" style="display:none">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-tools">
+                    <div class="btn btnCloseEditBill">
+                        <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                            <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="loadDataSellerEdit">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <table class="table table-hover ">
+        <div class="d-flex align-items-cente ">
+            Số lượng đơn hàng<span class="text-danger">@ViewBag.Count   </span>- ngày <span class="text-danger">@ViewBag.Date</span>
+        </div>
+        <thead>
+            <tr class="text-center">
+
+                <th class="border-gray-200 text-center" scope="col">Mã đơn hàng</th>
+                <th class="border-gray-200 text-center" scope="col">Tên khách hàng</th>
+                <th class="border-gray-200 text-center" scope="col">Số điện thoại</th>
+                <th class="border-gray-200 text-center" scope="col">Tiền</th>
+                <th class="border-gray-200 text-center" scope="col">Tạo bởi</th>
+                <th class="border-gray-200 text-center" scope="col">Ngày tạo</th>
+                <th class="border-gray-200 text-center" scope="col">Thanh toán</th>
+
+
+            </tr>
+        </thead>
+        @if (ViewBag.txt == null)
+        {
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+
+                    foreach (var item in Model)
+                    {
+
+                        <tr>
+
+                            <td class="text-center">@item.Code</td>
+                            <td class="text-center">@item.tb_Customer.CustomerName</td>
+                            <td class="text-center">@item.Phone</td>
+                            <td class="text-center">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.TotalAmount, 0)</td>
+                            <td class="text-center">@item.CreatedBy</td>
+                            <td class="text-center">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center">
+                                @if (item.TypePayment == 0)
+                                {
+                                    <span class="badge bg-light text-danger">Thanh toán tại quầy</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-light text-success">Chuyển khoản</span>
+                                }
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-primary btnInBillLai" data-id="@item.SellerId">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                                        <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1" />
+                                        <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                    </svg>
+                                </button>
+                                <a href="/admin/Bill/Detail/@item.SellerId" target="_blank" class="btn btn-sm btn-success">Xem</a>
+
+                                <button class="btn btn-sm btn-danger btnCapNhatBill" data-id="@item.SellerId">Cập nhật</button>
+                            </td>
+
+
+                        </tr>
+
+                    }
+
+                }
+
+
+
+            </tbody>
+
+        }
+        else
+        {
+            <tbody>
+                <tr class="text-center text-danger">
+                    <td>@ViewBag.txt</td>
+                </tr>
+            </tbody>
+        }
+
+    </table>
+
+
+
+
+
+
+
+
+}
+else
+{
+    <p class="text-danger">Không tìm thấy khách hàng nào.</p>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-10">
+            <button class="btn btn-info addClient  col-12">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
+                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                    <path d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4" />
+                </svg>
+                Tạo mới
+            </button>
+
+        </div>
+        <div class="col-2"></div>
+    </div>
+
+}
+
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+
+    var originalContent;
+    function resetToOriginalContent() {
+        $('#loadDataSuggestBill').html(originalContent);
+    }
+    $(document).ready(function () {
+        originalContent = $('#loadDataSuggestBill').html();
+
+
+        // Xử lý sự kiện click trang
+
+
+        $('#clearInputBill').click(function () {
+            $("#searchBill").val(""); // Xóa nội dung trong ô tìm kiếm
+            resetToOriginalContent();
+        });
+
+        $('#searchBill').on('input', function () {
+            var keyword = $(this).val().trim();
+            if (keyword.length > 0) {
+                // Gọi action SuggestBillCustomer với keyword
+                $.ajax({
+                    url: '/Admin/Bill/SuggestBillCustomer',
+                    type: 'GET',
+                    data: { search: keyword },
+                    beforeSend: function () {
+                        $('#loaddata').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+                    },
+                    success: function (response) {
+                        $('#loadDataSuggestBill').html(response);
+                    },
+                    error: function () {
+                        // Xử lý lỗi nếu có
+                        console.log('Đã xảy ra lỗi khi tải dữ liệu.');
+                    }
+                });
+            } else {
+                resetToOriginalContent(); // Đặt lại nội dung ban đầu nếu không có keyword
+            }
+        });
+
+        if (typeof $ === 'undefined') {
+            console.error('jQuery is not loaded');
+            return;
+        }
+
+        // Select elements using jQuery
+        var bg = $(".bg-sg");
+        var popup = $("#popupBill");
+
+        var btnCapNhatBill = $('.btnCapNhatBill');
+
+        btnCapNhatBill.each(function () {
+            $(this).on('click', function (e) {
+                e.preventDefault();
+
+                bg.show();
+                popup.show();
+
+                var id = $(this).data('id');
+                if (id != null) {
+                    $.ajax({
+                        url: '/admin/Bill/Edit',
+                        type: 'GET',
+                        data: { id: id },
+                        success: function (response) {
+                            $("#loadDataSellerEdit").html(response);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
+
+        bg.on('click', function () {
+            bg.hide();
+            popup.hide();
+        });
+
+        $('.btnCloseEditBill').on('click', function () {
+            bg.hide();
+            popup.hide();
+        });
+        $('.btnInBillLai').on('click', function () {
+            var sellerId = $(this).data('id');
+            $.ajax({
+                url: '/Admin/Bill/InBillLaiNew/' + sellerId,
+                type: 'GET',
+                success: function (response) {
+                    console.log("Response từ server:", response);
+
+                    if (response.success) {
+                        if (response.Code === 1) {
+
+                            var encodedFilePath = encodeURIComponent(response.FilePath);
+                            window.location.href = '/Admin/Bill/DownBill?filePath=' + encodedFilePath;
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
+
+                            Toast.fire({
+                                icon: "success",
+                                title: "Hóa đơn in lại thành công"
+                            });
+                        } else {
+                            handleErrorResponse(response);
+                        }
+                    } else {
+                        handleErrorResponse(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Lỗi khi gọi Ajax:", xhr.responseText);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi...",
+                        text: "Không thể kết nối tới máy chủ. Vui lòng thử lại sau!",
+                    });
+                }
+            });
+        });
+
+
+
+
+
+        function handleErrorResponse(response) {
+            var errorMessage = "Đã xảy ra lỗi khi in hóa đơn.";  // Đây là thông báo mặc định
+
+            // Kiểm tra mã lỗi từ máy chủ và cập nhật thông báo lỗi chi tiết
+            switch (response.Code) {
+                case -1:
+                    errorMessage = "Không có phiên đăng nhập.";
+                    break;
+                case -2:
+                    errorMessage = "ID hóa đơn không hợp lệ.";
+                    break;
+                case -10:
+                    errorMessage = "Lỗi khi in hóa đơn.";
+                    break;
+                case -100:
+                    errorMessage = "Lỗi nội bộ khi xử lý yêu cầu.";
+                    break;
+                default:
+                    break;
+            }
+
+            // Hiển thị cửa sổ thông báo lỗi với thông báo chi tiết
+            Swal.fire({
+                icon: "error",
+                title: "Lỗi...",
+                text: errorMessage
+            });
+        }
+
+
+        //function showNotification(type, title, message) {
+        //    // Hàm hiển thị thông báo
+        //    // Có thể sử dụng thư viện như Swal.fire() hoặc bootstrap toast để hiển thị thông báo
+        //    console.log(type, title, message); // Thay bằng code hiển thị thông báo thực tế
+        //}
+
+
+
+
+    });
+
+    function getOrderNewToDay() {
+        var ngayxuat = $('#ngayxuatBill').val(); // Sử dụng jQuery để lấy giá trị của input datetime-local
+        $.ajax({
+            url: '/Admin/Bill/BillExportToday', // Địa chỉ URL của action trong controller
+            type: 'GET',
+            data: { ngayxuat: ngayxuat },
+            beforeSend: function () {
+                $('#loaddata').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+            },
+            success: function (data) {
+                $('#loadDataSuggestBill').html(data);
+            },
+            error: function (xhr, status, error) {
+                console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+            }
+        });
+    }
+
+
+</script>

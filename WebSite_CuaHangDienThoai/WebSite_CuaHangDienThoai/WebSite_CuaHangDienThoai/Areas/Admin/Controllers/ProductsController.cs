@@ -35,35 +35,55 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     //var items = db.tb_Staff.OrderByDescending(x => x.Code).ToList();
                     return View();
                 }
-                //IEnumerable<tb_Products> items = db.tb_Products.OrderByDescending(x => x.ProductsId);
-                //if (items != null)
-                //{
-                //    var pageSize = 10;
-                //    if (page == null)
-                //    {
-                //        page = 1;
-                //    }
-                //    var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-                //    items = items.ToPagedList(pageIndex, pageSize);
-                //    var products = db.tb_Products.ToList();
-
-                //    ViewBag.ProductCategory = new SelectList(db.tb_ProductCategory.ToList(), "ProductCategoryId", "Title");
-                //    ViewBag.ProductCompany = new SelectList(db.tb_ProductCompany.ToList(), "ProductCompanyId", "Title");
-
-                //    ViewBag.Count = products.Count;
-                //    ViewBag.PageSize = pageSize;
-                //    ViewBag.Page = page;
-                //    return View(items);
-                //}
-                //else
-                //{
-                //    ViewBag.txt = "Không tồn tại sản phẩm";
-                //    return View();
-                //}
+               
             }
                
         }
+        public ActionResult SuggestProduct(string search)
+        {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var ProductCategoryId = db.tb_ProductCategory
+          .Where(c => c.Title.Contains(search))
+          .Select(c => c.ProductCategoryId)
+          .ToList();
 
+                var ProductCompanyId = db.tb_ProductCompany
+                    .Where(c => c.Title.Contains(search))
+                    .Select(c => c.ProductCompanyId)
+                    .ToList();
+
+                var Products = db.tb_Products
+                    .Where(p => p.Title.Contains(search) ||
+                                ProductCategoryId.Contains((int)p.ProductCategoryId) ||
+                                ProductCompanyId.Contains((int)p.ProductCompanyId))
+                    .ToList();
+
+
+                var productIds = Products.Select(p => p.ProductsId).ToList();
+
+
+                var ProductDetail = db.tb_ProductDetail
+                    .Where(s => productIds.Contains((int)s.ProductsId))
+                    .ToList();
+
+                if (ProductDetail.Any())
+                {
+                    var count = ProductDetail.Count();
+                    ViewBag.Count = count;
+                    ViewBag.Content = search;
+                    return PartialView(ProductDetail);
+                }
+                else
+                {
+                    return PartialView();
+                }
+            }
+            else
+            {
+                return PartialView();
+            }
+        }
         public ActionResult Partial_Index(int? page) 
         {
             if (Session["user"] == null)

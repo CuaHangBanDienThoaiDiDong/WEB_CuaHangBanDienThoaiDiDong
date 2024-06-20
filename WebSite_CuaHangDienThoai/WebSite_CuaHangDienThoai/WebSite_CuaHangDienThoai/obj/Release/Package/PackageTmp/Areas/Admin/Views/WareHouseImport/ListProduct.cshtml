@@ -1,4 +1,4 @@
-﻿@model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
+﻿@model PagedList.IPagedList<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
 @using PagedList.Mvc;
 @{
     ViewBag.Title = " Danh Sách Dòng Sản Phẩm";
@@ -86,13 +86,25 @@
                     <tbody>
                         @if (Model != null && Model.Any())
                         {
-                            var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+                            var i = Model.PageNumber * Model.PageSize - Model.PageSize + 1;
                             foreach (var item in Model)
                             {
 
                                 //var checkQuantity = item.tb_ImportWarehouse.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId);
 
-
+                                var Capacity = "";
+                                if (item.Capacity > 999)
+                                {
+                                    Capacity = "1Tb";
+                                }
+                                else if (item.Capacity > 1999)
+                                {
+                                    Capacity = "2 Tb";
+                                }
+                                else
+                                {
+                                    Capacity = item.Capacity + "Gb";
+                                }
                                 byte[] strImg = null;
                                 var CheckImage = item.tb_Products.tb_ProductImage.SingleOrDefault(x => x.IsDefault == true);
 
@@ -128,7 +140,7 @@
                                         @item.tb_Products.tb_ProductCompany.Title
                                     </td>
                                     <td>
-                                        @item.Capacity
+                                        @Capacity
                                     </td>
 
 
@@ -162,13 +174,44 @@
 
             </table>
 
-            <div class="row">
-                <div class="col-6"></div>
-                <div class="col-6" style="text-align:right;">
-                    @Html.PagedListPager(Model, page => Url.Action("ListProduct", new { page }))
+            <hr />
+            @if (Model.PageCount > 1)
+            {
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-sm">
+                                <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                    <a class="page-link" href="@Url.Action("ListProduct", new { page = 1 })" aria-label="First">
+                                        <span aria-hidden="true">Đầu</span>
+                                    </a>
+                                </li>
+                                <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                    <a class="page-link" href="@Url.Action("ListProduct", new { page = Model.PageNumber - 1 })" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                @for (int i = Model.PageNumber; i <= Model.PageNumber + 4 && i <= Model.PageCount; i++)
+                                {
+                                    <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                                        <a class="page-link" href="@Url.Action("ListProduct", new { page = i })">@i</a>
+                                    </li>
+                                }
+                                <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                    <a class="page-link" href="@Url.Action("ListProduct", new { page = Model.PageNumber + 1 })" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                    <a class="page-link" href="@Url.Action("ListProduct", new { page = Model.PageCount })" aria-label="Last">
+                                        <span aria-hidden="true">Cuối</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
-            </div>
-
+            }
         </div>
         <!-- /.card-body -->
         <div class="card-footer">

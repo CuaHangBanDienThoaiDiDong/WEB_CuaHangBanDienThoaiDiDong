@@ -17,6 +17,7 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 using DynamicData;
 using System.Transactions;
+using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace WebSite_CuaHangDienThoai.Controllers
 {
@@ -420,20 +421,17 @@ namespace WebSite_CuaHangDienThoai.Controllers
                                 db.Entry(inforKhachHang).State = EntityState.Modified;
                                 db.SaveChanges();
 
+                                // Kiểm tra xem tất cả các mục trong giỏ hàng có áp dụng voucher không
+                                var itemWithVoucher = cart.Items.FirstOrDefault(item => item.PercentPriceReduction.HasValue && item.PercentPriceReduction > 0);
 
-                                foreach (var item in cart.Items)
+                                if (itemWithVoucher != null)
                                 {
-                                    if (item.PercentPriceReduction.HasValue && item.PercentPriceReduction > 0)
+                                    // Áp dụng voucher cho mục đầu tiên tìm thấy
+                                    if (!UpdateVoucherDetail(itemWithVoucher.CodeVoucher, order))
                                     {
-                                        if (!UpdateVoucherDetail(item.CodeVoucher, order))
-                                        {
-                                            return Json(new { Success = false, Code = -7, Url = "" }); // Áp dụng voucher thất bại
-                                        }
+                                        return Json(new { Success = false, Code = -7, Url = "" }); // Áp dụng voucher thất bại
                                     }
                                 }
-
-
-
 
 
                                 if (req.TypePayment == 2)
@@ -710,17 +708,28 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     if (checkSignature)
                     {
                         var itemOrder = db.tb_Order.FirstOrDefault(x => x.Code == orderCode);
+                        var customer = db.tb_Customer.FirstOrDefault(x => x.CustomerId == itemOrder.CustomerId);
                         if (vnp_ResponseCode == "00" && vnp_TransactionStatus == "00")
                         {
-                            if (itemOrder != null)
+                            if (itemOrder != null&& customer!=null)
                             {
                                 itemOrder.TypePayment = 2; // Đã thanh toán
                                 db.tb_Order.Attach(itemOrder);
                                 db.Entry(itemOrder).State = System.Data.Entity.EntityState.Modified;
                                 db.SaveChanges();
+                                ShoppingCart cart = (ShoppingCart)Session["Cart"];
+                                SendConfirmationEmails(cart, itemOrder, customer);
 
+                                ViewBag.InnerText = "Giao dịch được thực hiện thành công. Cảm ơn quý khách đã sử dụng dịch vụ";
                             }
-                            ViewBag.InnerText = "Giao dịch được thực hiện thành công. Cảm ơn quý khách đã sử dụng dịch vụ";
+                            else 
+                            {
+                               
+                                    UpdateWarehouseQuantity(itemOrder);
+                                    return RedirectToAction("CheckOutFailVnpay", "ShoppingCart");
+                               
+                                ViewBag.InnerText = "Có lỗi xảy ra trong quá trình xử lý. Mã lỗi: " + vnp_ResponseCode;
+                            }
                         }
                         else
                         {
@@ -958,61 +967,6 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return order;
         }
 
-      
-
-
-
-
-        //private void UpdateVoucherDetail(string voucherCode, int voucherId, int orderId, tb_Customer customerInfo)
-        //{
-        //    try
-        //    {
-        //        // Truy vấn dữ liệu từ bảng tb_VoucherDetail kèm theo dữ liệu từ bảng tb_Voucherx
-        //        var voucherDetail = db.tb_VoucherDetail
-        //            .Include(vd => vd.tb_Voucher)
-        //            .FirstOrDefault(vd => vd.Code == voucherCode && vd.Status == false && vd.VoucherId == voucherId);
-
-        //        if (voucherDetail != null)
-        //        {
-        //            // Kiểm tra xem voucherDetail có chứa dữ liệu từ bảng tb_Voucher hay không
-        //            if (voucherDetail.tb_Voucher != null)
-        //            {
-        //                // Cập nhật thông tin cho voucherDetail
-        //                voucherDetail.OrderId = orderId;
-        //                voucherDetail.Status = true;
-        //                voucherDetail.UsedDate = DateTime.Now;
-        //                voucherDetail.UsedBy = customerInfo.CustomerName;
-        //                voucherDetail.CreatedDate = DateTime.Now;
-        //                voucherDetail.VoucherId = voucherId;
-        //                // Cập nhật bảng tb_VoucherDetail trong cơ sở dữ liệu
-        //                db.SaveChanges();
-        //            }
-        //            else
-        //            {
-        //                Console.WriteLine("Voucher detail not found or already used.");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Voucher detail not found or already used.");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //        if (ex.InnerException != null)
-        //        {
-        //            Console.WriteLine(ex.InnerException.Message);
-        //        }
-        //    }
-        //}
-
-
-
-
-
-
-
 
         private string GenerateOrderCode()
         {
@@ -1101,35 +1055,106 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return PartialView();   
         }
 
-
         [HttpGet]
         public JsonResult GetVoucher(string Code)
         {
-            var voucher = (from chiTiet in db.tb_VoucherDetail
-                           join voucherDetail in db.tb_Voucher on chiTiet.VoucherId equals voucherDetail.VoucherId
-                           where chiTiet.Code.Trim() == Code.Trim()
-                           select new
-                           {
-                               voucherDetail.PercentPriceReduction, // PhanTramGiam
-                               voucherDetail.Title,
-                               voucherDetail.CreatedBy,
-                               voucherDetail.CreatedDate,
-                               voucherDetail.ModifiedDate,
-                               voucherDetail.UsedBy,
-                               voucherDetail.UsedDate,
-                               voucherDetail.Quantity,
-                               chiTiet.Status
-                           }).ToList();
-          
+            try
+            {
+                var voucher = (from chiTiet in db.tb_VoucherDetail
+                               join voucherDetail in db.tb_Voucher on chiTiet.VoucherId equals voucherDetail.VoucherId
+                               where chiTiet.Code.Trim() == Code.Trim()
+                               select new
+                               {
+                                   voucherDetail.PercentPriceReduction, // PhanTramGiam
+                                   voucherDetail.Title,
+                                   voucherDetail.CreatedBy,
+                                   voucherDetail.CreatedDate,
+                                   voucherDetail.ModifiedDate,
+                                   voucherDetail.UsedBy,
+                                   voucherDetail.UsedDate,
+                                   voucherDetail.Quantity,
+                                   chiTiet.Status
+                               }).FirstOrDefault();
 
+                if (voucher != null)
+                {
+                    var formattedVoucher = new
+                    {
+                        PercentPriceReduction = voucher.PercentPriceReduction,
+                        Title = voucher.Title,
+                        CreatedBy = voucher.CreatedBy,
+                        CreatedDate = voucher.CreatedDate.ToString("yyyy-MM-ddTHH:mm:ss"), // Định dạng ngày
+                        ModifiedDate = voucher.ModifiedDate != null ? voucher.ModifiedDate.Value.ToString("yyyy-MM-ddTHH:mm:ss") : null, // Định dạng ngày (nếu có)
+                        UsedBy = voucher.UsedBy,
+                        UsedDate = voucher.UsedDate != null ? voucher.UsedDate.Value.ToString("yyyy-MM-ddTHH:mm:ss") : null, // Định dạng ngày (nếu có)
+                        voucher.Quantity,
+                        voucher.Status
+                    };
 
-            return Json(voucher, JsonRequestBehavior.AllowGet);
+                    return Json(formattedVoucher, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { error = "Không tìm thấy mã giảm giá" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và ghi log nếu cần
+                Console.WriteLine("Lỗi trong quá trình lấy thông tin mã giảm giá: " + ex.Message);
+                return Json(new { error = "Đã xảy ra lỗi khi lấy thông tin mã giảm giá" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        [HttpGet]
+        public JsonResult GetVoucherNew(string code)
+        {
+            using (var db = new CUAHANGDIENTHOAIEntities())
+            {
+                var voucher = (from detail in db.tb_VoucherDetail
+                               join main in db.tb_Voucher on detail.VoucherId equals main.VoucherId
+                               where detail.Code.Trim() == code.Trim()
+                               select new
+                               {
+                                   main.PercentPriceReduction,
+                                   main.Title,
+                                   main.CreatedBy,
+                                   detail.CreatedDate,
+                                   //detail.ModifiedDate,
+                                   main.UsedBy,
+                                   detail.UsedDate,
+                                   detail.Status
+                               }).FirstOrDefault();
+
+                // Kiểm tra xem voucher có tồn tại hay không
+                if (voucher != null)
+                {
+                    // Định dạng ngày tháng sau khi lấy dữ liệu
+                    var formattedVoucher = new
+                    {
+                        voucher.PercentPriceReduction,
+                        voucher.Title,
+                        voucher.CreatedBy,
+                        CreatedDate = voucher.CreatedDate.ToString("yyyy-MM-ddTHH:mm:ss"), // Định dạng ngày
+                        //ModifiedDate = voucher.ModifiedDate != null ? voucher.ModifiedDate.Value.ToString("yyyy-MM-ddTHH:mm:ss") : null, // Định dạng ngày (nếu có)
+                        //voucher.UsedBy,
+                        UsedDate = voucher.UsedDate != null ? voucher.UsedDate.Value.ToString("yyyy-MM-ddTHH:mm:ss") : null, // Định dạng ngày (nếu có)
+                        voucher.Status
+                    };
+
+                    // Ghi log để kiểm tra
+                    Console.WriteLine("Voucher: " + JsonConvert.SerializeObject(formattedVoucher));
+
+                    return Json(new[] { formattedVoucher }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    // Trả về mảng JSON rỗng nếu không tìm thấy voucher
+                    return Json(new object[] { }, JsonRequestBehavior.AllowGet);
+                }
+            }
         }
 
 
-
-
-        
 
         //ShoppingCartList 
 

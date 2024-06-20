@@ -37,5 +37,72 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         {
             return View();
         }
+
+        public ActionResult CountClient()
+        {
+            var customer = db.tb_Customer.ToList();
+            if (customer != null)
+            {
+                ViewBag.Count = customer.Count;
+                return PartialView();
+            }
+            return PartialView();
+        }
+        public ActionResult CountStaff()
+        {
+            var customer = db.tb_Staff.ToList();
+            if (customer != null)
+            {
+                ViewBag.Count = customer.Count;
+                return PartialView();
+            }
+            return PartialView();
+        }
+        public ActionResult WareHouseImportExportToday()
+        {
+            // Lấy ngày hôm nay
+            DateTime selectedDate = DateTime.Today;
+            DateTime startDate = selectedDate.Date;
+            DateTime endDate = startDate.AddDays(1);
+
+            var ImportWarehouse = db.tb_ImportWarehouse
+                .Where(o => o.CreateDate >= startDate && o.CreateDate < endDate)
+                .ToList();
+
+            if (ImportWarehouse != null && ImportWarehouse.Count > 0)
+            {
+                ViewBag.Date = selectedDate;
+                ViewBag.Count = ImportWarehouse.Count;
+                return PartialView();
+            }
+            else
+            {
+                return PartialView();
+            }
+        }
+
+        public ActionResult GetOrderExportDay()
+        {
+            // Lấy ngày hôm nay
+            DateTime selectedDate = DateTime.Today;
+            DateTime startDate = selectedDate.Date;
+            DateTime endDate = startDate.AddDays(1);
+
+            var orders = db.tb_ExportWareHouse
+                .Where(o => o.CreatedDate >= startDate && o.CreatedDate < endDate)
+                .ToList();
+
+            if (orders != null && orders.Count > 0)
+            {
+                ViewBag.Date = selectedDate;
+                ViewBag.Count = orders.Count;
+                return PartialView();
+            }
+            else
+            {
+                return PartialView();
+            }
+        }
+
     }
 }

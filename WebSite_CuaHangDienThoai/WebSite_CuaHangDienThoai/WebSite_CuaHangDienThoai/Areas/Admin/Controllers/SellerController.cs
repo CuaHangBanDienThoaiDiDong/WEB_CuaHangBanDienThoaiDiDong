@@ -35,7 +35,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 {
     public class SellerController : Controller
     {
-        // GET: Admin/Seller
+        // GET: /Admin/Seller/IndexAdmin
         CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
         public ActionResult Index()
         {
@@ -67,7 +67,32 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
         }
+        public ActionResult IndexAdmin()
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2 || row.FunctionId == 2));
+                if (item == null)
+                {
+                    return RedirectToAction("NonRole", "HomePage");
+                }
+                else
+                {
 
+                    DateTime today = DateTime.Today;
+                    DateTime startOfDay = today.Date;
+                    DateTime endOfDay = today.Date.AddDays(1).AddTicks(-1);
+                    ViewBag.Today = today;
+                    return View();
+                }
+            }
+
+        }
         public ActionResult Partail_SellerIndex()
         {
             return PartialView();

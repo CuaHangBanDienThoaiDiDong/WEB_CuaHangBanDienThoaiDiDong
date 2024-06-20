@@ -1,4 +1,4 @@
-﻿popup@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Customer>
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Customer>
 
     @if (Model != null)
     {
@@ -22,10 +22,14 @@
             </div>
             <hr />
             <div class="row">
+                @if (ViewBag.Data != null)
+                {
+                  <p id="loadingMessage" style="display:none">Đang xuất hóa đơn . . .</p>
+                    <div class="col-md-12">
+                        <button class="btn btn-success btnCheckOutSeller col-12" data-id="@item.CustomerId">Xuất hóa đơn </button>
+                    </div>
+                }
 
-                <div class="col-md-12">
-                    <button class="btn btn-success btnCheckOutSeller col-12" data-id="@item.CustomerId">Xuất hóa đơn </button>
-                </div>
             </div>
 
 
@@ -60,69 +64,93 @@
         $(document).ready(function () {
             $('.btnCheckOutSeller').click(function () {
                 var customerId = $(this).data('id');
-                alert
+                // Hiển thị thông báo "Đang xuất hóa đơn . . ."
+                $('p#loadingMessage').show();
+
                 $.ajax({
                     url: '/Admin/Seller/CheckOutSeller',
                     type: 'POST',
                     data: { CustomerId: customerId },
                     success: function (response) {
+                        // Ẩn thông báo "Đang xuất hóa đơn . . ."
+                        $('p#loadingMessage').hide();
+
                         if (response.success) {
                             if (response.code === 1) {
+                                /*    loadListProduct();*/
+                                window.location.href = '/Admin/Seller/DownloadInvoice?filePath=' + encodeURIComponent(response.filePath);
+
                                 Swal.fire({
                                     icon: 'success',
-                                    title: 'Thành công',
-                                    text: 'Xuất hóa đơn thành công'
+                                    title: 'Xuất hóa đơn thành công',
+                                    text: 'Hóa đơn đã có trên hệ thống'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        loadListProduct();
+                                        $('#searchCustomer').val('');
+                                    }
                                 });
-                                setTimeout(function () {
-                                    window.location.reload();
-                                }, 1500);
                             }
                         } else {
-                            if (response.code === -1) {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Lỗi ...",
-                                    text: "Không tìm thấy khách hàng"
-                                });
-                            } else if (response.code === -3) {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Lỗi ...",
-                                    text: "Phiếu chưa có sản phẩm"
-                                });
-                            } else if (response.code === -7) {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Lỗi ...",
-                                    text: "Kho không đủ sản phẩm"
-                                });
-                            } else if (response.code === -99) {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Lỗi ...",
-                                    text: "Lỗi hệ thống"
-                                });
-                                // window.location.href = response.redirectTo;
-                            } else {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Máy chủ không phản hồi",
-                                    text: "Có lỗi xảy ra trong quá trình xuất hóa đơn"
-                                });
+                            switch (response.code) {
+                                case -1:
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Lỗi ...",
+                                        text: "Không tìm thấy khách hàng"
+                                    });
+                                    break;
+                                case -3:
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Lỗi ...",
+                                        text: "Phiếu chưa có sản phẩm"
+                                    });
+                                    break;
+                                case -7:
+                                    var productName = response.productName; // Lấy tên sản phẩm không đủ số lượng từ response
+                                    Swal.fire({
+                                        icon: "warning",
+                                        title: "Kho tạm hết hàng...",
+                                        text: "Sản phẩm " + productName + " không đủ số lượng"
+                                    });
+                                    break;
+                                case -99:
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Lỗi ...",
+                                        text: "Lỗi trạng thái nhân viên"
+                                    });
+
+                                    // Chờ 2 giây trước khi chuyển hướng
+                                    setTimeout(function () {
+                                        window.location.href = "/he-thong-nhan-vien";
+                                    }, 2000); // 2000 miligiây = 2 giây
+
+                                    break;
+                                default:
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Máy chủ không phản hồi",
+                                        text: "Có lỗi xảy ra trong quá trình xuất hóa đơn"
+                                    });
+                                    break;
                             }
                         }
-
                     },
                     error: function (xhr, status, error) {
+                        // Ẩn thông báo "Đang xuất hóa đơn . . ."
+                        $('p#loadingMessage').hide();
+
                         Swal.fire({
                             icon: "error",
                             title: "Máy chủ không phản hồi ",
                             text: "Đã xảy ra lỗi khi thực hiện yêu cầu!",
                             /* footer: '<a href="#">Why do I have this issue?</a>'*/
-                        }); setTimeout(function () {
-                            window.location.url = "/admin/Account/DangNhap";
-                        }, 1500)
-
+                        });
+                        setTimeout(function () {
+                            window.location.href = "/admin/Account/DangNhap";
+                        }, 1500);
                     }
                 });
             });
@@ -150,7 +178,18 @@
         });
 
         //End CheckOut
-
+        function loadListProduct() {
+            $.ajax({
+                url: '/Admin/Seller/Partail_ListProduct',
+                type: 'GET',
+                success: function (data) {
+                    $('.loadDataList').html(data); // Thêm dữ liệu vào phần tử .loadDataList
+                },
+                error: function () {
+                    alert('Đã xảy ra lỗi khi tải danh sách sản phẩm!');
+                }
+            });
+        }
 
         document.addEventListener("DOMContentLoaded", function () {
 

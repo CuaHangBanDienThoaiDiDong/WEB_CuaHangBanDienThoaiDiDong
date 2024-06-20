@@ -67,6 +67,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="tb_CustomerMessageDetail">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_CustomerMessageDetail">
+        <MappingFragment StoreEntitySet="tb_CustomerMessageDetail">
+          <ScalarProperty Name="DetailId" ColumnName="DetailId" />
+          <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+          <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="tb_ExportWareHouse">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_ExportWareHouse">
         <MappingFragment StoreEntitySet="tb_ExportWareHouse">
@@ -115,6 +127,16 @@
           <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
           <ScalarProperty Name="QuanTity" ColumnName="QuanTity" />
           <ScalarProperty Name="ImportWarehouseId" ColumnName="ImportWarehouseId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_Message">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Message">
+        <MappingFragment StoreEntitySet="tb_Message">
+          <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+          <ScalarProperty Name="IsRead" ColumnName="IsRead" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -286,7 +308,7 @@
           <ScalarProperty Name="ReturnId" ColumnName="ReturnId" />
           <ScalarProperty Name="Price" ColumnName="Price" />
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-          <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
+          <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -380,6 +402,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="tb_StaffMessageDetail">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_StaffMessageDetail">
+        <MappingFragment StoreEntitySet="tb_StaffMessageDetail">
+          <ScalarProperty Name="DetailId" ColumnName="DetailId" />
+          <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+          <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+          <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="tb_Store">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Store">
         <MappingFragment StoreEntitySet="tb_Store">
@@ -460,6 +494,15 @@
           <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
           <ScalarProperty Name="QuanTity" ColumnName="QuanTity" />
           <ScalarProperty Name="WarehouseId" ColumnName="WarehouseId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserTokens">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.UserTokens">
+        <MappingFragment StoreEntitySet="UserTokens">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Token" ColumnName="Token" />
+          <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

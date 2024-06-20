@@ -1,75 +1,71 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ImportWarehouseDetail>
+<style>
+    .custom-table th, .custom-table td {
+        width: 25%; /* Chỉnh sửa theo nhu cầu */
+    }
 
+</style>
 <h4 class="text-center">Thông tin sản phẩm</h4>
 <p>Số lượng sản phẩm:<span class="text-danger"> @ViewBag.Count</span></p>
-@if (Model != null && Model.Any())
-{<div style="overflow-x:auto;">
 
-        <!-- Thêm class table-responsive -->
-        <table class="table table-hover">
+@if (Model != null && Model.Any())
+{
+    <div style="overflow-x:auto;">
+        <table class="table table-hover custom-table">
             <thead>
                 <tr class="text-center">
-                    <th>STT</th>
-                    <th>Hình ảnh</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Màu</th>
-                    <th>Loại sản phẩm</th>
-                    <th>Số lượng</th>
-                    <th>Dung lượng</th>
+                    <th style="width: 15%;">Hình ảnh</th>
+                    <th class="text-center" style="width: 35%;">Sản phẩm</th>
+                    <th class="text-center" style="width: 25%;">Loại sản phẩm</th>
+                    <th class="text-center" style="width: 25%;">Số lượng</th>
                 </tr>
             </thead>
         </table>
-            <div style="max-height: 290px; overflow-y: auto;">
-                <table class="table table-hover">
-                    <tbody>
-                        <!-- Thêm kiểu và chiều cao cho thanh cuộn -->
-                        <!-- Dữ liệu sản phẩm -->
-                        @if (Model != null)
+
+        <div style="max-height: 290px; overflow-y: auto;">
+            <table class="table table-hover custom-table">
+                <tbody>
+                    @if (Model != null)
+                    {
+                        var i = 1;
+                        foreach (var item in Model)
                         {
-                            var i = 1;
-                            foreach (var item in Model)
+                            byte[] strImg = null;
+                            string Capacity = "";
+                            var checkImg = item.tb_ProductDetail.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault == true);
+                            string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
+                            int[] nguongDungLuong = new int[] { 999, 1999 };
+                            int index = Array.FindIndex(nguongDungLuong, capacity => item.tb_ProductDetail.Capacity > capacity);
+                            Capacity = index != -1 ? dungLuongOptions[index] : item.tb_ProductDetail.Capacity + " Gb";
+                            if (checkImg != null)
                             {
-                                byte[] strImg = null;
-                                string Capacity = "";
-                                var checkImg = item.tb_ProductDetail.tb_Products.tb_ProductImage.FirstOrDefault(x => x.IsDefault == true);
-                                string[] dungLuongOptions = new string[] { "1Tb", "2 Tb" };
-                                int[] nguongDungLuong = new int[] { 999, 1999 };
-                                int index = Array.FindIndex(nguongDungLuong, capacity => item.tb_ProductDetail.Capacity > capacity);
-                                Capacity = index != -1 ? dungLuongOptions[index] : item.tb_ProductDetail.Capacity + " Gb";
-                                if (checkImg != null)
-                                {
-                                    strImg = checkImg.Image;
-                                }
-                                string imgSrc = strImg != null && strImg.Length > 0 ? $"data:image;base64,{Convert.ToBase64String(strImg)}" : "";
-
-                                <tr class="text-center opacity-100" id="trow_@item.ProductDetailId">
-                                    <td class="text-center">@i</td>
-                                    <td class="text-center">
-                                        <img class="imgproduct" data-id="@item.ProductDetailId" src="@imgSrc" width="50" />
-                                    </td>
-                                    <td class="text-center"><a href="/admin/Products/Detail/@item.ProductDetailId" style="color:black"> @item.tb_ProductDetail.tb_Products.Title</a></td>
-                                    <td class="text-center">@item.tb_ProductDetail.Color</td>
-                                    <td>@item.tb_ProductDetail.tb_Products.tb_ProductCategory.Title</td>
-                                    <td>@item.QuanTity</td>
-                                    <td>@Capacity</td>
-                                </tr>
-                                i++;
+                                strImg = checkImg.Image;
                             }
+                            string imgSrc = strImg != null && strImg.Length > 0 ? $"data:image;base64,{Convert.ToBase64String(strImg)}" : "";
+
+                            <tr class="text-center opacity-100" id="trow_@item.ProductDetailId">
+                                <td class="text-center" style="width: 15%;">
+                                    <img class="imgproduct" data-id="@item.ProductDetailId" src="@imgSrc" width="50" />
+                                </td>
+                                <td class="text-center" style="width: 35%;">
+                                    <a href="/admin/Products/Detail/@item.ProductDetailId" style="color:black">
+                                        @item.tb_ProductDetail.tb_Products.Title
+                                        <br />
+                                        @Capacity-@item.tb_ProductDetail.Color
+                                    </a>
+                                </td>
+                                <td class="text-center" style="width: 25%;">@item.tb_ProductDetail.tb_Products.tb_ProductCategory.Title</td>
+                                <td class="text-center" style="width: 25%;">@item.QuanTity</td>
+                            </tr>
+                            i++;
                         }
-                    </tbody>
-                </table>
-            </div>
-   
-</div>
-         
-
-
-
- 
-
-      
-        }
-        else
-        {
-        <p class="text-danger">Không tìm thấy bảng ghi nào 123 !!!</p>
-        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <p class="text-danger text-center">Không tìm thấy bảng ghi nào !!!</p>
+}

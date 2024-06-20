@@ -152,21 +152,17 @@
 
             // Kiểm tra và lưu trữ giá trị ban đầu nếu chưa có
             if (!input.data('original-value')) {
-                input.data('original-value', input.val()); // Lưu giá trị ban đầu
+                input.data('original-value', input.val()); 
             }
 
             // Xử lý khi số lượng là rỗng hoặc bằng 0
             if (newQuantity === "" || parseInt(newQuantity) === 0) {
-                // Hiển thị cảnh báo và yêu cầu xác nhận
                 if (confirm("Số lượng không thể nhỏ hơn 0. Bạn có muốn khôi phục lại số lượng cũ không?")) {
-                    // Khôi phục lại số lượng cũ
                     input.val(input.data('original-value'));
                 } else {
-                    // Không đồng ý, giữ nguyên giá trị nhập vào và không cập nhật
                     return;
                 }
             } else {
-                // Nếu số lượng hợp lệ, tiến hành cập nhật
                 updateQuantity(input);
             }
         });
@@ -217,9 +213,9 @@
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    if (response.Code === 1) {
+                    if (response.code === 1) {
                         if (confirm("Hóa đơn đã có trong hệ thống ")) {
-                            window.location.href = '@Url.Action("DownloadInvoice", "WareHouseImport")?filePath=' + encodeURIComponent(response.FilePath);
+                            window.location.href = '@Url.Action("DownloadInvoice", "WareHouseImport")?filePath=' + encodeURIComponent(response.filePath);
                         }
                     }
                 },
@@ -247,131 +243,3 @@
     });
 </script>
 
-
-@*<script>
-    $(document).ready(function () {
-        loadSupplierData();
-        var importWareHouseId = @Model.ImportWareHosue;
-        loadListItem(importWareHouseId);
-
-        $("#listSupplier").change(function () {
-            var idSupplier = $(this).val();
-            if (idSupplier && idSupplier !== "-Chọn nhà cung cấp-") {
-                $.ajax({
-                    url: '/admin/WareHouseImport/Partial_Supplier',
-                    type: 'GET',
-                    data: { id: idSupplier },
-                    success: function (response) {
-                        $('#load_data_Supplier').html(response);
-                    },
-                    error: function (xhr, status, error) {
-                        console.error("Error: " + status + " - " + error);
-                        console.error(xhr.responseText);
-                        showNotification('danger', 'Lỗi', 'Đã xảy ra lỗi khi tải thông tin nhà cung cấp: ' + xhr.responseText);
-                    }
-                });
-            }
-        });
-
-        function loadListItem(id) {
-            if (id != null) {
-                $.ajax({
-                    url: '@Url.Action("Partail_ListProductForEdit", "WareHouseImport")',
-                    type: 'GET',
-                    data: { id: id },
-                    success: function (response) {
-                        $("#loadListItem").html(response);
-                        attachDeleteItemEvent();
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(xhr.responseText);
-                        showNotification('danger', 'Lỗi', 'Đã xảy ra lỗi khi tải lại danh sách sản phẩm.');
-                    }
-                });
-            }
-        }
-
-        function loadSupplierData() {
-            var idSupplier = $("#listSupplier").val();
-            if (idSupplier !== "-Chọn nhà cung cấp-") {
-                $.ajax({
-                    url: '/admin/WareHouseImport/Partial_Supplier',
-                    type: 'GET',
-                    data: { id: idSupplier },
-                    success: function (response) {
-                        $('#load_data_Supplier').html(response);
-                    },
-                    error: function (xhr, status, error) {
-                        console.error("Error: " + status + " - " + error);
-                        console.error(xhr.responseText);
-                        showNotification('danger', 'Lỗi', 'Đã xảy ra lỗi khi tải thông tin nhà cung cấp: ' + xhr.responseText);
-                    }
-                });
-            }
-        }
-
-        function submitForm(event) {
-            event.preventDefault(); // Ngăn chặn hành động submit mặc định
-            var form = $('#editBill')[0];
-            var formData = new FormData(form);
-
-            $.ajax({
-                url: '@Url.Action("Edit", "WareHouseImport")',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    if (response.success) {
-                        showNotification('success', 'Cập nhật thành công', 'Hóa đơn đã được cập nhập.');
-                        setTimeout(function() {
-                            location.reload();
-                        }, 3000);
-                    } else {
-                        var errorMessage = '';
-                        switch (response.code) {
-                            case -1:
-                                errorMessage = 'Không đủ dữ liệu.';
-                                break;
-                            case -2:
-                                errorMessage = 'Không tìm thấy hóa đơn.';
-                                break;
-                            case -3:
-                                errorMessage = 'Không tìm thấy hóa đơn.';
-                                break;
-                            case -4:
-                                errorMessage = 'Hóa phải có ít nhất 1 sản phẩm.';
-                                break;
-                            case -5:
-                                errorMessage = 'Không tìm thấy nhà cung cấp.';
-                                break;
-                            case -100:
-                                errorMessage = 'Đã xảy ra lỗi: ' + response.message;
-                                break;
-                            default:
-                                errorMessage = 'Đã xảy ra lỗi. Vui lòng thử lại.';
-                                break;
-                        }
-                        showNotification('danger', 'Lỗi', errorMessage);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    showNotification('danger', 'Lỗi', 'Không thể kết nối tới máy chủ. Vui lòng thử lại sau.');
-                }
-            });
-        }
-
-        function showNotification(type, title, message) {
-            var alertDiv = $('#alter');
-            alertDiv.removeClass();
-            alertDiv.addClass('toast toast-' + type);
-            $('#alertMessage').html('<strong>' + title + '</strong>: ' + message);
-            alertDiv.show();
-            setTimeout(function() {
-                alertDiv.hide();
-            }, 3000);
-        }
-
-        $('#editBill').on('submit', submitForm);
-    });
-    </script>*@

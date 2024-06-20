@@ -3,41 +3,27 @@
 
 @if (Model != null)
 {
-    <div class="card-header">
-        <div class="card-title">
-            <p>Thông tin nhà cung cấp</p>
-        </div>
-        <br />
-        <h3 class="text-center">@Model.Name</h3>
-    </div>
-    <div class="card-body">
+    <div class="col-12">
+        <b class="text-center">Thông tin nhà cung cấp</b>
+        <hr />
+        <div class="d-flex flex-wrap">
+            <div class="d-flex align-items-center mr-4">
+                <span style="color:black; white-space: nowrap;">     <b>Nhà cung cấp: </b>@Model.Name</span>
+            </div>
 
-        <div class="row">
-            <div class="col-md-2">
-                <label for="name" class="col-form-label"><b>Tên:</b></label>
-            </div>
-            <div class="col-md-6">
-                <span class="text-danger">@Model.Name</span>
-            </div>
         </div>
-        <div class="row">
-            <div class="col-md-2">
-                <label for="name" class="col-form-label"><b>Địa chỉ:</b></label>
+        <div class="">
+            <div class="d-flex align-items-center mr-4">
+                <span style="color:black; white-space: nowrap;">     <b>Mã nhà cung cấp: </b>@Model.SupplierId</span>
             </div>
-            <div class="col-md-6">
-                <span class="text-danger">@Model.Location</span>
-            </div>
+
         </div>
-        <div class="row">
-            <div class="col-md-2">
-                <label for="name" class="col-form-label"><b>Điện thoại:</b></label>
-            </div>
-            <div class="col-md-6">
-                <span class="text-danger">@Model.Phone</span>
-            </div>
+        <div class="">
+            <div class=""><b>Địa chỉ:</b> @Model.Location</div>
+            <div class=""><b>Điện thoại:</b> 0 @Model.Phone</div>
         </div>
-       
     </div>
+
 }
 else
 {

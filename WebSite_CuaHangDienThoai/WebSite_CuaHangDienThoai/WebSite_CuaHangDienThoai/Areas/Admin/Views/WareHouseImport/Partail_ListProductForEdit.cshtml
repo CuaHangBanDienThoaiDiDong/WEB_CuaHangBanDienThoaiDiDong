@@ -26,13 +26,10 @@
                 @*<th><input type="checkbox" id="SelectAll" /></th>*@
 
                 <th>Hình ảnh</th>
-                <th>Tên sản phẩm</th>
+                <th>Sản phẩm</th>
                 <th>Số lượng</th>
                 <th>Màu</th>
                 <th>Loại sản phẩm</th>
-                @*<th>Giá nhập</th>*@
-
-
                 <th>Dung lượng</th>
                 <th></th>
             </tr>
@@ -80,7 +77,13 @@
                                             <img class="imgproduct" data-id="@item.ProductDetailId" src="@imgSrc" width="50" />
                                         </td>
                                         <td class="text-center">
-                                            <a href="/admin/Products/Detail/@item.ProductDetailId" style="color:black">@item.Product.tb_Products.Title</a>
+
+                                            <a href="/chi-tiet/@item.Product.tb_Products.Alias-p@(item.Product.tb_Products.ProductsId)">
+                                                @item.Product.tb_Products.Title
+                                                <br />
+                                                @Capacity-@item.Product.Color
+                                            </a>
+                                           
                                         </td>
                                         <td class="text-center">
                                             <input type="number" class="form-control Update_Quantity_For_Edit" style="width:100%" id="@item.ProductDetailId" data-importwarehousedid="@item.ImportWareHosueId" data-importwarehousedetailid="@item.ImportWarehouseDetailId" data-idWareHouse="@item.ImportWareHosueId" value="@item.Quantity" />

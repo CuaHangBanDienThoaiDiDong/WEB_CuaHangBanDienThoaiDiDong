@@ -635,40 +635,48 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 var checkmail = db.tb_Customer.FirstOrDefault(s => s.Email == _khachhang.Email);
                 var checkPhone = db.tb_Customer.FirstOrDefault(s => s.PhoneNumber == _khachhang.PhoneNumber);
                 var checkId = db.tb_Customer.FirstOrDefault(s => s.CustomerId == _khachhang.CustomerId);
-                if (checkmail == null)
+                var checkCustomer = db.tb_Customer.FirstOrDefault(x => x.PhoneNumber == _khachhang.PhoneNumber && x.Email == _khachhang.Email && x.NumberofPurchases > 0);
+                if (checkCustomer != null)
                 {
-                    if (checkPhone == null)
+                    checkCustomer.Email = _khachhang.Email;
+                    checkCustomer.Password = MaHoaPass(_khachhang.Password);
+                    checkCustomer.Birthday = _khachhang.Birthday;
+                    checkCustomer.Loaction = _khachhang.Loaction;
+                    _khachhang.Clock = false;
+                    db.Entry(checkPhone).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Login", "Account");
+                }
+                else 
+                {
+                    if (checkmail == null)
                     {
-                        _khachhang.Password = MaHoaPass(_khachhang.Password.Trim()).Trim();
-                        _khachhang.NumberofPurchases = 1;
-                        _khachhang.Clock = false;
+                        if (checkPhone == null)
+                        {
+                            _khachhang.Password = MaHoaPass(_khachhang.Password.Trim()).Trim();
+                            _khachhang.NumberofPurchases = 1;
+                            _khachhang.Clock = false;
 
-                        db.Configuration.ValidateOnSaveEnabled = false;
-                        db.tb_Customer.Add(_khachhang);
-                        db.SaveChanges();
+                            db.Configuration.ValidateOnSaveEnabled = false;
+                            db.tb_Customer.Add(_khachhang);
+                            db.SaveChanges();
 
-                        return RedirectToAction("Login", "Account");
+                            return RedirectToAction("Login", "Account");
+                        }
+                        else
+                        {
+
+
+                        }
                     }
                     else
                     {
-                        checkPhone.Email = _khachhang.Email;
-                        checkPhone.Password = MaHoaPass(_khachhang.Password);
-                        checkPhone.Birthday = _khachhang.Birthday;
-                        checkPhone.Loaction = _khachhang.Loaction;
 
-                        db.tb_Customer.Add(checkPhone);
-                        db.Entry(checkPhone).State = System.Data.Entity.EntityState.Modified;
-                        db.SaveChanges();
-
-                        return RedirectToAction("Login", "Account");
+                        ModelState.AddModelError("", "Email đã tồn tại");
+                        return View(_khachhang);
                     }
                 }
-                else
-                {
-                    // Trả về thông báo lỗi khi email đã tồn tại
-                    ModelState.AddModelError("", "Email đã tồn tại");
-                    return View(_khachhang);
-                }
+               
             }
 
             // Trả về view với dữ liệu đang nhập và thông báo lỗi nếu dữ liệu không hợp lệ

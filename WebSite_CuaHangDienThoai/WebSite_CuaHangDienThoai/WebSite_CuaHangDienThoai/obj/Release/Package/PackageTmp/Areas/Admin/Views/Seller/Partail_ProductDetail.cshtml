@@ -1,21 +1,9 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
 
-<div class="card">
-    <div class="card-header">
-        <h2 class="card-title">Danh sách sản phẩm</h2>
-
-    </div>
-    <div class="col-lg-12 text-right nav-search   search-suggestions" style="display: block">
-        @*<div class="row ">
-                <div class="col-lg-12 search-suggestions" style="display: block;">
-
-
-                </div>
-
-            </div>*@
-    </div>
-    <div class="card-body loadListSortProductDetail">
-        @if (Model.Any() && Model != null)
+<div class="">
+    
+    <div class=" loadListSortProductDetail">
+        @if ( Model != null)
         {
             <div style="overflow-x:auto;">
                 <!-- Bảng chứa thead -->
@@ -23,11 +11,12 @@
                     <thead>
                         <tr class="">
                             @*<th><input type="checkbox" id="SelectAll" /></th>*@
-                            <th>STT</th>
+                            
                             <th>Hình ảnh</th>
                             <th>Sản phẩm</th>
                             @*<th>Màu/Dung lượng</th>*@
-                            <th>Giá/Giá Giảm</th>
+                            <th class="text-center">Giá/Giá Giảm</th>
+                            <th>Kho</th>
 
 
                             <th></th>
@@ -72,15 +61,17 @@
 
                                     <tr class="text-center opacity-100 " id="trow_@item.ProductsId">
                                         @*<td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>*@
-                                        <td>@i</td>
+                                      
                                         <td style="width:50px">
                                             <img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" />
                                         </td>
                                         <td>
-                                            <a href="/admin/Products/Detail/@item.ProductsId" style="color:black">
-                                                <span class="text-danger"> @item.tb_Products.Title</span>
+                                            <a href="/chi-tiet/@item.tb_Products.Alias-p@(item.ProductsId)"style="border-bottom:none" target="_blank">
+
+                                                <span class="text-danger">
+                                                    @item.tb_Products.Title
+                                                </span>
                                                 <br /> @item.Color/@Capacity
-                                                <br />@item.tb_Products.tb_ProductCategory.Title
                                             </a>
                                         </td>
                                         @*<td>@item.Color/@Capacity</td>*@
@@ -88,9 +79,11 @@
 
                                             @if (item.PriceSale > 0)
                                             {
-                                                <span style=" text-decoration: line-through;">
-                                                    @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price)
+                                                <span style=" text-decoration: line-through;"> 
+                                                    @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price) 
                                                 </span>
+
+                                                <br />
                                                 <span class="text-danger">
                                                     @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.PriceSale)
                                                 </span>
@@ -102,7 +95,22 @@
                                                 </span>
                                             }
                                         </td>
+                                        <td>
+                                            @{
+                                                var checkWareHouse = item.tb_WarehouseDetail.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId);
 
+
+                                            }
+
+                                            
+                                            @if (checkWareHouse != null) {
+                                            <p>@checkWareHouse.QuanTity</p>
+                                            }
+else 
+                                            {
+                                            <p class="text-danger">Hết hàng</p>
+                                            }
+                                        </td>
 
                                         <td>
                                             <button class="red_button btn-success   border-0 btn-0 btnAddListSeller" data-id="@item.ProductDetailId">

@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "Kho xuất";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutWareHouse.cshtml";
+}
+
+
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/productdetail/index" class="nav-link">@ViewBag.Title</a>
+        </li>
+    </ul>
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quản lý kho xuất</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<section class="content">
+    <div  class="col-12">
+        @Html.Action("Partial_ExportWareHouseIndex", "ExportWareHouse")
+    </div>
+
+</section>
+@section scripts{
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script>
+
+
+        $(document).ready(function () {
+            $('#maDonHang').on('input', function () {
+                var code = $(this).val();
+                if (code.trim() !== '') {
+
+                    $.ajax({
+                        url: '/Admin/ExportWareHouse/Partial_ThongTinDonHang',
+                        type: 'GET',
+                        data: { code: code },
+                        success: function (data) {
+
+                            $('.loadOrder').html(data);
+                        },
+                        error: function (xhr, status, error) {
+
+                            console.error(xhr.responseText);
+                        }
+                    });
+                } else {
+                    // Xử lý khi input không có giá trị
+                    // Ví dụ: ẩn hoặc xóa kết quả trước đó
+                    $('.loadOrder').html('');
+                }
+            });
+
+            document.getElementById('clearInputBtn').addEventListener('click', function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ a
+                document.getElementById('maDonHang').value = '';
+                $('.loadOrder').html('');
+            });
+
+
+
+            $('.btnExportWareHouse').click(function () {
+                var orderId = $(this).data('id');
+                $.ajax({
+                    url: '/Admin/ExportWareHouse/Partial_ExportWareHouse',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { Orderid: orderId },
+                    success: function (response) {
+                        if (response.Success) {
+                            window.location.href = response.Url;
+                        } else {
+                            alert('Đã xảy ra lỗi: ' + response.Code);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+        });
+
+    </script>
+
+
+}
+

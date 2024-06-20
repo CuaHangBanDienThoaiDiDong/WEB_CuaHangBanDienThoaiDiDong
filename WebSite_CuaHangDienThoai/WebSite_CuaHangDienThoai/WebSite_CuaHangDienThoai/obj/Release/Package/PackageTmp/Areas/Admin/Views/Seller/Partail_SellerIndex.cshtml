@@ -120,7 +120,7 @@
                                     <!-- Tabs content -->
                                     <div class="">
                                         <div class="">
-                                            <div class="loadDataList">
+                                            <div class="loadDataList"style="max-height: 680px; ">
 
                                             </div>
                                         </div>
@@ -173,15 +173,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
-
                                         </div>
                                         <div class="col-md-5">
-
-
-
-
                                             <ul class="nav nav-tabs mb-3" id="ex-with-icons" role="tablist">
                                                 <li class="nav-item" role="presentation">
                                                     <a data-mdb-tab-init class="nav-link active" id="ex-with-icons-tab-tienmat" href="#ex-with-icons-tabs-1" role="tab"
@@ -192,18 +185,13 @@
                                                         Thông tin thanh toán
                                                     </a>
                                                 </li>
-
-
                                             </ul>
-
-
                                             <div class="tab-content" id="ex-with-icons-content">
                                                 <div class="tab-pane fade show active" id="ex-with-icons-tab-tienmat" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
                                                     <div class="loadPice">
 
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -218,17 +206,20 @@
                 </div>
                 @*End tab bán hang*@
                 @*Start tab hóa đơn*@
-                <div class="tab-pane fade " id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
-                   @Html.Action("Partial_IndexBill", "Bill")
-                </div>
+            <div class="tab-pane fade " id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
+                <p id="loadBill">
+                    Loading...
+                </p>
+                @*@Html.Action("Partial_IndexBill", "Bill")*@
+            </div>
                 @*End tab hóa đơn*@
                 @*Start tab kho hàng*@
                 <div class="tab-pane fade " id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
-                    <div clas="row">
-                        <div class="col-12">
-                            <p>KHo hang </p>
-                        </div>
-                    </div>
+                    <p id="loaddata">
+
+                    </p>
+
+                     @*@Html.Action("Partail_ProductDetail", "WareHouseImport")*@
                 </div>
                 @*End tab  kho hàng*@
             </div>
@@ -240,13 +231,66 @@
 </div>
 
 <script>
-    $(document).ready(function () { 
+    $(document).ready(function () {
+        // Clear customer search input
         $("#clearinputCustomer").click(function () {
             $("#searchCustomer").val("");
             $("#loadDataCustomer").html('<div class="row"><div class="col-md-6"><b class="card-text" style="color:red">Khách hàng:</b></div></div>');
         });
+        function LoadBill(page) {
+            $.ajax({
+                url: '/Admin/Bill/Partial_IndexBill',
+                type: 'GET',
+                data: { page: page },
+                beforeSend: function () {
+                    $('#loadBill').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+                },
+                success: function (rs) {
+                    $('#loadBill').html(rs);
+                },
+                error: function (error) {
+                    console.log('Error:', error);
+                    $('#loadBill').html('<div class="text-danger">Error loading data.</div>');
+                }
+            });
+        }
+
+   
+        LoadBill(1);
 
       
+        $(document).on('click', '#loadBill .pagination a', function (e) {
+            e.preventDefault();
+            var page = $(this).data('page');
+            LoadBill(page);
+        });
+
+        function LoadIndex(page) {
+            $.ajax({
+                url: '/admin/ProductDetail/Partial_ListProductDetail',
+                type: 'GET',
+                data: { page: page },
+                beforeSend: function () {
+                    $('#loaddata').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+                },
+                success: function (rs) {
+                    $('#loaddata').html(rs);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+        LoadIndex(1);
+        $(document).on('click', '#loaddata .pagination a', function (e) {
+            e.preventDefault();
+            var page = $(this).data('page');
+            LoadIndex(page);
+        });
+
     });
+
+
+
 
 </script>

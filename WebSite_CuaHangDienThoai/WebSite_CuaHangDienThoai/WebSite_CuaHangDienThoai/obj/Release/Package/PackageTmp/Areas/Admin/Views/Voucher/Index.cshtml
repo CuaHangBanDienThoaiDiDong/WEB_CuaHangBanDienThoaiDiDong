@@ -28,7 +28,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/homepage">Home</a></li>
                     <li class="breadcrumb-item active">@ViewBag.Title</li>
                 </ol>
             </div>
@@ -43,9 +43,18 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Danh sách @ViewBag.Title</h3>
-            <br />
-            <span><label>Tổng số voucher:</label> @ViewBag.Count</span>
+            <div class="card-title">
+                <div class="d-flex justify-content-between align-items-center">
+                   
+                        <label class="mr-2">Tổng số voucher:</label>
+                        <span class="text-danger">@ViewBag.Count</span>
+                    
+
+                </div>
+
+            </div>
+           
+
             <div class="card-tools">
                 <a href="/admin/Voucher/add" class="btn btn-primary">Thêm mới</a>
 
@@ -63,11 +72,11 @@
                         <th>Phần trăm giảm / Đơn hàng</th>
 
                         <th>Tạo bởi</th>
-                        
-                        <th>Tổng số lượng</th>
+
+                        <th>Dã dùng</th>
                         <th>Thời gian bắt đầu</th>
                         <th>Thời gian kết thúc</th>
-                        
+
 
 
 
@@ -84,10 +93,9 @@
                             {
 
 
-                                var checkProductDetail = item.tb_VoucherDetail.Where(x => x.VoucherId == item.VoucherId);
-                                int Count = checkProductDetail.Count();
-                                int remaining = (int)item.Quantity - Count;
-
+                                var checkProductDetail = item.tb_VoucherDetail.Where(x => x.VoucherId == item.VoucherId && x.Status == true);
+                                int count = checkProductDetail.Count();
+                                int remaining = (int)item.Quantity - count;
 
 
 
@@ -103,10 +111,18 @@
                                         @item.PercentPriceReduction %
 
                                     </td>
-                                   
-                                    <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+
+                                    <td>@item.CreatedBy</td>
                                     <td class="text-center">
-                                        @remaining /@item.Quantity
+                                        @if (remaining > 0)
+                                        {
+                                            <label>Tổng số voucher còn lại:</label>
+                                            <span class="text-success">@remaining / @item.Quantity</span>
+                                        }
+                                        else
+                                        {
+                                            <label>Tất cả voucher đã được sử dụng</label>
+                                        }
                                     </td>
                                     <td class="text-center">
                                         @if (item.UsedDate.HasValue)
@@ -123,7 +139,7 @@
                                             @item.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm")
                                         }
 
-                                      
+
                                     </td>
                                     <td>
 
@@ -156,10 +172,39 @@
 
             </table>
 
+            <hr />
             <div class="row">
-                <div class="col-6"></div>
-                <div class="col-6" style="text-align:right;">
-                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                <div class="col-12 d-flex justify-content-center">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm">
+                            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="1" aria-label="First">
+                                    <span aria-hidden="true">Đầu</span>
+                                </a>
+                            </li>
+                            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="@(Model.PageNumber - 1)" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            @for (int i = Model.PageNumber; i <= Model.PageNumber + 4 && i <= Model.PageCount; i++)
+                            {
+                                <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                                    <a class="page-link" href="#" data-page="@i">@i</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="@(Model.PageNumber + 1)" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="@Model.PageCount" aria-label="Last">
+                                    <span aria-hidden="true">Cuối</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
 

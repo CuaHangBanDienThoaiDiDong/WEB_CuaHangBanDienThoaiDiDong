@@ -61,6 +61,12 @@
                                 <td>@item.CreatedBy</td>
                                 <td>@(item.CreateDate.HasValue ? item.CreateDate.Value.ToString("dd/MM/yyyy") : "Không có dữ liệu")</td>
                                 <td>
+                                    <button class="btn btn-sm btn-primary btnInBillLai" data-id="@item.ImportWarehouseId">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                                            <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1" />
+                                            <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                        </svg>
+                                    </button>
                                     <button class="btn btn-sm btn-success btnViewPhieuNhap" data-id="@item.ImportWarehouseId">Xem</button>
                                     <button class="btn btn-sm btn-danger btnEditPhieuNhap" data-id="@item.ImportWarehouseId">Cập nhập</button>
                                 </td>
@@ -342,7 +348,55 @@
         });
     });
 
+    $(document).ready(function () {
+        $('.btnInBillLai').on('click', function () {
+            var sellerId = $(this).data('id');
+            $.ajax({
+                url: '/Admin/WareHouseImport/InBillLaiNew/' + sellerId,
+                type: 'GET',
+                success: function (response) {
+                    console.log("Response từ server:", response);
 
+                    if (response.success) {
+                        if (response.Code === 1) {
+
+                            var encodedFilePath = encodeURIComponent(response.FilePath);
+                            window.location.href = '/Admin/WareHouseImport/DownloadInvoice?filePath=' + encodedFilePath;
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
+
+                            Toast.fire({
+                                icon: "success",
+                                title: "Hóa đơn in lại thành công"
+                            });
+                        } else {
+                            handleErrorResponse(response);
+                        }
+                    } else {
+                        handleErrorResponse(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Lỗi khi gọi Ajax:", xhr.responseText);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi...",
+                        text: "Không thể kết nối tới máy chủ. Vui lòng thử lại sau!",
+                    });
+                }
+            });
+        });
+
+    });
 
 
     function loadSupplierData() {

@@ -94,8 +94,25 @@
                         <p class="form-control">@(Model.TypePayment == 1 ? "Thanh toán tại quầy" : "Đã thanh toán")</p>
                     </div>
                 </div>
-              
+                @if (Model.Modifiedby != null)
+                {
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label>Chỉnh sửa</label>
+                            <p class="form-control">@Model.Modifiedby</p>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label>Ngày sửa</label>
+                            <p class="form-control">@Model.ModifiedDate</p>
+                        </div>
+                    </div>
+                }
+
             </div>
+
+
 
         </div>
 

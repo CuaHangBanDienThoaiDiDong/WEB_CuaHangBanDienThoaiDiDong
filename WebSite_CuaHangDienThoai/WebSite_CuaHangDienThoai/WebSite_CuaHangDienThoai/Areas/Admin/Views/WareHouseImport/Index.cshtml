@@ -49,22 +49,26 @@
 @section scripts{
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script>
-        function LoadIndex(page) {
-            $.ajax({
-         /*       url: '/Admin/Bill/Partial_IndexBill',*/
-                url: '/Admin/WareHouseImport/Partial_WareHouseImportIndex',
-                type: 'GET',
-                data: { page: page },
-                success: function (rs) {
-                    $('#loaddataWareHouseImport').html(rs);
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
-        }
+        
         var originalContent;
         $(document).ready(function () {
+           
+        });
+        $(document).ready(function () {
+            function LoadIndex(page) {
+                $.ajax({
+                    /*       url: '/Admin/Bill/Partial_IndexBill',*/
+                    url: '/Admin/WareHouseImport/Partial_WareHouseImportIndex',
+                    type: 'GET',
+                    data: { page: page },
+                    success: function (rs) {
+                        $('#loaddataWareHouseImport').html(rs);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
             LoadIndex(1);
 
             $(document).on('click', '.pagination a', function (e) {
@@ -72,8 +76,6 @@
                 var page = $(this).attr('data-page');
                 LoadIndex(page);
             });
-        });
-        $(document).ready(function () {
             //hiển thị form upload ảnh
             $("#dialog").dialog({
                 autoOpen: false,

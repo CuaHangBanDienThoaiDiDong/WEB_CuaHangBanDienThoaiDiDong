@@ -198,28 +198,16 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
-                IEnumerable<tb_ProductDetail> items = db.tb_ProductDetail.OrderByDescending(x => x.ProductsId);
-                if (items != null)
-                {
-                    var pageSize = 10;
-                    if (page == null)
-                    {
-                        page = 1;
-                    }
-                    var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-                    items = items.ToPagedList(pageIndex, pageSize);
-                    ViewBag.PageSize = pageSize;
-                    ViewBag.Page = page;
-                    return View(items);
-                }
-                else
-                {
-                    ViewBag.txt = "Không tồn tại sản phẩm";
-                    return View();
-                }
+
+
+                var items = db.tb_ProductDetail.OrderByDescending(x => x.ProductsId).ToList();
+
+                int pageSize = 10;
+                int pageNumber = (page ?? 1);
+
+                return View(items.ToPagedList(pageNumber, pageSize));
             }
         }
-
         public ActionResult ListProductWareHouse(int? page)
         {
             if (Session["user"] == null)
@@ -463,109 +451,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(Admin_TokenEditImportWareHouse model)
-        //{
-        //    using (var dbContextTransaction = db.Database.BeginTransaction())
-        //    {
-        //        try
-        //        {
-        //            // Kiểm tra xem người dùng đã đăng nhập chưa
-        //            if (Session["user"] == null)
-        //            {
-        //                return RedirectToAction("DangNhap", "Account");
-        //            }
-
-        //            // Lấy thông tin người dùng từ session
-        //            tb_Staff nvSession = (tb_Staff)Session["user"];
-
-        //            // Lấy thông tin nhập kho cần chỉnh sửa từ database
-        //            var importWarehouse = db.tb_ImportWarehouse.Find(model.ImportWareHosue);
-        //            if (importWarehouse == null)
-        //            {
-        //                return Json(new { success = false, code = -2 }); // Không tìm thấy hóa đơn nhập kho
-        //            }
-
-        //            // Cập nhật thông tin hóa đơn nhập kho
-        //            importWarehouse.WarehouseId = model.WarehouseId;
-        //            importWarehouse.SupplierId = model.SupplierId;
-        //            importWarehouse.CreatedBy = model.CreatedBy;
-        //            importWarehouse.CreateDate = model.CreatedDate;
-        //            importWarehouse.StaffId = model.StaffId;
-        //            importWarehouse.ModifiedDate = DateTime.Now;
-        //            importWarehouse.Modifeby = nvSession.NameStaff;
-
-        //            db.Entry(importWarehouse).State = EntityState.Modified;
-
-        //            // Lưu thông tin hóa đơn nhập kho vào database
-        //            db.SaveChanges();
-
-        //            // Xử lý chi tiết nhập kho
-        //            var sessionKey = "Admin_TokenEditImportWareHouse_" + model.ImportWareHosue;
-        //            var viewModel = Session[sessionKey] as Admin_TokenEditImportWareHouse;
-        //            if (viewModel == null || viewModel.Items.Count < 1)
-        //            {
-        //                return Json(new { success = false, code = -4 }); // Hóa đơn phải có ít nhất 1 sản phẩm
-        //            }
-
-        //            var existingDetails = db.tb_ImportWarehouseDetail.Where(d => d.ImportWarehouseId == importWarehouse.ImportWarehouseId).ToList();
-
-        //            // Xóa các chi tiết không còn trong viewModel từ tb_ImportWarehouseDetail và tb_WarehouseDetail
-        //            foreach (var detail in existingDetails.ToList())
-        //            {
-        //                if (!viewModel.Items.Any(item => item.ImportWarehouseDetailId == detail.ImportWarehouseDetailId))
-        //                {
-        //                    if (detail.ProductDetailId != null)
-        //                    {
-        //                        var warehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == detail.ProductDetailId);
-        //                        if (warehouseDetail != null)
-        //                        {
-        //                            warehouseDetail.QuanTity -= detail.QuanTity; // Giảm số lượng tồn kho
-        //                            db.Entry(warehouseDetail).State = EntityState.Modified;
-        //                        }
-        //                        else
-        //                        {
-        //                            return Json(new { success = false, code = -3 });
-        //                        }
-        //                        db.tb_ImportWarehouseDetail.Remove(detail);
-        //                    }
-        //                    else
-        //                    {
-        //                        return Json(new { success = false, code = -3 });
-        //                    }
-
-
-        //                }
-
-        //            }
-
-        //            // Lưu các thay đổi vào database
-        //            db.SaveChanges();
-        //            dbContextTransaction.Commit();
-
-        //            string invoicePath = ExportInvoice(model.ImportWareHosue);
-        //            if (!string.IsNullOrEmpty(invoicePath))
-        //            {
-
-        //                return Json(new { Success = true, Code = 1, FilePath = invoicePath });
-        //            }
-        //            else
-        //            {
-        //                return Json(new { Success = false, Code = -7, FilePath = invoicePath });
-
-        //            }
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            // Rollback transaction nếu có lỗi
-        //            dbContextTransaction.Rollback();
-        //            return Json(new { success = false, code = -100, message = ex.Message }); // Lỗi ngoại lệ
-        //        }
-        //    }
-        //}
-
+  
         [HttpPost]
         public ActionResult UpdateQuantityForEditNew(int productDetailId, int importWarehouseDetailId, int importWarehouseId, int quantity)
      {
@@ -1107,6 +993,61 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
         //Start Xuat Word
+
+        [HttpGet]
+        public ActionResult InBillLaiNew(int id)
+        {
+            try
+            {
+                if (Session["user"] == null)
+                {
+                    return Json(new { success = false, Code = -1, Message = "Phiên đăng nhập không tồn tại" }, JsonRequestBehavior.AllowGet);
+                }
+
+                if (id < 0)
+                {
+                    return Json(new { success = false, Code = -2, Message = "ID không hợp lệ" }, JsonRequestBehavior.AllowGet);
+                }
+
+                string invoicePath = ExportInvoice(id);
+
+                if (!string.IsNullOrEmpty(invoicePath))
+                {
+                    return Json(new { success = true, Code = 1, FilePath = invoicePath }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, Code = -10, Message = "Lỗi khi in hóa đơn" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, Code = -100, Message = "Lỗi ngoại lệ: " + ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        public ActionResult DownloadInvoiceEdit(string filePath)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(filePath) && System.IO.File.Exists(filePath))
+                {
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                    string fileName = Path.GetFileName(filePath);
+                    return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
+                }
+                else
+                {
+                    return HttpNotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content("Lỗi khi tải hóa đơn: " + ex.Message);
+            }
+        }
+
         public ActionResult DownloadInvoice(string filePath)
         {
             try
