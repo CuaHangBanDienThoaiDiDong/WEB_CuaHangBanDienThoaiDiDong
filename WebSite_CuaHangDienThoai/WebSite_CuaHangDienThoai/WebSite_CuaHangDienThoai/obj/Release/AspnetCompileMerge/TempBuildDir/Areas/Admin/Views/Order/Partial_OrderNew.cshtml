@@ -1,0 +1,216 @@
+﻿@model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_Order>
+@using PagedList.Mvc;
+
+
+@if (Model != null)
+{
+    <div class="card mb-4">
+        <div class="card-header">
+           
+            <div class="row">
+                <div class="col-3">
+                    <div class="d-flex align-items-cente border border-1 rounded-1">
+                        <span class="m-1"><label class="text-danger ">Ngày đặt:</label> <input type="datetime-local" style="border:none" id="ngayxuatOrderNew" onchange="getOrderNew()" /></span>
+
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="d-flex align-items-center border border-1 rounded-1" style="max-height: 40px; overflow: hidden;">
+                        <div class="input-group m-1">
+                            <input type="text" class="form-control border-0" id="searchOrderNewToDay" placeholder="Nhập Số điện thoại, mã đơn hàng, tên khách">
+                            <button class="btn" type="button" id="clearInputNewOrder">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-octagon" viewBox="0 0 16 16">
+                                    <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1z" />
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0" id="loadDataOrderNew">
+            <!-- Billing history table-->
+            <div class="table-responsive table-billing-history">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">STT</th>
+                            <th class="border-gray-200 text-center" scope="col">Mã đơn hàng</th>
+                            <th class="border-gray-200 text-center" scope="col">Tên khách hàng</th>
+                            <th class="border-gray-200 text-center" scope="col">Số điện thoại</th>
+                            <th class="border-gray-200 text-center" scope="col">Tiền</th>
+                            <th class="border-gray-200 text-center" scope="col">Trạng thái thanh toán</th>
+                            <th class="border-gray-200 text-center" scope="col">Loại đơn hàng</th>
+                            <th class="border-gray-200 text-center" scope="col">Ngày tạo</th>
+                            <th class="border-gray-200 text-center" scope="col">Xác nhận</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loadDataOrderNewCon">
+                        @if (Model != null && Model.Any())
+                        {
+                            var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+                            foreach (var item in Model)
+                            {
+                                var strCheck = item.Confirm.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                                <tr>
+                                    <td class="text-center">@i</td>
+                                    <td class="text-center">@item.Code</td>
+                                    <td class="text-center">@item.CustomerName</td>
+                                    <td class="text-center">@item.Phone</td>
+                                    <td class="text-center">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.TotalAmount, 0)</td>
+
+                                    <td class="text-center">
+                                        @if (item.TypePayment == 1)
+                                        {
+
+                                            <span class="badge bg-light text-danger">Chờ thành toán</span>
+
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success text-dark">Đã thanh toán </span>
+
+                                        }
+
+                                    </td>
+                                    <td class="text-center">Đơn hàng mới  </td>
+                                    <td class="text-center">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                    <td class="text-center">
+                                        <a href='#' data-id="@item.OrderId" class="btnConFirm">@Html.Raw(strCheck)</a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/order/Detail/@item.OrderId" class="btn btn-sm btn-success">Xem</a>
+                                        <a href="#" class="btn btn-sm btn-danger btnConFirm" data-id="@item.OrderId">Cập nhật</a>
+                                    </td>
+
+
+                                </tr>
+                                i++;
+                            }
+
+                        }
+
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+            <hr />
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm">
+                            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="1" aria-label="First">
+                                    <span aria-hidden="true">Đầu</span>
+                                </a>
+                            </li>
+                            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="@(Model.PageNumber - 1)" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            @for (int i = Model.PageNumber; i <= Model.PageNumber + 4 && i <= Model.PageCount; i++)
+                            {
+                                <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                                    <a class="page-link" href="#" data-page="@i">@i</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="@(Model.PageNumber + 1)" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                <a class="page-link" href="#" data-page="@Model.PageCount" aria-label="Last">
+                                    <span aria-hidden="true">Cuối</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+}
+else
+{
+    <p class="text-danger">Không tồn tại bảng ghi !!!</p>
+}
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script>
+    $(document).ready(function () {
+
+        originalContent = $('#loadDataOrderNew').html();
+        $('#clearInputNewOrder').click(function () {
+            $("#searchOrderNewToDay").val(""); // Xóa nội dung trong ô tìm kiếm
+            resetOrdeNew(); // Đặt lại nội dung ban đầu
+        });
+        function loadOrderNewPartial() {
+            $.ajax({
+                url: '/admin/order/LoadOrderNewPartial',
+                type: 'GET',
+                success: function (result) {
+                    $('#loadDataOrderNewCon').html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+
+
+        $('#searchOrderNewToDay').on('input', function () {
+            var keyword = $(this).val().trim();
+            if (keyword.length > 0) {
+                // Gọi action SuggestBillCustomer với keyword
+                $.ajax({
+                    url: '/Admin/Order/SuggestOrderNewCustomer',
+                    type: 'GET',
+                    data: { search: keyword },
+                    success: function (response) {
+                        $('#loadDataOrderNew').html(response);
+                    },
+                    error: function () {
+                        // Xử lý lỗi nếu có
+                        console.log('Đã xảy ra lỗi khi tải dữ liệu.');
+                    }
+                });
+            } else {
+                resetOrdeNew(); // Đặt lại nội dung ban đầu nếu không có keyword
+            }
+        });
+
+
+
+       
+    });
+
+    function resetOrdeNew() {
+        $('#loadDataOrderNew').html(originalContent);
+    }
+    function getOrderNew() {
+        var ngayxuatOrderNew = $('#ngayxuatOrderNew').val(); // Sử dụng jQuery để lấy giá trị của input datetime-local
+        $.ajax({
+            url: '/Admin/Order/OrderNewToday', // Địa chỉ URL của action trong controller
+            type: 'GET',
+            data: { ngayxuat: ngayxuatOrderNew },
+            success: function (data) {
+                $('#loadDataOrderNew').html(data);
+            },
+            error: function (xhr, status, error) {
+                console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+            }
+        });
+    }
+</script>

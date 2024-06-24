@@ -133,6 +133,14 @@
                         footer: '<a href="#">Bạn có muốn cập nhật số lượng</a>'
                     });
                 }
+                if (res.Code == -7) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi dòng sản phẩm....",
+                        text: "Dòng sản phẩm không tồn tại",
+                        footer: '<a href="#">Bạn có muốn cập nhật số lượng</a>'
+                    });
+                }
             }
 
         }
@@ -176,14 +184,14 @@
                                 <div class="tab-content">
                                     <div class="active tab-pane" id="activity">
                                         <div class="form-group">
-                                            <div class="row">
+                                            <!--<div class="row">
                                                 <div class="col-md-12">
                                                     <label for="exampleInputEmail1">Tên loại máy</label>
-                                                    <input type="text" name="Title" id="Title" required class="form-control" autocomplete="off" placeholder="Tên loại máy" />
+                                                    <input type="text" name="Title" id="Title" required class="form-control" autocomplete="off" placeholder="Tên loại máy" />-->
                                                     @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
-                                                    @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
+                                                    <!--Html.ValidationMessageFor(x => x.Title, null, new { class = "text-danger" })
                                                 </div>
-                                            </div>
+                                            </div>-->
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="exampleInputEmail1">Màu sắc sản phẩm</label>

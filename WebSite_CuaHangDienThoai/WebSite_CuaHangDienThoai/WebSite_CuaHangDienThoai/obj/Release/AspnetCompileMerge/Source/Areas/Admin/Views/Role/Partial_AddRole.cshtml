@@ -1,0 +1,193 @@
+﻿
+@model WebSite_CuaHangDienThoai.Models.Admin_TokenFunction
+@using (Ajax.BeginForm("Add", "Role", new AjaxOptions
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "load_data",
+    OnSuccess = "OnSuccessCO",
+    OnFailure = "OnFailure",
+    OnBegin = "OnBeginCO"
+}, new { @Id = "myForm" }))
+{
+    <script>
+
+        function validateForm() {
+            //var sdt = document.getElementById('Name').value.trim();
+            //var tenKhachHang = document.getElementById('SDT').value.trim();
+            //var email = document.getElementById('CCCD').value.trim();
+            var OrigianlPrice = document.getElementById('OrigianlPrice').value.trim();
+            var Price = document.getElementById('Price').value.trim();
+            var confirmPassword = document.getElementById('Title').value.trim();
+
+
+            if (!confirmPassword) {
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi tìm...",
+                    text: "Vui lòng điền đầy đủ thông tin.",
+                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                });
+                return false;
+
+            }
+
+            if (Price < OrigianlPrice) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi giá bán...",
+                    text: "Giá bán không hợp lý.",
+                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                });
+                return false;
+            }
+
+
+            if (password !== confirmPassword) {
+
+                Swal.fire({
+                    icon: "warning",
+                    title: "Lỗi tìm...",
+                    text: "Mật khẩu và xác nhận mật khẩu không khớp.",
+                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                });
+                return false;
+                return false;
+            }
+
+
+
+            return true;
+        }
+
+
+        function OnBeginCO() {
+            $('#btnRegister').attr("disabled", "disabled");
+        }
+
+
+
+        function OnSuccessCO(res) {
+            if (res.Success) {
+                if (res.Code == 1) {
+
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "success",
+                        title: "Thêm danh mục thành công"
+                    });
+                    location.href = "/admin/Role/index";
+
+                } else {
+                }
+            }
+            else {
+                if (res.Code == -2) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Vui lòng đan nhập lại...",
+                        text: "Không tìm nhân viên",
+                       /* footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+
+                }
+                if (res.Code == -3) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Danh mục đã tồn tại...",
+                        text: "Tên chức năng đã tồn tại",
+                        /*footer: '<a href="#">Bạn có muốn cập nhật lại số lượng?</a>'*/
+                    });
+                }
+                if (res.Code == -4) {
+                    Swal.fire({
+                        icon: "question",
+                        title: "Không tìm thấy ảnh...",
+                        text: "Chọn ảnh đại diện ",
+                      /*  footer: '<a href="#">Why do I have this issue?</a>'*/
+                    });
+
+                }
+
+            }
+
+        }
+
+
+
+
+
+
+
+    </script>
+
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Thông tin thêm mới danh mục sản phẩm</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 ">
+                    @using (Html.BeginForm("Add", "Role", FormMethod.Post, new { }))
+                    {
+
+                        <div class="card">
+
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="active tab-pane" id="activity">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Tên sản chức năng</label>
+
+                                            <input type="text" name="Name" id="Name" required class="form-control" autocomplete="off" placeholder="Tên sản chức năng" />
+                                            @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                            @Html.ValidationMessageFor(x => x.Name, null, new { @class = "text-danger" })
+                                        </div>
+                                       
+                                    </div>
+                                  
+                                </div>
+                                <!-- /.tab-content -->
+                            </div><!-- /.card-body -->
+                            <div class="form-group">
+
+
+
+
+
+                                @*<button type="submit" class="btn btn-success" data-id="">Thêm mới</button>*@
+                                <button type="submit" class="btn btn-success">Thêm mới</button>
+                            </div>
+                        </div> <!-- /.card -->
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+
+
+
+
+
+
+}

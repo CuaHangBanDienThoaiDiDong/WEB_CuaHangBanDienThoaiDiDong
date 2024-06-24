@@ -1,0 +1,76 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Order
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+@if (Model != null)
+{
+
+    var checkOutWareHouse = Model.tb_ExportWareHouse.FirstOrDefault(x => x.OrderId == Model.OrderId);
+    <div class="container bootstrap snippets bootdey mt-5 panel panel-info panel-shadow">
+        <div class="col-md-12 col-sm-8 content">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a href="#" class="text-black">Đơn hàng </a><span style="color:orangered"> @Model.Code </span>| Ngày đặt <span class="text-danger">@Model.CreatedDate.ToString("dd/MM/yyyy") </span> </li>
+
+
+                    </ol>
+                    <hr class="col-3" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="panel-heading">
+
+                            @Html.Action("Partail_TrangThaiDonHang", "Order", new { id = Model.OrderId })
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Sản phẩm </th>
+                                            <th>Màu</th>
+                                            <th>Dung lượng</th>
+                                            <th>Số lượng</th>
+                                            <th>Giá</th>
+                                            <th>Tổng tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @Html.Action("Partail_Ordertail", "Order", new { id = Model.OrderId })
+
+
+
+
+                                        <tr>
+                                            <td colspan="4" class="text-right"><strong class="text-danger">Tổng tiền</strong></td>
+                                            <td class="text-danger">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(Model.TotalAmount) đ</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+}
+else
+{
+
+
+}
+

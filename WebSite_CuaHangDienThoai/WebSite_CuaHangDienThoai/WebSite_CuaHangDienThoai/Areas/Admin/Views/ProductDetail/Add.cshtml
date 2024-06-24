@@ -28,11 +28,11 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="text-center">Bảng thông tin sản phẩm cũ / mới</h1>
+                <h1 class="text-center">Bảng thông tin chi tiết sản phẩm mới</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Tin tức</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/ProductDetail">Chi tiết sản phẩm</a></li>
                     <li class="breadcrumb-item active">Thêm mới</li>
                 </ol>
             </div>
@@ -41,9 +41,17 @@
 </section>
 
 <section class="content">
-    @Html.Action("Partial_AddProductDetail", "ProductDetail", new { id = ViewBag.id })
+    @if (ViewBag.id != null)
+    {
+        @Html.Action("Partial_AddProductDetail", "ProductDetail", new { id = ViewBag.id })
 
-
+    }
+else 
+    {
+        <p class="text-danger">
+             Không tồn tại bảng ghi nào !!!
+        </p>
+    }
 </section>
 
 @section  scripts{

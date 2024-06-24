@@ -1,0 +1,42 @@
+﻿
+@model List<WebSite_CuaHangDienThoai.Models.ProductColorViewModel>
+
+
+
+
+<div class="">
+    <div class="row">
+        <div class="col-12 image_col order-lg-2 order-1 box01_show">
+            @*load hinh theo li*@
+            <div class="single_product_image d-flex justify-content-center align-items-center loadImgByProductDetailId">
+
+
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row pt-5">
+
+
+        <div class="col-md-12 scrolling_inner">
+            <div class="box01__tab scrolling">
+
+                @foreach (var item in Model)
+                {
+
+
+                        <p>@item.Color</p>
+                  
+                }
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

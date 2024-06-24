@@ -1,0 +1,83 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
+<div class="card-body" id="loadProduct">
+    <table class="table table-hover">
+        <thead>
+            <tr class="text-center">
+              
+               
+                <th>Hình ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Dòng sản phẩm</th>
+                <th>Loại sản phẩm</th>
+                <th>Hãng</th>
+                <th>Ram/Dung Lượng  </th>
+                <th>Màu</th>
+                <th style="width:150px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+               
+                foreach (var item in Model)
+                {
+                    byte[] strImg = null;
+                    var CheckImage = item.tb_ProductDetailImage.SingleOrDefault(x => x.IsDefault == true);
+
+                    if (CheckImage != null)
+                    {
+                        strImg = CheckImage.Image;
+                    }
+
+                    string imgSrc = "";
+                    if (strImg != null && strImg.Length > 0)
+                    {
+                        string base64String = Convert.ToBase64String(strImg);
+                        imgSrc = $"data:image;base64,{base64String}";
+                    }
+                    <tr class="text-center" id="trow_@item.ProductsId">
+        
+                     
+                        <td style="width:20%"><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" style="width:50%" /></td>
+                        <td><a href="/admin/Products/Detail/@item.ProductsId"> @item.Title</a></td>
+                        <td>@item.tb_Products.Title</td>
+                        <td>@item.tb_Products.tb_ProductCategory.Title</td>
+                        <td>@item.tb_Products.tb_ProductCompany.Title</td>
+                        <td>
+                            @if (item.Capacity >= 999)
+                            {
+                                <span>1Tb</span>
+                            }
+                            else if (item.Capacity == 2999)
+                            {
+                                <span>2Tb</span>
+                            }
+                            else
+                            {
+                                <span>@item.Capacity</span>
+                            }
+                        </td>
+                        <td>@item.Color</td>
+                        <td>
+                            <a href="/admin/ProductDetail/Detail/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-primary">Xem</a>
+                            <a href="/admin/ProductDetail/Edit/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-primary">Sửa</a>
+                        </td>
+                    </tr>
+                   
+                }
+            }
+            else
+            {
+                <tr class="text-center text-danger">
+                    <td colspan="10">Không có dữ liệu</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <!-- Phân trang -->
+    @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })*@
+
+
+
+
+</div>

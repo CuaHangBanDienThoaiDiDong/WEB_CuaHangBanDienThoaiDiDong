@@ -1,0 +1,55 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Order>
+
+@if (Model != null && Model.Any())
+{
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+
+            foreach (var item in Model)
+            {
+                <tr>
+
+                    <td class="text-center">@item.Code</td>
+                    <td class="text-center">@item.CustomerName</td>
+                    <td class="text-center">@item.Phone</td>
+                    <td class="text-center">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.TotalAmount, 0) đ</td>
+
+                    <td class="text-center">
+                        @if (item.TypePayment == 1)
+                        {
+
+                            <span class="badge bg-light text-danger">Chờ thành toán</span>
+
+
+                        }
+                        else
+                        {
+                            <span class="badge bg-success text-dark">Đã thanh toán</span>
+
+
+                        }
+
+                    </td>
+                    <td class="text-center">Đơn hàng mới  </td>
+                    <td class="text-center">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <a href="/admin/order/Detail/@item.OrderId" class="btn btn-sm btn-success">Xem</a>
+                        <a href="#" class="btn btn-sm btn-danger btnCapNhat" data-id="@item.OrderId">Cập nhật</a>
+                    </td>
+
+
+                </tr>
+
+            }
+
+        }
+
+
+
+    </tbody>
+}
+else
+{
+    <p>Không có đơn hàng mới.</p>
+}

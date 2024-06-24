@@ -1,0 +1,44 @@
+﻿@*@model WebSite_CuaHangDienThoai.Models.tb_ProductDetail*@
+
+
+<div class="add_review">
+    @if (ViewBag.id != null)
+    {
+
+        <div>
+            <h1>Thêm đánh giá</h1>
+            @Html.Action("Partial_ThongTinKhach", "Review")
+        </div>
+        <div>
+        @Html.Action("Partial_AddReview", "Review", new {id= ViewBag.id })
+        </div>
+    }
+
+    else
+    {
+        <p class="text-danger">
+            Hệ thống đánh giá lỗi
+        </p>
+    }
+</div>
+
+
+
+    <script>
+          $(document).ready(function () {
+              CKEDITOR.replace('txtDetail', {
+                  customConfig: '/content/ckeditor/config.js',
+                  extraAllowedContent: 'span',
+              });
+          });
+          function BrowseServer(field) {
+              var finder = new CKFinder();
+              finder.selectActionFunction = function (fileUrl) {
+                  document.getElementById(field).value = fileUrl;
+              };
+              finder.popup();
+          }
+
+    </script>
+
+

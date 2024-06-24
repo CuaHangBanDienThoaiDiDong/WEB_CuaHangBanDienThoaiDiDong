@@ -1,0 +1,75 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_ImportWarehouse
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="text-center"><b>
+    Thông tin phiếu nhập @Model.ImportWarehouseId
+
+
+
+
+</b></h5>
+        <div class="row">
+
+            <div class="col-6">
+                <p>Thông tin nhà cung cấp</p>
+                <hr />
+                <div class="d-flex flex-wrap">
+                    <div class="d-flex align-items-center mr-4">
+                        <span style="color:black; white-space: nowrap;">     <b>Nhà cung cấp: </b>@Model.tb_Supplier.Name</span>
+                    </div>
+
+                </div>
+                <div class="d-flex flex-wrap">
+                    <div class="d-flex align-items-center mr-4">
+                        <span style="color:black; white-space: nowrap;">     <b>Mã nhà cung cấp: </b>@Model.SupplierId</span>
+                    </div>
+
+                </div>
+                <div class="d-flex flex-wrap">
+                    <div class="mr-4"><b>Địa chỉ:</b> @Model.tb_Supplier.Location</div>
+                    <div class="mr-4"><b>Điện thoại:</b> 0 @Model.tb_Supplier.Phone</div>
+                </div>
+
+
+
+            </div>
+            <div class="col-6">
+                <p>Thông tin người nhận </p>
+                <hr />
+
+                <div class="">
+                    <div class="d-flex align-items-center mr-4" style="margin-bottom: 5px;">
+                        <span style="color:black; white-space: nowrap;">
+                            <b>Mã nhân viên:</b> @Model.tb_Staff.Code
+                        </span>
+              
+                    </div>
+                    <div class="d-flex align-items-center mr-4">
+                        <span style="color:black; white-space: nowrap;">
+                            <b>Tên nhân viên:</b> @Model.tb_Staff.NameStaff
+                        </span>
+                    </div>
+
+                    <div><b>Ngày nhận:</b> @(Model.CreateDate.HasValue ? Model.CreateDate.Value.ToString("dd/MM/yyyy") : "Không có dữ liệu")</div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card-body" id="">
+
+        @Html.Action("Partail_ListProductForDetail", "WareHouseImport", new { id = Model.ImportWarehouseId })
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 text-center">
+
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</div>

@@ -32,7 +32,7 @@
                             @*<th><input type="checkbox" id="SelectAll" /></th>*@
                             <th>STT</th>
                             <th>Hình ảnh</th>
-                            <th>Tên sản phẩm</th>
+                            <th> Sản phẩm</th>
                             @*<th>Màu/Dung lượng</th>*@
                             <th>Loại sản phẩm</th>
 
@@ -84,7 +84,10 @@
                                             <img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" />
                                         </td>
                                         <td>
-                                            <a href="/chi-tiet/@item.tb_Products.Alias-p@(item.ProductsId)" target="_blank">@item.tb_Products.Title</a>
+                                            <a href="/chi-tiet/@item.tb_Products.Alias-p@(item.ProductsId)" target="_blank">@item.tb_Products.Title
+                                            <br />
+                                            @Capacity-@item.Color
+                                            </a>
                                         </td>
                                         @*<td>@item.Color/@Capacity</td>*@
                                         <td>@item.tb_Products.tb_ProductCategory.Title</td>

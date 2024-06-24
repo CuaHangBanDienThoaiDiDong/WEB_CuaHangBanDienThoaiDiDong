@@ -5,10 +5,10 @@
 <table class="table table-hover ">
     <thead>
         <tr class="text-center">
-            <th><input type="checkbox" id="SelectAll" /></th>
-            <th>STT</th>
+            <th><input type="checkbox" id="SelectAll" />/STT</th>
+          
             <th>Hình ảnh</th>
-            <th>Dòng sản phẩm</th>
+            <th style="max-width:20px">Dòng sản phẩm</th>
             <th>Loại sản phẩm</th>
             <th>Hãng</th>
             <th>Dung Lượng  </th>
@@ -60,11 +60,11 @@
 
 
                     <tr class="text-center" id="trow_@item.ProductsId">
-                        <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
-                        <td>@i</td>
+                        <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" />@i</td>
+                       
                         <td><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="100" /></td>
                         <td> <a href="/admin/Products/Detail/@item.ProductsId" class="text-black" style="color:orange"> @item.Title</a>  </td>
-                        <td>@item.tb_ProductCategory.Title</td>
+                        <td style="max-width:20px">@item.tb_ProductCategory.Title</td>
                         <td>
                             @item.tb_ProductCompany.Title
                             @*@Html.Action("Partail_ProductDetail", "Product", new { id = item.ProductId })*@
@@ -104,7 +104,7 @@
                             else
                             {
                                 <div class="loadColor" data-product-id="@item.ProductsId">
-                                    @Html.Action("Partail_ColorByProductsId", "ProductDetail", new { id = item.ProductsId })
+                                    @Html.Action("Partial_DetailColorById", "ProductDetail", new { id = item.ProductsId })
                                 </div>
 
                             }
@@ -156,20 +156,22 @@
 
                         }
 
-                        <td>
+                    <td>
 
-                            <a href="/admin/Products/Detail/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">
-                                Xem <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                                </svg>
-                            </a>
-                            <a href="/admin/Products/Edit/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm  " style="background-color:orange">
-                                Sửa<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001" />
-                                </svg>
-                            </a>
-                        </td>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <a href="/admin/Products/Detail/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary btn-block">
+                                    Xem
+                                </a>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <a href="/admin/Products/Edit/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-danger btn-block">
+                                    Cập nhật
+                                </a>
+                            </div>
+                        </div>
+
+                    </td>
                     </tr>
 
 
@@ -254,4 +256,9 @@
             }
         });
     }
+
+
+
+
+   
 </script>

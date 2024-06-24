@@ -1,6 +1,13 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_CartItem>
 
 
+
+
+
+
+
+
+
 <div class="container bg-white">
     <div class="col-md-12 col-sm-12 content">
 
@@ -16,14 +23,14 @@
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" id="SelectAll" /></th>
-                                            <th>STT</th>
-                                            <th>Hình ảnh</th>
-                                            <th>Tên sản phẩm</th>
-                                            <th>Loại sản phẩm</th>
-                                            <th>Màu</th>
-                                            <th>Số lượng</th>
-                                            <th>Giá</th>
-                                            <th></th>
+
+
+                                            <th>Thông tin sản phẩm</th>
+                                            @*<th>Loại sản phẩm</th>
+                                <th>Màu</th>
+                                <th>Số lượng</th>
+                                <th>Giá</th>
+                                <th></th>*@
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -40,53 +47,89 @@
 
 
 
-                                            var i = 0;
-                                            var strImg = "";
-                                            var img = item.tb_ProductDetail.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
-                                            if (img != null)
+
+
+
+
+                                            byte[] strImg = null;
+                                            var CheckImage = item.tb_ProductDetail.tb_ProductDetailImage.SingleOrDefault(x => x.IsDefault == true);
+
+                                            if (CheckImage != null)
                                             {
-                                                strImg = img.Image;
+                                                strImg = CheckImage.Image;
                                             }
+
+                                            string imgSrc = "";
+                                            if (strImg != null && strImg.Length > 0)
+                                            {
+                                                string base64String = Convert.ToBase64String(strImg);
+                                                imgSrc = $"data:image;base64,{base64String}";
+                                            }
+
+
 
                                             //var tongTien += item.PriceTotal;
                                             <tr id="trow_@item.ProductDetailId">
+                                                @if (imgSrc != null)
+                                                {
 
+                                                }
                                                 <td><input type="checkbox" class="cbkItem" data-id="@item.ProductDetailId" /></td>
-                                                <td>
-                                                    @(i+1)
-                                                </td>
-                                                <td style="width: 30%; height: 30%"><img src="@strImg" alt="@item.tb_ProductDetail.tb_Products.Title" class="img-cart "style="width: 30%; height: 30%"></td>
-                                                <td>
-                                                    @*<a href="/chi-tiet/@item.Alias-p@(item.ProductId)">*@
-                                                    @item.tb_ProductDetail.tb_Products.Title @Capacity
-                                                    @*</a>*@
-                                                </td>
-                                                <td>
-                                                    @item.tb_ProductDetail.tb_Products.tb_ProductCategory.Title
-                                                </td>
-                                                <td>
-                                                    @item.tb_ProductDetail.Color
-                                                </td>
-                                                <td>
-                                                    <form class="form-inline">
-                                                        <input type="number" class="form-control Quantity" id="@item.ProductDetailId" value="@item.Quantity" />
 
-                                                    </form>
+
+                                                <td>
+                                                    <div class="row gy-3 mb-4">
+                                                        <div class="col-lg-5">
+
+                                                            <div class="me-lg-5">
+                                                                <div class="d-flex">
+                                                                    <img src="@imgSrc" class="border rounded me-3" style="width: 100px; height: 100px;" />
+                                                                    <div class="">
+                                                                        <h5>
+                                                                            <a href="#" class="nav-link"> @item.tb_ProductDetail.tb_Products.Title </a>
+                                                                        </h5>
+
+                                                                        <p class="text-muted">Dung lượng :@Capacity , Màu : @item.tb_ProductDetail.Color</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-2 col-sm-5 col-5 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
+                                                            <div class="">
+                                                                <form class="form-inline">
+                                                                    <input type="number" class="form-control Quantity" id="@item.ProductDetailId" style="width:80px" value="@item.Quantity" />
+
+                                                                </form>
+                                                            </div>
+                                                            <div class="" style="margin-left:5px">
+
+                                                                @if (item.tb_ProductDetail.PriceSale > 0)
+                                                                {
+                                                                    <span class="h6"><label class="text-danger">Giám giảm sốc : </label> @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.tb_ProductDetail.PriceSale) đ</span> <br />
+                                                                    <small class="text-muted text-nowrap">  @WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.tb_ProductDetail.Price) đ </small>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="h6">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.tb_ProductDetail.Price) vnđ</span> <br />
+                                                                }
+
+
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+                                                            <div class="float-md-end">
+                                                                @*<a href="#" data-id="@item.ProductDetailId" class="btn btn-light border px-2 icon-hover-primary btnDelete"><i class="fas fa-heart fa-lg px-1 text-secondary"></i></a>*@
+
+                                                                <a href="#" data-id="@item.ProductDetailId" class="btn btn-light border text-danger icon-hover-danger btnDelete"> Xóa</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </td>
-                                                <td>@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.Price) vnđ</td>
                                                 @*<td>@WSite_ShowRoom_CtyThoiTrang.Common.Common.FormatNumber(item.) vnđ</td>*@
-                                                <td>
 
-                                                    <a href="#" data-id="@item.ProductDetailId" class="btn btn-sm btn-danger btnDelete"><i class="far fa-trash-alt"></i></a>
-                                                </td>
                                             </tr>
-                                            i++;
-                                            <tr>
-                                                <td colspan="8">
-                                                    &nbsp;
 
-                                                </td>
-                                            </tr>
 
                                         }
                                     </tbody>
@@ -97,10 +140,30 @@
                     else
                     {
 
-                        <img src="//theme.hstatic.net/200000420363/1001162486/14/empty_cart.png?v=240" alt="Không có sản phẩm nào trong giỏ hàng của bạn">
+
+                        <div class="row pt-2" style="width: 100%;">
+
+                            <div class="col-md-12" style="display: flex; justify-content: center; align-items: center; ">
+                                <img src="//theme.hstatic.net/200000420363/1001162486/14/empty_cart.png?v=240" alt="Không có sản phẩm nào trong giỏ hàng của bạn">
 
 
-                        <span>Bạn chưa có sản phẩm nào. Vui long quay lại trang <a href="/home/index">sản phẩm</a> để mua hàng.</span>
+
+                                <h5>Tiếp tục mua hàng <a href="/san-pham">Cửa hàng</a></h5>
+
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row pt-2" style="width: 100%;">
+
+                            <div class="col-md-12" style="display: flex; justify-content: center; align-items: center; ">
+
+
+                                <span>Bạn chưa có sản phẩm nào. Vui long quay lại trang <a href="/san-pham" class="text-danger">sản phẩm</a> để mua hàng.</span>
+
+
+
+                            </div>
+                        </div>
 
                     }
 
@@ -114,3 +177,17 @@
 
 
 
+<div class="row">
+    @if (ViewBag.Count != null)
+    {
+        <div class="col-md-1"></div>
+        <div class="col-md-10 text-center">
+            <div class="form-group">
+                <button type="button" class="btn btn-success btn-block btn-dat-hang full-width-button" style="width:100%">Đặt Hàng</button>
+            </div>
+            <br />
+            <small>Bạn có thể lựa chọn các hình thức thanh toán ở bước sau</small>
+        </div>
+        <div class="col-md-1"></div>
+    }
+</div>

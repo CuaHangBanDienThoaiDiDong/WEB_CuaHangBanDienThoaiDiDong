@@ -1,0 +1,417 @@
+﻿@model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_Seller>
+@using PagedList.Mvc;
+
+
+<style>
+
+    .bg-sg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #000;
+        opacity: 0.5;
+        z-index: 9978;
+    }
+
+    #popupBill {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        /*   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);*/
+        z-index: 9988;
+    }
+
+    #notification-container {
+        position: relative;
+        z-index: 9999;
+        display: inline-block; /* Hiển thị phần tử theo kiểu inline-block */
+        width: 200px; /* Thiết lập độ rộng của phần tử */
+
+        padding: 10px; /* Thêm padding để nội dung không sát với viền */
+
+        right: 20px; /* Dịch chuyển về bên phải */
+        top: 20px; /* Dịch chuyển xuống dưới */
+    }
+</style>
+
+
+<div class="bg-sg" style="display: none ">
+    <div id="notification-container" style="background-color:white "></div>
+</div>
+<div id="popupBill" style="display:none">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-tools">
+                <div class="btn btnCloseEditBill">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                        <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="loadDataSellerEdit">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-3">
+                <div class="d-flex align-items-cente border border-1 rounded-1">
+                    <span class="m-1"><label class="text-danger ">Ngày xuất:</label> <input type="datetime-local" style="border:none" id="ngayxuatBill" onchange="getOrderNewToDay()" /></span>
+
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="d-flex align-items-center border border-1 rounded-1">
+
+                    <div class="input-group">
+                        <input type="text" class="form-control border-0" id="searchBill" placeholder="Nhập Số điện thoại, mã đơn hàng, tên khách">
+                        <button class="btn" type="button" id="clearInputBill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-octagon" viewBox="0 0 16 16">
+                                <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1z" />
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="card-body" id="loadDataSuggestBill">
+    <table class="table table-hover ">
+        <thead>
+            <tr class="text-center">
+                <th><input type="checkbox" id="SelectAll" />/STT</th>
+                <th class="border-gray-200 text-center" scope="col">Mã đơn hàng</th>
+                <th class="border-gray-200 text-center" scope="col">Tên khách hàng</th>
+                <th class="border-gray-200 text-center" scope="col">Số điện thoại</th>
+                <th class="border-gray-200 text-center" scope="col">Tiền</th>
+                <th class="border-gray-200 text-center" scope="col">Tạo bởi</th>
+                <th class="border-gray-200 text-center" scope="col">Ngày tạo</th>
+                <th class="border-gray-200 text-center" scope="col">Thanh toán</th>
+
+
+            </tr>
+        </thead>
+        @if (ViewBag.txt == null)
+        {
+            <tbody>
+                @if (Model != null)
+                {
+                    var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@i</td>
+                            <td class="text-center">@item.Code</td>
+                            <td class="text-center">@item.tb_Customer.CustomerName</td>
+                            <td class="text-center">@item.Phone</td>
+                            <td class="text-center">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.TotalAmount, 0)</td>
+                            <td class="text-center">@item.CreatedBy</td>
+                            <td class="text-center">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center">
+                                @if (item.TypePayment == 0)
+                                {
+                                    <span class="badge bg-light text-danger">Thanh toán tại quầy</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-light text-success">Chuyển khoản</span>
+                                }
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-primary btnInBillLai" data-id="@item.SellerId">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                                        <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1" />
+                                        <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                    </svg>
+                                </button>
+                                <a href="/admin/Bill/Detail/@item.SellerId" target="_blank" class="btn btn-sm btn-success">Xem</a>
+
+                                <button class="btn btn-sm btn-danger btnCapNhatBill" data-id="@item.SellerId">Cập nhật</button>
+                            </td>
+
+
+                        </tr>
+                        i++;
+                    }
+
+                }
+
+
+
+            </tbody>
+
+        }
+        else
+        {
+            <tbody>
+                <tr class="text-center text-danger">
+                    <td>@ViewBag.txt</td>
+                </tr>
+            </tbody>
+        }
+
+    </table>
+
+    <hr />
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm">
+                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                        <a class="page-link" href="#" data-page="1" aria-label="First">
+                            <span aria-hidden="true">Đầu</span>
+                        </a>
+                    </li>
+                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                        <a class="page-link" href="#" data-page="@(Model.PageNumber - 1)" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    @for (int i = Model.PageNumber; i <= Model.PageNumber + 4 && i <= Model.PageCount; i++)
+                    {
+                        <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                            <a class="page-link" href="#" data-page="@i">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                        <a class="page-link" href="#" data-page="@(Model.PageNumber + 1)" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                        <a class="page-link" href="#" data-page="@Model.PageCount" aria-label="Last">
+                            <span aria-hidden="true">Cuối</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+
+
+    $(document).ready(function () {
+        var originalContent = ''; // Biến lưu trữ nội dung ban đầu của #loadDataSuggestBill
+
+        // Hàm để đặt lại nội dung gợi ý ban đầu
+        function resetToOriginalContent() {
+            $('#loadDataSuggestBill').html(originalContent);
+        }
+
+        // Lấy nội dung ban đầu của #loadDataSuggestBill khi tài liệu đã sẵn sàng
+        originalContent = $('#loadDataSuggestBill').html();
+
+        // Xử lý khi click vào nút #clearInputBill
+        $('#clearInputBill').click(function () {
+            $("#searchBill").val(""); // Xóa nội dung trong ô tìm kiếm
+            resetToOriginalContent(); // Đặt lại nội dung gợi ý ban đầu
+        });
+        $('#searchBill').on('input', function () {
+            var keyword = $(this).val().trim();
+            if (keyword.length > 0) {
+                // Gọi action SuggestBillCustomer với keyword
+                $.ajax({
+                    url: '/Admin/Bill/SuggestBillCustomer',
+                    type: 'GET',
+                    data: { search: keyword },
+                    beforeSend: function () {
+                        $('#loaddata').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+                    },
+                    success: function (response) {
+                        $('#loadDataSuggestBill').html(response);
+                    },
+                    error: function () {
+                        // Xử lý lỗi nếu có
+                        console.log('Đã xảy ra lỗi khi tải dữ liệu.');
+                    }
+                });
+            } else {
+                resetToOriginalContent(); // Đặt lại nội dung ban đầu nếu không có keyword
+            }
+        });
+
+        if (typeof $ === 'undefined') {
+            console.error('jQuery is not loaded');
+            return;
+        }
+
+        // Select elements using jQuery
+        var bg = $(".bg-sg");
+        var popup = $("#popupBill");
+
+        var btnCapNhatBill = $('.btnCapNhatBill');
+
+        btnCapNhatBill.each(function () {
+            $(this).on('click', function (e) {
+                e.preventDefault();
+
+                bg.show();
+                popup.show();
+
+                var id = $(this).data('id');
+                if (id != null) {
+                    $.ajax({
+                        url: '/admin/Bill/Edit',
+                        type: 'GET',
+                        data: { id: id },
+                        success: function (response) {
+                            $("#loadDataSellerEdit").html(response);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
+
+        bg.on('click', function () {
+            bg.hide();
+            popup.hide();
+        });
+
+        $('.btnCloseEditBill').on('click', function () {
+            bg.hide();
+            popup.hide();
+        });
+        $('.btnInBillLai').on('click', function () {
+            var sellerId = $(this).data('id');
+            $.ajax({
+                url: '/Admin/Bill/InBillLaiNew/' + sellerId,
+                type: 'GET',
+                success: function (response) {
+                    console.log("Response từ server:", response);
+
+                    if (response.success) {
+                        if (response.Code === 1) {
+
+                            var encodedFilePath = encodeURIComponent(response.FilePath);
+                            window.location.href = '/Admin/Bill/DownBill?filePath=' + encodedFilePath;
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
+
+                            Toast.fire({
+                                icon: "success",
+                                title: "Hóa đơn in lại thành công"
+                            });
+                        } else {
+                            handleErrorResponse(response);
+                        }
+                    } else {
+                        handleErrorResponse(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Lỗi khi gọi Ajax:", xhr.responseText);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi...",
+                        text: "Không thể kết nối tới máy chủ. Vui lòng thử lại sau!",
+                    });
+                }
+            });
+        });
+
+
+
+
+
+        function handleErrorResponse(response) {
+            var errorMessage = "Đã xảy ra lỗi khi in hóa đơn.";  // Đây là thông báo mặc định
+
+            // Kiểm tra mã lỗi từ máy chủ và cập nhật thông báo lỗi chi tiết
+            switch (response.Code) {
+                case -1:
+                    errorMessage = "Không có phiên đăng nhập.";
+                    break;
+                case -2:
+                    errorMessage = "ID hóa đơn không hợp lệ.";
+                    break;
+                case -10:
+                    errorMessage = "Lỗi khi in hóa đơn.";
+                    break;
+                case -100:
+                    errorMessage = "Lỗi nội bộ khi xử lý yêu cầu.";
+                    break;
+                default:
+                    break;
+            }
+
+            // Hiển thị cửa sổ thông báo lỗi với thông báo chi tiết
+            Swal.fire({
+                icon: "error",
+                title: "Lỗi...",
+                text: errorMessage
+            });
+        }
+
+
+        //function showNotification(type, title, message) {
+        //    // Hàm hiển thị thông báo
+        //    // Có thể sử dụng thư viện như Swal.fire() hoặc bootstrap toast để hiển thị thông báo
+        //    console.log(type, title, message); // Thay bằng code hiển thị thông báo thực tế
+        //}
+
+
+
+
+    });
+
+    function getOrderNewToDay() {
+        var ngayxuat = $('#ngayxuatBill').val(); // Sử dụng jQuery để lấy giá trị của input datetime-local
+        $.ajax({
+            url: '/Admin/Bill/BillExportToday', // Địa chỉ URL của action trong controller
+            type: 'GET',
+            data: { ngayxuat: ngayxuat },
+            beforeSend: function () {
+                $('#loaddata').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+            },
+            success: function (data) {
+                $('#loadDataSuggestBill').html(data);
+            },
+            error: function (xhr, status, error) {
+                console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+            }
+        });
+    }
+
+
+</script>

@@ -64,21 +64,34 @@
                                         @foreach (var item in Model.tb_ProductDetailImage)
                                         {
 
+                                            byte[] strImg = null;
+                                         
 
+                                            if (item.Image != null)
+                                            {
+                                                strImg = item.Image;
+                                            }
+
+                                            string imgSrc = "";
+                                            if (strImg != null && strImg.Length > 0)
+                                            {
+                                                string base64String = Convert.ToBase64String(strImg);
+                                                imgSrc = $"data:image;base64,{base64String}";
+                                            }
 
 
                                             <div class="@*carousel-inner*@">
-                                                @if (item.IsDefault)
+                                                @if (item.IsDefault==true)
                                                 {
                                                     <div class="item active">
-                                                        <img src="@item.Image" class="img-responsive w-100" />
+                                                        <img src="@imgSrc" class="img-responsive w-100" />
                                                     </div>
 
                                                 }
                                                 else
                                                 {
                                                     <div class="item">
-                                                        <img src="@item.Image" class="img-responsive w-100" />
+                                                        <img src="@imgSrc" class="img-responsive w-100" />
                                                     </div>
                                                 }
 

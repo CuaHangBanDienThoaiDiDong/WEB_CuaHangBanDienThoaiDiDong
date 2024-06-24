@@ -1,0 +1,404 @@
+﻿@model WebSite_CuaHangDienThoai.Models.EditStaffViewModel
+@{
+    ViewBag.Title = "Chỉnh sửa nhân viên";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
+
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/products" class="nav-link">Nhân viên @Model.NameStaff</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Cập nhật</a>
+        </li>
+    </ul>
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Cập nhật Nhân viên</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Staff/">Nhân viên</a></li>
+                    <li class="breadcrumb-item active">Cập nhật</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="col-12">
+        <form id="editStaffForm" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.Password)
+            @Html.HiddenFor(model => model.DayofWork)
+            @Html.HiddenFor(model => model.CreatedDate)
+            @Html.HiddenFor(model => model.CreatedBy)
+            @Html.HiddenFor(model => model.Clock)
+            @Html.HiddenFor(model => model.Code)
+  
+            @Html.HiddenFor(model => model.Image, new { id = "currentImage" })
+
+
+            <div class="card">
+                @if (Model != null)
+                {
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-lg-4 order-lg-1 order-2"></div>
+                            <div class="col-lg-4 mt-n3 order-lg-2 order-1">
+                                <div class="mt-n5">
+                                    <div class="d-flex align-items-center justify-content-center mb-2 thaydoi">
+                                        <div class="linear-gradient d-flex align-items-center justify-content-center rounded-circle" style="width: 110px; height: 110px;">
+                                            <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden" style="width: 100px; height: 100px;">
+                                                @if (Model.Image != null)
+                                                {
+                                                    <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" alt="" class="w-100 h-100 old-img"  id="oldimg">
+                                                    <img id="newImagePreview" src="#" alt="New Image Preview" class="w-100 h-100 old-img" style="width: 100%; height: 100%; margin: auto; display: none; border-radius: 80px;" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" id="oldimg" class="w-100 h-100 thaydoi">
+                                                    <img id="newImagePreview" src="#" alt="New Image Preview" class="w-100 h-100 old-img" style="width: 100%; height: 100%; margin: auto; display: none; border-radius: 80px;" />
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <input type="file" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)" />
+                                    </div>
+                                    <div class="text-center">
+                                        <h5 class="fs-5 mb-0 fw-semibold">@Model.NameStaff</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 order-last"></div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="loadDataList">
+                        <div class="card border-1 rounded-1">
+                            <div class="card-header">
+                                <h5>Hồ Sơ Nhân Viên</h5>
+                                <small>Quản lý thông tin hồ sơ để bảo mật tài khoản</small>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-inline">
+                                                    <label class="control-label mr-2">Số điện thoại</label>
+                                                    <div class="col-md-6">
+                                                        @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control, col-10", id = "PhoneNumber", type = "number", pattern = "[0-9]" })
+                                                        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-inline col-md-12">
+                                                    <label class="control-label mr-2">Họ tên nhân viên:</label>
+                                                    @Html.TextBoxFor(model => model.NameStaff, new { @class = "form-control , col-10", id = "NameStaff" })
+                                                    @Html.ValidationMessageFor(model => model.NameStaff, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-inline">
+                                                    <label class="control-label mr-2">Email nhân viên :</label>
+                                                    <div class="col-md-6">
+                                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control, col-10", id = "Email" })
+                                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-inline col-md-12">
+                                                    <label class="control-label mr-2">Ngày sinh nhân viên :</label>
+                                                    @Html.TextBoxFor(model => model.Birthday, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control, col-10", type = "datetime-local", id = "birthdayInput" })
+                                                    @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-inline">
+                                                    <label class="control-label mr-2">Địa chỉ nhân viên :</label>
+                                                    <div class="col-md-6">
+                                                        @Html.TextBoxFor(model => model.Location, new { @class = "form-control, col-10", id = "Location" })
+                                                        @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-inline ">
+                                                    <label class="control-label mr-2">Căn cước công dân :</label>
+                                                    @Html.TextBoxFor(model => model.CitizenIdentificationCard, new { @class = "form-control, col-10", id = "CitizenIdentificationCard", type = "text", pattern = "[0-9]" })
+                                                    @Html.ValidationMessageFor(model => model.CitizenIdentificationCard, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-inline">
+                                                    <label class="control-label mr-2">Lương nhân viên :</label>
+                                                    <input type="text" name="demoPriceSale" id="demoPriceSale" value="@Model.Wage" class="form-control auto">
+                                                    @Html.HiddenFor(x => x.Wage, new { @class = "form-control, col-10", @placeholder = "Lương nhân viên" })
+                                                    @Html.ValidationMessageFor(x => x.Wage, null, new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-inline col-md-12">
+                                                    <label class="control-label mr-2">Giới tính :</label>
+                                                    <select class="form-control" id="drTypePayment" name="Sex">
+
+                                                        <option value="Nam" id="nam">Nam</option>
+                                                        <option value="Nữ" id="nu">Nữ</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-inline">
+                                                    <label class="control-label mr-2">Chức vụ :</label>
+                                                    @Html.DropDownListFor(x => x.FunctionId, ViewBag.ChucNang as SelectList, "-Chọn danh mục chức năng-", new { @class = "form-control , col-10", @placeholder = "Chức Năng Nhân Viên", id = "FunctionId" })
+                                                    @Html.ValidationMessageFor(x => x.FunctionId, null, new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-inline col-md-12">
+                                                    <label class="control-label mr-2">Cửa hàng:</label>
+                                                    @Html.DropDownListFor(x => x.StoreId, ViewBag.Store as SelectList, "-Chọn cửa hàng-", new { @class = "form-control, col-10", @placeholder = "Cửa hàng làm việc", id = "StoreId" })
+                                                    @Html.ValidationMessageFor(x => x.StoreId, null, new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="col-md-12 text-end mt-3">
+                                    <div class="form-group text-center">
+                                        <div class="col-md-offset-2 col-md-10 text-center">
+                                            <button type="button" class="btn btn-success col-md-10" onclick="submitForm()">Lưu</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </form>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/autoNumeric/2.0.13/autoNumeric.min.js"></script>
+
+<script>
+    function submitForm() {
+        var isValid = true;
+        var errorMessage = "";
+
+        // Lấy giá trị các trường
+        var phoneNumber = $('#PhoneNumber').val();
+        var nameStaff = $('#NameStaff').val();
+        var email = $('#Email').val();
+        var birthday = $('#birthdayInput').val();
+        var location = $('#Location').val();
+        var citizenId = $('#CitizenIdentificationCard').val();
+        var wage = $('#demoPriceSale').val();
+        var sex = $('#drTypePayment').val();
+        var functionId = $('#FunctionId').val();
+        var storeId = $('#StoreId').val();
+
+        // Kiểm tra từng trường
+        if (!phoneNumber) {
+            isValid = false;
+            errorMessage += "Số điện thoại không được để trống.\n";
+        } else if (phoneNumber.length !== 10) {
+            isValid = false;
+            errorMessage += "Số điện thoại không hợp lệ.\n";
+        }
+        if (!nameStaff) {
+            isValid = false;
+            errorMessage += "Tên nhân viên không được để trống.\n";
+        }
+        if (!email) {
+            isValid = false;
+            errorMessage += "Email không được để trống.\n";
+        }
+        if (!birthday) {
+            isValid = false;
+            errorMessage += "Ngày sinh không được để trống.\n";
+        } else {
+            var birthDate = new Date(birthday);
+            var currentDate = new Date();
+            var age = currentDate.getFullYear() - birthDate.getFullYear();
+            var monthDiff = currentDate.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            if (age < 18) {
+                isValid = false;
+                errorMessage += "Nhân viên phải ít nhất 18 tuổi.\n";
+            }
+        }
+        if (!location) {
+            isValid = false;
+            errorMessage += "Địa chỉ không được để trống.\n";
+        }
+        if (!citizenId) {
+            isValid = false;
+            errorMessage += "Căn cước công dân không được để trống.\n";
+        } else if (!citizenId.length <= 12 && citizenId.length > 11) {
+            isValid = false;
+            errorMessage += "Căn cước công dân lỗi định dạng 12 ký tự.\n";
+        }
+        if (!wage) {
+            isValid = false;
+            errorMessage += "Lương nhân viên không được để trống.\n";
+        }
+        if (sex == "0") {
+            isValid = false;
+            errorMessage += "Vui lòng chọn giới tính.\n";
+        }
+        if (functionId == "0") {
+            isValid = false;
+            errorMessage += "Vui lòng chọn chức vụ.\n";
+        }
+        if (storeId == "0") {
+            isValid = false;
+            errorMessage += "Vui lòng chọn cửa hàng.\n";
+        }
+
+        // Hiển thị thông báo lỗi nếu không hợp lệ
+        if (!isValid) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: errorMessage
+            });
+            return;
+        }
+
+        // Nếu hợp lệ, thực hiện gửi dữ liệu bằng AJAX
+        var form = $('#editStaffForm')[0];
+        var formData = new FormData(form);
+
+        $.ajax({
+            url: '@Url.Action("Edit", "Staff")',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Cập nhật thành công',
+                        text: 'Thông tin nhân viên đã được cập nhật.'
+                    }); setTimeout(function () {
+                        window.location.href = '/Admin/Staff/';
+                    }, 1000).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/Admin/Staff/';
+                        } else {
+                            setTimeout(function () {
+                                window.location.href = '/Admin/Staff/';
+                            }, 1500);// Chờ 1 giây và hiển thị lại thông báo
+                        }
+                    });
+
+
+
+                        
+
+                } else if (response.code === -3) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Dữ liệu không hợp lệ. Vui lòng kiểm tra lại các trường nhập liệu.'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Đã xảy ra lỗi. Vui lòng thử lại.'
+                    });
+                }
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Không thể kết nối tới máy chủ. Vui lòng thử lại sau.'
+                });
+            }
+        });
+    }
+
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var newImagePreview = document.getElementById('newImagePreview');
+            var oldImage = document.getElementById('oldimg');
+
+            newImagePreview.src = reader.result;
+            newImagePreview.style.display = 'block';
+
+            // Ẩn ảnh cũ
+            if (oldImage) {
+                oldImage.classList.add('hidden'); // Thêm lớp hidden
+            }
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    $(document).ready(function () {
+        $('.auto').autoNumeric('init');
+        $('#demoPrice').bind('blur focusout keypress keyup', function () {
+            var demoGet = $('#demoPrice').autoNumeric('get');
+            $('#Price').val(demoGet);
+            $('#Price').autoNumeric('set', demoGet);
+        });
+        $('#demoPriceSale').bind('blur focusout keypress keyup', function () {
+            var demoGet = $('#demoPriceSale').autoNumeric('get');
+            $('#PriceSale').val(demoGet);
+            $('#PriceSale').autoNumeric('set', demoGet);
+        });
+        $('#demoOriginalPrice').bind('blur focusout keypress keyup', function () {
+            var demoGet = $('#demoOriginalPrice').autoNumeric('get');
+            $('#OriginalPrice').val(demoGet);
+            $('#OriginalPrice').autoNumeric('set', demoGet);
+        });
+        CKEDITOR.replace('txtDetail', {
+            customConfig: '/content/ckeditor/config.js',
+            extraAllowedContent: 'span',
+        });
+    });
+</script>

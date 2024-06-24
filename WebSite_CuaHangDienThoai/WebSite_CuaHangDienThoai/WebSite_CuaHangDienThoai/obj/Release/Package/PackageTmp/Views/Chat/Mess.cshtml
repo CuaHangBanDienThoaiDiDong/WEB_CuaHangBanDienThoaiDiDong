@@ -1,0 +1,156 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Customer
+@{
+    ViewBag.Title = "Tin nhắn ";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<link href="~/Content/Css/Client/chat.css" rel="stylesheet" />
+<br />
+<br />
+<br />
+<br />
+<main class="content">
+    <div class="container p-5">
+
+      
+        <div class="card">
+            <div class="row g-0">
+                
+                <div class="col-12 col-lg-12 col-xl-12">
+                    <div class="py-2 px-4 border-bottom d-none d-lg-block">
+                        <div class="d-flex align-items-center py-1">
+                            <div class="position-relative">
+                                <img src="~/images/Logo/LogoWeb.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="80" height="70" />
+                                
+                            </div>
+                            <div class="flex-grow-1 pl-3">
+                                <strong>Hỗ trợ tư vấn</strong>
+                                <div class="text-muted "><a href="/trang-chu" style="color: red; font-family: Poppins-Regular; ">LTD<span style="color: black; font-family: Poppins-Regular; ">MiniStore</span></a></div>
+                            </div>
+                            @*<div>
+                                <button class="btn btn-primary btn-lg mr-1 px-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone feather-lg"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></button>
+                                <button class="btn btn-info btn-lg mr-1 px-3 d-none d-md-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-video feather-lg"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg></button>
+                                <button class="btn btn-light border btn-lg px-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal feather-lg"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg></button>
+                            </div>*@
+                        </div>
+                    </div>
+                    <div id="loadContenMess" data-id="@Model.CustomerId">
+                        <!-- Nội dung sẽ được tải vào đây -->
+                    </div>
+                    
+
+                    <div class="flex-grow-0 py-3 px-4 border-top">
+                        <div class="input-group">
+                            <textarea class="form-control" id="ContentMess" placeholder="Nội dung hỏi"></textarea>
+                            <button class="btn btn-primary btnSendMess" data-id="@Model.CustomerId">Gửi</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    // Định nghĩa hàm loadPartialContent
+    function loadPartialContent(id) {
+        // Sử dụng jQuery để thực hiện AJAX request
+        $.ajax({
+            url: '/Chat/Partial_ContentMess/' + id, // Đường dẫn tới action Partial_ContentMess trong controller Chat
+            type: 'GET',
+            data: { id: id }, // Truyền id qua query string
+            success: function (result) {
+                // Nạp nội dung nhận được vào div có id="loadContenMess"
+                $('#loadContenMess').html(result);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+
+    function sendMessage(id, content) {
+        $.ajax({
+            url: '/Chat/SentMess', // Thay đổi 'ControllerName' thành tên thực của controller
+            type: 'POST',
+            data: { id: id, content: content }, // Truyền id và content
+            success: function (response) {
+                if (response.success) {
+                    console.log('Tin nhắn đã được gửi thành công!');
+                    // Xử lý dựa vào code trả về
+                    if (response.code === 1) {
+                        // Tin nhắn mới đã được tạo
+                        // Load lại tin nhắn
+                        loadMessages(id);
+                    } else if (response.code === 2) {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: "Gửi tin nhắn thành công",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            // Xử lý tiếp sau khi thông báo đã đóng
+                            loadPartialContent(id);
+                            $('#ContentMess').val(''); // Đặt giá trị của input thành null
+                        });
+
+                    }
+                } else {
+                    console.error('Có lỗi xảy ra khi gửi tin nhắn');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Lỗi khi gửi tin nhắn:', error);
+            }
+        });
+    }
+
+    // Đoạn mã sẽ được thực thi khi tài liệu đã sẵn sàng
+    $(document).ready(function () {
+          var customerId = @Model.CustomerId;
+        var customerId = $('#loadContenMess').data('id');
+
+        loadPartialContent(customerId);
+
+        setInterval(function () {
+            loadPartialContent(id);
+        }, 10); 
+
+
+        $('.btnSendMess').click(function () {
+            var content = $('#ContentMess').val();
+            var customerId = $(this).data('id');
+
+            if (!customerId) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Hết hàng...",
+                    text: "Khách hàng không hợp lệ",
+                    footer: '<a href="#">Why do I have this issue?</a>'
+                });
+
+                setTimeout(function () {
+                    window.location.href = '/dang-nhap';
+                }, 2000);
+
+                return;
+            }
+
+
+
+            if (!content) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi...",
+                    text: "Nội dung tin nhắn không được để trống",
+                    footer: '<a href="#">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            sendMessage(customerId, content);
+        });
+    });
+</script>

@@ -1,0 +1,252 @@
+﻿@model WebSite_CuaHangDienThoai.Models.Admin_TokenImportWareHouse
+@using (Ajax.BeginForm("Add", "WareHouseImport", new AjaxOptions
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "load_data",
+    OnSuccess = "OnSuccessCO",
+    OnFailure = "OnFailure",
+    OnBegin = "OnBeginCO"
+}, new { @id = "myForm" }))
+{
+    <script>
+        function validateForm() {
+            var title = document.getElementById('Title').value.trim();
+            var productCategory = document.getElementById('ProductCategoryId').value.trim();
+            var productCompany = document.getElementById('ProductCompanyId').value.trim();
+            var heDieuHanh = document.getElementById('HeDieuHanh').value.trim();
+            var cpu = document.getElementById('CPU').value.trim();
+            var tocDoCPU = document.getElementById('TocDoCPU').value.trim();
+            var gpu = document.getElementById('GPU').value.trim();
+            var mangDiDong = document.getElementById('MangDiDong').value.trim();
+            var bluetooth = document.getElementById('Bluetooth').value.trim();
+            var sim = document.getElementById('SIM').value.trim();
+            var wifi = document.getElementById('Wifi').value.trim();
+            var gps = document.getElementById('GPS').value.trim();
+            var congKetNoi = document.getElementById('CongKetNoi').value.trim();
+            var jackTaiNghe = document.getElementById('JackTaiNghe').value.trim();
+            var loaiPin = document.getElementById('LoaiPin').value.trim();
+            var congNghePin = document.getElementById('CongNghePin').value.trim();
+            var hoTroSac = document.getElementById('HoTroSac').value.trim();
+
+            if (title === '' || heDieuHanh === '' || tocDoCPU === '' || mangDiDong === '' || sim === '' ||
+                wifi === '' || gps === '' || bluetooth === '' || congKetNoi === '' || jackTaiNghe === '' ||
+                loaiPin === '' || hoTroSac === '' || congNghePin === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi...',
+                    text: 'Vui lòng điền đầy đủ thông tin',
+                    footer: '<a href="#">Hệ thống quản lý LTD</a>'
+                });
+                return false;
+            }
+
+            var titleError = document.getElementById('titleError');
+            if (!title) {
+                titleError.style.display = 'block'; // Hiển thị thông báo nếu ô input trống
+                return false;
+            } else {
+                titleError.style.display = 'none'; // Ẩn thông báo nếu ô input không trống
+            }
+
+            return true;
+        }
+        function LoadList() {
+            $.ajax({
+                url: '/admin/WareHouseImport/Partail_ListProduct',
+                type: 'GET',
+                success: function (rs) {
+                    $('#load_data').html(rs);
+                }
+
+            });
+        }
+        function OnBeginCO() {
+            $('#btnRegister').attr("disabled", "disabled");
+        }
+
+        function OnSuccessCO(res) {
+            if (res.Success) {
+                if (res.Code == 1) {
+                  
+                    //const Toast = Swal.mixin({
+                    //    toast: true,
+                    //    position: "top-end",
+                    //    showConfirmButton: false,
+                    //    timer: 3000,
+                    //    timerProgressBar: true,
+                    //    didOpen: (toast) => {
+                    //        toast.onmouseenter = Swal.stopTimer;
+                    //        toast.onmouseleave = Swal.resumeTimer;
+                    //    }
+
+                    //});
+
+                    //Toast.fire({
+                    //    icon: "success",
+                    //    title: "Nhập kho thành công"
+                    //});
+                    //setTimeout(function () {
+                    //    $('#btnAddToWarehouse').prop('disabled', true);
+                    //    location.href = "/admin/WareHouseImport/index";
+                    //}, 3000);
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Nhập hàng thành công',
+                        text: 'Số lượng đã cập nhập trên hệ thống'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/Admin/WareHouseImport/DownloadInvoice?filePath=' + encodeURIComponent(res.FilePath);
+                        }
+                    });
+                } else {
+                }
+            }
+            else {
+                if (res.Code == -2) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi kết nối máy chủ...",
+                        text: "Lỗi không tìm thấy nhân viên",
+                    });
+                }
+                if (res.Code == -3) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Danh sách rỗng...",
+                        text: "Không có sản phẩm",
+                    });
+                }
+                if (res.Code == -4) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Không tìm thấy nhà cung cấp...",
+                        text: "Vui lòng chọn nhà cung cấp",
+
+                    });
+                }
+                if (res.Code == -5) {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Vui lòng nhâp...",
+                        text: "Số lượng không đủ điều kiện",
+                    });
+                    $.ajax({
+                        url: '/admin/WareHouseImport/Partail_ListProduct',
+                        type: 'GET',
+                        success: function (rs) {
+                            $('#load_data').html(rs);
+                        }
+
+                    });
+                }
+                if (res.Code == -6) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi tìm...",
+                        text: "Không tồn tại kho",
+                    });
+                }
+                if (res.Code == -8) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi kho...",
+                        text: "Lưu kho thất bại",
+                    });
+                }
+                if (res.Code == -7) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi phiếu nhập...",
+                        text: "Lưu phiếu nhập thất bại",
+                    });
+                }
+
+                if (res.Code == -10) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Lỗi máy chủ...",
+                        text: "Lưu thất bại",
+                    });
+                }
+            }
+        }
+    </script>
+    <style>
+        .error-message {
+            display: none;
+            color: red;
+        }
+    </style>
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="card">
+        <div class="card-header">
+            @using (Html.BeginForm("Add", "WareHouseImport", FormMethod.Post, new { }))
+            {
+                <div class="card-title">
+                    Thông tin nhập kho <label for="exampleInputEmail1">Danh sách nhà cung cấp</label>
+                    @Html.DropDownListFor(x => x.Supplierid, ViewBag.Supplier as SelectList, "-Danh sách nhà cung cấp-", new { @class = "form-control", @placeholder = "Mã sản phẩm", @id = "listSupplier" })
+                    @Html.ValidationMessageFor(x => x.Supplierid, null, new { @class = "text-danger" })
+                </div>
+                <br>
+                <br>
+                <hr />
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div id="load_data_Supplier">
+                                    <!-- Nội dung nhà cung cấp sẽ được tải vào đây -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            }
+        </div>
+        <div class="card-body" id="load_data">
+
+            @Html.Action("Partail_ListProduct", "WareHouseImport")
+
+
+
+
+
+
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8 text-center">
+                    <div class="form-group">
+                        <button id="btnAddToWarehouse" type="submit" class="btn btn-success btn-block">
+                            Thêm vào kho
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-plus" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7" />
+                                <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z" />
+                                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    </div>
+}
+@section  scripts{
+    <script>
+   
+            $(document).ready(function () {
+                $('#btnAddToWarehouse').click(function () {
+                    $(this).prop('disabled', true);
+                });
+            });
+    </script>
+      
+
+
+  }

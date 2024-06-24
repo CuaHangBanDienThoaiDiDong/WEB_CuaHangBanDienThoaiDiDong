@@ -1,0 +1,82 @@
+﻿
+@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ExportWareHouse>
+
+@if (Model != null)
+{
+    <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+        <span>
+            Số lượng đơn hàng xuất : <span class="text-danger">@ViewBag.Count </span> của ngày <span class="text-danger">@ViewBag.Date</span>
+        </span>
+        <div class="card-body p-0" id="loadDataOrderExport">
+            <div class="table-responsive table-billing-history">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="SelectAll" /></th>
+
+                            <th class="text-center">Mã đơn hàng</th>
+                            <th class="text-center">Ngày xuất</th>
+                            <th class="text-center">Tình trạng</th>
+
+
+                            <th style="width:150px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+
+
+                            foreach (var item in Model)
+                            {
+                                var checkExport = item.tb_Warehouse.tb_ExportWareHouse.FirstOrDefault(x => x.OrderId == item.OrderId);
+                                <tr id="trow_@item.ExportWareHouseId">
+                                    <td><input type="checkbox" class="cbkItem" value="@item.ExportWareHouseId" /></td>
+
+                                    <td class="text-center">@item.tb_Order.Code</td>
+                                    <td class="text-center">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                    <td class="text-center">@item.tb_Staff.NameStaff</td>
+                                    @if (checkExport != null)
+                                    {
+                                        <td class="text-center">
+                                            <p class="text-success col-12">
+                                                Đơn hàng đã xuất @checkExport.CreatedDate
+                                            </p>
+
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <p class="text-bg-danger">
+                                                Đơn hàng chưa xuất
+                                            </p>
+                                        </td>
+
+                                    }
+
+
+                                </tr>
+
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4">Không có bản ghi nào!!!</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+        </div>
+    </div>
+}
+else
+{
+    <p class="text-danger">Không tồn tại bảng ghi nào </p>
+}

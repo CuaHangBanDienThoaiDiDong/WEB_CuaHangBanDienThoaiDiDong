@@ -16,24 +16,32 @@ namespace WebSite_CuaHangDienThoai.Controllers
         CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
         public ActionResult Index(int? page)
         {
-            //IEnumerable<tb_Products> items = db.tb_Products.Where(x => x.IsActive==true).OrderByDescending(x => x.ProductsId );
             IEnumerable<tb_Products> items = db.tb_Products.Where(x => x.IsActive == true).ToList();
-            if (items != null)
+
+            if (items.Any())
             {
-
-
-
-
+                // Số sản phẩm trên mỗi trang
                 var pageSize = 17;
-                if (page == null)
+
+                var pageIndex = page ?? 1;
+
+                var pagedList = items.ToPagedList(pageIndex, pageSize);
+
+                // Nếu page vượt quá số lượng trang có thực, điều chỉnh pageIndex
+                if (pageIndex > pagedList.PageCount)
                 {
-                    page = 1;
+                    pageIndex = pagedList.PageCount;
+                    pagedList = items.ToPagedList(pageIndex, pageSize);
                 }
-                var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-                items = items.ToPagedList(pageIndex, pageSize);
+
                 ViewBag.PageSize = pageSize;
-                ViewBag.Page = page;
-                return View(items);
+                ViewBag.PageNumber = pageIndex; // Số trang hiện tại
+                ViewBag.PageCount = pagedList.PageCount; // Tổng số trang
+                ViewBag.FirstItemOnPage = pagedList.FirstItemOnPage; // Số sản phẩm đầu tiên trên trang
+                ViewBag.LastItemOnPage = pagedList.LastItemOnPage; // Số sản phẩm cuối cùng trên trang
+                ViewBag.TotalItemCount = pagedList.TotalItemCount; // Tổng số sản phẩm
+
+                return View(pagedList);
             }
             else
             {
@@ -147,7 +155,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         public ActionResult Partial_ItemsByCateId()
         {
-            var items = db.tb_Products.Where(x => x.IsHome == true && x.IsActive == true).Take(12).ToList();
+            var items = db.tb_Products.Where(x => x.IsHome == true && x.IsActive == true).Take(13).ToList();
             return PartialView(items);
         }
 
@@ -374,6 +382,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 ViewBag.CategoryTitle = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(categoryTitle);
                 ViewBag.Alias = alias;
                 ViewBag.CategoryId = categoryId;
+                ViewBag.Count= uniqueCompanyData.Count;     
                 return PartialView(uniqueCompanyData);
             }
         }

@@ -60,6 +60,7 @@
                         @Html.ValidationSummary(true)
                         @Html.HiddenFor(x => x.ProductsId)
                         @Html.HiddenFor(x => x.ProductDetailId)
+                        @Html.HiddenFor(x => x.Title)
 
                         <div class="card">
                             <div class="card-header p-2">
@@ -71,31 +72,39 @@
                             <div class="card-body">
                                 <div class="tab-content">
                                     <div class="active tab-pane" id="activity">
-                                        <div class="form-group">
+                                        @*<div class="form-group">
                                             <label for="exampleInputEmail1">Tên sản phẩm</label>
-                                            @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                            @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm",id= "Title" })
                                             @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
-                                        </div>
+                                        </div>*@
 
 
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Loại sản phẩm</label>
-                                            @Html.DropDownListFor(x => x.ProductsId, ViewBag.Products as SelectList, "-Chọn danh mục sản phẩm-", new { @class = "form-control", @placeholder = "Mã mã phẩm" })
+                                            @Html.DropDownListFor(x => x.ProductsId, ViewBag.Products as SelectList, "-Chọn danh mục sản phẩm-", new { @class = "form-control", @placeholder = "Mã mã phẩm", id = "ProductsId" })
                                             @Html.ValidationMessageFor(x => x.ProductsId, null, new { @class = "text-danger" })
                                         </div>
                                         <div class="row">
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Màu sản phẩm</label>
-                                                    @Html.TextBoxFor(x => x.Color, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.TextBoxFor(x => x.Color, new { @class = "form-control", @placeholder = "Màu sản phẩm", id = "Color" })
                                                     @Html.ValidationMessageFor(x => x.Color, null, new { @class = "text-danger" })
                                                 </div>
                                             </div>
                                             <div class="col-4">
+
                                                 <div class="form-group">
-                                                    <label for="exampleInputEmail1">Ram sản phẩm</label>
-                                                    @Html.TextBoxFor(x => x.Ram, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
-                                                    @Html.ValidationMessageFor(x => x.Ram, null, new { @class = "text-danger" })
+                                                    <label for="Ram">Ram sản phẩm</label>
+                                                    @Html.DropDownListFor(x => x.Ram, (SelectList)ViewBag.RamOptions, new { @class = "form-control", id = "Ram" })
+                                                    @Html.ValidationMessageFor(x => x.Ram, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="DungLuong">Dung lượng sản phẩm</label>
+                                                    @Html.DropDownListFor(x => x.Capacity, (SelectList)ViewBag.DungLuongOptions, new { @class = "form-control", id = "Capacity" })
+                                                    @Html.ValidationMessageFor(x => x.Capacity, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
                                         </div>
@@ -106,7 +115,7 @@
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail1">Giá bán</label>
                                                         <input type="text" name="demoPrice" id="demoPrice" value="@Model.Price" class="form-control auto" data-a-dec="," data-a-sep=".">
-                                                        @Html.HiddenFor(x => x.Price, new { @class = "", @placeholder = "Giá" })
+                                                        @Html.HiddenFor(x => x.Price, new { @class = "", @placeholder = "Giá bán ", id = "Price" })
                                                         @Html.ValidationMessageFor(x => x.Price, null, new { @class = "text-danger" })
                                                     </div>
 
@@ -118,7 +127,7 @@
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail1">Giá nhập</label>
                                                         <input type="text" name="demoOriginalPrice" id="demoOriginalPrice" value="@Model.OrigianlPrice" class="form-control auto">
-                                                        @Html.HiddenFor(x => x.OrigianlPrice, new { @class = "form-control", @placeholder = "Giá nhập" })
+                                                        @Html.HiddenFor(x => x.OrigianlPrice, new { @class = "form-control", @placeholder = "Giá nhập", id = "OrigianlPrice" })
                                                         @Html.ValidationMessageFor(x => x.OrigianlPrice, null, new { @class = "text-danger" })
                                                     </div>
                                                 </div>
@@ -128,7 +137,7 @@
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail1">Giá khuyến mãi</label>
                                                         <input type="text" name="demoPriceSale" id="demoPriceSale" value="@Model.PriceSale" class="form-control auto">
-                                                        @Html.HiddenFor(x => x.PriceSale, new { @class = "form-control", @placeholder = "Khuyến mãi" })
+                                                        @Html.HiddenFor(x => x.PriceSale, new { @class = "form-control", @placeholder = "Khuyến mãi", id = "PriceSale" })
                                                         @Html.ValidationMessageFor(x => x.PriceSale, null, new { @class = "text-danger" })
                                                     </div>
                                                 </div>
@@ -314,6 +323,102 @@
         //        console.error('Không tìm thấy trường productId trong biểu mẫu.');
         //    }
         //}
+
+
+        function validateForm() {
+            var isValid = true;
+            //var demoPrice = parseFloat(document.getElementById("Price").value.replace(",", ""));
+            //var demoPriceSale = parseFloat(document.getElementById("PriceSale").value.replace(",", ""));
+            //var demoOriginalPrice = parseFloat(document.getElementById("OrigianlPrice").value.replace(",", ""));
+            // Kiểm tra trường Title
+            if (!$('#ProductsId').val().trim()) {
+                $('#ProductsId').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                isValid = false;
+            } else {
+                $('#ProductsId').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+            }
+            if (!$('#Color').val().trim()) {
+                $('#Color').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                isValid = false;
+            } else {
+                $('#Color').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+            }
+            if (!$('#Ram').val().trim()) {
+                $('#Ram').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                isValid = false;
+            } else {
+                $('#Ram').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+            }
+            if (!$('#Capacity').val().trim()) {
+                $('#Capacity').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                isValid = false;
+            } else {
+                $('#Capacity').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+            }
+            //if (isNaN(demoPrice) || isNaN(demoOriginalPrice)) {
+            //    Swal.fire({
+            //        icon: "error",
+            //        title: "Lỗi",
+            //        text: "Vui lòng điền đầy đủ giá sản phẩm.",
+            //    });
+            //    return false;
+            //} else {
+            //    $('#Price').removeClass('is-invalid');
+            //    $('#PriceSale').removeClass('is-invalid');
+            //    $('#OrigianlPrice').removeClass('is-invalid');
+            //}
+
+            //if (demoPrice < demoOriginalPrice) {
+            //    Swal.fire({
+            //        icon: "error",
+            //        title: "Lỗi",
+            //        text: "Giá bán không được lớn hơn giá nhập.",
+            //    });
+            //    isValid = false;
+            //} else {
+            //    $('#Price').removeClass('is-invalid');
+               
+            //    $('#OrigianlPrice').removeClass('is-invalid');
+            //}
+            //if ( demoPriceSale < demoOriginalPrice) {
+            //    Swal.fire({
+            //        icon: "error",
+            //        title: "Lỗi",
+            //        text: "Giá bán khuyến mãi không được lớn hơn giá nhập.",
+            //    });
+            //    isValid = false;
+            //} else {
+                
+            //    $('#PriceSale').removeClass('is-invalid');
+            //    $('#OrigianlPrice').removeClass('is-invalid');
+            //}
+
+           
+
+           
+            $('.row:first-child input[type="text"], .row:first-child textarea').each(function () {
+                if (!$(this).val().trim()) {
+                    $(this).addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $(this).removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            });
+
+            return isValid;
+        }
+
+        $('form').submit(function () {
+            if (!validateForm()) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi...",
+                    text: "Vui lòng nhập đầy đủ thông tin",
+                });
+                return false; // Ngăn không cho form submit nếu thông tin không hợp lệ
+            }
+        });
+
         function previewImage(event, productId) {
             var fileInput = event.target;
             var reader = new FileReader();

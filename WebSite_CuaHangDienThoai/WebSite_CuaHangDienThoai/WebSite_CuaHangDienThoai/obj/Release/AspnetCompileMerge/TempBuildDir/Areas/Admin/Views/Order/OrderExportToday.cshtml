@@ -1,0 +1,90 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ExportWareHouse>
+@{
+    ViewBag.Title = "Đơn hàng xuất ngày " + ViewBag.Today;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/Homepage/" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/productcategory" class="nav-link">@ViewBag.Title</a>
+        </li>
+    </ul>
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quản lý đơn hàng xuất</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/admin/Homepage/">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="content">
+    <div id="loadOrderExport">
+
+    </div>
+</section>
+
+
+
+
+@section scripts{
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script>
+    $(document).ready(function () {
+        $(document).on('click', '.pagination a', function (e) {
+            e.preventDefault();
+            var page = $(this).attr('data-page');
+            LoadIndex(page);
+        });
+        LoadIndex(1)
+    });
+
+        function LoadIndex(page) {
+            $.ajax({
+                url: '/admin/Order/Partial_OrderExportToday',
+                type: 'GET',
+                data: { page: page },
+                success: function (rs) {
+                    $('#loadOrderExport').html(rs);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+
+        //function getOrderNewToDay() {
+        //    var ngayxuat = $('#ngayxuat').val(); // Sử dụng jQuery để lấy giá trị của input datetime-local
+        //    $.ajax({
+        //        url: '/Admin/Order/GetOrderNewToDay', // Địa chỉ URL của action trong controller
+        //        type: 'GET',
+        //        data: { ngayxuat: ngayxuat },
+        //        success: function (data) {
+        //            $('#loaddataOrderNewToDay').html(data);
+        //        },
+        //        error: function (xhr, status, error) {
+        //            console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+        //        }
+        //    });
+        //}
+    </script>
+}

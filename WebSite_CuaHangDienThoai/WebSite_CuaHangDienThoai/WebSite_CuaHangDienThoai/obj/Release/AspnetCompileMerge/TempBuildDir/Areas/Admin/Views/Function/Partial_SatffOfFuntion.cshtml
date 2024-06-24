@@ -1,0 +1,108 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Staff>
+
+
+<div class="Card">
+    <div class="card-header">
+        <h3 class="card-title">
+            Danh sách nhân viên
+            <br />
+            <small>       Số lượng nhân viên chức vụ :<span class="text-danger"> @ViewBag.Count</span></small>
+        </h3>
+
+        <br />
+
+
+        @*<div class="card-tools">
+                <a href="/admin/Role/add" class="btn btn-primary">Thêm mới</a>
+                <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
+            </div>*@
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="SelectAll" /></th>
+                    <th class="text-center">STT</th>
+                    <th class="text-center">Hình Ảnh</th>
+                    <th class="text-center">MSNV</th>
+
+                    <th class="text-center">Tên nhân viên </th>
+                    <th class="text-center">Chức năng</th>
+                    <th style="width:250px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    var i = 1;
+                    foreach (var item in Model)
+                    {
+                        <tr id="@*trow_@item*@.">
+                            <td><input type="checkbox" class="cbkItem" value="@item.StaffId" /></td>
+                            <td class="text-center">@i</td>
+                            <td class="text-center">
+                                <div class="d-flex align-items-center justify-content-center" style="height: 60px;">
+                                    <div class="linear-gradient border border-4 border-white rounded-circle" style="width: 60px; height: 60px;">
+                                        <div class="border d-flex align-items-center justify-content-center rounded-circle overflow-hidden" style="width: 60px; height: 60px; ">
+                                            @if (item.Image != null)
+                                            {
+                                                <img src="data:image;base64,@Convert.ToBase64String(item.Image)" alt="" class="w-100 h-100 old-img" style="max-width: 100%; max-height: 100%;" id="oldimg">
+                                            }
+                                            else
+                                            {
+                                                <img src="~/images/Logo/LogoWebpng.png" alt="" id="oldimg" class="w-100 h-100 thaydoi" style="max-width: 100%; max-height: 100%;">
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+
+                            <td class="text-center">@item.Code</td>
+
+                            <td class="text-center">
+                                @item.NameStaff
+                            </td>
+
+                            <td class="text-center">
+                                @item.tb_Function.TitLe
+                            </td>
+                            <td>
+                                @*<a href="/admin/Role/Details/@item.IdChucNang" class="btn btn-sm btn-success">Xem</a>
+            <a href="/admin/Role/edit/@item.IdChucNang" class="btn btn-sm btn-primary">Sửa</a>
+            <a href="#" data-id="@item.IdChucNang" class="btn btn-sm btn-danger btnDelete">Xóa</a>*@
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">Không có bản ghi nào!!!</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="row">
+            <div class="col-6"></div>
+            <div class="col-6" style="text-align:right;">
+                @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))*@
+            </div>
+        </div>
+
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer">
+
+    </div>
+
+</div>
+
+
+
+<!-- /.card-footer-->
+<!-- /.card -->

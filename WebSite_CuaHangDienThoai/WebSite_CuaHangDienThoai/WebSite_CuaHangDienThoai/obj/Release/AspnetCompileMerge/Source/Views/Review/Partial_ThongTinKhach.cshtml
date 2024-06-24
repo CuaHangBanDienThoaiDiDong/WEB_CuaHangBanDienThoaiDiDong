@@ -1,0 +1,77 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Customer
+
+<style>
+    .user_pic {
+        max-width: 100px; /* Thay 100px bằng kích thước tối đa mong muốn */
+        max-height: 100px; /* Thay 100px bằng kích thước tối đa mong muốn */
+        overflow: hidden; /* Đảm bảo hình ảnh không vượt ra ngoài phần tử cha */
+    }
+
+        .user_pic img {
+            width: 100%; /* Đảm bảo hình ảnh sẽ lấp đầy phần tử cha */
+            height: auto; /* Giữ tỷ lệ khung hình */
+        }
+</style>
+<div class="review">
+    @if (Model != null)
+    {
+
+
+        <div class="user_review_container d-flex flex-column flex-sm-row">
+            <div class="user">
+                <div class="user_pic">
+                    @if (Model.Image != null)
+                    {
+                        var imgBase64 = Session["img"] as string;
+                        if (!string.IsNullOrEmpty(imgBase64))
+                        {
+                            <img src="data:image;base64,@imgBase64" style="" />
+                        }
+                       
+                    }
+                    else
+                    {
+                        <img src="~/images/Logo/LogoWeb.png" style="" />
+                    }
+
+
+
+                </div>
+
+            </div>
+            <div class="review">
+                <div class="user_name">
+                    @Model.CustomerName
+                <small class="review_date">Tài khoản của bạn</small>
+            </div>
+
+
+            <p>@Model.Email</p>
+        </div>
+    </div>
+    <hr />
+
+
+}
+else
+{
+    <div class="user_review_container d-flex flex-column flex-sm-row">
+        <div class="user">
+            <div class="user_pic">
+                <img src="~/images/Logo/LogoWeb.png" />
+            </div>
+
+        </div>
+        <div class="review">
+            <div class="user_name">
+                <a href="/dang-nhap"class="text-danger" >Đăng nhập </a>
+            <small class="">Tài khoản của bạn</small>
+        </div>
+
+
+            <p>Hệ thống cửa hàng <span class="text-danger">LTD</span>MINISTORE bán thiết bị điện thoại di động</p>
+    </div>
+</div>
+<hr />
+}
+</div>

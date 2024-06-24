@@ -1,0 +1,26 @@
+﻿<div clas="row">
+    <div class="col-12">
+        <div class="" id="loaddata">
+            @Html.Action("Partial_IndexBill", "Bill")
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script>
+    function LoadIndex(page) {
+        $.ajax({
+            url: '/admin/Bill/Partial_IndexBill',
+            type: 'GET',
+            data: { page: page },
+            success: function (rs) {
+                $('#loaddata').html(rs);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+    $(document).ready(function () {
+        LoadIndex(1)
+    });
+</script>

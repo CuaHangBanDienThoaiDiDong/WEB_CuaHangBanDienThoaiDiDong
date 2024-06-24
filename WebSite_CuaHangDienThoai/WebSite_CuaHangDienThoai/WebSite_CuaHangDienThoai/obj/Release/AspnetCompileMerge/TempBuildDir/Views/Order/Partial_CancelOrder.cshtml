@@ -1,0 +1,113 @@
+﻿@model WebSite_CuaHangDienThoai.Models.ReturnAndCancelOrder
+
+@using (Ajax.BeginForm("CancelOrder", "Order", new AjaxOptions
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "load_data",
+    OnSuccess = "OnSuccessCO",
+    OnFailure = "OnFailure",
+    OnBegin = "OnBeginCO"
+}, new { @id = "myForm" }))
+{
+    <div class="p-1 border-1 rounded-1">
+        <div class="m-1">
+            @Html.Action("Partail_ListOrderCancel", "Order", new { id = ViewBag.OrderId })
+            <br />
+            <div class="mt-1">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="orderId" value="@ViewBag.OrderId" />
+                <div class="form-group">
+                    <label>Lý do hủy hàng</label>
+                    <select class="form-control" id="drTypePayment" name="Status">
+                        <option value="Thay đổi phương thức thanh toán" selected>Thay đổi phương thức thanh toán</option>
+                        <option value="Thay đổi địa chỉ">Thay đổi địa chỉ</option>
+                        <option value="Thay đổi sản phẩm khác">Thay đổi sản phẩm khác</option>
+                        <option id="khacOption">Lý do khác</option>
+                    </select>
+                </div>
+
+                <div class="status" style="display: none;">
+                    <label>Nơi điền lý do</label>
+                    <textarea class="form-control" id="customStatus" name="customStatus"></textarea>
+                </div>
+
+                <input type="hidden" id="customStatusHidden" name="CustomStatusHidden" /> <!-- Trường ẩn để chứa giá trị lý do -->
+
+                <br />
+                <div class="form-group" id="load_send"></div>
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-10 d-grid gap-2 col-10 mx-auto">
+                        <button type="submit" id="submitBtn" class="btn btn-danger btnSuccessCandelOrder">Xác nhận trả hàng</button>
+                    </div>
+                    <div class="col-1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    function OnBeginCO() {
+        $('#btnSuccessCandelOrder').attr("disabled", "disabled");
+        $('#load_send').html('<h2>Đang tiến hành gửi yêu cầu....</h2>');
+    }
+
+    function OnSuccessCO(res) {
+        if (res.success) {
+            if (res.code == 1) {
+                var orderId = $('input[name="orderId"]').val();
+                var orderCode = '@ViewBag.Code';
+                location.href = "/huy-don-hang-thanh-cong/" + orderCode + "-p" + orderId;
+            } else {
+                location.href = res.url;
+            }
+        } else {
+            $('#btnSuccessCandelOrder').removeAttr("disabled");
+            $('#load_send').html('<h2>Có lỗi xảy ra, vui lòng thử lại.</h2>');
+        }
+    }
+
+    function OnFailure() {
+        $('#btnSuccessCandelOrder').removeAttr("disabled");
+        $('#load_send').html('<h2>Có lỗi xảy ra, vui lòng thử lại.</h2>');
+    }
+    $(document).ready(function () {
+        var formSubmitted = false; // Biến cờ kiểm tra form đã được gửi chưa
+
+        $('#drTypePayment').change(function () {
+            var selectedOptionId = $(this).find('option:selected').attr('id');
+            if (selectedOptionId === "khacOption") {
+                $('.status').show();
+                $('#customStatus').show();
+            } else {
+                $('.status').hide();
+                $('#customStatus').hide();
+            }
+            updateCustomStatusHidden(); // Gọi hàm để cập nhật giá trị cho trường ẩn
+        });
+
+        // Hàm cập nhật giá trị cho trường ẩn
+        function updateCustomStatusHidden() {
+            var selectedOptionId = $('#drTypePayment').find('option:selected').attr('id');
+            if (selectedOptionId === "khacOption") {
+                $('#customStatusHidden').val($('#customStatus').val());
+            } else {
+                $('#customStatusHidden').val('');
+            }
+        }
+
+        // Sự kiện click nút submit
+        $('#submitBtn').click(function (e) {
+            if (!formSubmitted) { // Kiểm tra nếu form chưa được gửi
+                e.preventDefault(); // Ngăn chặn hành động mặc định của form
+                updateCustomStatusHidden(); // Cập nhật trường ẩn trước khi gửi form
+                $('#myForm').submit(); // Gửi form
+                formSubmitted = true; // Đánh dấu form đã được gửi
+            }
+        });
+    });
+
+
+
+</script>

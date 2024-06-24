@@ -1,0 +1,271 @@
+﻿﻿@model WebSite_CuaHangDienThoai.Models.tb_Customer
+
+@{
+    ViewBag.Title = "Thông tin cá nhân";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="~/Content/Css/Client/Profile.css" rel="stylesheet" />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<div class="container">
+
+
+    @if (Model != null)
+    {
+        <div class="card overflow-hidden">
+            <div class="card-body p-0">
+                <img src="https://www.bootdey.com/image/1352x300/FF00FF/000000" alt="" class="img-fluid">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 order-lg-1 order-2">
+
+                        @*<button id="showButton">Hiển thị thẻ</button>*@
+
+                        <div id="popup" class=" hidden">
+
+                            <div class="card">
+                                @Html.Action("EditImage", "Account", new { id = Model.CustomerId })
+                            </div>
+
+
+                        </div>
+                        <div class="d-flex align-items-center justify-content-around m-4">
+                            <div class="text-center">
+                                <a href="/don-hang" style="color:chocolate">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag-heart-fill" viewBox="0 0 16 16">
+                                        <path d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132" />
+                                    </svg>
+                                    @{
+                                        var order = Model.tb_Order.Where(x => x.CustomerId == Model.CustomerId).Count();
+                                        <h4 class="mb-0 fw-semibold lh-1">
+                                            @order
+                                        </h4>
+                                    }
+
+
+                                    <p class="mb-0 fs-4">Đơn hàng</p>
+                                </a>
+
+                            </div>
+                            <div class="text-center">
+                                <a href="/gio-hang" style="color:orange">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-cart-check-fill" viewBox="0 0 16 16">
+                                        <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708" />
+                                    </svg>
+                                    @{
+                                        var cart = Model.tb_Cart.FirstOrDefault(x => x.CustomerId == Model.CustomerId);
+                                        var cartItem = cart.tb_CartItem.Where(x => x.CartId == cart.CartId).Count();
+                                        <h4 class="mb-0 fw-semibold lh-1">
+                                            @cartItem
+                                        </h4>
+                                    }
+
+
+                                    <p class="mb-0 fs-4">Giỏ hàng</p>
+                                </a>
+
+                            </div>
+                            <div class="text-center">
+                                <i class="fa fa-check fs-6 d-block mb-2"></i>
+                                <h4 class="mb-0 fw-semibold lh-1">2,659</h4>
+                                <p class="mb-0 fs-4">Điểm tích lũy</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mt-n3 order-lg-2 order-1">
+
+                    </div>
+                    <div class="col-lg-4 order-last">
+                        @*<ul class="list-unstyled d-flex align-items-center justify-content-center justify-content-lg-start my-3 gap-3">
+                                <li class="position-relative">
+                                    <a class="text-white d-flex align-items-center justify-content-center bg-primary p-2 fs-4 rounded-circle" href="javascript:void(0)" width="30" height="30">
+                                        <i class="fa fa-facebook"></i>
+                                    </a>
+                                </li>
+                                <li class="position-relative">
+                                    <a class="text-white bg-secondary d-flex align-items-center justify-content-center p-2 fs-4 rounded-circle" href="javascript:void(0)">
+                                        <i class="fa fa-twitter"></i>
+                                    </a>
+                                </li>
+                                <li class="position-relative">
+                                    <a class="text-white bg-secondary d-flex align-items-center justify-content-center p-2 fs-4 rounded-circle" href="javascript:void(0)">
+                                        <i class="fa fa-dribbble"></i>
+                                    </a>
+                                </li>
+                                <li class="position-relative">
+                                    <a class="text-white bg-danger d-flex align-items-center justify-content-center p-2 fs-4 rounded-circle" href="javascript:void(0)">
+                                        <i class="fa fa-youtube"></i>
+                                    </a>
+                                </li>
+                                <li><button class="btn btn-primary">Add To Story</button></li>
+                            </ul>*@
+                    </div>
+                </div>
+                <ul class="nav nav-tabs mb-3" id="ex-with-icons" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a data-mdb-tab-init class="nav-link active" id="ex-with-icons-tab-1" href="#ex-with-icons-tabs-1" role="tab" style="color: blue"
+                           aria-controls="ex-with-icons-tabs-1" aria-selected="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" style="color:blue" height="25" fill="currentColor" class="bi bi-person-fill-check" viewBox="0 0 16 16">
+                                <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                <path d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4" />
+                            </svg>
+                            Thông tin
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation" style="color:chocolate">
+                        <a data-mdb-tab-init class="nav-link" id="ex-with-icons-tab-2" href="#ex-with-icons-tabs-2" role="tab" style="color:chocolate"
+                           aria-controls="ex-with-icons-tabs-2" aria-selected="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:chocolate" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0" />
+                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+                            </svg>
+                            Đơn hàng
+                        </a>
+
+
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a data-mdb-tab-init class="nav-link" id="ex-with-icons-tab-3" href="#ex-with-icons-tabs-3" role="tab"
+                           aria-controls="ex-with-icons-tabs-3" aria-selected="false"><i class="fas fa-cogs fa-fw me-2"></i>Settings</a>
+                    </li>
+
+                </ul>
+            </div>
+
+
+
+            <div class="tab-content" id="ex-with-icons-content">
+                <div class="tab-pane fade show active" id="ex-with-icons-tabs-1" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
+                    <div class="loadDataList">
+                        <div class="card border-1 rounded-1">
+                            <div class="card-header">
+                                <h5>Hồ Sơ Của Tôi</h5>
+                                <small>Quản lý thông tin hồ sơ để bảo mật tài khoản</small>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="text-center d-flex " style="width: 220px; height: 220px; text-align: center;">
+                                            <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" alt="Current Image" id="currentImage" style="width: 100%; height: 100%; margin: auto;" class="rounded-circle" />
+                                        </div>
+
+
+
+                                    </div>
+                                    <div class="col-lg-8 ">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="card-tools">
+                                                    <a href="#" data-id="@Model.CustomerId">Thay đổi</a>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>Số điện thoại  <span class="text-black " style="margin-left:10px">@Model.PhoneNumber</span></p>
+                                                <p>Tên <span class="text-black " style="margin-left:10px">@Model.CustomerName</span></p>
+                                                <p>
+                                                    Email <span class="text-black " style="margin-left:10px">@Model.Email </span>
+
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:chocolate" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                                        <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z" />
+                                                    </svg>
+                                                </p>
+                                                <p>
+                                                    Số điện thoại <span class="text-black " style="margin-left:10px">@Model.PhoneNumber </span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="color:chocolate" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                                        <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z" />
+                                                    </svg>
+                                                </p>
+                                                @*<p>
+                                                        Tham gia ngày <span class="text-black " style="margin-left:10px">@Model.Birthday.ToString('dd/MM/yyyy') </span>
+
+                                                    </p>*@
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
+                    Đơn hàng
+                    @{
+                        var OrderId = Model.tb_Order.FirstOrDefault(x => x.CustomerId == Model.CustomerId);
+                    }
+                    @Html.Action("Partial_Order", "Order", new { id = OrderId.OrderId })
+                </div>
+                <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
+                    Tab 3 content
+                </div>
+            </div>
+
+
+
+        </div>
+    }
+    else
+    {
+        <p class="text-danger">
+            Không tồn tại bảng ghi nào !!!!
+        </p>
+    }
+
+</div>
+
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('newImagePreview');
+            var labelAnhCu = document.getElementById('lbAnhCu');
+            var lbImagePreview = document.getElementById('lbImagePreview');
+            var muiTen = document.getElementById('muiTen');
+            output.src = reader.result;
+            output.style.display = 'block';
+            if (labelAnhCu && muiTen && lbImagePreview) {
+                labelAnhCu.style.display = 'block';
+                muiTen.style.display = 'block';
+                lbImagePreview.style.display = 'block';
+            }
+
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        var bg = document.querySelector(".bg-sg");
+        var popup = document.getElementById('popup');
+        var thaydoi = document.querySelector('.thaydoi');
+        var closeButton = document.getElementById('closeButton');
+        var btnClose = document.querySelector('.btnClose');
+        thaydoi.addEventListener('click', function () {
+            bg.style.display = "block";
+            popup.classList.remove('hidden');
+        });
+
+        btnClose.addEventListener('click', function () {
+            bg.style.display = "none";
+            popup.classList.add('hidden');
+        });
+
+        bg.addEventListener("click", function () {
+            bg.style.display = "none";
+            popup.classList.add('hidden');
+        });
+
+        closeButton.addEventListener('click', function () {
+            popup.classList.add('hidden');
+            bg.style.display = "none";
+        });
+    });
+
+</script>

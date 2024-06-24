@@ -3,7 +3,7 @@
     <span class="text-c-green f-w-600">Kho nhâp hôm nay</span>
     @if (ViewBag.Count != null)
     {
-     
+
         <h4>@ViewBag.Count </h4>
         <div>
             <span class="f-left m-t-10 text-muted">
@@ -11,7 +11,15 @@
             </span>
         </div>
     }
-
+    else
+    {
+        <h4>0 </h4>
+        <div>
+            <span class="f-left m-t-10 text-muted">
+                <i class="text-c-green f-16 icofont icofont-tag m-r-10"></i>Phiếu nhập
+            </span>
+        </div>
+    }
 
 
 </div>

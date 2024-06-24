@@ -33,7 +33,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Sản phẩm</a></li>
+                    <li class="breadcrumb-item"><a href="/Admin/Products/">Sản phẩm</a></li>
                     <li class="breadcrumb-item active">Cập nhật</li>
                 </ol>
             </div>
@@ -53,7 +53,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    @using (Html.BeginForm("Edit", "Products", FormMethod.Post, new { }))
+                    @using (Html.BeginForm("Edit", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
@@ -66,7 +66,7 @@
                                     <li class="nav-item"><a class="nav-link" href="#infor" data-toggle="tab">Thông số kỹ thuật</a></li>
                                     <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Hình ảnh</a></li>
 
-                                    <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">SEO</a></li>
+                                    @*<li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">SEO</a></li>*@
                                 </ul>
                             </div><!-- /.card-header -->
                             <div class="card-body">
@@ -77,7 +77,7 @@
                                             @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
                                             @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
                                         </div>
-                                        <div class="form-group "style="display:none">
+                                        <div class="form-group " style="display:none">
                                             <label for="exampleInputEmail1">Alias</label>
                                             @Html.TextBoxFor(x => x.Alias, new { @class = "form-control", @placeholder = "Alias" })
                                             @Html.ValidationMessageFor(x => x.Alias, null, new { @class = "text-danger" })
@@ -100,42 +100,14 @@
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Mô tả</label>
                                             @*@Html.TextAreaFor(x => x.Description, new { @class = "form-control", @placeholder = "Mã mã phẩm" })
-                @Html.ValidationMessageFor(x => x.Description, null, new { @class = "text-danger" })*@
+                                                @Html.ValidationMessageFor(x => x.Description, null, new { @class = "text-danger" })*@
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Chi tiết sản phẩm</label>
                                             @*@Html.TextAreaFor(x => x.Detail, new { @class = "form-control", @id = "txtDetail" })
-                @Html.ValidationMessageFor(x => x.Detail, null, new { @class = "text-danger" })*@
+                                                @Html.ValidationMessageFor(x => x.Detail, null, new { @class = "text-danger" })*@
                                         </div>
-                                        @*<div class="row">
-                <div class="col-3">
 
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Giá</label>
-                        <input type="text" name="demoPrice" id="demoPrice" value="@Model.Price" class="form-control auto" data-a-dec="," data-a-sep=".">
-                        @Html.HiddenFor(x => x.Price, new { @class = "", @placeholder = "Giá" })
-                        @Html.ValidationMessageFor(x => x.Price, null, new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Giá khuyến mãi</label>
-                        <input type="text" name="demoPriceSale" id="demoPriceSale" value="@Model.PriceSale" class="form-control auto">
-                        @Html.HiddenFor(x => x.PriceSale, new { @class = "form-control", @placeholder = "Khuyến mãi" })
-                        @Html.ValidationMessageFor(x => x.PriceSale, null, new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Giá nhập</label>
-                        <input type="text" name="demoOriginalPrice" id="demoOriginalPrice" value="@Model.OrigianlPrice" class="form-control auto">
-                        @Html.HiddenFor(x => x.OrigianlPrice, new { @class = "form-control", @placeholder = "Giá nhập" })
-                        @Html.ValidationMessageFor(x => x.OrigianlPrice, null, new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>*@
                                         <div class="row">
                                             <div class="col-3">
                                                 <div class="form-group">
@@ -150,52 +122,63 @@
                                     <!-- /.tab-Imge -->
                                     <div class="tab-pane" id="timeline">
                                         <div class="row">
-                                            <div class="col-md-12 text-right">
-                                                <input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />
+                                            <div class="col-md-12">
+                                                @*<input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />*@
+
+                                              
                                             </div>
                                             <div class="col-md-12">
                                                 <table class="table table-hover" id="tbAnhSanPham">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-center">#</th>
+                                                            <th class="text-center">STT</th>
                                                             <th class="text-center">Ảnh</th>
-                                                            <th class="text-center">Ảnh đại diện</th>
-                                                            <th class="text-center">Thao tác</th>
+                                                            <th class="text-center">Ảnh cập nhập</th>
+                                                            @*<th class="text-center">Thao tác</th>*@
                                                         </tr>
                                                     </thead>
                                                     <tbody id="tbHtml">
                                                         @if (Model.tb_ProductImage != null && Model.tb_ProductImage.Any())
                                                         {
-                                                            var i = 0;
+                                                            var i = 1;
                                                             foreach (var item in Model.tb_ProductImage)
                                                             {
-                                                                int count = Model.tb_ProductImage.Where(r => r.ProductsId == Model.ProductsId).Count();
-                                                                <div class="row">
-                                                                    <div class="col-lg-4 mb-4">
-                                                                        Ảnh đại diện @Model.Title ok
-                                                                        <div class="card h-100 border-start-lg border-start-primary">
-                                                                            <div class="card-body">
-                                                                                <div class="image-container">
-                                                                                    <img src="@item.Image" alt="Hình" class="w-25">
-                                                                                    @*<button class="button-overlay" onclick="yourFunction()">Click Me</button>*@
-                                                                                    @if (count > 1)
-                                                                                    {
-                                                                                        <a href="/admin/Product/DeleteImg/@item.ProductsId" class="btn btn-sm btn-primary">Xoá ảnh</a>
-                                                                                        <input type="button" class="btn btn-primary" id="iTaiAnh" data-producid="@Model.ProductsId" onclick="BrowseServer();" value="Cập nhật ảnh" />
-                                                                                    }
-                                                                                    else
-                                                                                    {
-                                                                                        <a href="/admin/Product/DeleteImg/@item.ProductsId" class="btn btn-sm btn-primary">Cập nhật ảnh</a>
-                                                                                    }
-                                                                                </div>
-                                                                            </div>
+                                                                var imgSrc = item.Image != null ? "data:image;base64," + Convert.ToBase64String(item.Image) : "";
+                                                                <tr>
+                                                                    <td class="text-center">@i</td>
+                                                                    
+                                                                    <td class="text-center" style="width: 30%;">
+                                                                        <label class="" id="lbAnhCu" style="display: none ">Ảnh mới:</label>
+                                                                        <img src="data:image;base64,@Convert.ToBase64String(item.Image)" alt="Current Image" id="currentImage" style="width: 30%; height: 30%; " />
+
+                                                                        <div class=" form-group text-center " id="muiTen" style="display: none ;justify-content: center; align-items: center; height: 100px; margin-top: 50%">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" style="color:greenyellow" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                                                                <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708" />
+                                                                                <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708" />
+                                                                            </svg>
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-                                                                
+                                                                    </td>
+                                                                    <td class="text-center" style="width: 30%;">
+                                                                        
+                                                                        <div class="form-group text-center newImage">
+                                                                            <label class=""id="lbImagePreview"style="display: none ">Ảnh mới:</label>
+                                                                            <img id="newImagePreview" src="#" alt="New Image Preview" style="display:none;width:50%;height:50%; " />
+                                                                        </div>
+                                                                        <div class="form-group text-center">
+                                                                            <label for="exampleInputFile">Thay đổi </label>
+                                                                            <input type="file" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)" />
+
+                                                                        </div>
+
+                                                                    </td>
+
+                                                                </tr>
+
+                                                               
                                                                 i++;
                                                             }
                                                         }
+
                                                     </tbody>
                                                 </table>
                                                 <input type="hidden" id="tCurrentId" value="0" />
@@ -212,23 +195,23 @@
                                             <div class="form-group row">
                                                 <label for="inputName" class="col-sm-2 col-form-label">SEO Title</label>
                                                 @*<div class="col-sm-10">
-                        @Html.TextBoxFor(x => x.SeoTitle, new { @class = "form-control", @placeholder = "SeoTitle" })
-                        @Html.ValidationMessageFor(x => x.SeoTitle, null, new { @class = "text-danger" })
-                    </div>*@
+                                                        @Html.TextBoxFor(x => x.SeoTitle, new { @class = "form-control", @placeholder = "SeoTitle" })
+                                                        @Html.ValidationMessageFor(x => x.SeoTitle, null, new { @class = "text-danger" })
+                                                    </div>*@
                                             </div>
                                             <div class="form-group row">
                                                 <label for="inputEmail" class="col-sm-2 col-form-label">SeoKeywords</label>
                                                 @*<div class="col-sm-10">
-                        @Html.TextBoxFor(x => x.SeoKeywords., new { @class = "form-control", @placeholder = "SeoKeywords" })
-                        @Html.ValidationMessageFor(x => x.SeoKeywords, null, new { @class = "text-danger" })
-                    </div>*@
+                                                        @Html.TextBoxFor(x => x.SeoKeywords., new { @class = "form-control", @placeholder = "SeoKeywords" })
+                                                        @Html.ValidationMessageFor(x => x.SeoKeywords, null, new { @class = "text-danger" })
+                                                    </div>*@
                                             </div>
                                             <div class="form-group row">
                                                 <label for="inputName2" class="col-sm-2 col-form-label">SeoDescription</label>
                                                 @*<div class="col-sm-10">
-                        @Html.TextBoxFor(x => x.SeoDescription, new { @class = "form-control", @placeholder = "SeoDescription" })
-                        @Html.ValidationMessageFor(x => x.SeoDescription, null, new { @class = "text-danger" })
-                    </div>*@
+                                                        @Html.TextBoxFor(x => x.SeoDescription, new { @class = "form-control", @placeholder = "SeoDescription" })
+                                                        @Html.ValidationMessageFor(x => x.SeoDescription, null, new { @class = "text-danger" })
+                                                    </div>*@
                                             </div>
 
                                         </form>
@@ -293,7 +276,7 @@
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1">GPS:</label>
                                                     @*@Html.TextAreaFor(x => x.GPS, new { @class = "form-control", @id = "txtDetail" })
-                        @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })*@
+                                                        @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })*@
                                                     @Html.TextBoxFor(x => x.GPS, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
                                                     @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })
                                                 </div>
@@ -341,7 +324,7 @@
                                                 <div class="col-6">
                                                     <label for="exampleInputEmail1">Công nghệ pin:</label>
                                                     @*@Html.TextAreaFor(x => x.CongNghePin, new { @class = "form-control", @id = "txtDetail" })
-                        @Html.ValidationMessageFor(x => x.CongNghePin, null, new { @class = "text-danger" })*@
+                                                        @Html.ValidationMessageFor(x => x.CongNghePin, null, new { @class = "text-danger" })*@
                                                     @Html.TextBoxFor(x => x.BatteryTechnology, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
                                                     @Html.ValidationMessageFor(x => x.BatteryTechnology, null, new { @class = "text-danger" })
                                                 </div>
@@ -380,31 +363,48 @@
 
 </section>
 
-
-
-@section  scripts{
+@section scripts {
     <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('newImagePreview');
+                var labelAnhCu = document.getElementById('lbAnhCu');
+                var lbImagePreview = document.getElementById('lbImagePreview');
+                var muiTen = document.getElementById('muiTen');
+                output.src = reader.result;
+                output.style.display = 'block';
+                if (labelAnhCu && muiTen && lbImagePreview) {
+                    labelAnhCu.style.display = 'block';
+                    muiTen.style.display = 'block';
+                    lbImagePreview.style.display = 'block';
+                }
+           
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+
         $(document).ready(function () {
             $('.auto').autoNumeric('init');
-            $('#demoPrice').bind('blur focusout keypress keyup', function () {
+
+            $('#demoPrice').on('blur focusout keypress keyup', function () {
                 var demoGet = $('#demoPrice').autoNumeric('get');
                 $('#Price').val(demoGet);
                 $('#Price').autoNumeric('set', demoGet);
             });
-            $('#demoPriceSale').bind('blur focusout keypress keyup', function () {
+
+            $('#demoPriceSale').on('blur focusout keypress keyup', function () {
                 var demoGet = $('#demoPriceSale').autoNumeric('get');
                 $('#PriceSale').val(demoGet);
                 $('#PriceSale').autoNumeric('set', demoGet);
             });
-            $('#demoOriginalPrice').bind('blur focusout keypress keyup', function () {
+
+            $('#demoOriginalPrice').on('blur focusout keypress keyup', function () {
                 var demoGet = $('#demoOriginalPrice').autoNumeric('get');
                 $('#OrigianlPrice').val(demoGet);
                 $('#OrigianlPrice').autoNumeric('set', demoGet);
             });
-            //CKEDITOR.replace('txtDetail', {
-            //    customConfig: '/content/ckeditor/config.js',
-            //    extraAllowedContent: 'span',
-            //});
 
             $('body').on('click', '.btnXoaAnh', function () {
                 var conf = confirm('Bạn có muốn xóa ảnh này không?');
@@ -418,42 +418,101 @@
                     $('#tCurrentId').val(currentId);
                 }
             });
+
             CKEDITOR.replace('txtDetail', {
                 customConfig: '/content/ckeditor/config.js',
                 extraAllowedContent: 'span',
             });
-        });
-       
-        //Start Update hinh ảnh 
-        $('#iTaiAnh').click(function () {
-            // Lấy ProductsId từ data attribute
-            var productsId = $(this).data('producid');
-            // Mở CKFinder
-            BrowseServer(productsId);
+
+            // Bắt sự kiện nút Lưu lại
+            $('#saveButton').click(function () {
+                var images = [];
+                var rDefault = [];
+
+                $('#tbHtml tr').each(function (index) {
+                    var imgSrc = $(this).find('img').attr('src');
+                    images.push(imgSrc);
+
+                    if ($(this).find('input[type="radio"]').is(':checked')) {
+                        rDefault.push(index + 1);
+                    }
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/Product/AddImg",
+                    data: {
+                        productsId: $('#ProductsId').val(),
+                        Images: images,
+                        rDefault: rDefault
+                    },
+                    traditional: true,
+                    success: function (response) {
+                        alert(response.message);
+                        if (response.success) {
+                            location.reload();
+                        }
+                    },
+                    error: function () {
+                        alert('Đã xảy ra lỗi khi gửi yêu cầu thêm ảnh');
+                    }
+                });
+            });
+
+            // Sự kiện khi click vào nút "Cập nhật ảnh"
+            $('body').on('click', '.btnCapNhapAnhh', function () {
+                var productsId = $(this).data('producid');
+                var productImgId = $(this).data('idimg');
+                BrowseServerForUpdate(productsId, productImgId);
+            });
         });
 
-        // Hàm JavaScript để mở CKFinder và xử lý ảnh đã chọn
-        function BrowseServer(productsId) {
+        // Hàm để mở CKFinder và thêm ảnh mới
+        function BrowseServer() {
             var finder = new CKFinder();
             finder.selectActionFunction = function (fileUrl) {
-                // Sau khi chọn ảnh, gửi yêu cầu cập nhật đường dẫn ảnh mới
-                updateProductImage(productsId, fileUrl);
+                addImageProduct(fileUrl);
             };
             finder.popup();
         }
-        function updateProductImage(productsId, newImageUrl) {
-            // Gửi yêu cầu POST đến action UpdateImage trong controller
+
+        // Hàm để mở CKFinder và cập nhật ảnh hiện có
+        function BrowseServerForUpdate(productsId, productImgId) {
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (fileUrl) {
+                updateProductImage(productsId, productImgId, fileUrl);
+            };
+            finder.popup();
+        }
+
+        function addImageProduct(url) {
+            var currentId = $('#tbHtml tr').length + 1;
+            var str = `
+            <tr id="trow_${currentId}">
+                <td class="text-center">${currentId}</td>
+                <td class="text-center"><img width="80" src="${url}" /> <input type='hidden' value="${url}" name="Images"/></td>
+                <td class="text-center"><input type="radio" name="rDefault" value="${currentId}" ${currentId === 1 ? 'checked="checked"' : ''}/></td>
+                <td class="text-center"><a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a></td>
+            </tr>`;
+            $('#tbHtml').append(str);
+            $('#tCurrentId').val(currentId);
+        }
+
+        // Hàm JavaScript để cập nhật hình ảnh sản phẩm
+        function updateProductImage(productsId, productImgId, newImageUrl) {
             $.ajax({
                 type: "POST",
-                url: "/Product/UpdateImage",
-                data: { productsId: productsId, newImageUrl: newImageUrl },
+                url: "/admin/Product/UpdateImage",
+                data: {
+                    productsId: productsId,
+                    productImgId: productImgId,
+                    imageUrl: newImageUrl,
+                    isDefault: true // hoặc false tùy thuộc vào logic của bạn
+                },
                 success: function (response) {
-                    // Xử lý phản hồi từ server sau khi cập nhật thành công hoặc thất bại
+                    alert(response.message);
                     if (response.success) {
-                        alert(response.message);
-                        // Cập nhật giao diện nếu cần
-                    } else {
-                        alert(response.message);
+                        location.reload();
                     }
                 },
                 error: function () {
@@ -461,31 +520,8 @@
                 }
             });
         }
-       // End Update hinh ảnh 
-        function addImageProduct(url) {
-            var temp = $('#tCurrentId').val();
-            var currentId = parseInt(temp) + 1;
-            var str = "";
-            if (currentId == 1) {
-                str += `<tr id="trow_${currentId}">
-                                    <td class="text-center">${currentId}</td>
-                                    <td class="text-center"><img width="80" src="${url}" /> <input type='hidden' value="${url}" name="Images"/></td>
-                                    <td class="text-center"><input type="radio" name="rDefault" value="${currentId}" checked="checked"/></td>
-                                    <td class="text-center"><a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a></td>
-                                    </tr>`;
-            }
-            else {
-                str += `<tr id="trow_${currentId}">
-                                    <td class="text-center">${currentId}</td>
-                                    <td class="text-center"><img width="80" src="${url}" /> <input type='hidden' value="${url}" name="Images"/></td>
-                                    <td class="text-center"><input type="radio" name="rDefault" value="${currentId}"/></td>
-                                    <td class="text-center"><a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">Xóa</a></td>
-                                    </tr>`;
-            }
-            $('#tbHtml').append(str);
-            $('#tCurrentId').val(currentId);
-           
-        }
+
 
     </script>
 }
+

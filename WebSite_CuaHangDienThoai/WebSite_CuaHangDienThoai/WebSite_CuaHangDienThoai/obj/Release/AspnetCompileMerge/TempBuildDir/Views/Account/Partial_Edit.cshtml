@@ -1,0 +1,274 @@
+﻿@model WebSite_CuaHangDienThoai.Models.CLient_EditCustomerViewModel
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Thay đổi thông tin tài khoản</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form id="editCustomerForm" enctype="multipart/form-data">
+                    <div id="popupPassWord" class=" hidden">
+
+                        <div class="card">
+                            @Html.Action("EditImage", "Account", new { id = Model.CustomerId })
+                        </div>
+
+
+                    </div>
+
+
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(x => x.CustomerId)
+                    @Html.HiddenFor(x => x.NumberofPurchases)
+                    @Html.HiddenFor(x => x.Code)
+                    @Html.HiddenFor(x => x.Clock)
+                    @Html.HiddenFor(x => x.Password)
+                    @Html.HiddenFor(model => model.Image, new { id = "currentImage" })
+                    <input type="hidden"style="display:none;" name="orderId" value="@Model.CustomerId" />
+                    <div class="card-body">
+
+
+
+                        <div class="tab-content">
+                            <div class="active" id="activity">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Họ tên :</label>
+                                    @Html.TextBoxFor(x => x.CustomerName, new { @class = "form-control", @placeholder = "Họ tên của bạn", id = "CustomerName" })
+                                    @Html.ValidationMessageFor(x => x.CustomerName, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group ">
+                                    <label for="exampleInputEmail1">Số điện thoại</label>
+
+                                    @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control", @placeholder = "Số điện thoại của bạn", type = "number", pattern = "[0-9]", id = "PhoneNumber" })
+                                    @Html.ValidationMessageFor(x => x.PhoneNumber, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email</label>
+                                    @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "Email của bạn", id = "Email" })
+                                    @Html.ValidationMessageFor(x => x.Email, null, new { @class = "text-danger" })
+                                </div>
+                                @*<div class="form-group">
+                        <label for="exampleInputEmail1">Mật khẩu hiện tại </label>
+                        @Html.TextBoxFor(x => x.Password, new { @class = "form-control", @placeholder = "" })
+                        @Html.ValidationMessageFor(x => x.Password, null, new { @class = "text-danger" })
+                    </div>*@
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Ngày Sinh</label>
+                                    @Html.TextBoxFor(model => model.Birthday, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local", id = "Birthday" })
+                                    @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Địa chị nhận hàng</label>
+                                    @Html.TextBoxFor(x => x.Loaction, new { @class = "form-control", @placeholder = "Địa chỉ nhận hàng", id = "Loaction" })
+                                    @Html.ValidationMessageFor(x => x.Loaction, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="form-group d-flex justify-content-center">
+                        <button type="button" class="btn btn-success col-md-6" onclick="submitFormEdit()">Lưu</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer">
+
+    </div>
+    <!-- /.card-footer-->
+</div>
+
+<script>
+    function submitFormEdit() {
+        var isValid = true;
+        var errorMessage = "";
+
+        // Lấy giá trị các trường
+        var customerName = $('#CustomerName').val();
+        var phoneNumber = $('#PhoneNumber').val();
+        var email = $('#Email').val();
+        var birthday = $('#Birthday').val();
+        var location = $('#Loaction').val();
+        //var citizenId = $('#CitizenIdentificationCard').val();
+        //var wage = $('#demoPriceSale').val();
+        //var sex = $('#drTypePayment').val();
+        //var functionId = $('#FunctionId').val();
+        //var storeId = $('#StoreId').val();
+
+        // Kiểm tra từng trường
+        if (!phoneNumber) {
+            isValid = false;
+            errorMessage += "Số điện thoại không được để trống.\n";
+        } else if (phoneNumber.length != 10) {
+            isValid = false;
+            errorMessage += "Số điện thoại không hợp lệ.\n";
+        }
+        if (!customerName) {
+            isValid = false;
+            errorMessage += "Tên nhân viên không được để trống.\n";
+        }
+        if (!email) {
+            isValid = false;
+            errorMessage += "Email không được để trống.\n";
+        }
+        if (!birthday) {
+            isValid = false;
+            errorMessage += "Ngày sinh không được để trống.\n";
+        } else {
+            var birthDate = new Date(birthday);
+            var currentDate = new Date();
+            var age = currentDate.getFullYear() - birthDate.getFullYear();
+            var monthDiff = currentDate.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            if (age < 18) {
+                isValid = false;
+                errorMessage += "Nhân viên phải ít nhất 18 tuổi.\n";
+            }
+        }
+        if (!location) {
+            isValid = false;
+            errorMessage += "Địa chỉ không được để trống.\n";
+        }
+
+
+
+
+
+        // Hiển thị thông báo lỗi nếu không hợp lệ
+        if (!isValid) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: errorMessage
+            });
+            return;
+        }
+
+        // Nếu hợp lệ, thực hiện gửi dữ liệu bằng AJAX
+        var form = $('#editCustomerForm')[0];
+        var formData = new FormData(form);
+
+        $.ajax({
+            url: '@Url.Action("Edit", "Account")',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    if (response.code === 1) {
+                             var customerId = response.customerId;
+                         console.log("Customer ID:", customerId);
+                         Swal.fire({
+                             icon: 'success',
+                             title: 'Cập nhật thành công',
+                             text: 'Thông tin của bạn đã được cập nhật.'
+                         }).then((result) => {
+                             if (result.isConfirmed) {
+                                 location.href = "/Account/Profile" + customerId;
+                             } else {
+                                 setTimeout(function () {
+                                     location.href = "/tai-khoan/p" + customerId;
+                                 }, 1500);// Chờ 1 giây và hiển thị lại thông báo
+                             }
+                         });
+                    }
+
+
+
+
+
+
+                } else if (response.code === -3) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Dữ liệu không hợp lệ. Vui lòng kiểm tra lại các trường nhập liệu.'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Đã xảy ra lỗi. Vui lòng thử lại.'
+                    });
+                }
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Không thể kết nối tới máy chủ. Vui lòng thử lại sau.'
+                });
+            }
+        });
+    }
+
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var newImagePreview = document.getElementById('newImagePreview');
+            var oldImage = document.getElementById('oldimg');
+
+            newImagePreview.src = reader.result;
+            newImagePreview.style.display = 'block';
+
+            // Ẩn ảnh cũ
+            if (oldImage) {
+                oldImage.classList.add('hidden'); // Thêm lớp hidden
+            }
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+
+
+
+    $(document).ready(function () {
+        var bg = $(".bg-sg");
+        var popupPassWord = $("#popupPassWord");
+        var btnEditPass = $("#btnEditPass");
+
+        btnEditPass.on('click', function () {
+            bg.css("display", "block");
+            popupPassWord.removeClass('hidden');
+        });
+
+        bg.on("click", function () {
+            bg.css("display", "none");
+            popupPassWord.addClass('hidden');
+        });
+    });
+
+
+    $(document).ready(function () {
+        $('.auto').autoNumeric('init');
+        $('#demoPrice').bind('blur focusout keypress keyup', function () {
+            var demoGet = $('#demoPrice').autoNumeric('get');
+            $('#Price').val(demoGet);
+            $('#Price').autoNumeric('set', demoGet);
+        });
+        $('#demoPriceSale').bind('blur focusout keypress keyup', function () {
+            var demoGet = $('#demoPriceSale').autoNumeric('get');
+            $('#PriceSale').val(demoGet);
+            $('#PriceSale').autoNumeric('set', demoGet);
+        });
+        $('#demoOriginalPrice').bind('blur focusout keypress keyup', function () {
+            var demoGet = $('#demoOriginalPrice').autoNumeric('get');
+            $('#OriginalPrice').val(demoGet);
+            $('#OriginalPrice').autoNumeric('set', demoGet);
+        });
+        CKEDITOR.replace('txtDetail', {
+            customConfig: '/content/ckeditor/config.js',
+            extraAllowedContent: 'span',
+        });
+    });
+</script>

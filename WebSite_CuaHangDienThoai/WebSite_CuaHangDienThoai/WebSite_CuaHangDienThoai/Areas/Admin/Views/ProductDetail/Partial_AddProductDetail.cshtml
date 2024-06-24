@@ -6,8 +6,9 @@
     UpdateTargetId = "load_data",
     OnSuccess = "OnSuccessCO",
     OnFailure = "OnFailure",
-    OnBegin = "OnBeginCO"
-}, new { @Id = "myForm" }))
+    OnBegin = "OnBeginCO",
+
+}, new { @Id = "myFormProductDetail" }))
 {
     <script>
 
@@ -15,46 +16,97 @@
 
 
         function validateForm() {
-          
 
-            if (!confirmPassword) {
+            var demoPriceValue = $('#demoPrice').val();
+            var demoPriceSaleValue = $('#demoPriceSale').val();
+            var demoOriginalPriceValue = $('#demoOriginalPrice').val();
 
+            // Chuyển đổi giá trị từ chuỗi sang số nguyên
+            var price = parseInt(demoPriceValue.replace(/\D/g, ''), 10); // Chỉ lấy số và chuyển đổi sang số nguyên
+            var priceSale = parseInt(demoPriceSaleValue.replace(/\D/g, ''), 10);
+            var originalPrice = parseInt(demoOriginalPriceValue.replace(/\D/g, ''), 10);
+
+            // Log giá trị để kiểm tra
+            console.log("Price: ", price);
+            console.log("Price Sale: ", priceSale);
+            console.log("Original Price: ", originalPrice);
+
+            // Kiểm tra nếu các input không có giá trị
+            if (isNaN(price) || isNaN(originalPrice) || price === 0 || originalPrice === 0) {
                 Swal.fire({
                     icon: "error",
-                    title: "Lỗi tìm...",
-                    text: "Vui lòng điền đầy đủ thông tin.",
-                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    title: "Lỗi",
+                    text: "Vui lòng điền đầy đủ giá sản phẩm.",
                 });
                 return false;
-
             }
-
-            if (Price < OrigianlPrice) {
+            if (price < originalPrice) {
                 Swal.fire({
                     icon: "error",
-                    title: "Lỗi giá bán...",
-                    text: "Giá bán không hợp lý.",
-                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    title: "Lỗi",
+                    text: "Giá bán không được bé hơn giá nhập.",
                 });
                 return false;
             }
+            if (priceSale > 1)
+            {
+                if (priceSale < originalPrice) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi",
+                        text: "Giá bán khuyến mãi không được bé hơn giá nhập.",
+                    });
+                    return false;
+                }
+            }
+            
+
+            // Kiểm tra nếu giá bán lớn hơn giá nhập
+            
 
 
-            if (password !== confirmPassword) {
 
+
+
+
+
+            
+            var color = document.getElementById("Color").value.trim();
+            if (color === "") {
                 Swal.fire({
-                    icon: "warning",
-                    title: "Lỗi tìm...",
-                    text: "Mật khẩu và xác nhận mật khẩu không khớp.",
-                    /*footer: '<a href="#">Why do I have this issue?</a>'*/
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Vui lòng chọn màu sắc sản phẩm.",
                 });
                 return false;
+            }
+
+            // Kiểm tra RAM sản phẩm
+            var ram = document.getElementById("Ram").value;
+            if (ram === "1") { // Giá trị "1" là giá trị mặc định chưa chọn
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Vui lòng chọn RAM sản phẩm.",
+                });
+                return false;
+            }
+
+            // Kiểm tra dung lượng sản phẩm
+            var dungLuong = document.getElementById("DungLuong").value;
+            if (dungLuong === "1") { // Giá trị "1" là giá trị mặc định chưa chọn
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Vui lòng chọn dung lượng sản phẩm.",
+                });
                 return false;
             }
 
 
 
-            return true;
+            return true; // Form hợp lệ, có thể submit
+
         }
 
 
@@ -62,32 +114,74 @@
             $('#btnRegister').attr("disabled", "disabled");
         }
 
-
+        $(document).ready(function () {
+            $('#myFormProductDetail').submit(function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của form
+                if (validateForm()) {
+                    var formData = $(this).serialize(); // Lấy dữ liệu từ biểu mẫu
+                    $.ajax({
+                        url: '/Admin/ProductDetail/Add',
+                        type: 'POST',
+                        data: formData,
+                        success: function (res) {
+                            OnSuccessCO(res); // Gọi hàm xử lý phản hồi
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
 
         function OnSuccessCO(res) {
             if (res.Success) {
                 if (res.Code == 1) {
 
 
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
+                    Swal.fire({
+                        title: "Tạo bảng sao ?",
+                        text: "Bạn có muốn thêm cấu hình giống trên!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Có, nhân bảng!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+
+                            document.getElementById("demoPrice").value = "0";
+                            document.getElementById("demoPriceSale").value = "0";
+                            document.getElementById("demoOriginalPrice").value = "";
+                        }
+                        else {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
+
+                            Toast.fire({
+                                icon: "success",
+                                title: "Thêm cấu hình sản phẩm thành công"
+                            });
+
+                            setTimeout(function () {
+                                location.href = "Admin/ProductDetail//index";
+                            }, 1500);
+
                         }
                     });
 
-                    Toast.fire({
-                        icon: "success",
-                        title: "Thêm cấu hình sản phẩm thành công"
-                    });
-                    location.href = "/admin/Products/index";
 
-                } else {
+
+
                 }
             }
             else {
@@ -155,11 +249,17 @@
 
 
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
-    <div class="card">
+    @Html.ValidationSummary(true)<div class="card">
         <div class="card-header">
-            <h3 class="card-title">Thông tin thêm mới Sản phẩm</h3>
+            @if (ViewBag.id != null)
+            {
+                <h3 class="card-title">Thông tin thêm mới Sản phẩm <span style="color:orangered">@ViewBag.Category - @ViewBag.Company - @ViewBag.Title </span></h3>
+            }
+            else
+            {
+                <h3 class="card-title">Thông tin thêm mới Sản phẩm</h3>
+
+            }
         </div>
         <div class="card-body">
             <div class="row">
@@ -188,14 +288,14 @@
                                                 <div class="col-md-12">
                                                     <label for="exampleInputEmail1">Tên loại máy</label>
                                                     <input type="text" name="Title" id="Title" required class="form-control" autocomplete="off" placeholder="Tên loại máy" />-->
-                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
-                                                    <!--Html.ValidationMessageFor(x => x.Title, null, new { class = "text-danger" })
+                                            @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
+                                            <!--Html.ValidationMessageFor(x => x.Title, null, new { class = "text-danger" })
                                                 </div>
                                             </div>-->
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="exampleInputEmail1">Màu sắc sản phẩm</label>
-                                                    <input type="text" name="Color" id="Title" required class="form-control" autocomplete="off" placeholder="Màu sắc sản phẩm" />
+                                                    <input type="text" name="Color" id="Color" required class="form-control" autocomplete="off" placeholder="Màu sắc sản phẩm" />
                                                     @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
                                                     @Html.ValidationMessageFor(x => x.Color, null, new { @class = "text-danger" })
 
@@ -203,9 +303,9 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <label>Ram sản phẩm </label>
-                                                <select class="form-control" id="drTypePayment" name="Ram">
+                                                <select class="form-control" id="Ram" name="Ram">
                                                     <option value="1" selected>Ram sản phẩm</option>
                                                     <option value="4" id="chuyenkhoan">4GB</option>
                                                     <option value="6" id="chuyenkhoan">6GB</option>
@@ -218,9 +318,9 @@
                                                 </select>
 
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <label>Dung lượng sản phẩm</label>
-                                                <select class="form-control" id="drTypePayment" name="DungLuong">
+                                                <select class="form-control" id="DungLuong" name="DungLuong">
                                                     <option value="1" selected>Dung lượng sản phẩm</option>
                                                     <option value="64" id="chuyenkhoan">64GB</option>
                                                     <option value="128" id="chuyenkhoan">128GB</option>
@@ -230,12 +330,12 @@
                                                     <option value="20000" id="chuyenkhoan">2Tb</option>
                                                 </select>
                                             </div>
-                                           
+
                                         </div>
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="form-group">
-                                                    <div class="custom-control custom-checkbox">
+                                                    <div class="custom-control custom-checkbox" style="display:none">
                                                         @Html.CheckBoxFor(x => x.TypeProduct, new { @class = "custom-control-input", @id = "customCheckbox2" })
                                                         <label for="customCheckbox2" class="custom-control-label">Loại máy cũ</label>
                                                     </div>
@@ -246,7 +346,7 @@
                                         </div>
                                         <div class="row">
 
-                                            <div class="col-3">
+                                            <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Giá</label>
                                                     <input type="text" name="demoPrice" value="0" id="demoPrice" class="form-control auto" data-a-dec="," data-a-sep=".">
@@ -254,7 +354,7 @@
                                                     @Html.ValidationMessageFor(x => x.Price, null, new { @class = "text-danger" })
                                                 </div>
                                             </div>
-                                            <div class="col-3">
+                                            <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Giá khuyến mãi</label>
                                                     <input type="text" name="demoPriceSale" id="demoPriceSale" value="0" class="form-control auto">
@@ -262,7 +362,7 @@
                                                     @Html.ValidationMessageFor(x => x.PriceSale, null, new { @class = "text-danger" })
                                                 </div>
                                             </div>
-                                            <div class="col-3">
+                                            <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Giá nhập</label>
                                                     <input type="text" name="demoOriginalPrice" id="demoOriginalPrice" value="" class="form-control auto">
@@ -314,7 +414,8 @@
                                     <div class="col-md-2"></div>
                                     <div class="col-md-8 text-center">
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-success btn-block">Thêm mới</button>
+                                            <button type="button" onclick="if(validateForm()) $('#myFormProductDetail').submit();" class="btn btn-success col-8">Thêm mới</button>
+                                            @*<button type="submit" class="btn btn-success btn-block">Thêm mới</button>*@
                                         </div>
                                     </div>
                                     <div class="col-md-2"></div>

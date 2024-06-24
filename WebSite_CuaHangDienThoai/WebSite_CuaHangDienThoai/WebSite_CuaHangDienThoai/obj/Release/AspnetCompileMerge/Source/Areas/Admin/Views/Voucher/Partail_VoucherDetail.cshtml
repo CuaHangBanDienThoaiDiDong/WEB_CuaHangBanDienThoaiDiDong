@@ -1,0 +1,69 @@
+﻿
+@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_VoucherDetail>
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">
+            Danh sách Voucher
+        </div>
+    </div>
+   
+    <div class="card-body">
+        <div class="row">
+            @if (ViewBag.Count != null)
+            {
+                foreach (var item in Model)
+                {
+                    if (item.Status == true)
+                    {<div class="col-3 "style="margin-left: 5px; margin-right: 5px;">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        Mã Vouvher : @item.Code | Trạng thái @if (item.Status == true)
+                                        {
+                                            <span>   Đã dùng </span>
+                                        }
+                                        else
+                                        {
+                                            <span>   Còn hạng </span>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    @*<p>Đơn hàng  @item.tb_Order.Code</p>*@
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    Mã Vouvher : @item.Code | Trạng thái @if (item.Status == true)
+                                    {
+                                        <span>   Đã dùng </span>
+                                    }
+                                    else
+                                    {
+                                        <span>   Còn hạng </span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p>Không tồn tại bảng ghi nào !!!</p>
+                            </div>
+                        </div>
+                    }
+
+                }
+            }
+            else
+            {
+                <p class="text-danger">Không tồn tại bảng ghi nào !!!</p>
+            }
+        </div>
+      
+    </div>
+</div>

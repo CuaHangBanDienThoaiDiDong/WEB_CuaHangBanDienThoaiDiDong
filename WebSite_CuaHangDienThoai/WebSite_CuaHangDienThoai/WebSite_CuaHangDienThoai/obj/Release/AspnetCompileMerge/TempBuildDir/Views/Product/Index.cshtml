@@ -40,60 +40,7 @@
 
 
 <div class="container product_section_container">
-    @*<div class="row pt-2">
-        <div class="col-lg-8 ">
-            <div class="swiper mySwiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="row d-flex align-items-center">
-                            <div class="col-12">
-                                <div class="image-holder">
-                                    <img src="~/images/background/Redmi-Note-13-1200-300-1200x300.png" class="w-100 , h-100" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="row d-flex align-items-center">
-                            <div class="col-12">
-                                <div class="image-holder">
-                                    <img src="~/images/background/Redmi-Note-13-1200-300-1200x300.png" class="w-100 , h-100" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="row d-flex align-items-center">
-                            <div class="col-12">
-                                <div class="image-holder">
-                                    <img src="~/images/background/Redmi-Note-13-1200-300-1200x300.png" class="w-100 , h-100" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-pagination"></div>
-            </div>
-
-        </div>
-        <div class="col-4 ">
-            <div class="row ">
-                <div class="col-md-12 bg-blue">
-                    <img src="~/images/background/sticky-a58-390x97.png" class="w-100" style="width:auto" />
-                </div>
-
-            </div>
-            <div class="row pt-3">
-                <div class="col-md-12 bg-body">
-
-                    <img src="~/images/background/sticky-m54-390x97.png" />
-                </div>
-
-
-            </div>
-
-        </div>
-    </div>*@
+ 
 
 
 
@@ -198,44 +145,77 @@
                                 {
                                     foreach (var item in Model)
                                     {
-                                        var strImg = "";
-                                        var img = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
+                                        //var strImg = "";
+                                        //var img = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
+
+
+
+
+                                        byte[] strImg = null;
+                                        var CheckImage = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault == true);
+
+                                        if (CheckImage != null)
+                                        {
+                                            strImg = CheckImage.Image;
+                                        }
+
+                                        string imgSrc = "";
+                                        if (strImg != null && strImg.Length > 0)
+                                        {
+                                            string base64String = Convert.ToBase64String(strImg);
+                                            imgSrc = $"data:image;base64,{base64String}";
+                                        }
+
+
+
+
                                         var checkDetail = item.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == item.ProductsId);
                                         if (checkDetail != null)
                                         {
-                                            if (img != null)
+                                            if (imgSrc != null)
                                             {
-                                                strImg = img.Image;
+                                                <a class="" href="/chi-tiet/@item.Alias-p@(item.ProductsId)" >
+                                                    <div class="product-item men rounded-3  @item.tb_ProductCategory " data-id="@item.ProductsId" style="background: #323232; padding-left: -20px; margin-top: 5px;  ">
+                                                        <div class=" discount p-3 " style="padding:50px  ;">
+                                                            <div class="product_image pt-3 d-flex justify-content-center">
+                                                                <img src="@imgSrc" alt="@item.Title" class="w-75 h-75">
+                                                            </div>
+                                                            <div class="favorite favorite_left"></div>
+                                                            <div class="product_bubble_right product_bubble product_bubble_red d-flex flex-column align-items-center loadPhanTramSale " id="loadPhanTramSale_@item.ProductsId" data-id="@item.ProductsId" style="visibility: hidden;">
 
-                                                <div class="product-item men rounded-3  @item.tb_ProductCategory " data-id="@item.ProductsId" style="background: #323232; padding-left: -20px; margin-top: 5px;  ">
-                                                    <div class=" discount p-3 " style="padding:50px  ;">
-                                                        <div class="product_image pt-3 d-flex justify-content-center">
-                                                            <img src="@strImg" alt="@item.Title" class="w-75 h-75">
+                                                            </div>
+
+                                                            <div class="product_info">
+                                                                <h6 class="product_name text-white" >
+
+                                                                    
+                                                                        @item.Title
+                                                                
+
+                                                                </h6>
+                                                                @Html.Action("Partail_ProductDetailById", "ProductDetail", new { id = item.ProductsId })
+
+                                                                @*Hiển thị giá tiền theo cấu hình*@
+                                                                <div class="loadPrice" id="loadPrice_@item.ProductsId" data-id="@item.ProductsId"></div>
+                                                            </div>
                                                         </div>
-                                                        <div class="favorite favorite_left"></div>
-                                                        <div class="product_bubble_right product_bubble product_bubble_red d-flex flex-column align-items-center loadPhanTramSale " id="loadPhanTramSale_@item.ProductsId" data-id="@item.ProductsId" style="visibility: hidden;">
 
-                                                        </div>
-
-                                                        <div class="product_info">
-                                                            <h6 class="product_name">
-
-                                                                <a class="d-inline-block text-truncate" href="/chi-tiet/@item.Alias-p@(item.ProductsId)" style="color:white ">
-                                                                    @item.Title
-                                                                </a>
-
-                                                            </h6>
-                                                            @Html.Action("Partail_ProductDetailById", "ProductDetail", new { id = item.ProductsId })
-
-                                                            @*Hiển thị giá tiền theo cấu hình*@
-                                                            <div class="loadPrice" id="loadPrice_@item.ProductsId" data-id="@item.ProductsId"></div>
-                                                        </div>
                                                     </div>
+                                                </a>
+                                               
+                                            }
 
-                                                </div>
+
+                                            else
+                                            {
+                                                <p>THuan</p>
                                             }
                                         }
 
+                                        else
+                                        {
+                                            <p>THuan123</p>
+                                        }
 
 
 
@@ -243,7 +223,7 @@
                                 }
 
 
-                            </div>
+                                            </div>
 
                             <!-- Product Sorting -->
 

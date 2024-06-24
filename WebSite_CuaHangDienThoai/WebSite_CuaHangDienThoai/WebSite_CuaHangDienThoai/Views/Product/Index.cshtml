@@ -40,11 +40,6 @@
 
 
 <div class="container product_section_container">
- 
-
-
-
-
 
 
     <div class="row pb-5" >
@@ -61,7 +56,13 @@
             <div class="sidebar" >
                 <div class="sidebar_section">
                     <div class="sidebar_title pb-4">
-                        <h6 style="color:white;width:auto;margin:0px">Danh mục sản phẩm</h6>
+                       
+                        <a href="/san-pha">
+                           
+                            <h6 style="color:white;width:auto;margin:0px">
+                                Danh mục sản phẩm
+                            </h6>
+                        </a>
                     </div>
                     @Html.Action("MenuLeft", "Menu")
                 </div>
@@ -99,42 +100,49 @@
 
                             <div class="product_sorting_container product_sorting_container_top">
                                 <div class="row">
-                                   
+
                                     <div class="col-6">
-                                       <div class="row">
-                                           <div class=" col-md-12">
-                                               <div class=" d-flex flex-row align-itemss-center">
-                                                   <ul class="product_sorting">
-                                                       <li style="color: white; background: #323232;">
-                                                           <span class="type_sorting_text">Phân loại</span>
-                                                           <i class="fa fa-angle-down"></i>
-                                                           <ul class="sorting_type text-center">
-                                                               <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Mặc định</span></li>
-                                                               <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Giá tiền</span></li>
-                                                               <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Tên sản phẩm</span></li>
-                                                           </ul>
-                                                       </li>
-                                                       <li style="color: white; background: #323232;">
-                                                           <span>Hiển thị</span>
-                                                           <span class="num_sorting_text">6</span>
-                                                           <i class="fa fa-angle-down"></i>
-                                                           <ul class="sorting_num">
-                                                               <li class="num_sorting_btn"><span>6</span></li>
-                                                               <li class="num_sorting_btn"><span>12</span></li>
-                                                               <li class="num_sorting_btn"><span>24</span></li>
-                                                           </ul>
-                                                       </li>
-                                                   </ul>
-                                               </div>
-                                           </div>
-                                       </div>
-                                     
+                                        <div class="row">
+                                            <div class=" col-md-12">
+                                                <div class=" d-flex flex-row align-itemss-center">
+                                                    <ul class="product_sorting">
+                                                        <li style="color: white; background: #323232;">
+                                                            <span class="type_sorting_text">Phân loại</span>
+                                                            <i class="fa fa-angle-down"></i>
+                                                            @*<ul class="sorting_type text-center">
+                                            <li class="type_sorting_btn" data-sort-by="default"><span>Mặc định</span></li>
+                                            <li class="type_sorting_btn" data-sort-by="price"><span>Giá tiền</span></li>
+                                            <li class="type_sorting_btn" data-sort-by="name"><span>Tên sản phẩm</span></li>
+                                        </ul>*@
+
+
+                                                            <ul class="sorting_type text-center">
+                                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Mặc định</span></li>
+                                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Giá tiền</span></li>
+                                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Tên sản phẩm</span></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li style="color: white; background: #323232;">
+                                                            <span>Hiển thị</span>
+                                                            <span class="num_sorting_text">6</span>
+                                                            <i class="fa fa-angle-down"></i>
+                                                            <ul class="sorting_num">
+                                                                <li class="num_sorting_btn"><span>6</span></li>
+                                                                <li class="num_sorting_btn"><span>12</span></li>
+                                                                <li class="num_sorting_btn"><span>24</span></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <div class="col-3">
-                                       
+
                                     </div>
                                 </div>
-                              
+
 
                             </div>
                             <div class="breadcrumbs d-flex flex-row align-itemss-center"></div>
@@ -174,7 +182,7 @@
                                         {
                                             if (imgSrc != null)
                                             {
-                                                <a class="" href="/chi-tiet/@item.Alias-p@(item.ProductsId)" >
+                                                <a class="" href="/chi-tiet/@item.Alias-p@(item.ProductsId)">
                                                     <div class="product-item men rounded-3  @item.tb_ProductCategory " data-id="@item.ProductsId" style="background: #323232; padding-left: -20px; margin-top: 5px;  ">
                                                         <div class=" discount p-3 " style="padding:50px  ;">
                                                             <div class="product_image pt-3 d-flex justify-content-center">
@@ -186,11 +194,11 @@
                                                             </div>
 
                                                             <div class="product_info">
-                                                                <h6 class="product_name text-white" >
+                                                                <h6 class="product_name text-white">
 
-                                                                    
-                                                                        @item.Title
-                                                                
+
+                                                                    @item.Title
+
 
                                                                 </h6>
                                                                 @Html.Action("Partail_ProductDetailById", "ProductDetail", new { id = item.ProductsId })
@@ -202,19 +210,19 @@
 
                                                     </div>
                                                 </a>
-                                               
+
                                             }
 
 
                                             else
                                             {
-                                                <p>THuan</p>
+                                                <p>Không tồn tài bảng ghi nào !!!</p>
                                             }
                                         }
 
                                         else
                                         {
-                                            <p>THuan123</p>
+                                            <p>Không tồn tài bảng ghi nào !!!</p>
                                         }
 
 
@@ -223,53 +231,120 @@
                                 }
 
 
-                                            </div>
+                            </div>
 
                             <!-- Product Sorting -->
 
                             <div class="product_sorting_container product_sorting_container_bottom clearfix">
                                 <ul class="product_sorting" style="color:white">
                                     <li>
-                                        <span>Hiện:</span>
-                                        <span class="num_sorting_text">04</span>
+                                        <span>Hiển thị:</span>
+                                        <span class="num_sorting_text">@Model.PageSize</span>
                                         <i class="fa fa-angle-down"></i>
                                         <ul class="sorting_num">
-                                            <li class="num_sorting_btn"><span>01</span></li>
-                                            <li class="num_sorting_btn"><span>02</span></li>
-                                            <li class="num_sorting_btn"><span>03</span></li>
-                                            <li class="num_sorting_btn"><span>04</span></li>
+                                            <li class="num_sorting_btn"><span>6</span></li>
+                                            <li class="num_sorting_btn"><span>12</span></li>
+                                            <li class="num_sorting_btn"><span>24</span></li>
                                         </ul>
                                     </li>
                                 </ul>
-                                <span class="showing_results" style="color:white">Hiện thị @Model.FirstItemOnPage – @Model.LastItemOnPage của @Model.TotalItemCount sản phẩm</span>
-                                <div class="pages d-flex flex-row align-itemss-center" style="color:white">
-                                    <h5 style="color:white ;margin-top:10px;">Trang</h5>
-                                    <div class="page_current pl-1" style="color:white">
-                                       
-                                         <span> @Model.PageNumber</span>
-                                        <ul class="page_selection">
-                                            @if (Model.HasPreviousPage)
-                                            {
-                                                <li class="page-item m-0"> <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Đầu</a></li>
-                                            }
-                                            @foreach (var i in Enumerable.Range(1, Model.PageCount))
-                                            {
-                                                <li class="page-item @(i == Model.PageNumber ? "active" : "")"><a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a></li>
-                                            }
-                                            @if (Model.HasNextPage)
-                                            {
-                                                <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">Tiếp </a></li>
-                                            }
-                                        </ul>
-                                    </div>
-                                    <div class="page_total"><span>trên</span> @Model.PageCount</div>
+                                <span class="showing_results" style="color:white">
+                                    Hiển thị @Model.FirstItemOnPage – @Model.LastItemOnPage của @Model.TotalItemCount sản phẩm
+                                </span>
+                                <div class="pages d-flex flex-row align-items-center" style="color:white">
+
+
                                     @if (Model.HasNextPage)
                                     {
-                                        <div id="next_page_1" class="page_next" style="color:white"><a href="@Url.Action("Index", new { page = Model.PageNumber + 1 })" style="color:white"><i class="fa fa-long-arrow-right" aria-hidden="true" style="color:white"></i></a></div>
-                                    }
-                                </div>
+                                        <a class="page-link" style="color: #3e3e3f " href="@Url.Action("Index", new { page = 1 })">Đầu</a><a class="page-link"style="color: #3e3e3f " href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Trước</a>
+                                        <h5 style="color:white;margin-top:10px;">Trang: </h5>
+                                   
 
+                                        <div class="page_current pl-1" style="color:white">
+                                            <span>@Model.PageNumber</span>
+                                            <ul class="page_selection pagination justify-content-center">
+                                                @*@if (Model.HasNextPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { page = 1 })">Đầu</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Trước</a>
+                        </li>
+                    }*@
+                                                @foreach (var i in Enumerable.Range(1, Model.PageCount))
+                                                {
+                                                    <li style="border:none" class="page-item  @(i == Model.PageNumber ? "active" : "")">
+                                                        <a class="page-link" style="border:none" href="@Url.Action("Index", new { page = i })">@i</a>
+                                                    </li>
+                                                }
+
+                                            </ul>
+                                        </div>
+                                        <div class="page_total"><span>trang</span> @Model.PageCount</div>
+
+
+                                        if (Model.HasNextPage)
+                                        {
+
+                                            <a class="page-link"style="color: #3e3e3f " href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">Tiếp</a>
+
+
+                                            <a class="page-link"style="color: #3e3e3f " href="@Url.Action("Index", new { page = Model.PageCount })">Cuối</a>
+
+                                        }
+                                    }
+
+
+                                </div>
                             </div>
+
+
+
+
+                            @*<div class="product_sorting_container product_sorting_container_bottom clearfix">
+            <ul class="product_sorting" style="color:white">
+                <li>
+                    <span>Hiện:</span>
+                    <span class="num_sorting_text">04</span>
+                    <i class="fa fa-angle-down"></i>
+                    <ul class="sorting_num">
+                        <li class="num_sorting_btn"><span>01</span></li>
+                        <li class="num_sorting_btn"><span>02</span></li>
+                        <li class="num_sorting_btn"><span>03</span></li>
+                        <li class="num_sorting_btn"><span>04</span></li>
+                    </ul>
+                </li>
+            </ul>
+            <span class="showing_results" style="color:white">Hiện thị @Model.FirstItemOnPage – @Model.LastItemOnPage của @Model.TotalItemCount sản phẩm</span>
+            <div class="pages d-flex flex-row align-itemss-center" style="color:white">
+                <h5 style="color:white ;margin-top:10px;">Trang</h5>
+                <div class="page_current pl-1" style="color:white">
+
+                     <span> @Model.PageNumber</span>
+                    <ul class="page_selection">
+                        @if (Model.HasPreviousPage)
+                        {
+                            <li class="page-item m-0"> <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Đầu</a></li>
+                        }
+                        @foreach (var i in Enumerable.Range(1, Model.PageCount))
+                        {
+                            <li class="page-item @(i == Model.PageNumber ? "active" : "")"><a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a></li>
+                        }
+                        @if (Model.HasNextPage)
+                        {
+                            <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">Tiếp </a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="page_total"><span>trên</span> @Model.PageCount</div>
+                @if (Model.HasNextPage)
+                {
+                    <div id="next_page_1" class="page_next" style="color:white"><a href="@Url.Action("Index", new { page = Model.PageNumber + 1 })" style="color:white"><i class="fa fa-long-arrow-right" aria-hidden="true" style="color:white"></i></a></div>
+                }
+            </div>
+
+        </div>*@
 
                         </div>
                     </div>
@@ -296,7 +371,40 @@
 
 @section scripts{
 
+    <script>
+        $(document).ready(function () {
+            $('.type_sorting_btn').on('click', function () {
+                var sortBy = $(this).data('sort-by'); // Lấy giá trị của data-sort-by
 
+                // Gọi hàm để sắp xếp sản phẩm
+                sortProducts(sortBy);
+            });
+
+            function sortProducts(sortBy) {
+                var $products = $('.product-grid .product-item'); // Chọn tất cả các sản phẩm
+
+                $products.sort(function (a, b) {
+                    var priceA = parseFloat($(a).find('.product_price').text().replace('$', '').replace(',', ''));
+                    var priceB = parseFloat($(b).find('.product_price').text().replace('$', '').replace(',', ''));
+
+                    switch (sortBy) {
+                        case 'price':
+                            return priceA - priceB;
+                        case 'name':
+                            var nameA = $(a).find('.product_name').text().toUpperCase();
+                            var nameB = $(b).find('.product_name').text().toUpperCase();
+                            return nameA.localeCompare(nameB);
+                        default:
+                            // Mặc định hoặc không thay đổi gì
+                            return 0;
+                    }
+                });
+
+                $('.product-grid').empty().append($products); // Cập nhật lại thứ tự sản phẩm trên giao diện
+            }
+        });
+
+    </script>
     <script src="~/Content/assets/js/categories_custom.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

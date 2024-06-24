@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "Thêm mới Voucher";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<style>
+    .error {
+        color: red;
+    }
+</style>
+
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/voucher" class="nav-link">danh mục voucher</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Thêm mới</a>
+        </li>
+    </ul>
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thêm voucher </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Thêm voucher </a></li>
+                    <li class="breadcrumb-item active">Thêm mới</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+
+<section class="content">
+    <!-- Default box -->
+    @Html.Action("Partial_AddVoucher", "Voucher")
+
+
+</section>
+
+
+@section scripts{
+
+    <script src="~/Content/assets/js/categories_custom.js"></script>
+    <script>
+        function OnFailure(rs) {
+            if (!rs.Success) {
+                $('#show_success').html("Bạn mua hàng thất bại! Xin vui lòng thử lại");
+            }
+        }
+        $(document).ready(function () {
+            $('#myForm').validate({
+                rules: {
+                    'Title': {
+                        required: true
+                    },
+                    'Quantity': {
+                        required: true
+                    },
+                    'Address': {
+                        required: true
+                    },
+                    'PercentPriceReduction': {
+                        required: true,
+                        
+                    },
+                     'UsedDate': {
+                        required: true,
+                        
+                    },
+                    'ModifiedDate': {
+                        required: true,
+
+                    }
+                },
+                messages: {
+                    'Title': 'Bạn khổng để trống trường này',
+                    'Quantity': 'Bạn khổng để trống trường này',
+                    'PercentPriceReduction': 'Bạn khổng để trống trường này',
+                    'Email': 'Email chưa hợp lệ',
+                    'UsedDate': 'Email chưa hợp lệ',
+                    'ModifiedDate': 'Email chưa hợp lệ'
+                }
+            });
+        });
+    </script>
+}

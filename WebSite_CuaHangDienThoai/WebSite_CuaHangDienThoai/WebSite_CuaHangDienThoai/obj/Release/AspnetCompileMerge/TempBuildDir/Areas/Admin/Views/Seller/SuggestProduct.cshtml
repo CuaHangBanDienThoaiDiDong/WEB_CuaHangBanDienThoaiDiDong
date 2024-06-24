@@ -1,0 +1,102 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
+@if (Model != null)
+{
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr class="text-center">
+                    <th><input type="checkbox" id="SelectAll" /></th>
+                    <th>STT</th>
+                    <th>Hình ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Màu</th>
+                    <th>Số lượng</th>
+                    <th>Loại sản phẩm</th>
+                    <th>Hãng</th>
+                    <th>Dung lượng</th>
+                </tr>
+            </thead>
+            @if (ViewBag.txt == null)
+            {
+                <tbody style="max-height: 300px; overflow-y: auto;">
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = 1;
+                        foreach (var item in Model)
+                        {
+                            var Capacity = "";
+                            if (item.Capacity > 999)
+                            {
+                                Capacity = "1Tb";
+                            }
+                            else if (item.Capacity > 1999)
+                            {
+                                Capacity = "2 Tb";
+                            }
+                            else
+                            {
+                                Capacity = item.Capacity + "Gb";
+                            }
+
+                            byte[] strImg = null;
+                            var CheckImage = item.tb_Products.tb_ProductImage.SingleOrDefault(x => x.IsDefault == true);
+                            if (CheckImage != null)
+                            {
+                                strImg = CheckImage.Image;
+                            }
+
+                            string imgSrc = "";
+                            if (strImg != null && strImg.Length > 0)
+                            {
+                                string base64String = Convert.ToBase64String(strImg);
+                                imgSrc = $"data:image;base64,{base64String}";
+                            }
+
+                            <tr class="text-center opacity-100" id="trow_@item.ProductsId">
+                                <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
+                                <td>@i</td>
+                                <td><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" /></td>
+                                <td>
+                                    <a href="/chi-tiet/@item.tb_Products.Alias-p@(item.ProductsId)" target="_blank">
+                                        <span class="text-danger">@item.tb_Products.Title</span><br /> @item.Color/@Capacity
+                                    </a>
+                                </td>
+                                <td>@item.Color</td>
+                                <td>@Html.Action("Partial_QuantityProductDtail", "WareHouseImport", new { id = item.ProductDetailId })</td>
+                                <td>@item.tb_Products.tb_ProductCategory.Title</td>
+                                <td>@item.tb_Products.tb_ProductCompany.Title</td>
+                                <td>@Capacity</td>
+                                <td>
+                                    <button class="red_button btn-success border-0 btn-0 btnAddListSeller" data-id="@item.ProductDetailId">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-plus-fill" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m6.5-11a.5.5 0 0 0-1 0V6H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V7H10a.5.5 0 0 0 0-1H8.5z" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="9">Không có bản ghi nào!!!</td>
+                        </tr>
+                    }
+                </tbody>
+            }
+            else
+            {
+                <tbody>
+                    <tr class="text-center text-danger">
+                        <td>@ViewBag.txt</td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+}
+else
+{
+    <p class="text-danger">Không tồn tại bảng ghi !!!</p>
+}

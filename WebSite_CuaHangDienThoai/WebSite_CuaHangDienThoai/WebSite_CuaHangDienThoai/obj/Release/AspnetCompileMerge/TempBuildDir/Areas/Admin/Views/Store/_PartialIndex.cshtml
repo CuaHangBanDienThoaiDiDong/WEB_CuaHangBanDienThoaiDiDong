@@ -1,0 +1,80 @@
+﻿@model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_Store>
+@using PagedList.Mvc;
+<table class="table table-hover table-striped ">
+    <thead>
+        <tr class="text-center">
+            <th><input type="checkbox" id="SelectAll" /></th>
+            <th>STT</th>
+
+            <th>Cửa hàng</th>
+            <th>Địa chỉ</th>
+            <th>Thành phố</th>
+           
+            <th>Tác vụ</th>
+
+
+
+        </tr>
+    </thead>
+    @if (ViewBag.txt == null)
+    {
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+                foreach (var item in Model)
+                {
+                    var strCheckIsStatus = item.IsStatus.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+
+
+                    <tr class="text-center opacity-100 " id="trow_@item.StoreId">
+                        <td><input type="checkbox" class="cbkItem" value="@item.StoreId" /></td>
+                        <td>@i</td>
+
+                        <td> <a href="/admin/Products/Detail/@item.StoreId" class="text-black"> @item.Location</a>  </td>
+                        <td> <a href="/admin/Products/Detail/@item.StoreId"  class="text-black"> @item.Location</a>  </td>
+                        <td>
+                            @Html.Action("Partial_Provinces", "ProvincesVN", new { id = item.idProvinces })
+                        </td>
+
+                     
+
+                        <td>
+                            @*<a href="/admin/Product/edit/@item.ProductId" class="btn btn-sm btn-primary">Sửa</a>
+                                <a href="#" data-id="@item.ProductId" class="btn btn-sm btn-danger btnDelete">Xóa</a>*@
+
+                            <a href="/admin/Products/Details/@item.StoreId" data-id="@item.StoreId" class="btn btn-sm btn-primary ">Xem</a>
+                            <a href="/admin/Store/Edit/@item.StoreId" data-id="@item.StoreId" class="btn btn-sm btn-primary ">Sửa</a>
+                        </td>
+                    </tr>
+
+
+                    i++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4">Không có bản ghi nào!!!</td>
+                </tr>
+            }
+        </tbody>
+
+    }
+    else
+    {
+        <tbody>
+            <tr class="text-center text-danger">
+                <td>@ViewBag.txt</td>
+            </tr>
+        </tbody>
+    }
+
+</table>
+
+<div class="row">
+    <div class="col-6"></div>
+    <div class="col-6" style="text-align:right;">
+        @Html.PagedListPager(Model, page => Url.Action("_PartialIndex", new { page }))
+    </div>
+</div>

@@ -11,7 +11,7 @@ namespace WebSite_CuaHangDienThoai.Models
         [Required(ErrorMessage = "Tên sản phẩm là bắt buộc.")]
         public string Title { get; set; }
 
-        public string Image { get; set; }
+       
 
         //public int Quantity { get; set; }
         public int ViewCount { get; set; }
@@ -26,8 +26,8 @@ namespace WebSite_CuaHangDienThoai.Models
         [Required(ErrorMessage = "Hệ điều là bắt buộc.")]
         public string HeDieuHanh { get; set; }
 
-        [Required(ErrorMessage = "Tốc độ GPU là bắt buộc.")]
-        public string TocDoGPU { get; set; }
+        //[Required(ErrorMessage = "Tốc độ GPU là bắt buộc.")]
+        //public string TocDoGPU { get; set; }
 
         [Required(ErrorMessage = "Tốc độ CPU là bắt buộc.")]
         public string TocDoCPU { get; set; }

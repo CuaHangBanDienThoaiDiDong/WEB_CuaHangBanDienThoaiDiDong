@@ -40,8 +40,38 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 return View(items.ToPagedList(pageNumber, pageSize));
             }
         }
+        public ActionResult Partial_DetailColorById(int id)
+        {
+            using (var dbContext = new CUAHANGDIENTHOAIEntities())
+            {
+                var uniqueColorsWithIdsAndImages = dbContext.tb_ProductDetail
+                    .Where(p => p.ProductsId == id)
+                    .GroupBy(p => p.Color)
+                    .Select(g => new
+                    {
+                        Color = g.Key,
+                        ProductDetailId = g.Min(p => p.ProductDetailId),
+                        Image = dbContext.tb_ProductDetailImage
+                                    .Where(x => x.ProductDetailId == g.Min(p => p.ProductDetailId) && x.IsDefault)
+                                    .Select(x => x.Image)
+                                    .FirstOrDefault()
+                    })
+                    .ToList();
 
-         public ActionResult SuggestProductDetail(string search)
+                var viewModels = uniqueColorsWithIdsAndImages.Select(item => new ProductColorViewModel
+                {
+                    Color = item.Color,
+                    ProductDetailId = item.ProductDetailId,
+                    ProductslId = id,
+                    Image = item.Image
+                }).ToList();
+
+                ViewBag.ProductId = id;
+                return PartialView(viewModels);
+            }
+
+        }
+        public ActionResult SuggestProductDetail(string search)
       {
             if (!string.IsNullOrEmpty(search))
             {
@@ -95,6 +125,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             base.Dispose(disposing);
         }
+
 
 
 
@@ -261,8 +292,24 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
         public ActionResult Partial_AddProductDetail(int id)
         {
-            ViewBag.id = id;
-            return PartialView();
+
+            if (id > 0)
+            {
+                ViewBag.id = id;
+                var product = db.tb_Products.Find(id);
+                if (product != null)
+                {
+                    ViewBag.Title=product.Title;
+                    ViewBag.Company = product.tb_ProductCompany.Title;
+                    ViewBag.Category=product.tb_ProductCategory.Title;  
+                }
+                return PartialView();
+            }
+            else 
+            {
+                return PartialView();
+            }
+            
         }
 
 
@@ -279,12 +326,23 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         {
             var code = new { Success = false, Code = -1, Url = "" };
 
+
+      
             var checkProductDetail = db.tb_ProductDetail.SingleOrDefault(r => r.Color == req.Color && r.Ram == req.Ram && r.ProductsId == req.ProductsId && r.Capacity == req.DungLuong);
             if (checkProductDetail == null)
             {
                 if (req.ProductsId != null && req.Ram != 1 && req.DungLuong != 1)
                 {
                     var itemProducts = db.tb_Products.SingleOrDefault(p => p.ProductsId == req.ProductsId);
+
+                    string alias = itemProducts.Title.Trim() + "" + req.Color.Trim();
+                    string products = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(alias);
+                    var checkProduct = db.tb_ProductDetail.FirstOrDefault(x => x.Title == products);
+                    if (checkProduct != null)
+                    {
+                        code = new { Success = false, Code = -6, Url = "" };
+                        return Json(code);
+                    }
                     if (itemProducts != null) 
                     {
                         if (Images != null && Images.Count > 0)
@@ -294,7 +352,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
                                 model.Color = req.Color.Trim();
-                                model.Title = itemProducts.Title.Trim()+""+ req.Color.Trim();
+                                model.Title = itemProducts.Title.Trim()+""+ req.Color.Trim() + "" + req.Color.Trim();
                                 model.ProductsId = req.ProductsId;
                                 model.Price = req.Price;
                                 model.OrigianlPrice = req.OrigianlPrice;
@@ -472,7 +530,31 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             var item = db.tb_ProductDetail.Find(id);
             ViewBag.Title= item.Title;  
                 ViewBag.Products = new SelectList(db.tb_Products.ToList(), "ProductsId", "Title");
-            ViewBag.DungLuongSelected = item.Capacity;
+            //ViewBag.DungLuongSelected = item.Capacity;
+            //ViewBag.RamSelected = item.Ram;
+            ViewBag.DungLuongOptions = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Value = "64", Text = "64GB" },
+                new SelectListItem { Value = "128", Text = "128GB" },
+                new SelectListItem { Value = "256", Text = "256GB" },
+                new SelectListItem { Value = "512", Text = "512GB" },
+                new SelectListItem { Value = "10000", Text = "1TB" },
+                new SelectListItem { Value = "20000", Text = "2TB" }
+            }, "Value", "Text", item.Capacity);
+
+
+            ViewBag.RamOptions = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Value = "1", Text = "Ram sản phẩm" },
+                new SelectListItem { Value = "4", Text = "4GB" },
+                new SelectListItem { Value = "6", Text = "6GB" },
+                new SelectListItem { Value = "8", Text = "8GB" },
+                new SelectListItem { Value = "16", Text = "16GB" },
+                new SelectListItem { Value = "24", Text = "24GB" },
+                new SelectListItem { Value = "32", Text = "32GB" },
+                new SelectListItem { Value = "64", Text = "64GB" },
+                new SelectListItem { Value = "128", Text = "128GB" }
+            }, "Value", "Text", item.Ram); 
             return PartialView(item);
             
         }

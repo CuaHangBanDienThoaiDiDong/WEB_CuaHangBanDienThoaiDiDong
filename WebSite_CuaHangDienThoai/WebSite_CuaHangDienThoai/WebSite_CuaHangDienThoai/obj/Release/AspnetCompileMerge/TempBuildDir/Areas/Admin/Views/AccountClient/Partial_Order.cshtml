@@ -1,0 +1,170 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Order>
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+@if (ViewBag.Count != null && Model != null && Model.Any())
+{
+    <div id="popup" class="hidden">
+
+        <div class="bg-white" id="loadOrderCancel">
+
+        </div>
+
+
+    </div>
+    foreach (var item in Model)
+    {
+
+        var checkOutWareHouse = item.tb_ExportWareHouse.FirstOrDefault(x => x.OrderId == item.OrderId);
+        <div class="container bootstrap snippets bootdey mt-5 panel panel-info panel-shadow">
+            <div class="col-md-12 col-sm-8 content">
+                <div class="row">
+                    <div class="col-lg-10">
+                        <ol class="breadcrumb">
+                            <li><a href="#" class="text-black">Đơn hàng </a><span style="color:orangered"> @item.Code </span>| Ngày đặt <span class="text-danger">@item.CreatedDate.ToString("dd/MM/yyyy") </span></li>
+                            <li style="text-align: right;">
+                                <!-- Sử dụng CSS "text-align: right;" để căn phải -->
+                            </li>
+                        </ol>
+
+                        <hr class="col-4" />
+                    </div>
+                    <div class="col-2">
+                        @if (item.typeOrder == true)
+                        {
+                            <div class="btn btn-danger">Đơn hàng đã hủy</div>
+                        }
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="panel-heading">
+                                @if (item.typeOrder == false)
+                                {
+                                    @Html.Action("Partail_TrangThaiDonHang", "Order", new { id = item.OrderId })
+                                }
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Sản phẩm </th>
+                                                <th>Màu</th>
+                                                <th>Dung lượng</th>
+                                                <th>Số lượng</th>
+                                                <th>Giá</th>
+                                                <th>Tổng tiền</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @Html.Action("Partail_Ordertail", "Order", new { id = item.OrderId })
+
+
+                                            <tr>
+
+                                                <td colspan="6"> <hr /></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="text-right">Tạm tính</td>
+                                                <td>@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.TotalAmount) đ</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="text-right">Phát sinh</td>
+                                                <td>@*$2.00*@</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="text-right"><strong class="text-danger">Tổng tiền</strong></td>
+                                                <td class="text-danger">@WebSite_CuaHangDienThoai.Common.Common.FormatNumber(item.TotalAmount) đ</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        @if (item.Confirm == true)
+                        {
+
+                        }
+                        @if (item.typeOrder == false)
+                        {
+                            <div class="col-md-6">
+                                <span style="color:lightslategray;width:5px" aria-label="Vui lòng chỉ nhấn " Đã nhận được hàng" khi đơn hàng đã được giao đến bạn và sản phẩm nhận được không có vấn đề nào." tabindex="0">
+                                    Vui lòng chỉ nhấn <span class="text-danger">"Đã nhận được hàng"</span> khi đơn hàng đã được giao đến bạn và sản phẩm nhận được không có vấn đề nào.
+                                </span>
+                            </div>
+                            if (checkOutWareHouse != null)
+                            {
+
+
+                                if (item.Success == true)
+                                {
+                                    if (item.typeReturn == true)
+                                    {
+                                        <div class="col-md-2">
+                                            <button clas="btn btn-success">Đã Gửi Yêu Cầu </button>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-md-2">
+                                            <a href="/User/ReturnOrder/@item.OrderId" clas="btn btn-danger">Yêu Cầu Hoàn Trả </a>
+                                        </div>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-success  " id="btnSuccessOrder" data-id="@item.OrderId">Đã nhận đơn hàng</button>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                @*<div class="col-md-2">
+                                        <button type="button" class="btn btn-primary  " id="btnCancelOrder" data-id="@item.OrderId">Hủy đơn hàng</button>
+
+                                    </div>*@
+
+
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-primary btnCancelOrder" data-id="@item.OrderId">Hủy đơn hàng</button>
+                                </div>
+                            }
+
+
+
+                            <div class="col-md-2">
+                                <button class="btn btn-dark">Liên Hệ Shop</button>
+                            </div>
+                        }
+                        else
+                        {
+                            @*<div class="col-md-6">
+                                    <span style="color:lightslategray;width:5px;color:red" aria-label="Đơn hàng đã hủy." tabindex="0">
+                                        Đơn hàng đã hủy
+                                    </span>
+                                </div>*@
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+
+
+}
+else
+{
+
+
+}
+

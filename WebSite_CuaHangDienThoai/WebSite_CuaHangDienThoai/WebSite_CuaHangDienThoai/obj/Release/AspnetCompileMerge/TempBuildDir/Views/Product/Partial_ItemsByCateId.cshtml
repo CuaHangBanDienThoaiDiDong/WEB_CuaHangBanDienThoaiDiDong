@@ -60,13 +60,25 @@
 {
     foreach (var item in Model)
     {
-        var strImg = "";
+        byte[] strImg = null;
+        var CheckImage = item.tb_ProductImage   .FirstOrDefault(x => x.IsDefault == true);
+
+        if (CheckImage != null)
+        {
+            strImg = CheckImage.Image;
+        }
+
+        string imgSrc = "";
+        if (strImg != null && strImg.Length > 0)
+        {
+            string base64String = Convert.ToBase64String(strImg);
+            imgSrc = $"data:image;base64,{base64String}";
+        }
         var img = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
         var checkDetail = item.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == item.ProductsId);
-        if (img != null)
+        if (checkDetail != null)
         {
-            strImg = img.Image;
-
+            
            <div class="product-item col rounded-3 @item.tb_ProductCategory.Alias " style="margin:2px;margin-top:30px; background: #323232; border: none;height:auto">
                <div class="  discount w-100 align-items-center" @*style=" margin-top: -20px"*@>
                    @*<div class="product_image pt-3 d-flex justify-content-center  ">
@@ -74,7 +86,7 @@
         </div>*@
 
                    <div class="product_image  d-flex justify-content-center">
-                       <img src="@strImg" alt="@item.Title" class="w-75 h-75">
+                       <img src="@imgSrc" alt="@item.Title" class="w-75 h-75">
                    </div>
                    <div class="favorite favorite_left"></div>
                    <div class="product_bubble_right product_bubble product_bubble_red d-flex flex-column align-items-center loadPhanTramSale " id="loadPhanTramSale_@item.ProductsId" data-id="@item.ProductsId" style="visibility: hidden;">

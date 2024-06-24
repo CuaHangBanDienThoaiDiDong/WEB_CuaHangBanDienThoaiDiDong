@@ -1,30 +1,4 @@
-﻿@*@model WebSite_CuaHangDienThoai.Models.tb_ProductDetail
-    @if (ViewBag == null)
-    {
-           var DungLuong = "";
-
-            if (Model.DungLuong > 999)
-            {
-                DungLuong = "1 Tb";
-            }
-            else if (Model.DungLuong > 1999)
-            {
-                DungLuong = "2 Tb";
-            }
-            else
-            {
-                DungLuong = Model.DungLuong + " Gb";
-            }
-            <span>
-                @DungLuong
-            </span>
-
-    }
-    else
-    {
-
-    }*@
-
+﻿
 
 @model List<WebSite_CuaHangDienThoai.Models.ProductDetailViewModel>
 
@@ -34,53 +8,59 @@
     }
 </style>
 
-
-
-@if (Model != null)
+@if (ViewBag.ProductsId != null)
 {
 
-    <div class="row">
-        <div class="col-1">
+    if (Model != null)
+    {
+
+        <div class="row">
+            <div class="col-1">
+
+            </div>
+            <div class="col-10 d-flex justify-content-center">
+                @{
+                    var firstDungLuong = Model.FirstOrDefault()?.DungLuong; // Lấy giá trị dung lượng đầu tiên
+                }
+                @foreach (var item in Model)
+                {
+
+                    var uniqueColors = item.Color.Distinct();
+                    var DungLuong = "";
+
+                    if (item.DungLuong > 999)
+                    {
+                        DungLuong = "1 Tb";
+                    }
+                    else if (item.DungLuong > 1999)
+                    {
+                        DungLuong = "2 Tb";
+                    }
+                    else
+                    {
+                        DungLuong = item.DungLuong + " Gb";
+                    }
+
+                    // Tạo nút đầu tiên và thiết lập class active cho nó
+                    <p>/@DungLuong</p>
+                }
+
+
+
+            </div>
+            <div class="col-1">
+
+            </div>
 
         </div>
-        <div class="col-10 d-flex justify-content-center">
-            @{
-                var firstDungLuong = Model.FirstOrDefault()?.DungLuong; // Lấy giá trị dung lượng đầu tiên
-            }
-            @foreach (var item in Model)
-            {
 
-                var uniqueColors = item.Color.Distinct();
-                var DungLuong = "";
+    }
 
-                if (item.DungLuong > 999)
-                {
-                    DungLuong = "1 Tb";
-                }
-                else if (item.DungLuong > 1999)
-                {
-                    DungLuong = "2 Tb";
-                }
-                else
-                {
-                    DungLuong = item.DungLuong + " Gb";
-                }
-
-                // Tạo nút đầu tiên và thiết lập class active cho nó
-                <p>/@DungLuong</p>
-            }
-
-
-
-        </div>
-        <div class="col-1">
-
-        </div>
-
-    </div>
-
+    else
+    {
+        <p class="text-danger">Không tồn tại bảng ghi nào !!</p>
+    }
 }
-
 else
 {
     <p class="text-danger">Không tồn tại bảng ghi nào !!</p>

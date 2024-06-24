@@ -1,0 +1,400 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Staff
+@{
+    ViewBag.Title = "Tài khoản cá nhân  ";
+
+}
+@*@Icon@*@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+@*====================Start Bootstrap Temp====================*@
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.css" rel="stylesheet" />
+<link href="~/Content/assets/styles/main_styles.css" rel="stylesheet" />
+<link href="~/Content/assets/styles/responsive.css" rel="stylesheet" />
+
+
+@*====================Start Bootstrap Banner====================*@
+
+<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/OwlCarousel2-2.2.1/animate.css">
+<link href="~/Content/assets/styles/main_styles.css" rel="stylesheet" />
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/responsive.css">
+<link href="~/Content/Banner/style.css" rel="stylesheet" />
+@*====================Start CSS LayOUT====================*@
+<link href="~/Content/LayOut/StyleSheet3.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+@*====================Font chữ====================*@
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="icon" href="~/images/Logo/LogoWeb.png" @*style="border-radius:20px;height:20px;"*@ />
+
+@*@Icon@*@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+@*====================Start CSS LayouSearch====================*@
+<link href="~/Content/Css/Client/LayOutSearch.css" rel="stylesheet" />
+
+@*====================End CSS LayouSearch====================*@
+
+
+<!---SweetAlter-->
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.min.css" rel="stylesheet">
+
+
+
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet" />
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+      rel="stylesheet" />
+<!-- MDB -->
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="~/Content/Css/Client/Profile.css" rel="stylesheet" />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<style>
+    .bg-sg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #000;
+        opacity: 0.8;
+        z-index: 9998;
+        display: none;
+    }
+</style>
+@if (Model != null)
+{
+    <div style="color: white; ">
+        <div class="container" style=" color: white; ">
+            <div class="card overflow-hidden">
+                <div class="card-body p-0">
+
+                    <div class="row align-items-center pt-5">
+                        <div class="col-lg-4 order-lg-1 order-2">
+
+                            @*<button id="showButton">Hiển thị thẻ</button>*@
+                            <div class="bg-sg" style="display:none"></div>
+                            <div id="popup" class=" hidden">
+
+                                <div class="card">
+                                    @Html.Action("EditImageStaff", "Account", new { id = Model.StaffId })
+                                </div>
+
+
+                            </div>
+                            <div class="d-flex align-items-center justify-content-around m-4">
+                                <div class="text-center">
+                                    <!--<a href="/don-hang" style="color:chocolate">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag-heart-fill" viewBox="0 0 16 16">
+                                        <path d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132" />
+                                    </svg>-->
+                                    @*@{
+                                        var order = Model.tb_Order.Where(x => x.CustomerId == Model.CustomerId).Count();
+                                        <h4 class="mb-0 fw-semibold lh-1">
+                                            @order
+                                        </h4>
+                                    }*@
+
+
+                                    <!--<p class="mb-0 fs-4">Đơn hàng</p>
+                                </a>-->
+
+                                </div>
+                               
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mt-n3 order-lg-2 order-1">
+                            <div class="mt-n5">
+                                @if (Model.Image != null)
+                                {
+                                    <div class="d-flex align-items-center justify-content-center mb-2 thaydoi">
+
+
+                                        <div class="linear-gradient d-flex align-items-center justify-content-center rounded-circle" style="width: 110px; height: 110px;">
+
+
+                                            <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden" style="width: 100px; height: 100px;">
+                                                <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" alt="" class="w-100 h-100 thaydoi">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="d-flex align-items-center justify-content-center mb-2 thaydoi">
+
+
+                                        <div class="linear-gradient d-flex align-items-center justify-content-center rounded-circle" style="width: 110px; height: 110px;">
+
+
+                                            <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden" style="width: 100px; height: 100px;">
+                                                <img src="~/images/Logo/LogoWeb.png" alt="" class="w-100 h-100 thaydoi">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                }
+
+
+
+                                <div class="text-center">
+                                    <h5 class="fs-5 mb-0 fw-semibold">@Model.NameStaff</h5>
+                                    <p class="mb-0 fs-4">@Model.tb_Function.TitLe</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 order-last">
+
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs mb-3" id="ex-with-icons" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a data-mdb-tab-init class="nav-link active" id="ex-with-icons-tab-1" href="#ex-with-icons-tabs-1" role="tab" style="color: blue"
+                               aria-controls="ex-with-icons-tabs-1" aria-selected="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" style="color:blue" height="25" fill="currentColor" class="bi bi-person-fill-check" viewBox="0 0 16 16">
+                                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                    <path d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4" />
+                                </svg>
+                                Thông tin
+                            </a>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <a data-mdb-tab-init class="nav-link" id="ex-with-icons-tab-3" href="#ex-with-icons-tabs-3" role="tab"
+                               aria-controls="ex-with-icons-tabs-3" aria-selected="false"><i class="fas fa-cogs fa-fw me-2"></i>Chỉnh sửa hồ sơ</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a data-mdb-tab-init class="nav-link" id="ex-with-icons-tab-4" href="#ex-with-icons-tabs-4" role="tab"
+                               aria-controls="ex-with-icons-tabs-4" aria-selected="false"><i class="fas fa-cogs fa-fw me-2"></i>Thay đổi mật khẩu</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="tab-content" id="ex-with-icons-content">
+                    <div class="tab-pane fade show active" id="ex-with-icons-tabs-1" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
+                        <section class="section about-section gray-bg" id="about">
+                            <div class="container">
+                                <div class="row align-items-center flex-row-reverse">
+                                    <div class="col-md-12">
+                                        <div class="about-text go-to">
+                                            <h3 class="dark-color">Thông tin tài khoản</h3>
+                                            <div class="row about-list">
+                                                <div class="col-md-6">
+                                                    <div class="media">
+                                                        <label>Ngày sinh</label>
+                                                        <p>@Model.Birthday</p>
+                                                    </div>
+
+
+                                                    <div class="media">
+
+                                                        <label>Địa chỉ</label>
+                                                        <p>@Model.Location</p>
+                                                    </div>
+
+                                                    <div class="media">
+
+                                                        <label>Ngày vào làm</label>
+                                                        <p>@Model.DayofWork</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="media">
+                                                        <label>E-mail</label>
+                                                        <p>@Model.Email</p>
+                                                    </div>
+                                                    <div class="media">
+                                                        <label>Điện thoại</label>
+                                                        <p>@Model.PhoneNumber</p>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div class="col-lg-6">
+                                        <div class="about-avatar">
+                                            @if (Model.Image != null)
+                                            {
+                                                <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" alt="Current Image" id="currentImage" style="width: 250px; height: 250px; margin: auto;" class="rounded-circle" />
+
+                                            }
+                                            else
+                                            {
+
+                                                <img src="~/images/Logo/LogoWeb.png" alt="Current Image" id="currentImage" style="width: 250px; height: 250px; margin: auto; " class="rounded-circle" />
+                                            }
+
+                                        </div>
+                                    </div>*@
+                                </div>
+                                <hr />
+                                <div class="counter">
+                                    <div class="row">
+                                        <div class="col-6 col-lg-4">
+                                            <div class="count-data text-center">
+                                                <h6 class="count h2" data-to="500" data-speed="500">500</h6>
+                                                <p class="m-0px font-w-600">Tỷ lệ đặt hàng</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-lg-4">
+                                            <div class="count-data text-center">
+                                                <h6 class="count h2" data-to="150" data-speed="150">150</h6>
+                                                <p class="m-0px font-w-600">Tỷ lệ giao hàng thành công</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-lg-4">
+                                            <div class="count-data text-center">
+                                                <h6 class="count h2" data-to="850" data-speed="850">850</h6>
+                                                <p class="m-0px font-w-600">Tỷ lệ đơn hủy</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+
+                    </div>
+                    <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
+
+
+                    </div>
+                    <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
+                        @Html.Action("Partial_Edit", "Account", new { id = Model.StaffId })
+                    </div>
+                    <div class="tab-pane fade" id="ex-with-icons-tabs-4" role="tabpanel" aria-labelledby="ex-with-icons-tab-4">
+                        @Html.Action("Partail_EditPassWordStaff", "Account", new { id = Model.StaffId })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+}
+
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('newImagePreview');
+            var labelAnhCu = document.getElementById('lbAnhCu');
+            var lbImagePreview = document.getElementById('lbImagePreview');
+            var muiTen = document.getElementById('muiTen');
+            output.src = reader.result;
+            output.style.display = 'block';
+            if (labelAnhCu && muiTen && lbImagePreview) {
+                labelAnhCu.style.display = 'block';
+                muiTen.style.display = 'block';
+                lbImagePreview.style.display = 'block';
+            }
+
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var bg = document.querySelector(".bg-sg");
+        var popup = document.getElementById('popup');
+        var thaydoi = document.querySelector('.thaydoi');
+        var closeButton = document.getElementById('closeButton');
+        var btnClose = document.querySelector('.btnClose');
+        thaydoi.addEventListener('click', function () {
+            bg.style.display = "block";
+            popup.classList.remove('hidden');
+        });
+
+        btnClose.addEventListener('click', function () {
+            bg.style.display = "none";
+            popup.classList.add('hidden');
+        });
+
+        bg.addEventListener("click", function () {
+            bg.style.display = "none";
+            popup.classList.add('hidden');
+        });
+
+        closeButton.addEventListener('click', function () {
+            popup.classList.add('hidden');
+            bg.style.display = "none";
+        });
+
+
+
+    });
+
+    $(document).ready(function () {
+        var bg = $(".bg-sg");
+        var popup = $('#popup');
+        var btnClose = $('.btnClose');
+
+        btnClose.on('click', function () {
+            bg.hide();
+            popup.addClass('hidden');
+        });
+
+        bg.on("click", function () {
+            bg.hide();
+            popup.addClass('hidden');
+        });
+
+       
+    });
+</script>
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.0/mdb.umd.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+@*====================Start JS Temp====================*@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+@*====================Start JS Temp====================*@
+<script src="~/Content/assets/js/jquery-3.2.1.min.js"></script>
+<script src="~/Content/assets/styles/bootstrap4/popper.js"></script>
+<script src="~/Content/assets/styles/bootstrap4/bootstrap.min.js"></script>
+<script src="~/Content/assets/plugins/Isotope/isotope.pkgd.min.js"></script>
+<script src="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+<script src="~/Content/assets/plugins/easing/easing.js"></script>
+<script src="~/Content/assets/js/custom.js"></script>
+
+
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<!---SweetAlter-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
+
+@*====================Start JS Temp Tesst====================*@
+
+<script src="~/Scripts/Client/js/LayOut.js"></script>
+@*<script src="~/Scripts/JsShoppingCart.js"></script>*@
+
+@*====================End JS Temp Tesst====================*@
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="~/Scripts/jsShopping.js"></script>

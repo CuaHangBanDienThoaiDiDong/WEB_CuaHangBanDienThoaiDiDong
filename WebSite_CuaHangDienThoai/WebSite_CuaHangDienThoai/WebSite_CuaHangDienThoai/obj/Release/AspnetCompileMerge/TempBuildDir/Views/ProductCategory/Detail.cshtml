@@ -152,9 +152,7 @@
 
                             <div class="product_sorting_container product_sorting_container_top">
                                 <div class="row">
-                                    <div class="col-6">
-                                        <p>thuan</p>
-                                    </div>
+                                  
                                     <div class="col-6">
                                         <div class="pages d-flex flex-row align-itemss-center">
                                             <ul class="product_sorting">
@@ -192,41 +190,56 @@
                                 {
                                     foreach (var item in Model)
                                     {
-                                        var strImg = "";
-                                        var img = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
+                                        byte[] strImg = null;
+                                        var CheckImage = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault == true);
+
+                                        if (CheckImage != null)
+                                        {
+                                            strImg = CheckImage.Image;
+                                        }
+
+                                        string imgSrc = "";
+                                        if (strImg != null && strImg.Length > 0)
+                                        {
+                                            string base64String = Convert.ToBase64String(strImg);
+                                            imgSrc = $"data:image;base64,{base64String}";
+                                        }
+
                                         var checkDetail = item.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == item.ProductsId);
                                         if (checkDetail != null)
                                         {
-                                            if (img != null)
+                                            if (imgSrc != null)
                                             {
-                                                strImg = img.Image;
 
-                                                <div class="product-item men rounded-3  @item.tb_ProductCategory " data-id="@item.ProductsId" style="background: #323232; padding-left: -20px; margin-top: 5px;  ">
-                                                    <div class=" discount p-3 " style="padding:50px  ;">
-                                                        <div class="product_image pt-3 d-flex justify-content-center">
-                                                            <img src="@strImg" alt="@item.Title" class="w-75 h-75">
-                                                        </div>
-                                                        <div class="favorite favorite_left"></div>
-                                                        <div class="product_bubble_right product_bubble product_bubble_red d-flex flex-column align-items-center loadPhanTramSale " id="loadPhanTramSale_@item.ProductsId" data-id="@item.ProductsId" style="visibility: hidden;">
+                                                <a class="" href="/chi-tiet/@item.Alias-p@(item.ProductsId)">
+                                                    <div class="product-item men rounded-3  @item.tb_ProductCategory " data-id="@item.ProductsId" style="background: #323232; padding-left: -20px; margin-top: 5px;  ">
+                                                        <div class=" discount p-3 " style="padding:50px  ;">
+                                                            <div class="product_image pt-3 d-flex justify-content-center">
+                                                                <img src="@imgSrc" alt="@item.Title" class="w-75 h-75">
+                                                            </div>
+                                                            <div class="favorite favorite_left"></div>
+                                                            <div class="product_bubble_right product_bubble product_bubble_red d-flex flex-column align-items-center loadPhanTramSale " id="loadPhanTramSale_@item.ProductsId" data-id="@item.ProductsId" style="visibility: hidden;">
 
-                                                        </div>
+                                                            </div>
 
-                                                        <div class="product_info">
-                                                            <h6 class="product_name">
+                                                            <div class="product_info">
+                                                                <h6 class="product_name text-white">
 
-                                                                <a class="d-inline-block text-truncate" href="/chi-tiet/@item.Alias-p@(item.ProductsId)" style="color:white ">
+
                                                                     @item.Title
-                                                                </a>
 
-                                                            </h6>
-                                                            @Html.Action("Partail_ProductDetailById", "ProductDetail", new { id = item.ProductsId })
 
-                                                            @*Hiển thị giá tiền theo cấu hình*@
-                                                            <div class="loadPrice" id="loadPrice_@item.ProductsId" data-id="@item.ProductsId"></div>
+                                                                </h6>
+                                                                @Html.Action("Partail_ProductDetailById", "ProductDetail", new { id = item.ProductsId })
+
+                                                                @*Hiển thị giá tiền theo cấu hình*@
+                                                                <div class="loadPrice" id="loadPrice_@item.ProductsId" data-id="@item.ProductsId"></div>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                </div>
+                                                    </div>
+                                                </a>
+
                                             }
                                         }
 
@@ -256,32 +269,32 @@
                                     </li>
                                 </ul>
                                 @*<span class="showing_results" style="color:white">Hiện thị @Model.FirstItemOnPage – @Model.LastItemOnPage của @Model.TotalItemCount sản phẩm</span>
-                                    <div class="pages d-flex flex-row align-itemss-center" style="color:white">
-                                        <h5 style="color:white ;margin-top:10px;">Trang</h5>
-                                        <div class="page_current pl-1" style="color:white">
+            <div class="pages d-flex flex-row align-itemss-center" style="color:white">
+                <h5 style="color:white ;margin-top:10px;">Trang</h5>
+                <div class="page_current pl-1" style="color:white">
 
-                                            <span> @Model.PageNumber</span>
-                                            <ul class="page_selection">
-                                                @if (Model.HasPreviousPage)
-                                                {
-                                                    <li class="page-item m-0"> <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Đầu</a></li>
-                                                }
-                                                @foreach (var i in Enumerable.Range(1, Model.PageCount))
-                                                {
-                                                    <li class="page-item @(i == Model.PageNumber ? "active" : "")"><a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a></li>
-                                                }
-                                                @if (Model.HasNextPage)
-                                                {
-                                                    <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">Tiếp </a></li>
-                                                }
-                                            </ul>
-                                        </div>
-                                        <div class="page_total"><span>trên</span> @Model.PageCount</div>
-                                        @if (Model.HasNextPage)
-                                        {
-                                            <div id="next_page_1" class="page_next" style="color:white"><a href="@Url.Action("Index", new { page = Model.PageNumber + 1 })" style="color:white"><i class="fa fa-long-arrow-right" aria-hidden="true" style="color:white"></i></a></div>
-                                        }
-                                    </div>*@
+                    <span> @Model.PageNumber</span>
+                    <ul class="page_selection">
+                        @if (Model.HasPreviousPage)
+                        {
+                            <li class="page-item m-0"> <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Đầu</a></li>
+                        }
+                        @foreach (var i in Enumerable.Range(1, Model.PageCount))
+                        {
+                            <li class="page-item @(i == Model.PageNumber ? "active" : "")"><a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a></li>
+                        }
+                        @if (Model.HasNextPage)
+                        {
+                            <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">Tiếp </a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="page_total"><span>trên</span> @Model.PageCount</div>
+                @if (Model.HasNextPage)
+                {
+                    <div id="next_page_1" class="page_next" style="color:white"><a href="@Url.Action("Index", new { page = Model.PageNumber + 1 })" style="color:white"><i class="fa fa-long-arrow-right" aria-hidden="true" style="color:white"></i></a></div>
+                }
+            </div>*@
 
                             </div>
 

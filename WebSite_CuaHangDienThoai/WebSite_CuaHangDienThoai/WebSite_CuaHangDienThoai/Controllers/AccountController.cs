@@ -487,9 +487,9 @@ namespace WebSite_CuaHangDienThoai.Controllers
                         string contentCustomer = System.IO.File.ReadAllText(Server.MapPath("~/Content/templates/SendForgotPass.html"));
                         contentCustomer = contentCustomer.Replace("{{MaDon}}", FindClient.Code);
                         contentCustomer = contentCustomer.Replace("{{NgayDat}}", DateTime.Now.ToString("dd/MM/yyyy"));
-                        contentCustomer = contentCustomer.Replace("{{CustomerName}}", FindClient.CustomerName);
+                        contentCustomer = contentCustomer.Replace("{{TenKhachHang}}", FindClient.CustomerName);
 
-                        WebSite_CuaHangDienThoai.Common.Common.SendMail("Cửa hàng điện thoại", "Mã khôi phục #" + FindClient.Code, contentCustomer.ToString(), FindClient.Email);
+                        WebSite_CuaHangDienThoai.Common.Common.SendMail("Cửa hàng điện thoại LTDMiniStore", "Mã khôi phục #" + FindClient.Code, contentCustomer.ToString(), FindClient.Email);
 
                         return RedirectToAction("UpdatePass", new { id = FindClient.CustomerId, token = tokenString }); // Chuyển hướng đến trang cập nhật mật khẩu
                     }

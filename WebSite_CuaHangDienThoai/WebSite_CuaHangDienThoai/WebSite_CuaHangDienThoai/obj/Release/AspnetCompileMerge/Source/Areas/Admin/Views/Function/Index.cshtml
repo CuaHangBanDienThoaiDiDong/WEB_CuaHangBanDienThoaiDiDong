@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Function>
 @{
-    ViewBag.Title = "LTD - Chức năng";
+    ViewBag.Title = "Quản lý chức năng";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,16 +15,17 @@
             <a href="/admin" class="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/productcategory" class="nav-link">@ViewBag.Title</a>
+            <a href="/admin/category" class="nav-link">@ViewBag.Title</a>
         </li>
     </ul>
 }
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Quản lý danh mục sản phẩm</h1>
+                <h1>Quản lý chức năng</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -33,7 +34,7 @@
                 </ol>
             </div>
         </div>
-    </div>
+    </div><!-- /.container-fluid -->
 </section>
 
 <section class="content">
@@ -44,8 +45,8 @@
             <h3 class="card-title">Danh sách @ViewBag.Title</h3>
 
             <div class="card-tools">
-                <a href="/admin/ProductCategory/add" class="btn btn-primary">Thêm mới</a>
-                @*<a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>*@
+                <a href="/admin/Function/add" class="btn btn-primary">Thêm mới</a>
+                <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
             </div>
         </div>
         <div class="card-body">
@@ -54,52 +55,34 @@
                 <thead>
                     <tr>
                         <th><input type="checkbox" id="SelectAll" /></th>
-                        <th>STT</th>
-                        <th class="pl-5">Chức năng </th>
-                        <th>Tạo bởi</th>
-                        <th>Ngày tạo </th>
-                        <th>Chỉnh sửa bởi </th>
-                        <th>Ngày chỉnh sửa</th>
-                        @*<th>Hiển thị</th>*@
-
-                        <th style="width:150px;"></th>
+                        <th class="text-center">STT</th>
+                        <th class="text-center">Tên chức năng</th>
+                        <th class="text-center">Ngày tạo</th>
+                        <th class="text-center">Người tạo</th>
+                        <th style="width:250px;"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model.Any() && Model != null)
+                    @if (Model != null && Model.Any())
                     {
                         var i = 1;
-                        foreach(var item in Model)
+                        foreach (var item in Model)
                         {
-                            
-                            <tr id="trow_@item.FunctionId">
+
+                            <tr id="trow_@item">
                                 <td><input type="checkbox" class="cbkItem" value="@item.FunctionId" /></td>
-                                <td>@i</td>
-                                <td>
-                                    <p>@item.TitLe</p>
-
+                                <td class="text-center">@i</td>
+                                <td class="text-center">
+                                    @item.TitLe
                                 </td>
-                                <td> @item.CreatedBy</td>
-
-                                <td> @item.CreatedDate.ToString("dd/MM/yyyy") </td>
-                                <td>
-                                    @if (item.Modifeby != null)
-                                    {
-                                        @item.Modifeby
-                                    }
-                                    else
-                                    {
-                                        <p>
-                                            Chưa qua chỉnh sửa
-                                        </p>
-                                    }
+                                <td class="text-center">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">
+                                    @item.CreatedBy
                                 </td>
                                 <td>
-                                    @*@item.ModifiedDate.ToString("dd/MM/yyyy")*@
-                                </td>
-                                <td>
-                                    <a href="/admin/function/edit/@item.FunctionId" class="btn btn-sm btn-primary">Sửa</a>
-                                    @*<a href="#" data-id="@item.ProductCategoryId" class="btn btn-sm btn-danger btnDelete">Xóa</a>*@
+                                    <a href="/admin/Function/Details/@item.FunctionId" class="btn btn-sm btn-success">Xem</a>
+                                    <a href="/admin/Function/edit/@item.FunctionId" class="btn btn-sm btn-primary">Sửa</a>
+                                    @*<a href="#" data-id="@item.FunctionId class="btn btn-sm btn-danger btnDelete">Xóa</a>*@
                                 </td>
                             </tr>
                             i++;
@@ -110,20 +93,86 @@
                         <tr>
                             <td colspan="4">Không có bản ghi nào!!!</td>
                         </tr>
-
                     }
                 </tbody>
             </table>
 
-
+            <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6" style="text-align:right;">
+                    @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))*@
+                </div>
+            </div>
 
         </div>
-
+        <!-- /.card-body -->
         <div class="card-footer">
 
         </div>
-
+        <!-- /.card-footer-->
     </div>
+    <!-- /.card -->
 
 </section>
 
+@section scripts{
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('body').on('change', '#SelectAll', function () {
+                var checkStatus = this.checked;
+                var checkbox = $(this).parents('.card-body').find('tr td input:checkbox');
+                checkbox.each(function () {
+                    this.checked = checkStatus;
+                    if (this.checked) {
+                        checkbox.attr('selected', 'checked');
+                    } else {
+                        checkbox.attr('selected', '');
+                    }
+                });
+            });
+
+
+
+            $('body').on('click', '.btnDelete', function () {
+                var id = $(this).data("id");
+
+                var conf = confirm('Bạn có muốn xóa chức năng này không ?');
+                if (conf === true) {
+                    $.ajax({
+                        url: '/admin/Role/delete',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (rs) {
+                            if (rs.success) {
+                                $('#trow_' + id).remove();
+                            }
+                        }
+                    });
+                }
+            });
+
+
+
+            $('body').on('click', '.BtnDeleteAll', function () {
+                var id = $(this).data("id");
+
+                var conf = confirm('Bạn có muốn xóa nhân viên đã chọn chức năng này không ?');
+                if (conf === true) {
+                    $.ajax({
+                        url: '/admin/Role/deletAll',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (rs) {
+                            if (rs.success) {
+                                $('#trow_' + id).remove();
+                            }
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+
+}

@@ -1,0 +1,106 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Voucher
+@{
+    ViewBag.Title = "Chi tiết Voucher";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/voucher" class="nav-link">danh mục voucher</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Thêm mới</a>
+        </li>
+    </ul>
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thêm voucher </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Thêm voucher </a></li>
+                    <li class="breadcrumb-item active">Thêm mới</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+
+            <div class="card-title">
+                Thông tin Voucher
+
+            </div>
+            <br>
+            <br>
+            <hr />
+            <div class="row">
+                <div class="card-header">
+                
+                    <br />
+                    <h3 class="text-center">@Model.Title</h3>
+                </div>
+                <div class="card-body">
+                    <span><b>Tiêu đề:</b> <span>@Model.Title</span> <b style="margin-left:10px">Mã voucher:</b> <span>@Model.Code</span></span>
+                    <br />
+                    <span>
+                        <b>Ngày bắt đầu chương trình:</b>     @if (Model.UsedDate.HasValue)
+                        {
+                            @Model.UsedDate.Value.ToString("dd/MM/yyyy HH:mm")
+                        }
+                    </span>
+                    <br />
+                    <span>
+                        <b>Ngày kết thúc chương trình:</b>
+                        @if (Model.ModifiedDate.HasValue)
+                        {
+                            @Model.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm")
+                        }
+                    </span>
+                    <br />
+                    <span>
+                        <b>Phần trăm giảm đơn hàng</b>
+                        @Model.PercentPriceReduction %
+                    </span>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="card-body" id="">
+
+            @Html.Action("Partail_VoucherDetail", "Voucher", new { id = Model.VoucherId })
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8 text-center">
+
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+</section>
+

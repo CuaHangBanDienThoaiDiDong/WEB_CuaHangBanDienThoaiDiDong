@@ -1,0 +1,57 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ImportWarehouse>
+<div class="card-body">
+    <div class="row">
+        @if (Model.Any() && Model != null)
+            {
+                foreach (var item in Model)
+                {
+
+
+                    var countPro = item.tb_ImportWarehouseDetail.Where(x => x.ImportWarehouseId == item.ImportWarehouseId);
+                    int count = countPro.Count();
+
+
+                <div class="col-md-3">
+                    <div class="card h-100 ">
+
+                        <div class="swiper mySwiper">
+                            <div class="swiper-wrapper">
+                                <span><label>Ngày lập phiếu</label>@(item.CreateDate.HasValue ? item.CreateDate.Value.ToString("dd/MM/yyyy") : "Không có dữ liệu")</span>
+                                <br />
+                                <span><label>Người nhận :</label>@item.tb_Staff.NameStaff</span>
+                                <br />
+                                <span><label>Số lượng sản phẩm :</label>@count</span>
+
+                            </div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                       
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/Admin/WareHouseImport/Details/@item.ImportWarehouseId">Xem chi tiết </a></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            }
+        }
+        else
+        {
+            <p class="text-danger">Không có bảng ghi nào !</p>
+        }
+    </div>
+</div>
+
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Initialize Swiper -->
+<script>
+    var swiper = new Swiper(".mySwiper", {
+      pagination: {
+        el: ".swiper-pagination",
+        dynamicBullets: true,
+      },
+    });
+</script>

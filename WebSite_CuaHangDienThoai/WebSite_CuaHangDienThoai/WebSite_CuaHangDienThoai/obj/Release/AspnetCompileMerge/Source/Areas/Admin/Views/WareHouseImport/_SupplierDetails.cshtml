@@ -1,0 +1,31 @@
+﻿
+@model WebSite_CuaHangDienThoai.Models.tb_Supplier
+
+@if (Model != null)
+{
+    <div class="col-12">
+        <b class="text-center">Thông tin nhà cung cấp</b>
+        <hr />
+        <div class="d-flex flex-wrap">
+            <div class="d-flex align-items-center mr-4">
+                <span style="color:black; white-space: nowrap;">     <b>Nhà cung cấp: </b>@Model.Name</span>
+            </div>
+
+        </div>
+        <div class="">
+            <div class="d-flex align-items-center mr-4">
+                <span style="color:black; white-space: nowrap;">     <b>Mã nhà cung cấp: </b>@Model.SupplierId</span>
+            </div>
+
+        </div>
+        <div class="">
+            <div class=""><b>Địa chỉ:</b> @Model.Location</div>
+            <div class=""><b>Điện thoại:</b> 0 @Model.Phone</div>
+        </div>
+    </div>
+
+}
+else
+{
+    <p class="text-danger">Không tồn tại bảng ghi nào !!!</p>
+}

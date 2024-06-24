@@ -4,8 +4,6 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-
-
 @section naviheader{
     <!-- Left navbar links -->
     <ul class="navbar-nav">
@@ -16,14 +14,13 @@
             <a href="/admin/Homepage" class="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/news" class="nav-link">danh mục sản phẩm</a>
+            <a href="/admin/news" class="nav-link">Danh mục sản phẩm</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
             <a href="#" class="nav-link">Cập nhật</a>
         </li>
     </ul>
 }
-
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -34,104 +31,113 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">danh mục sản phẩm</a></li>
+                    <li class="breadcrumb-item"><a href="#">Danh mục sản phẩm</a></li>
                     <li class="breadcrumb-item active">Cập nhật</li>
                 </ol>
             </div>
         </div>
     </div><!-- /.container-fluid -->
 </section>
-
-
 <section class="content">
-
-    <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Thông tin Cập nhật</h3>
+            <h3 class="card-title">Thông tin cập nhật</h3>
         </div>
         <div class="card-body">
-            <div class="bs-stepper-content">
-                @using (Html.BeginForm())
-                {
-                    @Html.AntiForgeryToken()
+            @using (Html.BeginForm("Edit", "ProductCategory", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {@Html.AntiForgeryToken() @Html.HiddenFor(model => model.ProductCategoryId) @Html.HiddenFor(model => model.Description) @Html.HiddenFor(model => model.CreatedBy) @Html.HiddenFor(model => model.CreatedDate) @Html.HiddenFor(model => model.Modifiedby) @Html.ValidationSummary(true, "", new { @class = "text-danger" }) <div class="row">
+                <div class="col-lg-3">
 
-                    <div class="form-horizontal">
-                        <h4>tb_ProductCategory</h4>
-                        <hr />
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        @Html.HiddenFor(model => model.ProductCategoryId)
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-                            </div>
+                    @if (Model.Icon != null)
+                    {
+                        <div class="form-group text-center">
+                            <img src="data:image;base64,@Convert.ToBase64String(Model.Icon)" alt="Current Image" id="currentImage" />
                         </div>
 
-                        <div class="form-group">
-                            <label for="exampleInputFile">Ảnh</label>
-                            <div class="input-group">
-                                <div class="custom-file">
-                                    @Html.TextBoxFor(x => x.Icon, new { @id = "txtImage", @class = "form-control" })
-                                </div>
-                                <div class="input-group-append">
-                                    <input type="button" value="Tải ảnh" onclick="BrowseServer('txtImage');" />
-                                </div>
-                            </div>
+                        <div class="form-group text-center">
+                            <label for="exampleInputFile">Thay đổi </label>
+                            <input type="file" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)" />
+
                         </div>
 
+                        <div class="form-group text-center newImage">
+                            <label>Ảnh mới:</label>
+                            <img id="newImagePreview" src="#" alt="New Image Preview" style="display:none;" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <label for="exampleInputFile">Tải ảnh</label>
+                            <input type="file" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)" />
 
-
-
-                        <div class="form-group" style="display:none">
-                            @Html.LabelFor(model => model.CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.CreatedDate, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
-                            </div>
                         </div>
 
+                        <div class="form-group text-center">
+                            <label>Ảnh mới:</label>
+                            <img id="newImagePreview" src="#" alt="New Image Preview" style="display:none;" />
+                        </div>
+                    }
+                </div>
+                <div class="col-9">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Save" class="btn btn-default" />
-                            </div>
+                    <div class="form-group">
+                        <label>Tên hãng</label>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                }
+                    <div class="form-group">
+                        <label>
+                            Tạo bởi
+                        </label>
+                        <div class="col-md-10">
+                            @Model.CreatedBy
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @if (Model.Modifiedby != null)
+                        {
+                            <label>Chỉnh sửa bởi</label>
+                            <div class="col-md-10">
+                                @Model.Modifiedby - @Model.ModifiedDate
+                            </div>
+                        }
+                        else
+                        {
+                            <label>Chưa qua chỉnh sửa</label>
+
+                        }
+                    </div>
+                    <div class="form-group text-center">
+                        <div class="col-md-12">
+                            <input type="submit" value="Lưu" class="btn btn-success col-md-10" />
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-
-        </div>
-        <!-- /.card-footer-->
-    </div>
-    <!-- /.card -->
-
-</section>
-
-
-
-
-@section  scripts{
-    <script>
-        $(document).ready(function () {
-            CKEDITOR.replace('txtDetail', {
-                customConfig: '/content/ckeditor/config.js',
-                extraAllowedContent: 'span',
-            });
-        });
-        function BrowseServer(field) {
-            var finder = new CKFinder();
-            finder.selectActionFunction = function (fileUrl) {
-                document.getElementById(field).value = fileUrl;
-            };
-            finder.popup();
         }
+        </div>
+    </div>
+</section>
+      
 
+@section scripts{
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('newImagePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+                if (output != null) {
+                    newImage
+                }
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
     </script>
 }

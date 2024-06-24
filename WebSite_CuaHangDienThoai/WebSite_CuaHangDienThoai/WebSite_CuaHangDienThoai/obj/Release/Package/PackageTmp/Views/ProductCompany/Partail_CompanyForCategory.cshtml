@@ -1,0 +1,69 @@
+﻿@model List<WebSite_CuaHangDienThoai.Models.CompanyModel>
+
+<style>
+    .horizontal-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .horizontal-list li {
+            display: inline-block;
+           /* margin-right: 10px;
+            padding: 5px 10px;*/
+            border: 1px solid #ccc; 
+            border-radius: 10px;
+            transition: border-color 0.3s;
+            width:120px;
+            height:40px;
+
+        }
+            .horizontal-list li img {
+                display: block;
+                width: 100%;
+                height: auto;
+                display: inline-block;
+                vertical-align: middle;
+                margin-top:5px;
+            }
+
+            .horizontal-list li:hover {
+                border-color: blue; 
+            }
+</style>
+
+
+
+
+
+@if ( Model!=null)
+{
+
+    
+  
+    
+    <div class="container pt-3">
+        <div class="row">
+            <div class="col-12">
+                <ul class="horizontal-list">
+                    @foreach (var company in Model)
+                    {
+                       
+                        <li>
+                            <a href="#@company.Title">
+                                <img src="@company.Image" class="ml-2 " />
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+}
+else
+{
+    <p>Không có thông tin về công ty sản xuất.</p>
+}
