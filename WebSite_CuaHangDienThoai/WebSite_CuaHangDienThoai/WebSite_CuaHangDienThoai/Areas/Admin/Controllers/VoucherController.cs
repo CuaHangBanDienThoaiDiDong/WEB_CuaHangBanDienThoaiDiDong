@@ -25,28 +25,40 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
-                IEnumerable<tb_Voucher> items = db.tb_Voucher.OrderByDescending(x => x.VoucherId);
-                if (items != null)
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
+                if (item == null)
                 {
-                    var pageSize = 10;
-                    if (page == null)
-                    {
-                        page = 1;
-                    }
-                    var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-                    items = items.ToPagedList(pageIndex, pageSize);
-                    var products = db.tb_Voucher.ToList();
-
-                    ViewBag.Count = products.Count;
-                    ViewBag.PageSize = pageSize;
-                    ViewBag.Page = page;
-                    return View(items);
+                    return RedirectToAction("NonRole", "HomePage");
                 }
                 else
                 {
-                    ViewBag.txt = "Không tồn tại sản phẩm";
-                    return View();
+                    IEnumerable<tb_Voucher> items = db.tb_Voucher.OrderByDescending(x => x.VoucherId);
+                    if (items != null)
+                    {
+                        var pageSize = 10;
+                        if (page == null)
+                        {
+                            page = 1;
+                        }
+                        var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+                        items = items.ToPagedList(pageIndex, pageSize);
+                        var products = db.tb_Voucher.ToList();
+
+                        ViewBag.Count = products.Count;
+                        ViewBag.PageSize = pageSize;
+                        ViewBag.Page = page;
+                        return View(items);
+                    }
+                    else
+                    {
+                        ViewBag.txt = "Không tồn tại sản phẩm";
+                        return View();
+                    }
                 }
+
+
+               
             }
         }
         // Hàm tạo chuỗi ngẫu nhiên

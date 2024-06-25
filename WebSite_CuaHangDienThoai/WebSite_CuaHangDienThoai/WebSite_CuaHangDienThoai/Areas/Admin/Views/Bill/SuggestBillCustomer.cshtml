@@ -80,7 +80,10 @@
                                 </button>
                                 <a href="/admin/Bill/Detail/@item.SellerId" target="_blank" class="btn btn-sm btn-success">Xem</a>
 
-                                <button class="btn btn-sm btn-danger btnCapNhatBill" data-id="@item.SellerId">Cập nhật</button>
+                                @if (ViewBag.QuanLy != null)
+                                {
+                                    <button class="btn btn-sm btn-danger btnCapNhatBill" data-id="@item.SellerId">Cập nhật</button>
+                                }
                             </td>
 
 

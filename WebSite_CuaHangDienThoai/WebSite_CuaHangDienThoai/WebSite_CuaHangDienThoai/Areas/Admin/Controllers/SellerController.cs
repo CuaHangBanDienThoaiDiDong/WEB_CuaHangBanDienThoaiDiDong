@@ -404,7 +404,11 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 if (customer == null) {
                     return null;
                 }
-
+                var staff = db.tb_Staff.Find(seller.StaffId);
+                if (staff == null)
+                {
+                    return null;
+                }
                 try
                 {
                     string templatePath = Server.MapPath("~/Content/templates/HoaDon.html");
@@ -415,7 +419,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     htmlContent = htmlContent.Replace("#{{CreatedDate}}", seller.CreatedDate.ToString("dd/MM/yyyy"));
                     htmlContent = htmlContent.Replace("#{{CustomerName}}", customer.CustomerName);
                     htmlContent = htmlContent.Replace("#{{Phone}}", seller.Phone);
-
+                    htmlContent = htmlContent.Replace("#{{CreatedBy}}", staff.NameStaff);
                     // Lấy chi tiết đơn hàng
                     var sellerDetail = db.tb_SellerDetail
                         .Where(od => od.SellerId == seller.SellerId)

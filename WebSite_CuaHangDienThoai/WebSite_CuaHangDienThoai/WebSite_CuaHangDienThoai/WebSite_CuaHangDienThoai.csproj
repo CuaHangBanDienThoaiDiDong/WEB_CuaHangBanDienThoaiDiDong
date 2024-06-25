@@ -4082,6 +4082,8 @@
     <Content Include="Areas\Admin\Views\Mess\Partail_AllMess.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Partial_DetailColorById.cshtml" />
     <Content Include="Areas\Admin\Views\ProductDetail\Partial_DetailColorById.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\SuggestImportWareHouse.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\ImportWareHouseday.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />

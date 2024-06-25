@@ -20,27 +20,37 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
-                IEnumerable<tb_Store> items = db.tb_Store.Where(x=>x.IsStatus==true).OrderByDescending(x => x.StoreId);
-                if (items != null)
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
+                if (item == null)
                 {
-
-
-                    var pageSize = 10;
-                    if (page == null)
-                    {
-                        page = 1;
-                    }
-                    var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-                    items = items.ToPagedList(pageIndex, pageSize);
-                    ViewBag.PageSize = pageSize;
-                    ViewBag.Page = page;
-                    return View(items);
+                    return RedirectToAction("NonRole", "HomePage");
                 }
                 else
                 {
-                    ViewBag.txt = "Không tồn tại sản phẩm";
-                    return View();
+                    IEnumerable<tb_Store> items = db.tb_Store.Where(x => x.IsStatus == true).OrderByDescending(x => x.StoreId);
+                    if (items != null)
+                    {
+
+
+                        var pageSize = 10;
+                        if (page == null)
+                        {
+                            page = 1;
+                        }
+                        var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+                        items = items.ToPagedList(pageIndex, pageSize);
+                        ViewBag.PageSize = pageSize;
+                        ViewBag.Page = page;
+                        return View(items);
+                    }
+                    else
+                    {
+                        ViewBag.txt = "Không tồn tại sản phẩm";
+                        return View();
+                    }
                 }
+               
             }
         }
 

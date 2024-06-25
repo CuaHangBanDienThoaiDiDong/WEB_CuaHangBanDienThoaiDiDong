@@ -1,0 +1,377 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ImportWarehouse>
+<div style="overflow-x:auto;">
+    <b>Số lượng phiếu nhập <span class="text-danger">@ViewBag.Count</span> tìm theo <span class="text-danger">@ViewBag.Content</span> </b>
+    <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+        <thead>
+            <tr class="text-center">
+                <th>Mã</th>
+                <th>Tên kho</th>
+                <th>Nhà cung cấp</th>
+                <th>Số lượng sản phẩm</th>
+                <th>Người nhận</th>
+                <th>Ngày nhận</th>
+                <th>Tác vụ</th>
+            </tr>
+        </thead>
+    </table>
+
+
+    <div style="max-height: 580px; overflow-y: auto;">
+        @if (ViewBag.txt == null)
+        {
+            <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+                <tbody>
+                    @if (ViewBag.txt == null)
+                    {
+                        if (Model != null && Model.Any())
+                        {
+
+                            foreach (var item in Model)
+                            {
+                                <tr class="text-center opacity-100" id="trow_@item.ImportWarehouseId">
+
+
+                                    <td><a href="/admin/Products/Detail/@item.ImportWarehouseId" style="color:black">@item.ImportWarehouseId</a></td>
+                                    <td>@item.tb_Warehouse.tb_Store.Location</td>
+                                    <td>@item.tb_Supplier.Name</td>
+
+                                    <td style="max-width: 50px;" class="text-center">
+                                        @{
+                                            var count = item.tb_ImportWarehouseDetail.Count(x => x.ImportWarehouseId == item.ImportWarehouseId);
+                                        }
+                                        <p class="text-center">@count</p>
+                                    </td>
+
+
+                                    <td class="text-center">@item.CreatedBy</td>
+                                    <td class="text-center">@(item.CreateDate.HasValue ? item.CreateDate.Value.ToString("dd/MM/yyyy") : "Không có dữ liệu")</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary btnInBillLai" data-id="@item.ImportWarehouseId">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                                                <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1" />
+                                                <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                            </svg>
+                                        </button>
+                                        <button class="btn btn-sm btn-success btnViewPhieuNhap" data-id="@item.ImportWarehouseId">Xem</button>
+                                        <button class="btn btn-sm btn-danger btnEditPhieuNhap" data-id="@item.ImportWarehouseId">Cập nhập</button>
+                                    </td>
+                                </tr>
+
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8">Không có bản ghi nào!!!</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr class="text-center text-danger">
+                            <td>@ViewBag.txt</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+
+</div>
+
+
+
+<style>
+    .bg-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        z-index: 1000;
+    }
+
+    #popupView {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        display: none;
+        z-index: 9999;
+    }
+
+    .bg-overlay-edit {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        z-index: 3000;
+    }
+
+    #popupViewEdit {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        display: none;
+        width: auto;
+        z-index: 9999;
+    }
+
+    #notification-container {
+        position: relative;
+        z-index: 9999;
+        display: inline-block;
+        width: 200px;
+        padding: 10px;
+        right: 20px;
+        top: 20px;
+    }
+</style>
+@*strart view*@
+<div class="bg-overlay" id="overlay"></div>
+
+<div id="popupView">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-tools">
+                <div class="btn btnCloseViewPhieuNhaphang">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                        <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="loadDataPhieuNhaphang">
+                <p id="popupContent">Loading...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Én view*@
+
+
+
+@*strart Edir*@
+<div class="bg-overlay-edit" id="overlayeditNewNew"></div>
+
+<div id="popupViewEdit">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-tools">
+                <div class="btn btnCloseEditViewPhieuNhaphang">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                        <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="loadDataEditPhieuNhaphang">
+                <p id="popupContentEdit">Loading...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Xử lý sự kiện khi nút "Cập nhật" được nhấn
+        $('.btnViewPhieuNhap').click(function () {
+            // Lấy ID của phiếu nhập từ thuộc tính data-id
+            var importWarehouseId = $(this).data('id');
+
+            // Hiển thị popup
+            $('#overlay').fadeIn();
+            $('#popupView').fadeIn();
+
+            // Load dữ liệu cho popup, ví dụ AJAX
+            $.ajax({
+                url: '/admin/WareHouseImport/Details/' + importWarehouseId,
+                type: 'GET',
+                success: function (data) {
+                    $('#popupContent').html(data);
+                },
+                error: function () {
+                    $('#popupContent').text('Đã xảy ra lỗi khi tải dữ liệu!');
+                }
+            });
+        });
+        var bg = $(".bg-overlay");
+        bg.on('click', function () {
+            $('#overlay').fadeOut();
+            $('#popupView').fadeOut();
+        });
+        // Xử lý sự kiện khi nút đóng popup được nhấn
+        $('.btnCloseViewPhieuNhaphang').click(function () {
+            // Ẩn popup
+            $('#overlay').fadeOut();
+            $('#popupView').fadeOut();
+        });
+    });
+
+
+    //start view edit
+    $(document).ready(function () {
+        loadSupplierData();
+
+
+        $("#listSupplier").change(function () {
+            var idSupplier = $(this).val();
+            if (idSupplier && idSupplier !== "-Chọn nhà cung cấp-") {
+                $.ajax({
+                    url: '/admin/WareHouseImport/Partial_Supplier',
+                    type: 'GET',
+                    data: { id: idSupplier },
+                    success: function (response) {
+                        $('#load_data_Supplier').html(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error: " + status + " - " + error);
+                        console.error(xhr.responseText);
+                        alert('Đã xảy ra lỗi khi tải thông tin nhà cung cấp: ' + xhr.responseText);
+                    }
+                });
+            }
+        });
+        $('.btnEditPhieuNhap').click(function () {
+            var importWarehouseId = $(this).data('id');
+            $('#overlayeditNewNew').fadeIn();
+            $('#popupViewEdit').fadeIn();
+            $.ajax({
+                url: '/admin/WareHouseImport/Edit/' + importWarehouseId,
+                type: 'GET',
+                success: function (data) {
+                    $('#popupContentEdit').html(data);
+                },
+                error: function () {
+                    $('#popupContentEdit').text('Đã xảy ra lỗi khi tải dữ liệu!');
+                }
+            });
+        });
+        var bg = $(".bg-overlay-edit");
+        bg.on('click', function () {
+            $('#overlayeditNewNew').fadeOut();
+            $('#popupViewEdit').fadeOut();
+        });
+        // Xử lý sự kiện khi nút đóng popup được nhấn
+        $('.btnCloseEditViewPhieuNhaphang').click(function () {
+            // Ẩn popup
+            $('#overlayeditNewNew').fadeOut();
+            $('#popupViewEdit').fadeOut();
+        });
+
+
+
+        $("#listSupplier").change(function () {
+            var idSupplier = $(this).val();
+            if (idSupplier && idSupplier !== "-Chọn nhà cung cấp-") {
+                $.ajax({
+                    url: '/admin/WareHouseImport/Partial_Supplier',
+                    type: 'GET',
+                    data: { id: idSupplier },
+                    success: function (response) {
+                        $('#load_data_Supplier').html(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error: " + status + " - " + error);
+                        console.error(xhr.responseText);
+                        alert('Đã xảy ra lỗi khi tải thông tin nhà cung cấp: ' + xhr.responseText);
+                    }
+                });
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $('.btnInBillLai').on('click', function () {
+            var sellerId = $(this).data('id');
+            $.ajax({
+                url: '/Admin/WareHouseImport/InBillLaiNew/' + sellerId,
+                type: 'GET',
+                success: function (response) {
+                    console.log("Response từ server:", response);
+
+                    if (response.success) {
+                        if (response.Code === 1) {
+
+                            var encodedFilePath = encodeURIComponent(response.FilePath);
+                            window.location.href = '/Admin/WareHouseImport/DownloadInvoice?filePath=' + encodedFilePath;
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
+
+                            Toast.fire({
+                                icon: "success",
+                                title: "Hóa đơn in lại thành công"
+                            });
+                        } else {
+                            handleErrorResponse(response);
+                        }
+                    } else {
+                        handleErrorResponse(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Lỗi khi gọi Ajax:", xhr.responseText);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi...",
+                        text: "Không thể kết nối tới máy chủ. Vui lòng thử lại sau!",
+                    });
+                }
+            });
+        });
+
+    });
+
+
+    function loadSupplierData() {
+        var idSupplier = $("#listSupplier").val();
+        console.log("okkkk123")
+        if (idSupplier !== "-Chọn nhà cung cấp-") {
+            $.ajax({
+                url: '/admin/WareHouseImport/Partial_Supplier',
+                type: 'GET',
+                data: { id: idSupplier },
+                success: function (response) {
+                    $('#load_data_Supplier').html(response);
+                    console.log("thuan ")
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error: " + status + " - " + error);
+                    console.error(xhr.responseText);
+                    alert('Đã xảy ra lỗi khi tải thông tin nhà cung cấp: ' + xhr.responseText);
+                }
+            });
+        }
+
+    }
+    //End view edit
+</script>
+

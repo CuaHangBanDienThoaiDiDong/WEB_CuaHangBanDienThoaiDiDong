@@ -63,6 +63,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 }
                 else
                 {
+                    ViewBag.Count = db.tb_ImportWarehouse.Count();
                     var items = db.tb_Staff.OrderByDescending(x => x.Code).ToList();
                     return View(items);
                 }
@@ -88,6 +89,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 else
                 {
                     var items = db.tb_Staff.OrderByDescending(x => x.Code).ToList();
+                    ViewBag.Count = db.tb_ImportWarehouse.Count();
+
                     return View(items);
                 }
 
@@ -117,7 +120,85 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
 
+        public ActionResult SuggestImportWareHouse(string search)
+        {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var SupplierId = db.tb_Supplier
+          .Where(c => c.Name.Contains(search))
+          .Select(c => c.SupplierId)
+          .ToList();
 
+                var StaffId = db.tb_Staff
+                    .Where(c => c.NameStaff.Contains(search))
+                    .Select(c => c.StaffId)
+                    .ToList();
+
+                var ImportWarehouse = db.tb_ImportWarehouse
+                    .Where(p => p.CreatedBy.Contains(search) ||
+                                SupplierId.Contains((int)p.SupplierId) ||
+                                StaffId.Contains((int)p.StaffId))
+                    .ToList();
+
+
+
+                if (ImportWarehouse.Any())
+                {
+                    var count = ImportWarehouse.Count();
+                    ViewBag.Count = count;
+                    ViewBag.Content = search;
+                    return PartialView(ImportWarehouse);
+                }
+                else
+                {
+                    return PartialView();
+                }
+            }
+            else
+            {
+                return PartialView();
+            }
+        }
+        public ActionResult ImportWareHouseday(DateTime ngaynhap)
+        {
+            DateTime selectedDate = ngaynhap;
+            DateTime startDate = selectedDate.Date;
+            DateTime endDate = startDate.AddDays(1);
+
+            tb_Staff nvSession = (tb_Staff)Session["user"];
+            if (nvSession == null)
+            {
+                return RedirectToAction("NonRole", "HomePage");
+            }
+
+            var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2 || row.FunctionId == 3));
+            if (item == null)
+            {
+                return RedirectToAction("NonRole", "HomePage");
+            }
+
+
+            var importWarehousers = db.tb_ImportWarehouse
+                .Where(o => o.CreateDate >= startDate && o.CreateDate < endDate)
+                .ToList();
+
+            if (importWarehousers != null && importWarehousers.Count > 0)
+            {
+
+                if (item.FunctionId == 2 || item.FunctionId == 1)
+                {
+                    ViewBag.QuanLy = item.FunctionId;
+                }
+
+                ViewBag.Date = ngaynhap;
+                ViewBag.Count = importWarehousers.Count;
+                return PartialView(importWarehousers);
+            }
+            else
+            {
+                return PartialView();
+            }
+        }
         public ActionResult SuggestWareHouseImportCustomer(string search)
         {
             if (!string.IsNullOrEmpty(search))

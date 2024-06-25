@@ -59,6 +59,8 @@
                         @Html.ValidationSummary(true)
                         @Html.HiddenFor(x => x.ProductsId)
                         @Html.HiddenFor(x => x.CreatedDate)
+                        @Html.HiddenFor(x => x.Alias)
+                        @Html.HiddenFor(x => x.ProductCode)
                         <div class="card">
                             <div class="card-header p-2">
                                 <ul class="nav nav-pills">
@@ -74,10 +76,10 @@
                                     <div class="active tab-pane" id="activity">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Tên sản phẩm</label>
-                                            @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                            @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm", id = "Title" })
                                             @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
                                         </div>
-                                        <div class="form-group " style="display:none">
+                                        @*<div class="form-group " style="display:none">
                                             <label for="exampleInputEmail1">Alias</label>
                                             @Html.TextBoxFor(x => x.Alias, new { @class = "form-control", @placeholder = "Alias" })
                                             @Html.ValidationMessageFor(x => x.Alias, null, new { @class = "text-danger" })
@@ -86,26 +88,26 @@
                                             <label for="exampleInputEmail1">SKU</label>
                                             @Html.TextBoxFor(x => x.ProductCode, new { @class = "form-control", @placeholder = "Mã mã phẩm" })
                                             @Html.ValidationMessageFor(x => x.ProductCode, null, new { @class = "text-danger" })
-                                        </div>
+                                        </div>*@
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Loại sản phẩm</label>
-                                            @Html.DropDownListFor(x => x.ProductCategoryId, ViewBag.ProductCategory as SelectList, "-Chọn danh mục sản phẩm-", new { @class = "form-control", @placeholder = "Mã mã phẩm" })
+                                            @Html.DropDownListFor(x => x.ProductCategoryId, ViewBag.ProductCategory as SelectList, "-Chọn danh mục sản phẩm-", new { @class = "form-control", @placeholder = "Mã mã phẩm", id = "ProductCategoryId" })
                                             @Html.ValidationMessageFor(x => x.ProductCategoryId, null, new { @class = "text-danger" })
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Hãng sản xuất</label>
-                                            @Html.DropDownListFor(x => x.ProductCompanyId, ViewBag.ProductCompany as SelectList, "-Chọn hãng sản phẩm-", new { @class = "form-control", @placeholder = "Mã mã phẩm" })
+                                            @Html.DropDownListFor(x => x.ProductCompanyId, ViewBag.ProductCompany as SelectList, "-Chọn hãng sản phẩm-", new { @class = "form-control", @placeholder = "Mã mã phẩm", id = "ProductCompanyId" })
                                             @Html.ValidationMessageFor(x => x.ProductCompanyId, null, new { @class = "text-danger" })
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Mô tả</label>
                                             @*@Html.TextAreaFor(x => x.Description, new { @class = "form-control", @placeholder = "Mã mã phẩm" })
-                                                @Html.ValidationMessageFor(x => x.Description, null, new { @class = "text-danger" })*@
+                                @Html.ValidationMessageFor(x => x.Description, null, new { @class = "text-danger" })*@
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Chi tiết sản phẩm</label>
                                             @*@Html.TextAreaFor(x => x.Detail, new { @class = "form-control", @id = "txtDetail" })
-                                                @Html.ValidationMessageFor(x => x.Detail, null, new { @class = "text-danger" })*@
+                                @Html.ValidationMessageFor(x => x.Detail, null, new { @class = "text-danger" })*@
                                         </div>
 
                                         <div class="row">
@@ -125,7 +127,7 @@
                                             <div class="col-md-12">
                                                 @*<input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />*@
 
-                                              
+
                                             </div>
                                             <div class="col-md-12">
                                                 <table class="table table-hover" id="tbAnhSanPham">
@@ -146,7 +148,7 @@
                                                                 var imgSrc = item.Image != null ? "data:image;base64," + Convert.ToBase64String(item.Image) : "";
                                                                 <tr>
                                                                     <td class="text-center">@i</td>
-                                                                    
+
                                                                     <td class="text-center" style="width: 30%;">
                                                                         <label class="" id="lbAnhCu" style="display: none ">Ảnh mới:</label>
                                                                         <img src="data:image;base64,@Convert.ToBase64String(item.Image)" alt="Current Image" id="currentImage" style="width: 30%; height: 30%; " />
@@ -159,9 +161,9 @@
                                                                         </div>
                                                                     </td>
                                                                     <td class="text-center" style="width: 30%;">
-                                                                        
+
                                                                         <div class="form-group text-center newImage">
-                                                                            <label class=""id="lbImagePreview"style="display: none ">Ảnh mới:</label>
+                                                                            <label class="" id="lbImagePreview" style="display: none ">Ảnh mới:</label>
                                                                             <img id="newImagePreview" src="#" alt="New Image Preview" style="display:none;width:50%;height:50%; " />
                                                                         </div>
                                                                         <div class="form-group text-center">
@@ -174,7 +176,7 @@
 
                                                                 </tr>
 
-                                                               
+
                                                                 i++;
                                                             }
                                                         }
@@ -195,23 +197,23 @@
                                             <div class="form-group row">
                                                 <label for="inputName" class="col-sm-2 col-form-label">SEO Title</label>
                                                 @*<div class="col-sm-10">
-                                                        @Html.TextBoxFor(x => x.SeoTitle, new { @class = "form-control", @placeholder = "SeoTitle" })
-                                                        @Html.ValidationMessageFor(x => x.SeoTitle, null, new { @class = "text-danger" })
-                                                    </div>*@
+                                        @Html.TextBoxFor(x => x.SeoTitle, new { @class = "form-control", @placeholder = "SeoTitle" })
+                                        @Html.ValidationMessageFor(x => x.SeoTitle, null, new { @class = "text-danger" })
+                                    </div>*@
                                             </div>
                                             <div class="form-group row">
                                                 <label for="inputEmail" class="col-sm-2 col-form-label">SeoKeywords</label>
                                                 @*<div class="col-sm-10">
-                                                        @Html.TextBoxFor(x => x.SeoKeywords., new { @class = "form-control", @placeholder = "SeoKeywords" })
-                                                        @Html.ValidationMessageFor(x => x.SeoKeywords, null, new { @class = "text-danger" })
-                                                    </div>*@
+                                        @Html.TextBoxFor(x => x.SeoKeywords., new { @class = "form-control", @placeholder = "SeoKeywords" })
+                                        @Html.ValidationMessageFor(x => x.SeoKeywords, null, new { @class = "text-danger" })
+                                    </div>*@
                                             </div>
                                             <div class="form-group row">
                                                 <label for="inputName2" class="col-sm-2 col-form-label">SeoDescription</label>
                                                 @*<div class="col-sm-10">
-                                                        @Html.TextBoxFor(x => x.SeoDescription, new { @class = "form-control", @placeholder = "SeoDescription" })
-                                                        @Html.ValidationMessageFor(x => x.SeoDescription, null, new { @class = "text-danger" })
-                                                    </div>*@
+                                        @Html.TextBoxFor(x => x.SeoDescription, new { @class = "form-control", @placeholder = "SeoDescription" })
+                                        @Html.ValidationMessageFor(x => x.SeoDescription, null, new { @class = "text-danger" })
+                                    </div>*@
                                             </div>
 
                                         </form>
@@ -227,25 +229,25 @@
                                             <div class="row">
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1">Hệ điều hành:</label>
-                                                    @Html.TextBoxFor(x => x.OperatingSystem, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.TextBoxFor(x => x.OperatingSystem, new { @class = "form-control", @placeholder = "Tên sản phẩm", id = "OperatingSystem" })
                                                     @Html.ValidationMessageFor(x => x.OperatingSystem, null, new { @class = "text-danger" })
 
                                                 </div>
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1"> CPU:</label>
 
-                                                    @Html.TextBoxFor(x => x.CPU, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.TextBoxFor(x => x.CPU, new { @class = "form-control", @placeholder = "CPU sản phẩm", id = "CPU" })
                                                     @Html.ValidationMessageFor(x => x.CPU, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1">Tốc độ CPU:</label>
 
-                                                    @Html.TextBoxFor(x => x.CPUspeed, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.TextBoxFor(x => x.CPUspeed, new { @class = "form-control", @placeholder = "Tốc dộc CPU sản phẩm", id = "CPUspeed" })
                                                     @Html.ValidationMessageFor(x => x.CPUspeed, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1"> GPU:</label>
-                                                    @Html.TextBoxFor(x => x.GPU, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.TextBoxFor(x => x.GPU, new { @class = "form-control", @placeholder = "GPU sản phẩm", id = "GPU" })
                                                     @Html.ValidationMessageFor(x => x.GPU, null, new { @class = "text-danger" })
                                                 </div>
 
@@ -258,26 +260,26 @@
                                             <div class="row">
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1">Mạng di động:</label>
-                                                    @Html.TextBoxFor(x => x.MobileNetwork, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.TextBoxFor(x => x.MobileNetwork, new { @class = "form-control", @placeholder = "Mạng di động", id = "MobileNetwork" })
                                                     @Html.ValidationMessageFor(x => x.MobileNetwork, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1">SIM:</label>
-                                                    @Html.TextBoxFor(x => x.Sim, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.TextBoxFor(x => x.Sim, new { @class = "form-control", @placeholder = "Tên sản phẩm", id = "Sim" })
                                                     @Html.ValidationMessageFor(x => x.Sim, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-3">
 
                                                     <label for="exampleInputEmail1">Wifi:</label>
 
-                                                    @Html.TextBoxFor(x => x.Wifi, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.TextBoxFor(x => x.Wifi, new { @class = "form-control", @placeholder = "Tên sản phẩm", id = "Wifi" })
                                                     @Html.ValidationMessageFor(x => x.Wifi, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-3">
                                                     <label for="exampleInputEmail1">GPS:</label>
                                                     @*@Html.TextAreaFor(x => x.GPS, new { @class = "form-control", @id = "txtDetail" })
-                                                        @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })*@
-                                                    @Html.TextBoxFor(x => x.GPS, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                        @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })*@
+                                                    @Html.TextBoxFor(x => x.GPS, new { @class = "form-control", @placeholder = "Tên sản phẩm", id = "GPS" })
                                                     @Html.ValidationMessageFor(x => x.GPS, null, new { @class = "text-danger" })
                                                 </div>
 
@@ -288,17 +290,17 @@
                                             <div class="row">
                                                 <div class="col-4">
                                                     <label for="exampleInputEmail1">Bluetooth:</label>
-                                                    @Html.TextBoxFor(x => x.Bluetooth, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.TextBoxFor(x => x.Bluetooth, new { @class = "form-control", @placeholder = "Tên sản phẩm", id = "Bluetooth" })
                                                     @Html.ValidationMessageFor(x => x.Bluetooth, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-4">
                                                     <label for="exampleInputEmail1">Cổng kết nối/sạc:</label>
-                                                    @Html.TextBoxFor(x => x.Connector, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.TextBoxFor(x => x.Connector, new { @class = "form-control", @placeholder = "Tên sản phẩm", id = "Connector" })
                                                     @Html.ValidationMessageFor(x => x.Connector, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-4">
                                                     <label for="exampleInputEmail1">Jack tai nghe:</label>
-                                                    @Html.TextBoxFor(x => x.Headphonejack, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.TextBoxFor(x => x.Headphonejack, new { @class = "form-control", @placeholder = "Tên sản phẩm", id = "Headphonejack" })
                                                     @Html.ValidationMessageFor(x => x.Headphonejack, null, new { @class = "text-danger" })
                                                 </div>
 
@@ -315,7 +317,7 @@
 
                                                 <div class="col-6">
                                                     <label for="exampleInputEmail1">Loại pin:</label>
-                                                    @Html.TextBoxFor(x => x.BatteryType, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.TextBoxFor(x => x.BatteryType, new { @class = "form-control", @placeholder = "Loại pin", id = "BatteryType" })
                                                     @Html.ValidationMessageFor(x => x.BatteryType, null, new { @class = "text-danger" })
                                                 </div>
 
@@ -324,13 +326,13 @@
                                                 <div class="col-6">
                                                     <label for="exampleInputEmail1">Công nghệ pin:</label>
                                                     @*@Html.TextAreaFor(x => x.CongNghePin, new { @class = "form-control", @id = "txtDetail" })
-                                                        @Html.ValidationMessageFor(x => x.CongNghePin, null, new { @class = "text-danger" })*@
-                                                    @Html.TextBoxFor(x => x.BatteryTechnology, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                        @Html.ValidationMessageFor(x => x.CongNghePin, null, new { @class = "text-danger" })*@
+                                                    @Html.TextBoxFor(x => x.BatteryTechnology, new { @class = "form-control", @placeholder = "Công nghệ pin", id = "BatteryTechnology" })
                                                     @Html.ValidationMessageFor(x => x.BatteryTechnology, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-6">
                                                     <label for="exampleInputEmail1">Hỗ trợ sạc:</label>
-                                                    @Html.TextBoxFor(x => x.ChargingSupport, new { @class = "form-control", @placeholder = "Tên sản phẩm" })
+                                                    @Html.TextBoxFor(x => x.ChargingSupport, new { @class = "form-control", @placeholder = "Hỗ trợ sạc", id = "ChargingSupport" })
                                                     @Html.ValidationMessageFor(x => x.ChargingSupport, null, new { @class = "text-danger" })
 
                                                 </div>
@@ -365,6 +367,175 @@
 
 @section scripts {
     <script>
+
+        function validateForm() {
+            var isValid = true;
+
+            // Kiểm tra trường Title
+            if (!$('#Title').val().trim()) {
+                $('#Title').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                isValid = false;
+            } else {
+                $('#Title').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+            }
+
+           
+
+            // Kiểm tra dropdown ProductCategoryId
+            if (!$('#ProductCategoryId').val()) {
+                $('#ProductCategoryId').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                isValid = false;
+            } else {
+                $('#ProductCategoryId').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+            }
+
+            // Kiểm tra dropdown ProductCompanyId
+            if (!$('#ProductCompanyId').val()) {
+                $('#ProductCompanyId').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                isValid = false;
+            } else {
+                $('#ProductCompanyId').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+            }
+
+            // Kiểm tra trường Alias (nếu có)
+            if ($('#OperatingSystem').length > 0) {
+                if (!$('#OperatingSystem').val().trim()) {
+                    $('#OperatingSystem').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $('#OperatingSystem').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            }
+            if ($('#CPU').length > 0) {
+                if (!$('#CPU').val().trim()) {
+                    $('#CPU').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $('#CPU').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            }
+
+            if ($('#CPUspeed').length > 0) {
+                if (!$('#CPUspeed').val().trim()) {
+                    $('#CPUspeed').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $('#CPUspeed').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            }
+            if ($('#GPU').length > 0) {
+                if (!$('#GPU').val().trim()) {
+                    $('#GPU').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $('#GPU').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            }
+            if ($('#MobileNetwork').length > 0) {
+                if (!$('#MobileNetwork').val().trim()) {
+                    $('#MobileNetwork').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $('#MobileNetwork').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            }
+            if ($('#Sim').length > 0) {
+                if (!$('#Sim').val().trim()) {
+                    $('#Sim').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $('#Sim').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            }
+            if ($('#Wifi').length > 0) {
+                if (!$('#Wifi').val().trim()) {
+                    $('#Wifi').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $('#Wifi').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            }
+            if ($('#GPS').length > 0) {
+                if (!$('#GPS').val().trim()) {
+                    $('#GPS').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $('#GPS').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            }
+            if ($('#Bluetooth').length > 0) {
+                if (!$('#Bluetooth').val().trim()) {
+                    $('#Bluetooth').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $('#Bluetooth').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            }
+            if ($('#Connector').length > 0) {
+                if (!$('#Connector').val().trim()) {
+                    $('#Connector').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $('#Connector').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            }
+            if ($('#Headphonejack').length > 0) {
+                if (!$('#Headphonejack').val().trim()) {
+                    $('#Headphonejack').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $('#Headphonejack').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            }
+            if ($('#BatteryTechnology').length > 0) {
+                if (!$('#BatteryTechnology').val().trim()) {
+                    $('#BatteryTechnology').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $('#BatteryTechnology').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            }
+            if ($('#BatteryType').length > 0) {
+                if (!$('#BatteryType').val().trim()) {
+                    $('#BatteryType').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $('#BatteryType').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            }
+            if ($('#ChargingSupport').length > 0) {
+                if (!$('#ChargingSupport').val().trim()) {
+                    $('#ChargingSupport').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $('#ChargingSupport').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            }
+            $('.row:first-child input[type="text"], .row:first-child textarea').each(function () {
+                if (!$(this).val().trim()) {
+                    $(this).addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    $(this).removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+            });
+
+            return isValid;
+        }
+
+        $('form').submit(function () {
+            if (!validateForm()) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi...",
+                    text: "Vui lòng nhập đầy đủ thông tin",
+                });
+                return false; // Ngăn không cho form submit nếu thông tin không hợp lệ
+            }
+        });
+
+
+
         function previewImage(event) {
             var reader = new FileReader();
             reader.onload = function () {

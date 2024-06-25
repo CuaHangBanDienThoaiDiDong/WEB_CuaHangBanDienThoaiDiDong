@@ -4,8 +4,8 @@
 @using PagedList.Mvc;
 
 
-<div class="card">
-    <div class="card-header">
+
+    @*<div class="card-header">
         <div class="row">
             <div class="col-3">
                 <div class="d-flex align-items-center  border border-2 rounded-2">
@@ -29,19 +29,21 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card-body" id="loadDataSuggestWareHouseImport">
+    </div>*@
+    <div class="" id="loadDataSuggestWareHouseImport">
         <table class="table table-hover table-striped">
             <thead>
                 <tr class="text-center">
-                    <th><input type="checkbox" id="SelectAll" /></th>
+                    
                     <th>STT</th>
                     <th>Mã</th>
                     <th>Tên kho</th>
                     <th>Nhà cung cấp</th>
+                    <th>Số lượng sản phẩm</th>
                     <th>Người nhận</th>
                     <th>Ngày nhận</th>
                     <th>Tác vụ</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -53,13 +55,20 @@
                         foreach (var item in Model)
                         {
                             <tr class="text-center opacity-100" id="trow_@item.ImportWarehouseId">
-                                <td><input type="checkbox" class="cbkItem" value="@item.ImportWarehouseId" /></td>
+
                                 <td>@i</td>
                                 <td><a href="/admin/Products/Detail/@item.ImportWarehouseId" style="color:black">@item.ImportWarehouseId</a></td>
                                 <td>@item.tb_Warehouse.tb_Store.Location</td>
                                 <td>@item.tb_Supplier.Name</td>
-                                <td>@item.CreatedBy</td>
-                                <td>@(item.CreateDate.HasValue ? item.CreateDate.Value.ToString("dd/MM/yyyy") : "Không có dữ liệu")</td>
+                                <td style="max-width: 50px;"class="text-center">
+                                    @{
+                                        var count = item.tb_ImportWarehouseDetail.Count(x => x.ImportWarehouseId == item.ImportWarehouseId);
+                                    }
+                                    <p class="text-center">@count</p>
+                                </td>
+
+                                <td class="text-center">@item.CreatedBy</td>
+                                <td class="text-center">@(item.CreateDate.HasValue ? item.CreateDate.Value.ToString("dd/MM/yyyy") : "Không có dữ liệu")</td>
                                 <td>
                                     <button class="btn btn-sm btn-primary btnInBillLai" data-id="@item.ImportWarehouseId">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
@@ -128,7 +137,7 @@
     <!-- /.card-body -->
     <div class="card-footer"></div>
     <!-- /.card-footer-->
-</div>
+
 
 
 <style>

@@ -383,7 +383,11 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
         public ActionResult Logout()
         {
-            Session.Clear();
+            if (Session["user"] != null|| Session["userimg"] != null )
+            {
+                Session["user"] = null;
+                Session["userimg"] = null;
+            }
 
             return RedirectToAction("DangNhap", "Account");
         }

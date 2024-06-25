@@ -1,32 +1,30 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Products>
 <div style="overflow-x:auto;">
     <b>Số lượng <span class="text-danger">@ViewBag.Count</span> tìm theo <span class="text-danger">@ViewBag.Content</span> </b>
-    <table class="table table-hover ">
+    <table class="table table-hover" style="table-layout: fixed; width: 100%;">
         <thead>
             <tr class="text-center">
-                <th><input type="checkbox" id="SelectAll" /></th>
-
-                <th>Hình ảnh</th>
-                <th style="max-width:20px">Dòng sản phẩm</th>
+                <th style="width: 10%;">Hình ảnh</th>
+                <th >Dòng sản phẩm</th>
                 <th>Loại sản phẩm</th>
-                <th>Hãng</th>
-                <th>Dung Lượng  </th>
-                <th>Màu</th>
-                <th>Hiển thị</th>
-                <th>Trang chủ</th>
-                <th>Hot</th>
-                <th>Nổi bật</th>
-                <th>Khuyến mãi</th>
-                <th>Tác vụ</th>
+                <th >Hãng</th>
+                <th >Dung Lượng</th>
+                <th >Màu</th>
+                <th class="text-center">Hiển thị</th>
+                <th class="text-center">Trang chủ</th>
+                <th class="text-center" >Hot</th>
+                <th class="text-center">Nổi bật</th>
+                <th class="text-center">Khuyến mãi</th>
+                <th class="text-center">Tác vụ</th>
             </tr>
         </thead>
-
     </table>
+
 
     <div style="max-height: 580px; overflow-y: auto;">
         @if (ViewBag.txt == null)
         {
-            <table class="table table-hover">
+            <table class="table table-hover" style="table-layout: fixed; width: 100%;">
                 <tbody>
                     @if (Model != null && Model.Any())
                     {
@@ -39,10 +37,7 @@
                             var strCheckIsFeature = item.IsFeature.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
                             var strCheckSale = item.IsSale.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
 
-
-
                             var checkProductDetail = item.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == item.ProductsId);
-
 
                             byte[] strImg = null;
                             var CheckImage = item.tb_ProductImage.SingleOrDefault(x => x.IsDefault == true);
@@ -59,17 +54,13 @@
                                 imgSrc = $"data:image;base64,{base64String}";
                             }
 
-
                             <tr class="text-center" id="trow_@item.ProductsId">
-                               
-
                                 <td><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="100" /></td>
-                                <td> <a href="/admin/Products/Detail/@item.ProductsId" class="text-black" style="color:orange"> @item.Title</a>  </td>
-                                <td style="max-width:20px">@item.tb_ProductCategory.Title</td>
-                                <td>
-                                    @item.tb_ProductCompany.Title
-                                    @*@Html.Action("Partail_ProductDetail", "Product", new { id = item.ProductId })*@
+                                <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    <a href="/admin/Products/Detail/@item.ProductsId" class="text-black">@item.Title</a>
                                 </td>
+                                <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" class="text-center">@item.tb_ProductCategory.Title</td>
+                                <td>@item.tb_ProductCompany.Title</td>
                                 <td>
                                     @if (checkProductDetail == null)
                                     {
@@ -78,19 +69,13 @@
                                                 <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9s-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12m-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4s1.2-.036 1.725-.098m4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257z" />
                                             </svg>
                                         </a>
-
                                     }
                                     else
                                     {
                                         <div class="loadCapacity" id="loadCapacity" data-product-id="@item.ProductsId"></div>
-
-
                                         @Html.Action("Partial_CapacityByProductsId", "ProductDetail", new { id = item.ProductsId })
-
                                         <a href="/admin/ProductDetail/add/@item.ProductsId" style="margin-top:-20px">Thêm</a>
-
                                     }
-
                                 </td>
                                 <td>
                                     @if (checkProductDetail == null)
@@ -100,27 +85,16 @@
                                                 <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9s-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12m-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4s1.2-.036 1.725-.098m4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257z" />
                                             </svg>
                                         </a>
-
                                     }
                                     else
                                     {
                                         <div class="loadColor" data-product-id="@item.ProductsId">
                                             @Html.Action("Partial_DetailColorById", "ProductDetail", new { id = item.ProductsId })
                                         </div>
-
                                     }
-
-
-
                                 </td>
-
-
                                 @if (checkProductDetail != null)
                                 {
-
-
-
-
                                     <td class="text-center">
                                         <a href='#' data-id="@item.ProductsId" class="btnIsActive">@Html.Raw(strCheckIsActive)</a>
                                     </td>
@@ -139,68 +113,36 @@
                                 }
                                 else
                                 {
-                                    <td class="text-center">
-                                        <i class='fas fa-times text-danger'></i>
-                                    </td>
-                                    <td class="text-center">
-                                        <i class='fas fa-times text-danger'></i>
-                                    </td>
-                                    <td class="text-center">
-                                        <i class='fas fa-times text-danger'></i>
-                                    </td>
-                                    <td class="text-center">
-                                        <i class='fas fa-times text-danger'></i>
-                                    </td>
-                                    <td class="text-center">
-                                        <i class='fas fa-times text-danger'></i>
-                                    </td>
-
+                                    <td class="text-center"><i class='fas fa-times text-danger'></i></td>
+                                    <td class="text-center"><i class='fas fa-times text-danger'></i></td>
+                                    <td class="text-center"><i class='fas fa-times text-danger'></i></td>
+                                    <td class="text-center"><i class='fas fa-times text-danger'></i></td>
+                                    <td class="text-center"><i class='fas fa-times text-danger'></i></td>
                                 }
-
                                 <td>
-
-                                    <div class="row">
-                                        <div class="col-md-6 mb-2">
-                                            <a href="/admin/Products/Detail/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary btn-block">
-                                                Xem
-                                            </a>
+                                    
+                                        <div class="col-md-12 mb-2">
+                                            <a href="/admin/Products/Detail/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary btn-block">Xem</a>
                                         </div>
-                                        <div class="col-md-6 mb-2">
-                                            <a href="/admin/Products/Edit/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-danger btn-block">
-                                                Cập nhật
-                                            </a>
+                                    <br />
+                                        <div class="col-md-12 mb-2">
+                                            <a href="/admin/Products/Edit/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-danger btn-block">Cập nhật</a>
                                         </div>
-                                    </div>
-
+                                   
                                 </td>
                             </tr>
-
-
-
-                           
                         }
                     }
                     else
                     {
                         <tr>
-                            <td colspan="4">Không có bản ghi nào!!!</td>
+                            <td colspan="12" class="text-center">Không có bản ghi nào!!!</td>
                         </tr>
                     }
                 </tbody>
             </table>
         }
-        else
-        {
-            <table>
-                <tbody>
-                    <tr class="text-center text-danger">
-                        <td>@ViewBag.txt</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-        }
-        </div>
+    </div>
 
 
 </div>

@@ -39,8 +39,45 @@
 
 
 <section class="content">
-    <div class="col-12" id="loaddataWareHouseImport">
+  
 
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Danh sách @ViewBag.Title</h3>
+            <br />
+            <span><label>Tổng số @ViewBag.Title :</label> @ViewBag.Count</span>
+
+
+            <div class="row">
+                <div class="col-3">
+                    <div class="d-flex align-items-center  border border-2 rounded-2">
+                        <span class="">
+                            <label class="text-danger">Ngày nhập:</label>
+                            <input type="datetime-local" style="border:none" id="ngaynhapWareHouseImport" onchange="getImportWareHouseToDay()" />
+                        </span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex align-items-center border border-2 rounded-2">
+                        <div class="input-group ">
+                            <input type="text" class="form-control " style="border:none" id="searchWareHouseImport" placeholder="Nhập Số điện thoại, mã đơn hàng, tên nhà cung cấp">
+                            <button class="btn" type="button" id="clearInputWareHouseImport">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-octagon" viewBox="0 0 16 16">
+                                    <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1z" />
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="card-body" id="loaddataWareHouseImport">
+            <p >Loading...</p>
+        </div>
     </div>
 </section>
 
@@ -48,13 +85,17 @@
 
 @section scripts{
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function LoadIndex(page) {
             $.ajax({
-         /*       url: '/Admin/Bill/Partial_IndexBill',*/
+                /*       url: '/Admin/Bill/Partial_IndexBill',*/
                 url: '/Admin/WareHouseImport/Partial_WareHouseImportIndex',
                 type: 'GET',
                 data: { page: page },
+                beforeSend: function () {
+                    $('#loaddataWareHouseImport').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+                },
                 success: function (rs) {
                     $('#loaddataWareHouseImport').html(rs);
                 },
@@ -65,14 +106,6 @@
         }
         var originalContent;
         $(document).ready(function () {
-
-
-            //setInterval(function () {
-            //    /*ShowCountOrderNew();*/
-            //    LoadIndex(1);
-            //}, 10);
-          
-
             LoadIndex(1);
 
             $(document).on('click', '.pagination a', function (e) {
@@ -80,8 +113,65 @@
                 var page = $(this).attr('data-page');
                 LoadIndex(page);
             });
+
+
+
+
+
+            $('#clearInputWareHouseImport').click(function () {
+                $("#searchWareHouseImport").val(""); // Xóa nội dung trong ô tìm kiếm
+                var page = $(this).attr('data-page');
+                LoadIndex(page);
+            });
+
+            $('#searchWareHouseImport').on('input', function () {
+                var keyword = $(this).val().trim();
+                if (keyword.length > 5) {
+                    console.log(keyword);
+                    console.log("tim phim nhap");
+                    $.ajax({
+                        url: '/Admin/WareHouseImport/SuggestImportWareHouse',
+                        type: 'GET',
+                        data: { search: keyword },
+                        beforeSend: function () {
+                            $('#loaddataWareHouseImport').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+                        },
+                        success: function (response) {
+                            $('#loaddataWareHouseImport').html(response);
+                        },
+                        error: function () {
+                            // Xử lý lỗi nếu có
+                            console.log('Đã xảy ra lỗi khi tải dữ liệu.');
+                        }
+                    });
+                } else {
+                    $("#searchWareHouseImport").val(""); // Xóa nội dung trong ô tìm kiếm
+                    var page = $(this).attr('data-page');
+                    LoadIndex(page);
+                }
+            });
+
         });
-      
+
+        function getImportWareHouseToDay() {
+            var ngaynhap = $('#ngaynhapWareHouseImport').val(); // Sử dụng jQuery để lấy giá trị của input datetime-local
+            $.ajax({
+                url: '/Admin/WareHouseImport/ImportWareHouseday', // Địa chỉ URL của action trong controller
+                type: 'GET',
+                data: { ngaynhap: ngaynhap },
+                beforeSend: function () {
+                    $('#loaddataWareHouseImport').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+                },
+                success: function (data) {
+                    $('#loaddataWareHouseImport').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+                }
+            });
+        }
+
+
     </script>
 }
 

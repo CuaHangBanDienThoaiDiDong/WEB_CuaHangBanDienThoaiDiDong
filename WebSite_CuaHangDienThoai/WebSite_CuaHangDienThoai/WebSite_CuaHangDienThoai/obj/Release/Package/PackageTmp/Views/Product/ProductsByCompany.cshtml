@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Products>
 @{
-    ViewBag.Title = "Dòng "+ViewBag.Category +" "+ViewBag.Company;
+    ViewBag.Title = "Dòng " + ViewBag.Category + " " + ViewBag.Company;
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
 
@@ -40,66 +40,6 @@
 
 
 <div class="container product_section_container">
-    @*<div class="row pt-2">
-            <div class="col-lg-8 ">
-                <div class="swiper mySwiper">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="row d-flex align-items-center">
-                                <div class="col-12">
-                                    <div class="image-holder">
-                                        <img src="~/images/background/Redmi-Note-13-1200-300-1200x300.png" class="w-100 , h-100" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="row d-flex align-items-center">
-                                <div class="col-12">
-                                    <div class="image-holder">
-                                        <img src="~/images/background/Redmi-Note-13-1200-300-1200x300.png" class="w-100 , h-100" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="row d-flex align-items-center">
-                                <div class="col-12">
-                                    <div class="image-holder">
-                                        <img src="~/images/background/Redmi-Note-13-1200-300-1200x300.png" class="w-100 , h-100" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-pagination"></div>
-                </div>
-
-            </div>
-            <div class="col-4 ">
-                <div class="row ">
-                    <div class="col-md-12 bg-blue">
-                        <img src="~/images/background/sticky-a58-390x97.png" class="w-100" style="width:auto" />
-                    </div>
-
-                </div>
-                <div class="row pt-3">
-                    <div class="col-md-12 bg-body">
-
-                        <img src="~/images/background/sticky-m54-390x97.png" />
-                    </div>
-
-
-                </div>
-
-            </div>
-        </div>*@
-
-
-
-
-
-
     <div class="row pb-5">
         <div class="col product_section clearfix">
 
@@ -107,9 +47,9 @@
 
             <div class="breadcrumbs d-flex flex-row align-itemss-center">
                 @*<ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li class="active"><a href="/"><i class="fa fa-angle-right" aria-hidden="true"></i>Men's</a></li>
-                    </ul>*@
+                <li><a href="index.html">Home</a></li>
+                <li class="active"><a href="/"><i class="fa fa-angle-right" aria-hidden="true"></i>Men's</a></li>
+            </ul>*@
             </div>
 
             <!-- Sidebar -->
@@ -155,30 +95,36 @@
 
                             <div class="product_sorting_container product_sorting_container_top">
                                 <div class="row">
+
                                     <div class="col-6">
-                                        <div class=" d-flex flex-row align-itemss-center">
-                                            <ul class="product_sorting">
-                                                <li style="color: white; background: #323232;">
-                                                    <span class="type_sorting_text">Phân loại</span>
-                                                    <i class="fa fa-angle-down"></i>
-                                                    <ul class="sorting_type text-center">
-                                                        <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Mặc định</span></li>
-                                                        <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Giá tiền</span></li>
-                                                        <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Tên sản phẩm</span></li>
+                                        <div class="row">
+                                            <div class=" col-md-12">
+                                                <div class=" d-flex flex-row align-itemss-center">
+                                                    <ul class="product_sorting">
+                                                        <li style="color: white; background: #323232;">
+                                                            <span class="type_sorting_text">Phân loại</span>
+                                                            <i class="fa fa-angle-down"></i>
+                                                            <ul class="sorting_type text-center">
+                                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Mặc định</span></li>
+                                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Giá tiền</span></li>
+                                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Tên sản phẩm</span></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li style="color: white; background: #323232;">
+                                                            <span>Hiển thị</span>
+                                                            <span class="num_sorting_text">6</span>
+                                                            <i class="fa fa-angle-down"></i>
+                                                            <ul class="sorting_num">
+                                                                <li class="num_sorting_btn"><span>6</span></li>
+                                                                <li class="num_sorting_btn"><span>12</span></li>
+                                                                <li class="num_sorting_btn"><span>24</span></li>
+                                                            </ul>
+                                                        </li>
                                                     </ul>
-                                                </li>
-                                                <li style="color: white; background: #323232;">
-                                                    <span>Hiển thị</span>
-                                                    <span class="num_sorting_text">6</span>
-                                                    <i class="fa fa-angle-down"></i>
-                                                    <ul class="sorting_num">
-                                                        <li class="num_sorting_btn"><span>6</span></li>
-                                                        <li class="num_sorting_btn"><span>12</span></li>
-                                                        <li class="num_sorting_btn"><span>24</span></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
+                                                </div>
+                                            </div>
                                         </div>
+
                                     </div>
                                     <div class="col-3">
 
@@ -190,96 +136,94 @@
                             <div class="breadcrumbs d-flex flex-row align-itemss-center"></div>
                             <div class="product-grid rounded">
 
-                                @if (ViewBag.Count != null)
+                                <!-- Product 1 -->
+                                @if (Model != null && Model.Any())
                                 {
-                                    if (Model != null && Model.Any())
+                                    foreach (var item in Model)
                                     {
-                                        foreach (var item in Model)
+                                        //var strImg = "";
+                                        //var img = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault);
+
+
+
+
+                                        byte[] strImg = null;
+                                        var CheckImage = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault == true);
+
+                                        if (CheckImage != null)
                                         {
-                                            byte[] strImg = null;
-                                            var CheckImage = item.tb_ProductImage.FirstOrDefault(x => x.IsDefault == true);
+                                            strImg = CheckImage.Image;
+                                        }
 
-                                            if (CheckImage != null)
+                                        string imgSrc = "";
+                                        if (strImg != null && strImg.Length > 0)
+                                        {
+                                            string base64String = Convert.ToBase64String(strImg);
+                                            imgSrc = $"data:image;base64,{base64String}";
+                                        }
+
+
+
+
+                                        var checkDetail = item.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == item.ProductsId);
+                                        if (checkDetail != null)
+                                        {
+                                            if (imgSrc != null)
                                             {
-                                                strImg = CheckImage.Image;
-                                            }
+                                                <a class="" href="/chi-tiet/@item.Alias-p@(item.ProductsId)">
+                                                    <div class="product-item men rounded-3  @item.tb_ProductCategory " data-id="@item.ProductsId" style="background: #323232; padding-left: -20px; margin-top: 5px;  ">
+                                                        <div class=" discount p-3 " style="padding:50px  ;">
+                                                            <div class="product_image pt-3 d-flex justify-content-center">
+                                                                <img src="@imgSrc" alt="@item.Title" class="w-75 h-75">
+                                                            </div>
+                                                            <div class="favorite favorite_left"></div>
+                                                            <div class="product_bubble_right product_bubble product_bubble_red d-flex flex-column align-items-center loadPhanTramSale " id="loadPhanTramSale_@item.ProductsId" data-id="@item.ProductsId" style="visibility: hidden;">
 
-                                            string imgSrc = "";
-                                            if (strImg != null && strImg.Length > 0)
-                                            {
-                                                string base64String = Convert.ToBase64String(strImg);
-                                                imgSrc = $"data:image;base64,{base64String}";
-                                            }
-
-                                            var checkDetail = item.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == item.ProductsId);
-                                            if (checkDetail != null)
-                                            {
-                                                if (imgSrc != null)
-                                                {
-
-                                                    <a class="product-item men rounded-3  @item.tb_ProductCategory " href="/chi-tiet/@item.Alias-p@(item.ProductsId)" style="color:white ">
-                                                        <div class=" @item.tb_ProductCategory " data-id="@item.ProductsId" style="background: #323232; padding-left: -20px; margin-top: 5px;  ">
-                                                            <div class=" discount p-3 " style="padding:50px  ;">
-                                                                <div class="product_image pt-3 d-flex justify-content-center">
-                                                                    <img src="@imgSrc" alt="@item.Title" class="w-75 h-75">
-                                                                </div>
-                                                                <div class="favorite favorite_left"></div>
-                                                                <div class="product_bubble_right product_bubble product_bubble_red d-flex flex-column align-items-center loadPhanTramSale " id="loadPhanTramSale_@item.ProductsId" data-id="@item.ProductsId" style="visibility: hidden;">
-
-                                                                </div>
-
-                                                                <div class="product_info">
-                                                                    <h6 class="product_name"style="color:white">
-
-                                                                       
-                                                                        @item.Title
-                                                                    </h6>
-                                                                    @Html.Action("Partail_ProductDetailById", "ProductDetail", new { id = item.ProductsId })
-
-                                                                    @*Hiển thị giá tiền theo cấu hình*@
-                                                                    <div class="loadPrice" id="loadPrice_@item.ProductsId" data-id="@item.ProductsId"></div>
-                                                                </div>
                                                             </div>
 
+                                                            <div class="product_info">
+                                                                <h6 class="product_name text-white">
+
+
+                                                                    @item.Title
+
+
+                                                                </h6>
+                                                                @Html.Action("Partail_ProductDetailById", "ProductDetail", new { id = item.ProductsId })
+
+                                                                @*Hiển thị giá tiền theo cấu hình*@
+                                                                <div class="loadPrice" id="loadPrice_@item.ProductsId" data-id="@item.ProductsId"></div>
+                                                            </div>
                                                         </div>
-                                                    </a>
-                                            
-                                                }
+
+                                                    </div>
+                                                </a>
+
                                             }
 
 
-
-
+                                            else
+                                            {
+                                                <p>Không tồn tài bảng ghi nào !!!</p>
+                                            }
                                         }
+
+                                        else
+                                        {
+                                            <p>Không tồn tài bảng ghi nào !!!</p>
+                                        }
+
+
+
                                     }
                                 }
-                                else
-                                {
-                                    <p> Không tìm thấy bảng ghi !!!</p>
-                                }
 
 
-
-                                                </div>
+                            </div>
 
                             <!-- Product Sorting -->
 
-                            <div class="product_sorting_container product_sorting_container_bottom clearfix">
-                                <ul class="product_sorting" style="color:white">
-                                    <li>
-                                        <span>Hiện:</span>
-                                        <span class="num_sorting_text">04</span>
-                                        <i class="fa fa-angle-down"></i>
-                                        <ul class="sorting_num">
-                                            <li class="num_sorting_btn"><span>01</span></li>
-                                            <li class="num_sorting_btn"><span>02</span></li>
-                                            <li class="num_sorting_btn"><span>03</span></li>
-                                            <li class="num_sorting_btn"><span>04</span></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-
-                            </div>
+                           
 
                         </div>
                     </div>
@@ -292,12 +236,12 @@
 
 
 <script>
-        var swiper = new Swiper(".mySwiper", {
-            pagination: {
-                el: ".swiper-pagination",
-                dynamicBullets: true,
-            },
-        });
+    var swiper = new Swiper(".mySwiper", {
+        pagination: {
+            el: ".swiper-pagination",
+            dynamicBullets: true,
+        },
+    });
 </script>
 
 
@@ -309,37 +253,37 @@
 
     <script src="~/Content/assets/js/categories_custom.js"></script>
     <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var swiper = new Swiper('.mySwiper', {
-                    spaceBetween: 30,
-                    centeredSlides: true,
-                    autoplay: {
-                        delay: 1000, // Thời gian chờ là 1000 ms = 1 giây
-                        disableOnInteraction: false, // Tiếp tục autoplay khi tương tác với slider
-                    },
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                    },
-                });
+        document.addEventListener('DOMContentLoaded', function () {
+            var swiper = new Swiper('.mySwiper', {
+                spaceBetween: 30,
+                centeredSlides: true,
+                autoplay: {
+                    delay: 1000, // Thời gian chờ là 1000 ms = 1 giây
+                    disableOnInteraction: false, // Tiếp tục autoplay khi tương tác với slider
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
             });
+        });
     </script>
 
     <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                var productImages = document.querySelectorAll(".product_image");
-                productImages.forEach(function (productImage) {
-                    productImage.addEventListener("mouseover", function () {
-                        var img = this.querySelector("img");
-                        img.style.transform = "translateY(-10px)";
-                    });
+        document.addEventListener("DOMContentLoaded", function () {
+            var productImages = document.querySelectorAll(".product_image");
+            productImages.forEach(function (productImage) {
+                productImage.addEventListener("mouseover", function () {
+                    var img = this.querySelector("img");
+                    img.style.transform = "translateY(-10px)";
+                });
 
-                    productImage.addEventListener("mouseout", function () {
-                        var img = this.querySelector("img");
-                        img.style.transform = "translateY(0)";
-                    });
+                productImage.addEventListener("mouseout", function () {
+                    var img = this.querySelector("img");
+                    img.style.transform = "translateY(0)";
                 });
             });
+        });
     </script>
 }
 

@@ -1,195 +1,148 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Products>
-
-<table class="table table-hover ">
-    <thead>
-        <tr class="text-center">
-            <th><input type="checkbox" id="SelectAll" /></th>
-            <th>STT</th>
-            <th>Hình ảnh</th>
-            <th>Dòng sản phẩm</th>
-            <th>Loại sản phẩm</th>
-            <th>Hãng</th>
-            <th>Dung Lượng  </th>
-            <th>Màu</th>
-            <th>Hiển thị</th>
-            <th>Trang chủ</th>
-            <th>Hot</th>
-            <th>Nổi bật</th>
-            <th>Khuyến mãi</th>
-            <th>Tác vụ</th>
-
-
-
-        </tr>
-    </thead>
-    @if (ViewBag.txt == null)
-    {
-        <tbody>
-            @if (Model != null && Model.Any())
-            {
-               
-                foreach (var item in Model)
-                {
-                    var strCheckIsActive = item.IsActive.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
-                    var strCheckHome = item.IsHome.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
-                    var strCheckHot = item.IsHot.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
-                    var strCheckIsFeature = item.IsFeature.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
-                    var strCheckSale = item.IsSale.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
-
-
-
-                    var checkProductDetail = item.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == item.ProductsId);
-
-
-                    byte[] strImg = null;
-                    var CheckImage = item.tb_ProductImage.SingleOrDefault(x => x.IsDefault == true);
-
-                    if (CheckImage != null)
-                    {
-                        strImg = CheckImage.Image;
-                    }
-
-                    string imgSrc = "";
-                    if (strImg != null && strImg.Length > 0)
-                    {
-                        string base64String = Convert.ToBase64String(strImg);
-                        imgSrc = $"data:image;base64,{base64String}";
-                    }
-
-
-                    <tr class="text-center" id="trow_@item.ProductsId">
-                 
-                        <td><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="100" /></td>
-                        <td> <a href="/admin/Products/Detail/@item.ProductsId" class="text-black" style="color:orange"> @item.Title</a>  </td>
-                        <td>@item.tb_ProductCategory.Title</td>
-                        <td>
-                            @item.tb_ProductCompany.Title
-                            @*@Html.Action("Partail_ProductDetail", "Product", new { id = item.ProductId })*@
-                        </td>
-                        <td>
-                            @if (checkProductDetail == null)
-                            {
-                                <a href="/admin/ProductDetail/add/@item.ProductsId" class="text-black">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:orangered" fill="currentColor" class="bi bi-cone-striped" viewBox="0 0 16 16">
-                                        <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9s-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12m-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4s1.2-.036 1.725-.098m4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257z" />
-                                    </svg>
-                                </a>
-
-                            }
-                            else
-                            {
-                                <div class="loadCapacity" id="loadCapacity" data-product-id="@item.ProductsId"></div>
-
-
-                                @Html.Action("Partial_CapacityByProductsId", "ProductDetail", new { id = item.ProductsId })
-
-                                <a href="/admin/ProductDetail/add/@item.ProductsId" style="margin-top:-20px">Thêm</a>
-
-                            }
-
-                        </td>
-                        <td>
-                            @if (checkProductDetail == null)
-                            {
-                                <a href="/admin/ProductDetail/add/@item.ProductsId" class="text-black">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:orangered" fill="currentColor" class="bi bi-cone-striped" viewBox="0 0 16 16">
-                                        <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9s-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12m-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4s1.2-.036 1.725-.098m4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257z" />
-                                    </svg>
-                                </a>
-
-                            }
-                            else
-                            {
-                                <div class="loadColor" data-product-id="@item.ProductsId">
-                                    @Html.Action("Partail_ColorByProductsId", "ProductDetail", new { id = item.ProductsId })
-                                </div>
-
-                            }
-
-
-
-                        </td>
-
-
-                        @if (checkProductDetail != null)
-                        {
-
-
-
-
-                            <td class="text-center">
-                                <a href='#' data-id="@item.ProductsId" class="btnIsActive">@Html.Raw(strCheckIsActive)</a>
-                            </td>
-                            <td class="text-center">
-                                <a href='#' data-id="@item.ProductsId" class="btnIsHome">@Html.Raw(strCheckHome)</a>
-                            </td>
-                            <td class="text-center">
-                                <a href='#' data-id="@item.ProductsId" class="btnIsHot">@Html.Raw(strCheckHot)</a>
-                            </td>
-                            <td class="text-center">
-                                <a href='#' data-id="@item.ProductsId" class="btnIsFeature">@Html.Raw(strCheckIsFeature)</a>
-                            </td>
-                            <td class="text-center">
-                                <a href='#' data-id="@item.ProductsId" class="btnIsSale">@Html.Raw(strCheckSale)</a>
-                            </td>
-                        }
-                        else
-                        {
-                            <td class="text-center">
-                                <i class='fas fa-times text-danger'></i>
-                            </td>
-                            <td class="text-center">
-                                <i class='fas fa-times text-danger'></i>
-                            </td>
-                            <td class="text-center">
-                                <i class='fas fa-times text-danger'></i>
-                            </td>
-                            <td class="text-center">
-                                <i class='fas fa-times text-danger'></i>
-                            </td>
-                            <td class="text-center">
-                                <i class='fas fa-times text-danger'></i>
-                            </td>
-
-                        }
-
-                        <td>
-
-                            <a href="/admin/Products/Detail/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">
-                                Xem <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                                </svg>
-                            </a>
-                            <a href="/admin/Products/Edit/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm  " style="background-color:orange">
-                                Sửa<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001" />
-                                </svg>
-                            </a>
-                        </td>
-                    </tr>
-
-
-
-                    
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="4">Không có bản ghi nào!!!</td>
-                </tr>
-            }
-        </tbody>
-
-    }
-    else
-    {
-        <tbody>
-            <tr class="text-center text-danger">
-                <td>@ViewBag.txt</td>
+<div style="overflow-x:auto;">
+    <b>Số lượng <span class="text-danger">@ViewBag.Count</span> tìm theo <span class="text-danger">@ViewBag.Content</span> </b>
+    <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+        <thead>
+            <tr class="text-center">
+                <th style="width: 10%;">Hình ảnh</th>
+                <th >Dòng sản phẩm</th>
+                <th>Loại sản phẩm</th>
+                <th >Hãng</th>
+                <th >Dung Lượng</th>
+                <th >Màu</th>
+                <th style="width: 5%;">Hiển thị</th>
+                <th style="width: 5%;">Trang chủ</th>
+                <th style="width: 5%;">Hot</th>
+                <th style="width: 5%;">Nổi bật</th>
+                <th style="width: 5%;">Khuyến mãi</th>
+                <th style="width: 10%;">Tác vụ</th>
             </tr>
-        </tbody>
-    }
+        </thead>
+    </table>
 
-</table>
+
+    <div style="max-height: 580px; overflow-y: auto;">
+        @if (ViewBag.txt == null)
+        {
+            <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+                        foreach (var item in Model)
+                        {
+                            var strCheckIsActive = item.IsActive.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                            var strCheckHome = item.IsHome.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                            var strCheckHot = item.IsHot.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                            var strCheckIsFeature = item.IsFeature.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                            var strCheckSale = item.IsSale.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+
+                            var checkProductDetail = item.tb_ProductDetail.FirstOrDefault(x => x.ProductsId == item.ProductsId);
+
+                            byte[] strImg = null;
+                            var CheckImage = item.tb_ProductImage.SingleOrDefault(x => x.IsDefault == true);
+
+                            if (CheckImage != null)
+                            {
+                                strImg = CheckImage.Image;
+                            }
+
+                            string imgSrc = "";
+                            if (strImg != null && strImg.Length > 0)
+                            {
+                                string base64String = Convert.ToBase64String(strImg);
+                                imgSrc = $"data:image;base64,{base64String}";
+                            }
+
+                            <tr class="text-center" id="trow_@item.ProductsId">
+                                <td><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="100" /></td>
+                                <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    <a href="/admin/Products/Detail/@item.ProductsId" class="text-black">@item.Title</a>
+                                </td>
+                                <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" class="text-center">@item.tb_ProductCategory.Title</td>
+                                <td>@item.tb_ProductCompany.Title</td>
+                                <td>
+                                    @if (checkProductDetail == null)
+                                    {
+                                        <a href="/admin/ProductDetail/add/@item.ProductsId" class="text-black">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:orangered" fill="currentColor" class="bi bi-cone-striped" viewBox="0 0 16 16">
+                                                <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9s-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12m-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4s1.2-.036 1.725-.098m4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257z" />
+                                            </svg>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <div class="loadCapacity" id="loadCapacity" data-product-id="@item.ProductsId"></div>
+                                        @Html.Action("Partial_CapacityByProductsId", "ProductDetail", new { id = item.ProductsId })
+                                        <a href="/admin/ProductDetail/add/@item.ProductsId" style="margin-top:-20px">Thêm</a>
+                                    }
+                                </td>
+                                <td>
+                                    @if (checkProductDetail == null)
+                                    {
+                                        <a href="/admin/ProductDetail/add/@item.ProductsId" class="text-black">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color:orangered" fill="currentColor" class="bi bi-cone-striped" viewBox="0 0 16 16">
+                                                <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9s-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12m-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4s1.2-.036 1.725-.098m4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257z" />
+                                            </svg>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <div class="loadColor" data-product-id="@item.ProductsId">
+                                            @Html.Action("Partial_DetailColorById", "ProductDetail", new { id = item.ProductsId })
+                                        </div>
+                                    }
+                                </td>
+                                @if (checkProductDetail != null)
+                                {
+                                    <td class="text-center">
+                                        <a href='#' data-id="@item.ProductsId" class="btnIsActive">@Html.Raw(strCheckIsActive)</a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href='#' data-id="@item.ProductsId" class="btnIsHome">@Html.Raw(strCheckHome)</a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href='#' data-id="@item.ProductsId" class="btnIsHot">@Html.Raw(strCheckHot)</a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href='#' data-id="@item.ProductsId" class="btnIsFeature">@Html.Raw(strCheckIsFeature)</a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href='#' data-id="@item.ProductsId" class="btnIsSale">@Html.Raw(strCheckSale)</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="text-center"><i class='fas fa-times text-danger'></i></td>
+                                    <td class="text-center"><i class='fas fa-times text-danger'></i></td>
+                                    <td class="text-center"><i class='fas fa-times text-danger'></i></td>
+                                    <td class="text-center"><i class='fas fa-times text-danger'></i></td>
+                                    <td class="text-center"><i class='fas fa-times text-danger'></i></td>
+                                }
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-2">
+                                            <a href="/admin/Products/Detail/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary btn-block">Xem</a>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <a href="/admin/Products/Edit/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-danger btn-block">Cập nhật</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="12" class="text-center">Không có bản ghi nào!!!</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+
+</div>
+

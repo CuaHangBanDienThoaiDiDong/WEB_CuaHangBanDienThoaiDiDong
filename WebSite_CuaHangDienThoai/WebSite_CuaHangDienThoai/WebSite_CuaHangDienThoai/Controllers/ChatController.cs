@@ -62,7 +62,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                         CustomerId = cmd.CustomerId,
                         StaffId = null,
                         MessageContent = cmd.Content,
-                        Timestamp = cmd.Timestamp, // Lấy thời gian từ bảng tb_CustomerMessageDetail
+                        Timestamp = cmd.Timestamp, 
                         IsRead = cmd.IsRead,
                         CustomerName = c.CustomerName,
                         CustomerImage = c.Image

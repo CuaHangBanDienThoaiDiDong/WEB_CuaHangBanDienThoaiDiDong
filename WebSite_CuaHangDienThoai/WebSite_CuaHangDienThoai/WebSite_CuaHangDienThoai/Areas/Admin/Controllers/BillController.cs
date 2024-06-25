@@ -63,7 +63,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 }
                 else
                 {
-
+                    ViewBag.Count = db.tb_Seller.Count();
                     return View();
                 }
             }
@@ -101,31 +101,54 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
-               
-                IEnumerable<tb_Seller> items = db.tb_Seller.OrderByDescending(x => x.SellerId);
 
-                if (items.Any()) // Check if there are any items
+
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                if (nvSession == null)
                 {
-                    var pageSize = 10;
-                    if (page == null)
-                    {
-                        page = 1;
-                    }
-                    var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-                    items = items.ToPagedList(pageIndex, pageSize);
-                    ViewBag.PageSize = pageSize;
-                    ViewBag.Page = page;
-                    return PartialView(items);
+                    return RedirectToAction("NonRole", "HomePage");
+                }
 
-                    // Return partial view with paginated data
-                  
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2 || row.FunctionId == 4));
+                if (item == null)
+                {
+                    return RedirectToAction("NonRole", "HomePage");
                 }
                 else
                 {
-                    // No items found
-                    ViewBag.txt = "Không tồn tại sản phẩm";
-                    return PartialView(); // Return partial view without data
+
+
+                    IEnumerable<tb_Seller> items = db.tb_Seller.OrderByDescending(x => x.SellerId);
+
+                    if (items.Any()) // Check if there are any items
+                    {
+                        var pageSize = 10;
+                        if (page == null)
+                        {
+                            page = 1;
+                        }
+                        var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+                        items = items.ToPagedList(pageIndex, pageSize);
+                        if (item.FunctionId == 2 || item.FunctionId == 1) 
+                        {
+                            ViewBag.QuanLy = item.FunctionId;
+                        }
+                        ViewBag.PageSize = pageSize;
+                        ViewBag.Page = page;
+                        return PartialView(items);
+
+                        // Return partial view with paginated data
+
+                    }
+                    else
+                    {
+                        // No items found
+                        ViewBag.txt = "Không tồn tại sản phẩm";
+                        return PartialView(); // Return partial view without data
+                    }
                 }
+
+
             }
         }
 
@@ -144,8 +167,25 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     .Where(s => customerIds.Contains(s.CustomerId) || s.Code.Contains(search))
                     .ToList();
 
+
+
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                if (nvSession == null)
+                {
+                    return RedirectToAction("NonRole", "HomePage");
+                }
+
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2 || row.FunctionId == 4));
+                if (item == null)
+                {
+                    return RedirectToAction("NonRole", "HomePage");
+                }
                 if (sellers.Any())
                 {
+                    if (item.FunctionId == 2 || item.FunctionId == 1)
+                    {
+                        ViewBag.QuanLy = item.FunctionId;
+                    }
                     ViewBag.Count = sellers.Count; // Số lượng hóa đơn
                     ViewBag.Content = search;
                     return PartialView(sellers); // Trả về danh sách hóa đơn
@@ -169,15 +209,33 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         {
             DateTime selectedDate = ngayxuat;
             DateTime startDate = selectedDate.Date;
-            DateTime endDate = startDate.AddDays(1); 
+            DateTime endDate = startDate.AddDays(1);
 
-          
+            tb_Staff nvSession = (tb_Staff)Session["user"];
+            if (nvSession == null)
+            {
+                return RedirectToAction("NonRole", "HomePage");
+            }
+
+            var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2 || row.FunctionId == 4));
+            if (item == null)
+            {
+                return RedirectToAction("NonRole", "HomePage");
+            }
+
+
             var orders = db.tb_Seller
                 .Where(o => o.CreatedDate >= startDate && o.CreatedDate < endDate)
                 .ToList();
 
             if (orders != null && orders.Count > 0)
             {
+
+                if (item.FunctionId == 2 || item.FunctionId == 1)
+                {
+                    ViewBag.QuanLy = item.FunctionId;
+                }
+
                 ViewBag.Date = ngayxuat;
                 ViewBag.Count = orders.Count;
                 return PartialView(orders);
@@ -552,140 +610,6 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
 
-
-
-
-        //Strart In Bill
-
-
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(Admin_TokenEditBill item)
-        //{
-        //    using (var dbContextTransaction = db.Database.BeginTransaction())
-        //    {
-        //        try
-        //        {
-        //            if (Session["user"] == null)
-        //            {
-        //                return RedirectToAction("DangNhap", "Account");
-        //            }
-
-        //            if (!ModelState.IsValid)
-        //            {
-        //                return Json(new { success = false, code = -1 });
-        //            }
-
-        //            var sessionKey = "Admin_TokenEditBill_" + item.SellerId;
-        //            var viewModel = Session[sessionKey] as Admin_TokenEditBill;
-
-        //            if (viewModel == null || viewModel.Items.Count < 1)
-        //            {
-        //                return Json(new { success = false, code = viewModel == null ? -3 : -4 });
-        //            }
-
-        //            var nvSession = (tb_Staff)Session["user"];
-        //            var seller = db.tb_Seller.Find(item.SellerId);
-
-        //            if (seller == null)
-        //            {
-        //                return Json(new { success = false, code = -2 });
-        //            }
-
-        //            decimal totalAmount = viewModel.Items.Sum(detail => detail.Price * detail.Quantity);
-
-        //            seller.TotalAmount = totalAmount;
-        //            seller.Code = item.Code;
-        //            seller.CustomerId = item.CustomerId;
-        //            seller.Phone = item.Phone;
-        //            seller.Quantity = item.Quantity;
-        //            seller.CreatedBy = item.CreatedBy;
-        //            seller.CreatedDate = item.CreatedDate;
-        //            seller.TypePayment = item.TypePayment;
-        //            seller.StaffId = item.StaffId;
-        //            seller.Modifiedby = nvSession.NameStaff;
-        //            seller.ModifiedDate = DateTime.Now;
-        //            seller.CustomerId = item.CustomerId;
-
-        //            var newCustomer = db.tb_Customer.FirstOrDefault(c => c.PhoneNumber == item.Phone);
-        //            if (newCustomer != null)
-        //            {
-        //                seller.CustomerId = newCustomer.CustomerId;
-        //            }
-        //            else
-        //            {
-        //                return Json(new { success = false, code = -6 });
-        //            }
-
-        //            db.Entry(seller).State = EntityState.Modified;
-        //            db.SaveChanges();
-
-        //            var existingDetails = db.tb_SellerDetail.Where(d => d.SellerId == seller.SellerId).ToList();
-        //            var newDetails = viewModel.Items;
-
-        //            foreach (var detail in existingDetails.ToList())
-        //            {
-        //                if (!viewModel.Items.Any(x => x.Id == detail.Id))
-        //                {
-        //                    if (detail.ProductDetailId != null)
-        //                    {
-        //                        var existingDetail = existingDetails.FirstOrDefault(d => d.ProductDetailId == detail.ProductDetailId);
-        //                        if (existingDetail != null)
-        //                        {
-        //                            existingDetail.Price = detail.Price;
-        //                            existingDetail.Quantity = detail.Quantity;
-        //                            db.Entry(existingDetail).State = EntityState.Modified;
-        //                        }
-        //                        else
-        //                        {
-        //                            return Json(new { success = false, code = -3 });
-        //                        }
-
-        //                        var warehouseDetail = db.tb_WarehouseDetail.FirstOrDefault(w => w.ProductDetailId == detail.ProductDetailId);
-        //                        if (warehouseDetail != null)
-        //                        {
-        //                            warehouseDetail.QuanTity += detail.Quantity;
-        //                            db.Entry(warehouseDetail).State = EntityState.Modified;
-        //                        }
-        //                        else
-        //                        {
-        //                            return Json(new { success = false, code = -3 });
-        //                        }
-
-        //                        db.tb_SellerDetail.Remove(detail);
-        //                    }
-        //                    else
-        //                    {
-        //                        return Json(new { success = false, code = -3 });
-        //                    }
-        //                }
-        //            }
-
-        //            db.SaveChanges();
-        //            dbContextTransaction.Commit();
-        //            string invoicePath = ExportInvoice(item.SellerId);
-
-        //            if (!string.IsNullOrEmpty(invoicePath))
-        //            {
-        //                return Json(new { success = true, Code = 1, FilePath = invoicePath });
-        //            }
-        //            else
-        //            {
-        //                return Json(new { success = false ,Code =-10});//Lỗi in bill
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            dbContextTransaction.Rollback();
-        //            return Json(new { success = false, code = -5, message = ex.Message });
-        //        }
-        //    }
-        //}
-
-
-
-
         //Strart In Bill
 
         [HttpGet]
@@ -738,7 +662,11 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     {
                         return null;
                     }
-
+                    var staff=db.tb_Staff.Find(seller.StaffId);
+                    if (staff == null)
+                    {
+                        return null;
+                    }
                     try
                     {
                         string templatePath = Server.MapPath("~/Content/templates/HoaDon.html");
@@ -749,6 +677,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                         htmlContent = htmlContent.Replace("#{{CreatedDate}}", seller.CreatedDate.ToString("dd/MM/yyyy"));
                         htmlContent = htmlContent.Replace("#{{CustomerName}}", customer.CustomerName);
                         htmlContent = htmlContent.Replace("#{{Phone}}", seller.Phone);
+                        htmlContent = htmlContent.Replace("#{{CreatedBy}}", staff.NameStaff);
 
                         // Lấy chi tiết đơn hàng
                         var sellerDetail = db.tb_SellerDetail

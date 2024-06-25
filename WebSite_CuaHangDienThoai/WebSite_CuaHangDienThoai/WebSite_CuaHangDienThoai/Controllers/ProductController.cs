@@ -155,9 +155,14 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
         public ActionResult Partial_ItemsByCateId()
         {
-            var items = db.tb_Products.Where(x => x.IsHome == true && x.IsActive == true).Take(13).ToList();
+            var items = db.tb_Products
+                          .Where(x => x.IsHome == true && x.IsActive == true)
+                          .OrderBy(x => Guid.NewGuid()) // Sắp xếp ngẫu nhiên
+                          .Take(13)
+                          .ToList();
             return PartialView(items);
         }
+
 
         public ActionResult Partial_ItemsByCateIdTest()
         {

@@ -103,17 +103,18 @@
                                 <td>@item.tb_Products.tb_ProductCategory.Title</td>
                                 <td>@item.tb_Products.tb_ProductCompany.Title</td>
                                 <td>
+                                 
                                     @if (item.Capacity >= 999)
                                     {
-                                        <span>1Tb</span>
+                                        <span>   @item.Ram/1Tb</span>
                                     }
                                     else if (item.Capacity == 2999)
                                     {
-                                        <span>2Tb</span>
+                                <span>   @item.Ram/2Tb</span>
                                     }
                                     else
                                     {
-                                        <span>@item.Capacity</span>
+                                <span>   @item.Ram/@item.Capacity GB</span>
                                     }
                                 </td>
                                 <td>@item.Color</td>

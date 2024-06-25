@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -31,6 +32,8 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     var items = db.tb_Message.OrderByDescending(x => x.MessageId).ToList();
                     return View(items);
                 }
+
+                
             }
 
         }

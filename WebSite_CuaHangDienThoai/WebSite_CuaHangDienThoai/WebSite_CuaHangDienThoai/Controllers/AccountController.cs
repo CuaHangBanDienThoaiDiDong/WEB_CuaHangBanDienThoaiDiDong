@@ -404,7 +404,17 @@ namespace WebSite_CuaHangDienThoai.Controllers
         public ActionResult LogOut()
         {
             // Xóa thông tin trong session
-            Session.Clear();
+            //Session.Clear();
+          
+            if (Session["user"] != null || Session["Client"] != null || Session["CustomerId"] != null || Session["CustomerName"] != null || Session["Email"] != null || Session["img"] != null)
+            {
+                Session["user"] = null;
+                Session["Client"] = null;
+                Session["CustomerId"] = null;
+                Session["CustomerName"] = null;
+                Session["Email"] = null;
+                Session["img"] = null;
+            }
 
             // Xóa cookie chứa token
             if (Request.Cookies["access_token"] != null)
