@@ -1,26 +1,27 @@
 ﻿@model List<WebSite_CuaHangDienThoai.Models.Admin_ChatMessageViewModel>
-<div class="py-2 px-4 border-bottom d-none d-lg-block">
+
+<!--<div class="py-2 px-4 border-bottom d-none d-lg-block">
     <div class="d-flex align-items-center py-1">
         <div class="position-relative">
             <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
         </div>
         <div class="flex-grow-1 pl-3">
-            @if (Model != null && Model.Any())
-            {
-                <strong>@Model.FirstOrDefault()?.Customer.CustomerName</strong>
-            }
+            if (Model != null && Model.Any())
+            {-->
+                @*var name = Model.FirstOrDefault()?.Customer.CustomerName;
+                <strong>@name</strong>*@
+            <!--}-->
             @*<div class="text-muted small"><em>Typing...</em></div>*@
-        </div>
-
+        <!--</div>
     </div>
-</div>
+</div>-->
 
-<div class="position-relative">
-    <div class="chat-messages p-4" id="chatMessages" style="overflow-y: auto; max-height: 600px;">
+<div class="chat-messages-container " id="loadContenMessGet">
+   
         @if (Model != null && Model.Any())
         {
-            <div class="chat-messages p-4">
-                @foreach (var message in Model)
+          
+                foreach (var message in Model)
                 {
                     <div class="chat-message @(message.StaffId.HasValue ? "chat-message-right" : "chat-message-left") pb-4">
                         <div>
@@ -33,27 +34,23 @@
                         </div>
                     </div>
                 }
-            </div>
-
-
+          
         }
         else
         {
             <div>Không có tin nhắn</div>
         }
-    </div>
+   
 </div>
 
 @if (ViewBag.Messid != null)
 {
-    <div class="flex-grow-0 py-3 px-4 border-top">
+    @*<div class="flex-grow-0 py-3 px-4 border-top">
         <div class="input-group">
-
             <textarea class="form-control" id="ContentMess" placeholder="Nội dung tin nhắn"></textarea>
-            <button class="btn btn-primary  btnsend" id="sendMessageBtn" data-MessId="@ViewBag.Messid">Gửi</button>
+            <button class="btn btn-primary btnsend" id="sendMessageBtn" data-MessId="@ViewBag.Messid">Gửi</button>
         </div>
-    </div>
+    </div>*@
 }
-
 
 

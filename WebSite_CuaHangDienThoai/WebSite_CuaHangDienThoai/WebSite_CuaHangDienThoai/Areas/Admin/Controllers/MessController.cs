@@ -39,6 +39,31 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
 
         }
+        public ActionResult Paritial_Left()
+        {
+
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
+                if (item == null)
+                {
+                    return RedirectToAction("NonRole", "HomePage");
+                }
+                else
+                {
+                    var items = db.tb_Message.OrderByDescending(x => x.MessageId).ToList();
+                    return PartialView(items);
+                }
+
+
+            }
+        }
 
         public ActionResult Partial_MessIndex()
         {
@@ -150,7 +175,7 @@ Customer=db.tb_Customer.FirstOrDefault(x=>x.CustomerId == cmd.CustomerId)
                     {
                         MessageId = MessageId,
                         StaffId = (int)currentStaffId,
-                        Content = Content,
+                        Content = Content.Trim(),
                         Timestamp = timestamp,
                         IsRead = false
                     };

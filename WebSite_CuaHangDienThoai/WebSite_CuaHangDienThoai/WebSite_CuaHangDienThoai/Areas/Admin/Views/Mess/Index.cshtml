@@ -44,134 +44,155 @@
         <div class="card">
             <div class="row g-0">
                 <div class="col-12 col-lg-5 col-xl-3 border-right">
-                    @*@Html.Action("Partail_AllMess", "Mess")*@
 
-                    @if (Model != null)
-                    {
-                        <div class="px-4 d-none d-md-block">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-grow-1">
-                                    <input type="text" class="form-control my-3" placeholder="Tìm kiếm...">
-                                </div>
+                    <div class="px-4 d-none d-md-block">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <input type="text" class="form-control my-3" placeholder="Tìm kiếm...">
                             </div>
                         </div>
-                        <div id="loadMess">
-                            @foreach (var item in Model)
-                            {
-                                var messCustomer = item.tb_CustomerMessageDetail.FirstOrDefault(x => x.MessageId == item.MessageId);
-                                if (messCustomer != null)
-                                {
-                                    <a href="#" class="list-group-item list-group-item-action border-0 show-messages" data-detailid="@item.MessageId">
-                                        <div class="badge bg-success float-right">5</div>
-                                        <div class="d-flex align-items-start">
-                                            @if (messCustomer.tb_Customer.Image != null)
-                                            {
-                                                <img src="data:image;base64,@Convert.ToBase64String(messCustomer.tb_Customer.Image)" alt="@messCustomer.tb_Customer.CustomerName" class="rounded-circle mr-1" width="40" height="40">
-                                            }
-                                            else
-                                            {
-                                                <img src="~/images/Logo/LogoWebpng.png" class="rounded-circle mr-1" alt="@messCustomer.tb_Customer.CustomerName" width="40" height="40">
-                                            }
-                                            <div class="flex-grow-1 ml-3">
-                                                @messCustomer.tb_Customer.CustomerName
-                                            </div>
-                                        </div>
-                                        <hr />
-                                    </a>
-                                }
-                            }
-
-                        </div>
+                    </div>
 
 
-
-
-                    }
-                    else
-                    {
-                        <p class="text-danger">Không tồn tại bảng ghi !!!</p>
-                    }
+                    <div id=" MessLeft" style="overflow-y: auto; max-height: 600px; scroll-behavior: smooth;">
+                        @Html.Action("Paritial_Left", "Mess");
+                    </div>
 
 
                     <hr class="d-block d-lg-none mt-1 mb-0">
                 </div>
                 <div class="col-12 col-lg-7 col-xl-9">
-                    <div >
-                        <p id="chatMessages" >Loading...</p>
-                    </div>
-                   
 
+                    <div class="py-2 px-4 border-bottom d-none d-lg-block">
+                        <div class="d-flex align-items-center py-1">
+                            <div class="position-relative">
                           
+                                <img src="~/images/Logo/logoWEnMew.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+                            </div>
+                            <div class="flex-grow-1 pl-3">
+                                <strong>
+                                    <a href="/trang-chu" style="color: red; font-family: Poppins-Regular; ">LTD<span style="color: black; font-family: Poppins-Regular; ">MiniStore</span></a>
+                                </strong>
 
-                      
-                    
-                    @*<div class="flex-grow-0 py-3 px-4 border-top">
-                        <div class="input-group">
-
-                            <textarea class="form-control" id="ContentMess" placeholder="Nội dung tin nhắn"></textarea>
-                            <button class="btn btn-primary  btnsend"id="sendMessageBtn" data-MessId="@item">Gửi</button>
+                                <div class="text-muted small"><em>Kênh hỗ trợ tư vấn </em></div>
+                            </div>
                         </div>
-                    </div>*@
+                    </div>
 
+
+
+                    <div id="loadContenMess" style="overflow-y: auto; max-height: 600px; scroll-behavior: smooth;">
+                        <div class="text-center">
+                            <h2>
+                                <a href="/trang-chu" style="color: red; ">LTD<span style="color: black; font-family: Poppins-Regular; ">MiniStore</span></a>
+                            </h2>
+
+                            <div class="text-muted ">Kênh hỗ trợ tư vấn </div>
+                        </div>
+                    </div>
+                    <div class="flex-grow-0 py-3 px-4 border-top" id="ContentMessBorder" style="display:none">
+                        <div class="input-group">
+                            <textarea class="form-control" id="ContentMess" placeholder="Nội dung tin nhắn"></textarea>
+                            <button class="btn btn-primary btnsend" id="sendMessageBtn">Gửi</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
 @section scripts {
     <script>
-        $(document).ready(function () {
-            // Function to load messages for a specific detailId
-            function loadMessage(detailId) {
-                $.ajax({
-                    url: '/admin/Mess/GetChatMessages',
-                    type: 'GET',
-                    data: { messageId: detailId },
-                    success: function (response) {
-                        $('#chatMessages').html(response);
-                    },
-                    error: function () {
-                        alert('Có lỗi xảy ra khi tải tin nhắn.');
-                    }
-                });
+        var sendingMessage = false;
+        var currentDetailId = null; 
+        var messageInterval = null;
+        function scrollToBottom() {
+            var chatMessages = document.getElementById("loadContenMess");
+            if (chatMessages) {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
             }
+        }
+        function loadMessage(detailId) {
+            $.ajax({
+                url: '/admin/Mess/GetChatMessages',
+                type: 'GET',
+                data: { messageId: detailId },
+                success: function (response) {
+                    $('#loadContenMess').html(response);
+                    scrollToBottom(); // Scroll to bottom after loading messages
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading messages:', error);
+                   
+                }
+            });
+        }
 
-            function sendMessage() {
+        // Function to send a message
+        function sendMessage(messageId, message) {
+            $.ajax({
+                url: '/admin/Mess/SendMessage',
+                type: 'POST',
+                data: { MessageId: messageId, Content: message },
+                success: function (response) {
+                    $('#ContentMess').val(''); // Clear textarea after sending message
+                    scrollToBottom(); // Scroll to bottom after sending message
+                    loadMessage(currentDetailId);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Có lỗi xảy ra khi gửi tin nhắn:', error);
+                    alert('Có lỗi xảy ra khi gửi tin nhắn.');
+                }
+            });
+        }
+        $(document).ready(function () {
+            $(document).on('click', '.show-messages', function (e) {
+                e.preventDefault();
+                var detailId = $(this).data('detailid');
+                currentDetailId = detailId;
+
+                if (messageInterval) {
+                    clearInterval(messageInterval);
+                }
+
+                loadMessage(detailId);
+                $('#ContentMessBorder').show();
+                $('#sendMessageBtn').attr('data-MessId', detailId);
+
+                messageInterval = setInterval(function () {
+                    loadMessage(currentDetailId);
+                }, 1000);
+                scrollToBottom();
+            })
+            $(document).on('click', '#sendMessageBtn', function () {
                 var message = $('#ContentMess').val(); 
-                var messageId = $('#sendMessageBtn').data('messid'); 
+                var messageId = $(this).data('messid');
+                console.log("Message: ", message);
+                console.log("MessageId: ", messageId);
 
+                // Gửi yêu cầu Ajax đến server
                 $.ajax({
                     url: '/admin/Mess/SendMessage',
                     type: 'POST',
-                    data: { MessageId: messageId, Content: message }, 
+                    data: { MessageId: messageId, Content: message },
                     success: function (response) {
-                        $('#ContentMess').val(''); 
-                        scrollToBottom();
+                        console.log("Server response: ", response);
+                        if (response.success) {
+                            $('#ContentMess').val(''); // Xóa nội dung tin nhắn sau khi gửi thành công
+                            scrollToBottom(); // Cuộn xuống dưới cùng
+                            loadMessage(currentDetailId); // Tải lại nội dung tin nhắn
+                        } else {
+                            // Xử lý khi gửi tin nhắn không thành công
+                            alert('Có lỗi xảy ra khi gửi tin nhắn.');
+                        }
                     },
-                    error: function () {
+                    error: function (xhr, status, error) {
+                        console.error('Có lỗi xảy ra khi gửi tin nhắn:', error);
                         alert('Có lỗi xảy ra khi gửi tin nhắn.');
                     }
                 });
-            }
-            function scrollToBottom() {
-                var chatMessages = document.getElementById('chatMessagesContent');
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-           
-            $(document).on('click', '.show-messages', function (e) {
-                e.preventDefault(); 
-                var detailId = $(this).data('detailid'); 
-                loadMessage(detailId); 
             });
 
-            
-            $(document).on('click', '#sendMessageBtn', function () {
-                var message = $(this).closest('.input-group').find('textarea').val(); // Lấy nội dung tin nhắn từ textarea trong cùng
-                var messageId = $(this).data('messid'); // Lấy MessageId từ data attribute của button
-
-                sendMessage(messageId, message); // Gọi hàm sendMessage và truyền các tham số cần thiết
-            });
         });
     </script>
 }
