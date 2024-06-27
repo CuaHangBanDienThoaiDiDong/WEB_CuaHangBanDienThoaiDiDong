@@ -10,12 +10,12 @@
                 <th >Hãng</th>
                 <th >Dung Lượng</th>
                 <th >Màu</th>
-                <th style="width: 5%;">Hiển thị</th>
-                <th style="width: 5%;">Trang chủ</th>
-                <th style="width: 5%;">Hot</th>
-                <th style="width: 5%;">Nổi bật</th>
-                <th style="width: 5%;">Khuyến mãi</th>
-                <th style="width: 10%;">Tác vụ</th>
+                <th class="text-center">Hiển thị</th>
+                <th class="text-center">Trang chủ</th>
+                <th class="text-center" >Hot</th>
+                <th class="text-center">Nổi bật</th>
+                <th class="text-center">Khuyến mãi</th>
+                <th class="text-center">Tác vụ</th>
             </tr>
         </thead>
     </table>
@@ -120,14 +120,15 @@
                                     <td class="text-center"><i class='fas fa-times text-danger'></i></td>
                                 }
                                 <td>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-2">
+                                    
+                                        <div class="col-md-12 mb-2">
                                             <a href="/admin/Products/Detail/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary btn-block">Xem</a>
                                         </div>
-                                        <div class="col-md-6 mb-2">
+                                    <br />
+                                        <div class="col-md-12 mb-2">
                                             <a href="/admin/Products/Edit/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-danger btn-block">Cập nhật</a>
                                         </div>
-                                    </div>
+                                   
                                 </td>
                             </tr>
                         }

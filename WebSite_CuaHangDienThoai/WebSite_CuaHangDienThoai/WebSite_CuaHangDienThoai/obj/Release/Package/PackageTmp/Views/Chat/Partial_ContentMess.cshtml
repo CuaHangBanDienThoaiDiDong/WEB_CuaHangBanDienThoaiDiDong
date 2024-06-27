@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.ChatMessageViewModel>
 
 <div class="position-relative">
-    <div class="chat-messages p-4" id="chatMessages" style="overflow-y: auto; max-height: 600px;">
+    <div class="chat-messages p-4" id="chatMessages" style="overflow-y: auto; max-height: 600px; scroll-behavior: smooth;">
         @if (Model != null && Model.Any())
         {
-            <div class="chat-messages p-4">
+            <div class="chat-messages-container">
                 @foreach (var message in Model)
                 {
                     <div class="chat-message @(message.CustomerId.HasValue ? "chat-message-right" : "chat-message-left") pb-4">
@@ -26,3 +26,18 @@
         }
     </div>
 </div>
+
+@*@section scripts {
+    <script>
+        // Định nghĩa hàm scrollToBottom để cuộn từ dưới lên trên
+        function scrollToBottom() {
+            var chatMessages = document.getElementById("chatMessages");
+            if (chatMessages) {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        // Gọi hàm scrollToBottom khi nội dung đã được tải xong
+        document.addEventListener("DOMContentLoaded", scrollToBottom);
+    </script>
+}*@

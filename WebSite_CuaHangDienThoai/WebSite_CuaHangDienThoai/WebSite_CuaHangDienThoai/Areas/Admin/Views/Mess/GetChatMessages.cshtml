@@ -1,0 +1,59 @@
+﻿@model List<WebSite_CuaHangDienThoai.Models.Admin_ChatMessageViewModel>
+<div class="py-2 px-4 border-bottom d-none d-lg-block">
+    <div class="d-flex align-items-center py-1">
+        <div class="position-relative">
+            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+        </div>
+        <div class="flex-grow-1 pl-3">
+            @if (Model != null && Model.Any())
+            {
+                <strong>@Model.FirstOrDefault()?.Customer.CustomerName</strong>
+            }
+            @*<div class="text-muted small"><em>Typing...</em></div>*@
+        </div>
+
+    </div>
+</div>
+
+<div class="position-relative">
+    <div class="chat-messages p-4" id="chatMessages" style="overflow-y: auto; max-height: 600px;">
+        @if (Model != null && Model.Any())
+        {
+            <div class="chat-messages p-4">
+                @foreach (var message in Model)
+                {
+                    <div class="chat-message @(message.StaffId.HasValue ? "chat-message-right" : "chat-message-left") pb-4">
+                        <div>
+                            <img src="data:image;base64,@(message.StaffId.HasValue ? Convert.ToBase64String(message.Staff.Image) : Convert.ToBase64String(message.Customer.Image))" class="rounded-circle mr-1" alt="User" width="40" height="40">
+                            <div class="text-muted small text-nowrap mt-2">@message.Timestamp.ToString("h:mm tt")</div>
+                        </div>
+                        <div class="flex-shrink-1 bg-light rounded py-2 px-3 @(message.StaffId.HasValue ? "mr-3" : "ml-3")">
+                            <div class="font-weight-bold mb-1">@((message.StaffId.HasValue ? "Bạn" : message.Customer.CustomerName))</div>
+                            @message.MessageContent
+                        </div>
+                    </div>
+                }
+            </div>
+
+
+        }
+        else
+        {
+            <div>Không có tin nhắn</div>
+        }
+    </div>
+</div>
+
+@if (ViewBag.Messid != null)
+{
+    <div class="flex-grow-0 py-3 px-4 border-top">
+        <div class="input-group">
+
+            <textarea class="form-control" id="ContentMess" placeholder="Nội dung tin nhắn"></textarea>
+            <button class="btn btn-primary  btnsend" id="sendMessageBtn" data-MessId="@ViewBag.Messid">Gửi</button>
+        </div>
+    </div>
+}
+
+
+

@@ -1,7 +1,9 @@
-﻿using Microsoft.Owin;
-using Microsoft.Owin.Security.Cookies;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.Owin;
 using Owin;
-using System;
+
+[assembly: OwinStartup(typeof(WebSite_CuaHangDienThoai.Startup))]
 
 namespace WebSite_CuaHangDienThoai
 {
@@ -9,7 +11,7 @@ namespace WebSite_CuaHangDienThoai
     {
         public void Configuration(IAppBuilder app)
         {
-           
+            app.MapSignalR();
         }
     }
 }

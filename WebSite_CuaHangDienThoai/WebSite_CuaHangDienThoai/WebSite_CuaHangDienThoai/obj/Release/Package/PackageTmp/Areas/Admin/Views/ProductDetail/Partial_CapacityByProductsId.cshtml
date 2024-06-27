@@ -18,7 +18,7 @@
             <div class="col-1">
 
             </div>
-            <div class="col-10 d-flex justify-content-center">
+            <div class="col-10 ">
                 @{
                     var firstDungLuong = Model.FirstOrDefault()?.DungLuong; // Lấy giá trị dung lượng đầu tiên
                 }
@@ -30,15 +30,16 @@
 
                     if (item.DungLuong > 999)
                     {
-                        DungLuong = "1 Tb";
+                         DungLuong = "1 Tb"; <br />
                     }
                     else if (item.DungLuong > 1999)
                     {
-                        DungLuong = "2 Tb";
+                         DungLuong = "2 Tb";
                     }
                     else
                     {
-                        DungLuong = item.DungLuong + " Gb";
+                         DungLuong = item.DungLuong + " Gb"; <br />
+                         
                     }
 
                     // Tạo nút đầu tiên và thiết lập class active cho nó

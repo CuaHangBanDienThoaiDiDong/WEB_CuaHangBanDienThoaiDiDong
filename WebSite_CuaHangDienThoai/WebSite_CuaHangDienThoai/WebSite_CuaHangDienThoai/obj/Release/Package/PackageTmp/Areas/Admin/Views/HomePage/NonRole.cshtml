@@ -1,10 +1,123 @@
 ﻿
 @{
     ViewBag.Title = "Không có quyền truy cập";
-    
+
 
 }
 
-<h2>Không có quyền truy cập</h2>
+<style>
+    .invoice-container {
+        margin-top: 2rem;
+    }
 
-<h2 class="text-danger text-center">Bạn không có quyền truy cập</h2>
+    .invoice-header {
+        text-align: center;
+    }
+
+        .invoice-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .invoice-header p {
+            font-size: 1.2rem;
+            color: #6c757d;
+        }
+
+    .invoice-body {
+        margin-top: 2rem;
+    }
+
+    .invoice-table {
+        width: 100%;
+    }
+
+        .invoice-table th,
+        .invoice-table td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+        }
+
+        .invoice-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+
+    .invoice-footer {
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    .signature {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+    }
+
+    .qr-code {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+    }
+
+        .qr-code img {
+            width: 150px;
+            height: 150px;
+        }
+</style>
+
+<div class="container invoice-container">
+    <div class="row">
+      
+        <div class="col-10">
+            <div class="invoice-header">
+                <img src="~/images/Logo/LogoWebpng.png" style="max-width: 150px" />
+                <h2><span style="color: red">LTD</span>MiniStore</h2>
+                <p>Cửa hàng bán thiết bị điện thoại di dộng</p>
+
+                <small>Dường dây hỗ trợ: 0329867771-077264673</small>
+            </div>
+        </div>
+    </div>
+    <div class="invoice-header">
+        <div class="container py-5">
+
+            <div class="row align-items-center">
+                <div class="col-1"></div>
+                <div class="col-md-10 order-md-2">
+                    <div class="lc-block">
+                        <script src="https://unpkg.com/lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                        <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_kcsr6fcp.json" background="transparent" speed="1" loop="" autoplay=""></lottie-player>
+                    </div>
+                </div>
+                <div class="col-md-6 text-center text-md-start ">
+                    <div class="lc-block mb-3">
+                        <div editable="rich">
+                            <h1 class="fw-bold h4" style="color: red">KHÔNG CÓ QUYỀN TRUY CẬP !!!<br></h1>
+                        </div>
+                    </div>
+                    <div class="lc-block mb-3">
+                        <div editable="rich">
+                            <h1 style="color:red">GIỚI HẠN CHỨC NĂNG</h1>
+
+                        </div>
+                    </div>
+                    <div class="lc-block mb-5">
+                        <div editable="rich">
+                            <h5 class="rfs-11 fw-light">CHỨC NĂNG CỦA BẠN KHÔNG ĐỦ QUYỀN TRUY CẬP .</h5>
+                        </div>
+                    </div>
+                    @*<div class="lc-block">
+                        <a class="btn btn-lg btn-primary" href="/Home/index" role="button">Quay về trang chủ</a>
+                    </div>*@
+                </div>
+                <div class="col-1"></div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+

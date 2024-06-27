@@ -1,26 +1,102 @@
-﻿<div clas="row">
-    <div class="col-12">
-        <div class="" id="loaddata">
-            @Html.Action("Partial_IndexBill", "Bill")
+﻿
+
+
+@{
+    ViewBag.Title = "Quản lý hóa đơn";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+}
+
+@section naviheader{
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/he-thong-LTD" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin/Bill/Index" class="nav-link">@ViewBag.Title</a>
+        </li>
+    </ul>
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Danh sách Hóa đơn</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/he-thong-LTD">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Danh sách @ViewBag.Title</h3>
+            <br />
+            <span><label>Tổng số hóa đơn :</label> @ViewBag.Count</span>
+
+
+
+        </div>
+        <div class="card-body">
+            <div clas="row">
+                <div class="col-12">
+                    @*<div class="" id="loaddata">
+                    @Html.Action("Partial_IndexBill", "Bill")
+                </div>*@
+                    <p id="loadBill">
+                        Loading...
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+    
+
+
+    
+</section>
+
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script>
-    function LoadIndex(page) {
+    function LoadBill(page) {
         $.ajax({
-            url: '/admin/Bill/Partial_IndexBill',
+            url: '/Admin/Bill/Partial_IndexBill',
             type: 'GET',
             data: { page: page },
+            beforeSend: function () {
+                $('#loadBill').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+            },
             success: function (rs) {
-                $('#loaddata').html(rs);
+                $('#loadBill').html(rs);
             },
             error: function (error) {
-                console.log(error);
+                console.log('Error:', error);
+                $('#loadBill').html('<div class="text-danger">Error loading data.</div>');
             }
         });
     }
-    $(document).ready(function () {
-        LoadIndex(1)
+
+
+    LoadBill(1);
+
+
+    $(document).on('click', '#loadBill .pagination a', function (e) {
+        e.preventDefault();
+        var page = $(this).data('page');
+        LoadBill(page);
     });
+
 </script>

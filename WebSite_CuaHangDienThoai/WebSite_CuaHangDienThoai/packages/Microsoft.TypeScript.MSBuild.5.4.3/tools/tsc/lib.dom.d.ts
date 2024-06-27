@@ -7696,7 +7696,7 @@ interface Element extends Node, ARIAMixin, Animatable, ChildNode, InnerHTML, Non
      */
     readonly prefix: string | null;
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/scrollHeight) */
-    readonly scrollHeight: number;
+    readonly scrollTop: number;
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/scrollLeft) */
     scrollLeft: number;
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/scrollTop) */
