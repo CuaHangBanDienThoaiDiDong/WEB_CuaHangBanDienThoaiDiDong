@@ -1,43 +1,17 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.ChatMessageViewModel>
 
-<div class="position-relative">
-    <div class="chat-messages p-4" id="chatMessages" style="overflow-y: auto; max-height: 600px; scroll-behavior: smooth;">
-        @if (Model != null && Model.Any())
-        {
-            <div class="chat-messages-container">
-                @foreach (var message in Model)
-                {
-                    <div class="chat-message @(message.CustomerId.HasValue ? "chat-message-right" : "chat-message-left") pb-4">
-                        <div>
-                            <img src="data:image;base64,@(message.CustomerId.HasValue ? Convert.ToBase64String(message.CustomerImage) : Convert.ToBase64String(message.StaffImage))" class="rounded-circle mr-1" alt="User" width="40" height="40">
-                            <div class="text-muted small text-nowrap mt-2">@message.Time.ToString("h:mm tt")</div>
-                        </div>
-                        <div class="flex-shrink-1 bg-light rounded py-2 px-3 @(message.CustomerId.HasValue ? "mr-3" : "ml-3")">
-                            <div class="font-weight-bold mb-1">@((message.CustomerId.HasValue ? "Bạn" : message.StaffName))</div>
-                            @message.MessageContent
-                        </div>
-                    </div>
-                }
+<div class="chat-messages-container">
+    @foreach (var message in Model)
+    {
+        <div class="chat-message @(message.CustomerId.HasValue ? "chat-message-right" : "chat-message-left") pb-4">
+            <div>
+                <img src="data:image;base64,@(message.CustomerId.HasValue ? Convert.ToBase64String(message.CustomerImage) : Convert.ToBase64String(message.StaffImage))" class="rounded-circle mr-1" alt="User" width="40" height="40">
+                <div class="text-muted small text-nowrap mt-2">@message.Time.ToString("h:mm tt")</div>
             </div>
-        }
-        else
-        {
-            <div>Không có tin nhắn</div>
-        }
-    </div>
+            <div class="flex-shrink-1 bg-light rounded py-2 px-3 @(message.CustomerId.HasValue ? "mr-3" : "ml-3")">
+                <div class="font-weight-bold mb-1">@((message.CustomerId.HasValue ? "Bạn" : message.StaffName))</div>
+                @message.MessageContent
+            </div>
+        </div>
+    }
 </div>
-
-@*@section scripts {
-    <script>
-        // Định nghĩa hàm scrollToBottom để cuộn từ dưới lên trên
-        function scrollToBottom() {
-            var chatMessages = document.getElementById("chatMessages");
-            if (chatMessages) {
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-        }
-
-        // Gọi hàm scrollToBottom khi nội dung đã được tải xong
-        document.addEventListener("DOMContentLoaded", scrollToBottom);
-    </script>
-}*@
