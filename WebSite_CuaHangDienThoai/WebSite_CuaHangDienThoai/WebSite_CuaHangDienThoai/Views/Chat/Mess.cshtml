@@ -3,7 +3,7 @@
     ViewBag.Title = "Tin nhắn";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
-
+<link href="~/Content/Loading.css" rel="stylesheet" />
 <link href="~/Content/Css/Client/chat.css" rel="stylesheet" />
 <br />
 <br />
@@ -25,8 +25,8 @@
                             </div>
                         </div>
                     </div>
+                    @*<div class="loading-spinner" id="loadingSpinner" style="display: none;"></div>*@
                     <div id="loadContenMess" data-id="@Model.CustomerId" style="overflow-y: auto; max-height: 600px; scroll-behavior: smooth;">
-
                     </div>
                     <div class="flex-grow-0 py-3 px-4 border-top">
                         <div class="input-group">
@@ -39,15 +39,17 @@
         </div>
     </div>
 </main>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.signalr/2.4.2/jquery.signalr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    var customerId = @Model.CustomerId;
+    var customerId = '@Model.CustomerId';
     var sendingMessage = false; // Biến để kiểm tra xem có đang gửi tin nhắn hay không
 
-    // Hàm loadPartialContent để tải nội dung tin nhắn
+
     function loadPartialContent(id) {
+       
+        $('#loadingSpinner').show();
         $.ajax({
             url: '/Chat/Partial_ContentMess/' + id,
             type: 'GET',
@@ -62,7 +64,6 @@
         });
     }
 
-    // Định nghĩa hàm scrollToBottom để cuộn từ dưới lên trên
     function scrollToBottom() {
         var chatMessages = document.getElementById("loadContenMess");
         if (chatMessages) {
@@ -70,13 +71,13 @@
         }
     }
 
-    // Gọi hàm loadPartialContent khi tài liệu đã sẵn sàng
     $(document).ready(function () {
         loadPartialContent(customerId);
 
         setInterval(function () {
             loadPartialContent(customerId);
         }, 1000);
+
         window.onload = function () {
             scrollToBottom();
         };
@@ -114,13 +115,13 @@
 
             // Đánh dấu đang gửi tin nhắn
             sendingMessage = true;
+            $('#loadingSpinner').show(); // Hiển thị biểu tượng loading
 
             // Gửi tin nhắn
             sendMessage(customerId, content);
         });
     });
 
-    // Hàm gửi tin nhắn
     function sendMessage(customerId, content) {
         $.ajax({
             url: '/Chat/SentMess',
@@ -129,23 +130,15 @@
             success: function (response) {
                 console.log('Tin nhắn đã được gửi đi.');
                 loadPartialContent(customerId);
-
                 $('#ContentMess').val('');
-
-                // Đánh dấu là không còn gửi tin nhắn nữa
                 sendingMessage = false;
+                $('#loadingSpinner').hide(); // Ẩn biểu tượng loading
             },
             error: function (xhr, status, error) {
                 console.error('Đã xảy ra lỗi khi gửi tin nhắn:', error);
-
-                // Đánh dấu là không còn gửi tin nhắn nữa
                 sendingMessage = false;
+                $('#loadingSpinner').hide(); // Ẩn biểu tượng loading
             }
         });
-       
-
     }
-
-    // Cuộn xuống dưới cùng khi tài liệu mới được tải
-  
 </script>

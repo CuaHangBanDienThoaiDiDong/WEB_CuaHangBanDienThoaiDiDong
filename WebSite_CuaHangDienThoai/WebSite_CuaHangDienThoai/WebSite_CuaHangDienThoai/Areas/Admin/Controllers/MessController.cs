@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using PagedList;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -35,13 +36,13 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     return View(items);
                 }
 
-                
+
             }
 
         }
-        public ActionResult Paritial_Left()
-        {
 
+        public ActionResult StaffMess()
+        {
             if (Session["user"] == null)
             {
                 return RedirectToAction("DangNhap", "Account");
@@ -50,7 +51,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             {
 
                 tb_Staff nvSession = (tb_Staff)Session["user"];
-                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2 || row.FunctionId == 4));
                 if (item == null)
                 {
                     return RedirectToAction("NonRole", "HomePage");
@@ -58,22 +59,99 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 else
                 {
                     var items = db.tb_Message.OrderByDescending(x => x.MessageId).ToList();
-                    return PartialView(items);
+                    return View(items);
                 }
 
 
             }
+
         }
+        public ActionResult Paritial_Left()
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+
+            tb_Staff nvSession = (tb_Staff)Session["user"];
+            var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2 || row.FunctionId == 4));
+
+            if (item == null)
+            {
+                return RedirectToAction("NonRole", "HomePage");
+            }
+
+            var items = db.tb_Message
+                            .Select(m => new
+                            {
+                                Message = m,
+                                LatestCustomerMessage = m.tb_CustomerMessageDetail
+                                                        .OrderByDescending(d => d.Timestamp)
+                                                        .FirstOrDefault(),
+                                IsAnyUnread = m.tb_CustomerMessageDetail
+                                                .Any(d => !d.IsRead)
+                            })
+                            .OrderByDescending(m => m.IsAnyUnread) // Đưa tin nhắn chưa đọc lên đầu
+                            .ThenByDescending(m => m.LatestCustomerMessage != null ? m.LatestCustomerMessage.Timestamp : DateTime.MinValue) // Sắp xếp theo thời gian giảm dần
+                            .ToList()
+                            .Select(m => m.Message); // Chọn tin nhắn gốc
+
+            return PartialView(items);
+        }
+
+
 
         public ActionResult Partial_MessIndex()
         {
             return PartialView();
         }
+        [HttpPost]
+        public JsonResult IsRead(int messageId)
+        {
+            try
+            {
+                if (messageId < 0)
+                {
+                    return Json(new { Success = false, code = -1 });
+                }
+
+                var Mess = db.tb_Message.FirstOrDefault(x => x.MessageId == messageId);
+                if (Mess == null)
+                {
+                    return Json(new { Success = false, code = -2 });
+                }
+
+                var customerMessageDetails = db.tb_CustomerMessageDetail.Where(x => x.MessageId == messageId && !x.IsRead).ToList();
+
+                if (customerMessageDetails.Count == 0)
+                {
+                    return Json(new { Success = false, code = -3, });
+                }
+
+                foreach (var customerMessageDetail in customerMessageDetails)
+                {
+                    customerMessageDetail.IsRead = true;
+                    db.Entry(customerMessageDetail).State = EntityState.Modified;
+                }
+
+                db.SaveChanges();
+                return Json(new { Success = true, code = 1 });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, code = -99, message = ex.Message });
+            }
+        }
+
+
+
         public ActionResult GetChatMessages(int messageId)
         {
             try
             {
-                // Lấy tin nhắn từ bảng tb_StaffMessageDetail
+              
+
+
                 var staffMessages = db.tb_StaffMessageDetail
                     .Where(smd => smd.MessageId == messageId)
                     .OrderBy(smd => smd.Timestamp)
@@ -112,18 +190,6 @@ Customer=db.tb_Customer.FirstOrDefault(x=>x.CustomerId == cmd.CustomerId)
                 if (allMessages != null)
                 {
 
-                    //foreach (var message in customerMessages)
-                    //{
-                    //    if (message.CustomerId != null || message.IsRead == false)
-                    //    {
-                    //        // Lấy chi tiết tin nhắn của khách hàng để cập nhật trạng thái đã đọc
-                    //        var messageDetail = db.tb_CustomerMessageDetail.FirstOrDefault(cmd => cmd.DetailId == message.DetailId);
-                    //        if (messageDetail != null)
-                    //        {
-                    //            messageDetail.IsRead = true;
-                    //        }
-                    //    }
-                    //}
                     ViewBag.Messid = messageId;
                     return PartialView(allMessages.ToList());
                 }

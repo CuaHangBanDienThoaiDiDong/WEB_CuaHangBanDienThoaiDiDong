@@ -3430,6 +3430,7 @@
     <Content Include="Content\LayOut\StyleSheet2.css" />
     <Content Include="Content\LayOut\StyleSheet3.css" />
     <Content Include="Content\lienhe.css" />
+    <Content Include="Content\Loading.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\templates\DonHang.html" />
@@ -4093,6 +4094,7 @@
     <Content Include="Areas\Admin\Views\Mess\GetChatMessages.cshtml" />
     <Content Include="Areas\Admin\Views\Mess\Partial_MessIndex.cshtml" />
     <Content Include="Areas\Admin\Views\Mess\Paritial_Left.cshtml" />
+    <Content Include="Areas\Admin\Views\Mess\StaffMess.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />

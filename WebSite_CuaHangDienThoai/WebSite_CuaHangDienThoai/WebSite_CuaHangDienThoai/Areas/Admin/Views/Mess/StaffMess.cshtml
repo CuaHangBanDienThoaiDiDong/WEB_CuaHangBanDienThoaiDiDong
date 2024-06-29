@@ -1,8 +1,10 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Message>
 @{
-    ViewBag.Title = "Quản lý tin nhắn";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Hỗ trợ phản hồi ";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutSeller.cshtml";
 }
+
+
 <link href="~/Content/Css/Addmin/Mess.css" rel="stylesheet" />
 <link href="~/Content/Loading.css" rel="stylesheet" />
 @section naviheader{
@@ -12,10 +14,10 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/he-thong-LTD" class="nav-link">Trang chủ</a>
+            <a href="/Admin/Seller" class="nav-link">Bán hàng</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/Mess/index" class="nav-link">@ViewBag.Title</a>
+            <a href="/Admin/Mess/StaffMess" class="nav-link">@ViewBag.Title</a>
         </li>
     </ul>
 }
@@ -25,11 +27,11 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Quản lý tin nhắn</h1>
+                <h1>Tin nhắn trao đổi</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="/admin/Mess/index">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/Admin/Seller">Home</a></li>
                     <li class="breadcrumb-item active">@ViewBag.Title</li>
                 </ol>
             </div>
@@ -132,6 +134,7 @@
                 success: function (response) {
                     $('#loadContenMess').html(response);
                     scrollToBottom();
+
                 },
                 error: function (xhr, status, error) {
                     console.error('Error loading messages:', error);
@@ -156,7 +159,7 @@
                             loadMessage(currentDetailId); // Tải lại tin nhắn
                             scrollToBottom(); // Cuộn xuống dưới cùng
 
-                            IsRead(messageId);
+                            IsRead(messageId); 
                             const Toast = Swal.mixin({
                                 toast: true,
                                 position: "top-end",
@@ -191,7 +194,7 @@
                                 icon: "error",
                                 title: "Có lỗi xảy ra khi gửi tin nhắn"
                             });
-
+                          
                         }
                     },
                     error: function (xhr, status, error) {
@@ -214,7 +217,7 @@
                     }
                 });
             } else {
-                
+                // Hiển thị thông báo lỗi khi nội dung tin nhắn rỗng hoặc không hợp lệ
                 const Toast = Swal.mixin({
                     toast: true,
                     position: "top-end",
@@ -234,6 +237,7 @@
             }
         }
 
+       
 
         function IsRead(messageId) {
             $.ajax({
@@ -241,7 +245,7 @@
                 type: 'POST',
                 data: { MessageId: messageId },
                 success: function (response) {
-                    LoadMessageLefft(); // Có thể là LoadMessageLeft?
+                    LoadMessageLefft();
                 },
                 error: function (xhr, status, error) {
                     console.error('Có lỗi xảy ra khi gửi tin nhắn:', error);
@@ -316,6 +320,7 @@
                 var message = $('#ContentMess').val();
                 var messageId = $(this).data('messid');
                 sendMessage(messageId, message);
+
             });
 
             // Dừng interval khi rời khỏi trang
@@ -325,3 +330,5 @@
         });
     </script>
 }
+
+

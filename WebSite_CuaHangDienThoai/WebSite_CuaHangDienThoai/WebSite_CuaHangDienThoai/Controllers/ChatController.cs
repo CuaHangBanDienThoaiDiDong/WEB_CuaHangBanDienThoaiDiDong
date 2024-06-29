@@ -92,12 +92,12 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     where db.tb_CustomerMessageDetail.Any(cmd => cmd.CustomerId == id && cmd.MessageId == smd.MessageId)
                     select new ChatMessageViewModel
                     {
-                        DetailId = smd.DetailId,
+                        DetailIdMessStaff = smd.DetailId,
                         MessageId = smd.MessageId,
                         CustomerId = null,
                         StaffId = smd.StaffId,
                         MessageContent = smd.Content,
-                        Timestamp = smd.Timestamp, // Lấy thời gian từ bảng tb_StaffMessageDetail
+                        Timestamp = smd.Timestamp, 
                         IsRead = smd.IsRead,
                         StaffName = s.NameStaff,
                         StaffImage = s.Image
@@ -108,10 +108,10 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 var allMessages = customerMessages.Concat(staffMessages).OrderBy(m => m.Timestamp);
 
                 // Đánh dấu các tin nhắn chưa đọc là đã đọc
-                foreach (var message in allMessages.Where(m => m.IsRead == false && m.CustomerId == id))
+                foreach (var message in staffMessages.Where(m => m.IsRead == false ))
                 {
                     message.IsRead = true;
-                    var messageDetail = db.tb_CustomerMessageDetail.Find(message.DetailId);
+                    var messageDetail = db.tb_StaffMessageDetail.Find(message.DetailIdMessStaff);
                     if (messageDetail != null)
                     {
                         messageDetail.IsRead = true;
@@ -130,72 +130,101 @@ namespace WebSite_CuaHangDienThoai.Controllers
             }
         }
 
-
         [HttpPost]
         public JsonResult SentMess(int id, string content)
         {
             try
             {
+                // Kiểm tra session và id hợp lệ
                 if (Session["CustomerId"] == null || id < 0)
                 {
-                    // Nếu không có session hoặc id nhỏ hơn 0, trả về mã lỗi
-                    return Json(new { success = false, code = -99 });
+                    return Json(new { success = false, code = -99 }); // Trả về lỗi
                 }
 
-                var messdetail = db.tb_CustomerMessageDetail.FirstOrDefault(x => x.CustomerId == id);
-                if (messdetail == null)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    var newMessage = new tb_Message
+                    try
                     {
-                        Content = content,
-                        Timestamp = DateTime.Now
-                    };
-                    db.tb_Message.Add(newMessage);
-                    db.SaveChanges();
+                        // Tìm kiếm tin nhắn chi tiết của khách hàng
+                        var messdetail = db.tb_CustomerMessageDetail.FirstOrDefault(x => x.CustomerId == id);
 
-                    var newMessageDetail = new tb_CustomerMessageDetail
+                        // Nếu chưa có tin nhắn chi tiết, tạo mới
+                        if (messdetail == null)
+                        {
+                            // Tạo mới tb_Message
+                            var newMessage = new tb_Message
+                            {
+                                Content = content,
+                                Timestamp = DateTime.Now
+                            };
+                            db.tb_Message.Add(newMessage);
+                            db.SaveChanges();
+
+                            // Tạo mới tb_CustomerMessageDetail và lưu vào cơ sở dữ liệu
+                            var newMessageDetail = new tb_CustomerMessageDetail
+                            {
+                                CustomerId = id,
+                                MessageId = newMessage.MessageId,
+                                Content = content,
+                                Timestamp = DateTime.Now,
+                                
+                            };
+
+                            System.Diagnostics.Debug.WriteLine($"Before SaveChanges: IsRead = {newMessageDetail.IsRead}");
+
+                            db.tb_CustomerMessageDetail.Add(newMessageDetail);
+                            db.SaveChanges();
+
+                            System.Diagnostics.Debug.WriteLine($"After SaveChanges: IsRead = {newMessageDetail.IsRead}");
+
+                            // Thông báo cho client về tin nhắn mới sử dụng SignalR
+                            _hubContext.Clients.All.broadcastMessage(id, content);
+
+                            transaction.Commit();
+
+                            return Json(new { success = true, code = 1 }); // Trả về thành công
+                        }
+                        else
+                        {
+                            // Nếu đã có tin nhắn chi tiết, tạo mới chi tiết tin nhắn và lưu vào cơ sở dữ liệu
+                            var newMessageDetail = new tb_CustomerMessageDetail
+                            {
+                                CustomerId = id,
+                                MessageId = messdetail.MessageId,
+                                Content = content,
+                                Timestamp = DateTime.Now,
+                             
+                            };
+
+                            System.Diagnostics.Debug.WriteLine($"Before SaveChanges: IsRead = {newMessageDetail.IsRead}");
+
+                            db.tb_CustomerMessageDetail.Add(newMessageDetail);
+                            db.SaveChanges();
+
+                            System.Diagnostics.Debug.WriteLine($"After SaveChanges: IsRead = {newMessageDetail.IsRead}");
+
+                            transaction.Commit();
+
+                            return Json(new { success = true, code = 2 }); // Trả về thành công với mã code 2
+                        }
+                    }
+                    catch (Exception e)
                     {
-                        CustomerId = id,
-                        MessageId = newMessage.MessageId,
-                        Content = content,
-                        Timestamp = DateTime.Now,
-                        IsRead = false
-                    };
-                    db.tb_CustomerMessageDetail.Add(newMessageDetail);
-                    db.SaveChanges();
-
-                    // Gọi phương thức SendMessage của SignalR Hub để thông báo cho client về tin nhắn mới
-                    _hubContext.Clients.All.broadcastMessage(id, content);
-
-                    return Json(new { success = true, code = 1 });
-                }
-                else
-                {
-                    tb_CustomerMessageDetail messDetailNew = new tb_CustomerMessageDetail
-                    {
-                        CustomerId = id,
-                        MessageId = messdetail.MessageId,
-                        Content = content,
-                        Timestamp = DateTime.Now,
-                        IsRead = false
-                    };
-                    db.tb_CustomerMessageDetail.Add(messDetailNew);
-                    db.SaveChanges();
-
-
-                    var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-                    context.Clients.All.broadcastMessage(id, content);
-
-                    return Json(new { success = true, code = 2 }); // Code 2 để phân biệt tin nhắn đã được cập nhật
+                        transaction.Rollback();
+                        System.Diagnostics.Debug.WriteLine($"Transaction rolled back due to: {e.Message}");
+                        return Json(new { success = false, code = -99 });
+                    }
                 }
             }
             catch (Exception e)
             {
+                // Xử lý ngoại lệ và trả về mã lỗi
                 return Json(new { success = false, code = -99 });
             }
         }
 
-     
+
+
 
         public ActionResult ShowCountMess()
         {
@@ -203,13 +232,34 @@ namespace WebSite_CuaHangDienThoai.Controllers
             {
                 int idKhach = (int)Session["CustomerId"];
 
-                var unreadMessages = db.tb_CustomerMessageDetail.Count(x => x.CustomerId == idKhach && x.IsRead == false);
+                // Lấy danh sách các MessageId của tin nhắn chưa đọc cho khách hàng
+                var unreadMessageIds = db.tb_CustomerMessageDetail
+                    .Where(x => x.CustomerId == idKhach)
+                    .Select(x => x.MessageId)
+                    .Distinct()
+                    .ToList();
 
-                return Json(new { Count = unreadMessages }, JsonRequestBehavior.AllowGet);
+                // Nếu không có tin nhắn nào chưa đọc, trả về 0
+                if (!unreadMessageIds.Any())
+                {
+                    return Json(new { Count = 0 }, JsonRequestBehavior.AllowGet);
+                }
+
+                // Sử dụng HashSet để kiểm tra hiệu suất tốt hơn
+                var unreadMessageIdSet = new HashSet<int>(unreadMessageIds);
+
+                // Đếm số lượng tin nhắn chưa đọc từ bảng tb_StaffMessageDetail
+                var unreadCount = db.tb_StaffMessageDetail
+                    .Count(x => unreadMessageIdSet.Contains(x.MessageId) && x.IsRead == false);
+
+                // Trả về số lượng tin nhắn chưa đọc dưới dạng JSON
+                return Json(new { Count = unreadCount }, JsonRequestBehavior.AllowGet);
             }
 
+            // Trả về số lượng tin nhắn là 0 nếu không có CustomerId trong Session
             return Json(new { Count = 0 }, JsonRequestBehavior.AllowGet);
         }
+
 
 
     }

@@ -8,6 +8,7 @@ namespace WebSite_CuaHangDienThoai.Models
     public class ChatMessageViewModel
     {
         public int? DetailId { get; set; }
+        public int? DetailIdMessStaff { get; set; }
         public int? MessageId { get; set; }
         public int? CustomerId { get; set; }
         public int? StaffId { get; set; }

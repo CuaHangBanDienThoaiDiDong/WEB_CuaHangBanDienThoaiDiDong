@@ -5,7 +5,7 @@ $(document).ready(function () {
     setInterval(function () {
         ShowCountOrderNew();
        
-    }, 10);
+    }, 3000);
   
 });
 function LoadIndex(page) {
