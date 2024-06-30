@@ -54,7 +54,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    @using (Html.BeginForm("Edit", "ProductDetail", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("Edit", "ProductDetail", FormMethod.Post, new { enctype = "multipart/form-data", id = "editForm" }))
                     {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
@@ -257,9 +257,7 @@
 
         function validateForm() {
             var isValid = true;
-            //var demoPrice = parseFloat(document.getElementById("Price").value.replace(",", ""));
-            //var demoPriceSale = parseFloat(document.getElementById("PriceSale").value.replace(",", ""));
-            //var demoOriginalPrice = parseFloat(document.getElementById("OrigianlPrice").value.replace(",", ""));
+           
             // Kiểm tra trường Title
             if (!$('#ProductsId').val().trim()) {
                 $('#ProductsId').addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
@@ -285,7 +283,7 @@
             } else {
                 $('#Capacity').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
             }
-          
+
 
 
 
@@ -375,6 +373,77 @@
 
 
             });
+
+             $('#editForm').submit(function (event) {
+                    event.preventDefault();
+
+                    var formData = new FormData(this);
+
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: 'POST',
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                                if (response.success) {
+
+
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: "top-end",
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.onmouseenter = Swal.stopTimer;
+                                            toast.onmouseleave = Swal.resumeTimer;
+                                        }
+                                    });
+
+                                    Toast.fire({
+                                        icon: "success",
+                                        title: "Cập nhật thành công!"
+                                    });
+                                    setTimeout(function () {
+                                        location.href = "/admin/ProductDetail/index";
+                                    }, 2000); 
+
+                              
+                                } else {
+                                    if (response.Code == -2) {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Lỗi cập nhập sản phẩm...",
+                                            text: "Không tìm thấy sản phẩm",
+
+                                        });
+                                    }
+                                    if (response.Code == -1) {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Lỗi cập nhập sản phẩm...",
+                                            text: "Lỗi cập nhập hình ảnh",
+
+                                        });
+                                    }
+                                    if (response.Code == -99) {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: "Lỗi ...",
+                                            text: "Không tìm thấy dữ liệu ",
+
+                                        });
+                                    }
+                                }
+                            },
+                            error: function () {
+                                alert('Lỗi không xác định!');
+                            }
+                        });
+                    });
+
+
         });
 
 

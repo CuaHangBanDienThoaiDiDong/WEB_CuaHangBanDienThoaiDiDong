@@ -277,5 +277,31 @@ Customer=db.tb_Customer.FirstOrDefault(x=>x.CustomerId == cmd.CustomerId)
                 return PartialView(messages); ;
             }
         }
+
+
+        public JsonResult CountMessNonRead()
+        {
+            try
+            {
+                var unreadMessages = db.tb_Message
+                    .Join(db.tb_CustomerMessageDetail
+                        .Where(d => d.IsRead == false),
+                        m => m.MessageId,
+                        d => d.MessageId,
+                        (m, d) => new { m.MessageId })
+                    .GroupBy(x => x.MessageId)
+                    .Select(g => g.First())
+                    .Count();
+
+                // Trả về kết quả dưới dạng JSON
+                return Json(new { success = true, count = unreadMessages }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về thông báo lỗi
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
+
 }

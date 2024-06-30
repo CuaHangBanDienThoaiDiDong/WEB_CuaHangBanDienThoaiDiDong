@@ -1,83 +1,89 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
-<div class="card-body" id="loadProduct">
-    <table class="table table-hover">
+
+<div style="overflow-x:auto;">
+    <b>Số lượng <span class="text-danger">@ViewBag.Count</span> tìm theo <span class="text-danger">@ViewBag.Content</span> </b>
+    <table class="table table-hover" style="table-layout: fixed; width: 100%;">
         <thead>
             <tr class="text-center">
-              
-               
-                <th>Hình ảnh</th>
-                <th>Tên sản phẩm</th>
-                <th>Dòng sản phẩm</th>
-                <th>Loại sản phẩm</th>
-                <th>Hãng</th>
-                <th>Ram/Dung Lượng  </th>
-                <th>Màu</th>
-                <th style="width:150px;"></th>
+                <th >Hình ảnh</th>
+                <th style=" max-width:100px;">Tên sản phẩm</th>
+                <th >Dòng sản phẩm</th>
+                <th >Loại sản phẩm</th>
+                <th >Hãng</th>
+                <th>Ram/Dung Lượng</th>
+                <th >Màu</th>
+                <th ></th>
             </tr>
         </thead>
-        <tbody>
-            @if (Model != null && Model.Any())
-            {
-               
-                foreach (var item in Model)
-                {
-                    byte[] strImg = null;
-                    var CheckImage = item.tb_ProductDetailImage.SingleOrDefault(x => x.IsDefault == true);
-
-                    if (CheckImage != null)
-                    {
-                        strImg = CheckImage.Image;
-                    }
-
-                    string imgSrc = "";
-                    if (strImg != null && strImg.Length > 0)
-                    {
-                        string base64String = Convert.ToBase64String(strImg);
-                        imgSrc = $"data:image;base64,{base64String}";
-                    }
-                    <tr class="text-center" id="trow_@item.ProductsId">
-        
-                     
-                        <td style="width:20%"><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" style="width:50%" /></td>
-                        <td><a href="/admin/Products/Detail/@item.ProductsId"> @item.Title</a></td>
-                        <td>@item.tb_Products.Title</td>
-                        <td>@item.tb_Products.tb_ProductCategory.Title</td>
-                        <td>@item.tb_Products.tb_ProductCompany.Title</td>
-                        <td>
-                            @if (item.Capacity >= 999)
-                            {
-                                <span>1Tb</span>
-                            }
-                            else if (item.Capacity == 2999)
-                            {
-                                <span>2Tb</span>
-                            }
-                            else
-                            {
-                                <span>@item.Capacity</span>
-                            }
-                        </td>
-                        <td>@item.Color</td>
-                        <td>
-                            <a href="/admin/ProductDetail/Detail/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-primary">Xem</a>
-                            <a href="/admin/ProductDetail/Edit/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-primary">Sửa</a>
-                        </td>
-                    </tr>
-                   
-                }
-            }
-            else
-            {
-                <tr class="text-center text-danger">
-                    <td colspan="10">Không có dữ liệu</td>
-                </tr>
-            }
-        </tbody>
     </table>
-    <!-- Phân trang -->
-    @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })*@
 
+    <div style="max-height: 580px; overflow-y: auto;">
+        @if (Model != null && Model.Any())
+        {
+            <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        string displayAlias = null;
+                        string alias = null;
+                        foreach (var item in Model)
+                        {
+                            byte[] strImg = null;
+                            var CheckImage = item.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
 
+                            if (CheckImage != null)
+                            {
+                                strImg = CheckImage.Image;
+                            }
 
+                            string imgSrc = "";
+                            if (strImg != null && strImg.Length > 0)
+                            {
+                                string base64String = Convert.ToBase64String(strImg);
+                                imgSrc = $"data:image;base64,{base64String}";
+                            }
 
+                            if (item.tb_Products.Alias != null)
+                            {
+                                int maxLength = 7;
+                                alias = item.tb_Products.Alias;
+                                displayAlias = alias.Length > maxLength ? alias.Substring(0, maxLength) + "..." : alias;
+                            }
+
+                            <tr class="text-center" id="trow_@item.ProductsId">
+                                <td><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" style="width:100%; max-width:100px;" /></td>
+                                <td>
+                                    <div class="copy-container">
+                                        <p>@displayAlias</p>
+                                        <button class="copy-button btn btn-success" onclick="copyToClipboard('@alias')">Sao chép</button>
+                                    </div>
+                                </td>
+                                <td>@item.tb_Products.Title</td>
+                                <td>@item.tb_Products.tb_ProductCategory.Title</td>
+                                <td>@item.tb_Products.tb_ProductCompany.Title</td>
+                                <td>
+                                    @{
+                                        string capacityLabel = item.Capacity >= 999 ? (item.Capacity == 1999 ? "2TB" : "1TB") : $"{item.Capacity}GB";
+                                    }
+                                    <span>@item.Ram GB / @capacityLabel</span>
+                                </td>
+                                <td>@item.Color</td>
+                                <td>
+                                    <a href="/admin/ProductDetail/Detail/@item.ProductDetailId" class="btn btn-sm btn-primary">Xem</a>
+                                    <a href="/admin/ProductDetail/Edit/@item.ProductDetailId" class="btn btn-sm btn-danger">Sửa</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr class="text-center text-danger">
+                            <td colspan="8">Không có dữ liệu</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
 </div>
+

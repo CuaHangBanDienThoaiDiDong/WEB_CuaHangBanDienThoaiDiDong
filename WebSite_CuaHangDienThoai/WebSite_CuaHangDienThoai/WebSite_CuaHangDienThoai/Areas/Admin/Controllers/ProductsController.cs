@@ -26,20 +26,21 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             {
                 tb_Staff nvSession = (tb_Staff)Session["user"];
                 var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
-                if (item == null)
+                if (item != null)
                 {
                     var products = db.tb_Products.ToList();
                     if (products != null) 
                     {
                         ViewBag.Count = products.Count;
                     }
-                 
-                    return RedirectToAction("NonRole", "HomePage");
+
+                    return View();
                 }
                 else
                 {
                     //var items = db.tb_Staff.OrderByDescending(x => x.Code).ToList();
-                    return View();
+                    
+                    return RedirectToAction("NonRole", "HomePage");
                 }
 
             }
@@ -61,11 +62,14 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     .Select(c => c.ProductCompanyId)
                     .ToList();
 
+
                 var Products = db.tb_Products
-                    .Where(p => p.Title.Contains(search) ||
-                                ProductCategoryId.Contains((int)p.ProductCategoryId) ||
-                                ProductCompanyId.Contains((int)p.ProductCompanyId))
-                    .ToList();
+                             .Where(p =>
+                                 p.Title.Contains(search) ||
+                                 p.Alias.Contains(search.Trim()) ||
+                                 ProductCategoryId.Contains((int)p.ProductCategoryId) ||
+                                 ProductCompanyId.Contains((int)p.ProductCompanyId))
+                             .ToList();
 
 
 

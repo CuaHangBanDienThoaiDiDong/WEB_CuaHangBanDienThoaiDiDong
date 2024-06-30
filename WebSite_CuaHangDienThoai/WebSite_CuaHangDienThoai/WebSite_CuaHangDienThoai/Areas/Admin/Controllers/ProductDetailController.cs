@@ -25,19 +25,31 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             else
             {
                 var nvSession = (tb_Staff)Session["user"];
-                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
+                if (item != null)
+                {
+                    var ProductDetail = db.tb_ProductDetail.OrderByDescending(x => x.ProductsId).ToList();
+                    if (ProductDetail != null)
+                    {
+                        int pageSize = 10;
+                        int pageNumber = (page ?? 1);
+                        ViewBag.Count = ProductDetail.Count;
+                        return View(ProductDetail.ToPagedList(pageNumber, pageSize));
+                    }
+                    else 
+                    {
+                        ViewBag.error = "Không tồn tại bảng ghi nào !!!";
+                        return View();
+                    }
 
-                var functionTitle = db.tb_Function
-                                       .Where(func => func.FunctionId == checkStaff.FunctionId)
-                                       .Select(func => func.TitLe)
-                                       .FirstOrDefault();
+                }
+                else
+                {
+                    return RedirectToAction("NonRole", "HomePage");
+                }
 
-                var items = db.tb_ProductDetail.OrderByDescending(x => x.ProductsId).ToList();
 
-                int pageSize = 10;
-                int pageNumber = (page ?? 1);
-
-                return View(items.ToPagedList(pageNumber, pageSize));
+                  
             }
         }
         public ActionResult Partial_DetailColorById(int id)
@@ -86,10 +98,13 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     .ToList();
 
                 var Products = db.tb_Products
-                    .Where(p => p.Title.Contains(search) ||
-                                ProductCategoryId.Contains((int)p.ProductCategoryId) ||
-                                ProductCompanyId.Contains((int)p.ProductCompanyId))
-                    .ToList();
+                             .Where(p =>
+                                 p.Title.Contains(search) ||
+                                 p.Alias.Contains(search.Trim()) ||
+                                 ProductCategoryId.Contains((int)p.ProductCategoryId) ||
+                                 ProductCompanyId.Contains((int)p.ProductCompanyId))
+                             .ToList();
+
 
 
                 var productIds = Products.Select(p => p.ProductsId).ToList();
@@ -574,7 +589,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                         var existingProduct = db.tb_ProductDetail.Find(model.ProductDetailId);
                         if (existingProduct == null)
                         {
-                            return HttpNotFound();
+                            return Json(new { success = false,Code =-2 });// Không tìm thấy sản phẩm
                         }
 
                         existingProduct.Title = model.Title;
@@ -624,7 +639,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                             }
                         }
 
-                        // Lưu thay đổi vào cơ sở dữ liệu
+                        dbContextTransaction.Commit();
                         db.Entry(existingProduct).State = EntityState.Modified;
                         db.SaveChanges();
                         return Json(new { success = true, Code = 1 });
@@ -634,6 +649,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 }
                 catch (Exception ex) 
                 {
+                    dbContextTransaction.Rollback();
                     return Json(new { success = false, Code = -99 });
                 }
 

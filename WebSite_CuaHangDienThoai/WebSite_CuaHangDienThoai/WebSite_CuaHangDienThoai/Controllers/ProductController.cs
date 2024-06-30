@@ -86,9 +86,21 @@ namespace WebSite_CuaHangDienThoai.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
+                var ProductCategoryId = db.tb_ProductCategory
+        .Where(c => c.Title.Contains(searchString))
+        .Select(c => c.ProductCategoryId)
+        .ToList();
 
+                var ProductCompanyId = db.tb_ProductCompany
+                    .Where(c => c.Title.Contains(searchString))
+                    .Select(c => c.ProductCompanyId)
+                    .ToList();
                 var suggestedProducts = db.tb_Products
-                                     .Where(p => p.Title.Contains(searchString))
+                                       .Where(p =>
+                                 p.Title.Contains(searchString) ||
+                                 p.Alias.Contains(searchString.Trim()) ||
+                                 ProductCategoryId.Contains((int)p.ProductCategoryId) ||
+                                 ProductCompanyId.Contains((int)p.ProductCompanyId))
                                      .Select(x => x.ProductsId)  // Chỉ lấy ID sản phẩm
                                      .ToList();
                 if (suggestedProducts != null)

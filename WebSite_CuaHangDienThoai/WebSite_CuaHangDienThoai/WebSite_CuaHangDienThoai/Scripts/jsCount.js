@@ -2,8 +2,9 @@
 $(document).ready(function () {
     /* ShowCount();*/
     ShowCountOrderNew();
+    ShowCountMess();
     setInterval(function () {
-        ShowCountOrderNew();
+        ShowCountOrderNew(); ShowCountMess();
        
     }, 3000);
   
@@ -32,6 +33,26 @@ function ShowCountOrderNew() {
                 $('#orderNew_items_warehouse').html(rs.Count); 
                 $('#orderNew_items_index_li').html(rs.Count); 
                 $('#orderNew_items_MenuSidebar').html(rs.Count); 
+            } else {
+                console.error("Phản hồi không có thuộc tính Count.");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Lỗi khi gọi AJAX: ", error);
+        }
+    });
+}
+
+
+function ShowCountMess() {
+    $.ajax({
+        url: '/Admin/Mess/CountMessNonRead',
+        type: 'GET',
+        success: function (rs) {
+            if (rs && typeof rs.Count !== 'undefined') {
+               
+                $('.MessNonRead_items').html(rs.Count);
+              
             } else {
                 console.error("Phản hồi không có thuộc tính Count.");
             }
