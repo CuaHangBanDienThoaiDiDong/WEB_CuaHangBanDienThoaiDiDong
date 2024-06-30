@@ -1,0 +1,101 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_Message>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        string Content = null;
+        string alias = null;
+        var messCustomerList = item.tb_CustomerMessageDetail.ToList();
+
+        if (messCustomerList != null && messCustomerList.Any())
+        {
+            // Lấy bản ghi mới nhất
+            var latestContent = messCustomerList.OrderByDescending(x => x.Timestamp).FirstOrDefault();
+            var isRead = messCustomerList.Count(x => x.IsRead == false);
+
+            if (latestContent != null)
+            {
+                if (!string.IsNullOrEmpty(latestContent.Content))
+                {
+                    int maxLength = 25;
+                    alias = latestContent.Content;
+                    Content = latestContent.Content.Length > maxLength ? alias.Substring(0, maxLength) + "..." : alias;
+                }
+                if (isRead > 0)
+                {
+                    <a href="#" class="dropdown-item bg-gray-light">
+                        <!-- Message Start -->
+                        <div class="media">
+                            @if (latestContent.tb_Customer.Image != null)
+                            {
+                                <img src="data:image;base64,@Convert.ToBase64String(latestContent.tb_Customer.Image)" alt="@latestContent.tb_Customer.CustomerName" style="max-height: 50px; max-width: 50px;" class="img-size-50 mr-3 img-circle">
+                            }
+                            else
+                            {
+                                <img src="~/images/Logo/LogoWebpng.png" alt="LTDMiniStore" class="img-size-50 mr-3 img-circle">
+                            }
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    <b> @latestContent.tb_Customer.CustomerName</b>
+                                    @if (isRead > 0)
+                                    {
+                                        <span class="float-right text-sm text-danger">@isRead<i class="fas fa-star"></i></span>
+                                    }
+                                </h3>
+                                <p class="text-sm">
+                                    @if (!string.IsNullOrEmpty(Content))
+                                    {
+                                        <span>@Content</span>
+                                    }
+                                </p>
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> @latestContent.Timestamp.ToString("h:mm tt")</p>
+                            </div>
+                        </div>
+                        <!-- Message End -->
+                    </a>
+                    <div class="dropdown-divider"></div>
+                }
+                else
+                {
+                    <a href="#" class="dropdown-item">
+                        <!-- Message Start -->
+                        <div class="media">
+                            @if (latestContent.tb_Customer.Image != null)
+                            {
+                                <img src="data:image;base64,@Convert.ToBase64String(latestContent.tb_Customer.Image)" alt="@latestContent.tb_Customer.CustomerName" style="max-height: 50px; max-width: 50px;" class="img-size-50 mr-3 img-circle">
+                            }
+                            else
+                            {
+                                <img src="~/images/Logo/LogoWebpng.png" alt="LTDMiniStore" class="img-size-50 mr-3 img-circle">
+                            }
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    <b> @latestContent.tb_Customer.CustomerName</b>
+                                    @if (isRead > 0)
+                                    {
+                                        <span class="float-right text-sm text-danger">@isRead<i class="fas fa-star"></i></span>
+                                    }
+                                </h3>
+                                <p class="text-sm">
+                                    @if (!string.IsNullOrEmpty(Content))
+                                    {
+                                        <span>@Content</span>
+                                    }
+                                </p>
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> @latestContent.Timestamp.ToString("h:mm tt")</p>
+                            </div>
+                        </div>
+                        <!-- Message End -->
+                    </a>
+                    <div class="dropdown-divider"></div>
+                }
+
+            }
+        }
+    }
+}
+else
+{
+    <p class="text-danger">Không tồn tại bảng ghi nào !!!</p>
+}

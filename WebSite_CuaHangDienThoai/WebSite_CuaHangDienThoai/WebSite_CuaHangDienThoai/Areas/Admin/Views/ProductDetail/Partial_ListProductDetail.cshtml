@@ -31,7 +31,7 @@
 
 
                     byte[] strImg = null;
-                    var CheckImage = item.tb_ProductDetailImage.SingleOrDefault(x => x.IsDefault == true);
+                    var CheckImage = item.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
 
                     if (CheckImage != null)
                     {

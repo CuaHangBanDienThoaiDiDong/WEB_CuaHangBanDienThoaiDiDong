@@ -33,6 +33,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 else
                 {
                     var items = db.tb_Message.OrderByDescending(x => x.MessageId).ToList();
+
                     return View(items);
                 }
 
@@ -40,7 +41,39 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
 
         }
+        public ActionResult Partail_MessForLayOut() 
+        {
+             if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
 
+            tb_Staff nvSession = (tb_Staff)Session["user"];
+            var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2 || row.FunctionId == 4));
+
+            if (item == null)
+            {
+                return RedirectToAction("NonRole", "HomePage");
+            }
+
+            var items = db.tb_Message
+                            .Select(m => new
+                            {
+                                Message = m,
+                                LatestCustomerMessage = m.tb_CustomerMessageDetail
+                                                        .OrderByDescending(d => d.Timestamp)
+                                                        .FirstOrDefault(),
+                                IsAnyUnread = m.tb_CustomerMessageDetail
+                                                .Any(d => !d.IsRead)
+                            })
+                            .OrderByDescending(m => m.IsAnyUnread) // Đưa tin nhắn chưa đọc lên đầu
+                            .ThenByDescending(m => m.LatestCustomerMessage != null ? m.LatestCustomerMessage.Timestamp : DateTime.MinValue) // Sắp xếp theo thời gian giảm dần
+                            .ToList()
+                            .Select(m => m.Message); // Chọn tin nhắn gốc
+
+            return PartialView(items);
+
+        }
         public ActionResult StaffMess()
         {
             if (Session["user"] == null)
@@ -283,18 +316,19 @@ Customer=db.tb_Customer.FirstOrDefault(x=>x.CustomerId == cmd.CustomerId)
         {
             try
             {
-                var unreadMessages = db.tb_Message
-                    .Join(db.tb_CustomerMessageDetail
-                        .Where(d => d.IsRead == false),
-                        m => m.MessageId,
-                        d => d.MessageId,
-                        (m, d) => new { m.MessageId })
-                    .GroupBy(x => x.MessageId)
-                    .Select(g => g.First())
-                    .Count();
+                // Lấy danh sách các MessageId từ tb_CustomerMessageDetail mà có IsRead = false
+                var unreadMessageIds = db.tb_CustomerMessageDetail
+                    .Where(d => d.IsRead == false)
+                    .Select(d => d.MessageId)
+                    .Distinct(); // Lọc các MessageId không bị trùng lặp
 
-                // Trả về kết quả dưới dạng JSON
-                return Json(new { success = true, count = unreadMessages }, JsonRequestBehavior.AllowGet);
+                // Đếm số lượng tin nhắn trong tb_Message tương ứng với các MessageId đó
+                int unreadMessagesCount = db.tb_Message
+                    .Where(m => unreadMessageIds.Contains(m.MessageId))
+                    .Count(); // Đếm số lượng tin nhắn chưa đọc
+
+                return Json(new { Count = unreadMessagesCount }, JsonRequestBehavior.AllowGet);
+               
             }
             catch (Exception ex)
             {
