@@ -18,7 +18,6 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
         public ActionResult Index(int? page)
         {
-
             if (Session["user"] == null)
             {
                 return RedirectToAction("DangNhap", "Account");
@@ -26,6 +25,11 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             else
             {
                 tb_Staff nvSession = (tb_Staff)Session["user"];
+
+                if (nvSession == null)
+                {
+                    return RedirectToAction("NonRole", "HomePage");
+                }
                 var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
                 if (item == null)
                 {
@@ -33,22 +37,26 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 }
                 else
                 {
-                    IEnumerable<tb_Voucher> items = db.tb_Voucher.OrderByDescending(x => x.VoucherId);
+
+
+
+
+                    var items = db.tb_Voucher.OrderByDescending(x => x.VoucherId).ToList();
+                   
                     if (items != null)
                     {
-                        var pageSize = 10;
-                        if (page == null)
-                        {
-                            page = 1;
-                        }
+                        int pageSize = 10;
+                        int pageNumber = (page ?? 1);
+
                         var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-                        items = items.ToPagedList(pageIndex, pageSize);
+                        
                         var products = db.tb_Voucher.ToList();
 
                         ViewBag.Count = products.Count;
                         ViewBag.PageSize = pageSize;
                         ViewBag.Page = page;
-                        return View(items);
+                        return View(items.ToPagedList(pageNumber, pageSize));
+
                     }
                     else
                     {
@@ -56,11 +64,9 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                         return View();
                     }
                 }
-
-
-               
             }
         }
+
         // Hàm tạo chuỗi ngẫu nhiên
         public string GenerateRandomString(int length)
         {

@@ -558,102 +558,140 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             return PartialView(item);
             
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(tb_ProductDetail model, IEnumerable<HttpPostedFileBase> newImages, int[] productImageIds)
+        {
+            using (var dbContextTransaction = db.Database.BeginTransaction()) 
+            {
+                try 
+                {
+                    if (ModelState.IsValid)
+                    {
+                        // Cập nhật thông tin sản phẩm
+                        var existingProduct = db.tb_ProductDetail.Find(model.ProductDetailId);
+                        if (existingProduct == null)
+                        {
+                            return HttpNotFound();
+                        }
+
+                        existingProduct.Title = model.Title;
+                        existingProduct.Color = model.Color;
+                        existingProduct.Price = model.Price;
+                        existingProduct.PriceSale = model.PriceSale;
+                        existingProduct.OrigianlPrice = model.OrigianlPrice;
+                        existingProduct.Ram = model.Ram;
+                        existingProduct.Capacity = model.Capacity;
+                        existingProduct.ProductsId = model.ProductsId;
+
+                        // Cập nhật hình ảnh
+                        for (int i = 0; i < newImages.Count(); i++)
+                        {
+                            var file = newImages.ElementAt(i);
+                            int productImageId = productImageIds.ElementAt(i);
+
+                            if (file != null && file.ContentLength > 0)
+                            {
+                                byte[] imageData = null;
+                                using (var binaryReader = new BinaryReader(file.InputStream))
+                                {
+                                    imageData = binaryReader.ReadBytes(file.ContentLength);
+                                }
+
+                                // Cập nhật hình ảnh trong cơ sở dữ liệu
+                                var imageDetail = db.tb_ProductDetailImage.FirstOrDefault(x => x.ProductImageId == productImageId);
+                                if (imageDetail != null)
+                                {
+                                    if (imageDetail.IsDefault == true)
+                                    {
+                                        imageDetail.Image = imageData;
+                                        imageDetail.IsDefault = true; // Cập nhật hình ảnh mới là mặc định
+
+                                    }
+                                    else
+                                    {
+                                        imageDetail.Image = imageData;
+                                        imageDetail.IsDefault = false;
+                                    }
+                                    db.Entry(imageDetail).State = EntityState.Modified;
+                                }
+                                else
+                                {
+                                    return Json(new { success = false, Code = -1 });//Lỗi Update hình ảnh
+                                }
+                            }
+                        }
+
+                        // Lưu thay đổi vào cơ sở dữ liệu
+                        db.Entry(existingProduct).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return Json(new { success = true, Code = 1 });
+                       
+                    }
+                    return View(model);
+                }
+                catch (Exception ex) 
+                {
+                    return Json(new { success = false, Code = -99 });
+                }
+
+            }
+            
+        }
+
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public ActionResult Edit(tb_ProductDetail model, HttpPostedFileBase[] newImage)
         //{
-        //    if (ModelState.IsValid) 
+        //    if (ModelState.IsValid)
         //    {
-        //        //model.ModifiedDate = DateTime.Now;
-        //        //model.Alias = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(model.Title);
-
-
-
-        //        if (newImage != null && newImage.Length > 0)
+        //        foreach (var image in newImage)
         //        {
-        //            foreach (var image in newImage)
+        //            if (image != null && image.ContentLength > 0)
         //            {
-        //                if (image != null && image.ContentLength > 0)
+        //                byte[] imageData = null;
+        //                using (var binaryReader = new BinaryReader(image.InputStream))
         //                {
-        //                    byte[] imageData = null;
-        //                    using (var binaryReader = new BinaryReader(image.InputStream))
-        //                    {
-        //                        imageData = binaryReader.ReadBytes(image.ContentLength);
-        //                    }
-        //                    var productIdStr = image.FileName.Split('_')[1];
-        //                    int productId;
+        //                    imageData = binaryReader.ReadBytes(image.ContentLength);
+        //                }
 
-        //                    if (int.TryParse(productIdStr, out productId))
+        //                // Lấy productId từ tên file
+        //                var productIdStr = image.FileName.Split('_').LastOrDefault();
+        //                int productId;
+        //                if (int.TryParse(productIdStr, out productId))
+        //                {
+        //                    // Tìm sản phẩm theo productId và cập nhật hình ảnh mới
+        //                    var checkImageDetail = db.tb_ProductDetailImage.FirstOrDefault(x => x.ProductImageId == productId);
+        //                    if (checkImageDetail != null)
         //                    {
-        //                        var checkImageDetail = db.tb_ProductDetailImage.FirstOrDefault(x => x.ProductImageId == productId);
         //                        checkImageDetail.Image = imageData;
         //                        checkImageDetail.IsDefault = true;
         //                        db.Entry(checkImageDetail).State = EntityState.Modified;
-        //                        db.SaveChanges();
         //                    }
+        //                    else
+        //                    {
+        //                        // Nếu không tìm thấy sản phẩm, bạn có thể xử lý theo ý định của mình
+        //                        // Ví dụ: Tạo một sản phẩm mới với hình ảnh này
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    // Xử lý lỗi không lấy được ProductImageId từ tên file
         //                }
         //            }
         //        }
 
-        //        db.Entry(model).State = System.Data.Entity.EntityState.Modified;
+        //        // Lưu các thay đổi vào database
+        //        db.Entry(model).State = EntityState.Modified;
         //        db.SaveChanges();
+
         //        return RedirectToAction("index");
         //    }
+
         //    return View(model);
-
         //}
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(tb_ProductDetail model, HttpPostedFileBase[] newImage)
-        {
-            if (ModelState.IsValid)
-            {
-                foreach (var image in newImage)
-                {
-                    if (image != null && image.ContentLength > 0)
-                    {
-                        byte[] imageData = null;
-                        using (var binaryReader = new BinaryReader(image.InputStream))
-                        {
-                            imageData = binaryReader.ReadBytes(image.ContentLength);
-                        }
-
-                        // Lấy productId từ tên file
-                        var productIdStr = image.FileName.Split('_').LastOrDefault();
-                        int productId;
-                        if (int.TryParse(productIdStr, out productId))
-                        {
-                            // Tìm sản phẩm theo productId và cập nhật hình ảnh mới
-                            var checkImageDetail = db.tb_ProductDetailImage.FirstOrDefault(x => x.ProductImageId == productId);
-                            if (checkImageDetail != null)
-                            {
-                                checkImageDetail.Image = imageData;
-                                checkImageDetail.IsDefault = true;
-                                db.Entry(checkImageDetail).State = EntityState.Modified;
-                            }
-                            else
-                            {
-                                // Nếu không tìm thấy sản phẩm, bạn có thể xử lý theo ý định của mình
-                                // Ví dụ: Tạo một sản phẩm mới với hình ảnh này
-                            }
-                        }
-                        else
-                        {
-                            // Xử lý lỗi không lấy được ProductImageId từ tên file
-                        }
-                    }
-                }
-
-                // Lưu các thay đổi vào database
-                db.Entry(model).State = EntityState.Modified;
-                db.SaveChanges();
-
-                return RedirectToAction("index");
-            }
-
-            return View(model);
-        }
 
 
         public ActionResult ShowDetails(int id)

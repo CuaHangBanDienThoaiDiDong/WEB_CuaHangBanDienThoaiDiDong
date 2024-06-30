@@ -73,10 +73,10 @@
                                 <div class="tab-content">
                                     <div class="active tab-pane" id="activity">
                                         @*<div class="form-group">
-                                            <label for="exampleInputEmail1">Tên sản phẩm</label>
-                                            @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm",id= "Title" })
-                                            @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
-                                        </div>*@
+                                                <label for="exampleInputEmail1">Tên sản phẩm</label>
+                                                @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm",id= "Title" })
+                                                @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
+                                            </div>*@
 
 
                                         <div class="form-group">
@@ -185,7 +185,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="col-2">
-                                                                                    <div class=" form-group text-center "id="muiTen_@item.ProductImageId" style="display: none ;justify-content: center; align-items: center; height: 100px; margin-top: 50%">
+                                                                                    <div class="form-group text-center" id="muiTen_@item.ProductImageId" style="display: none; justify-content: center; align-items: center; height: 100px; margin-top: 50%">
                                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" style="color:greenyellow" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
                                                                                             <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708" />
                                                                                             <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708" />
@@ -193,33 +193,25 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="col-5 d-flex justify-content-center align-items-center">
-                                                                                    <div class="form-group text-center newImage mt-2" >
-                                                                                        <label id="lbImagePreview_@item.ProductImageId"   style="display:none">Ảnh mới:</label>
-                                                                                        <img  id="newImagePreview_@item.ProductImageId"  src="#" alt="New Image Preview"style="display: none; width: 50%; height: 50%; " />
+                                                                                    <div class="form-group text-center newImage mt-2">
+                                                                                        <label id="lbImagePreview_@item.ProductImageId" style="display:none">Ảnh mới:</label>
+                                                                                        <img id="newImagePreview_@item.ProductImageId" src="#" alt="New Image Preview" style="display: none; width: 50%; height: 50%;" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group text-center mt-2 anhMoi">
                                                                                 <label for="exampleInputFile_@item.ProductImageId" class="btn btn-primary">
                                                                                     Thay đổi
-                                                                                    @*<input type="file" name="newImage" id="exampleInputFile_@item.ProductImageId"   accept="image/jpeg, image/png, image/gif" onchange="previewImage(event, '@item.ProductImageId')" style="display: none;" />*@
-                                                                                    @*<input type="file" name="newImage" id="exampleInputFile_@item.ProductImageId" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event, '@item.ProductImageId', '@item.ProductImageId')" style="display: none;" />*@
-                                                                                    <input type="file" name="newImage" id="exampleInputFile_@item.ProductImageId" data-product-id="@item.ProductImageId" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event, @item.ProductImageId)" style="display: none;" />
-
-
+                                                                                    <input type="file" name="newImages" id="exampleInputFile_@item.ProductImageId" data-product-id="@item.ProductImageId" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event, @item.ProductImageId)" style="display: none;" />
+                                                                                    <input type="hidden" name="productImageIds" value="@item.ProductImageId" />
                                                                                 </label>
                                                                             </div>
-                                                                            @if (Model.tb_ProductDetailImage.Count > 1 && !item.IsDefault)
-                                                                            {
-                                                                                <a href="#" data-id="@item.ProductImageId" class="btn btn-sm btn-danger btnDelete"><i class="fa fa-trash"></i></a>
-                                                                            }
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     }
-
 
                                                     i++;
                                                 }
@@ -260,69 +252,7 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 
     <script>
-        //function previewImage(event, id) {
-        //    var reader = new FileReader();
 
-
-        //    reader.onload = function () {
-        //        var output = document.getElementById('newImagePreview_' + id);
-        //        if (output) {
-        //            output.src = reader.result;
-        //            output.style.display = 'block';
-
-        //            var labelAnhCu = document.getElementById('lbAnhCu_' + id);
-        //            var muiTen = document.getElementById('muiTen_' + id);
-        //            var lbImagePreview = document.getElementById('lbImagePreview_' + id);
-        //            if (labelAnhCu && muiTen && lbImagePreview) {
-        //                labelAnhCu.style.display = 'block';
-        //                muiTen.style.display = 'block';
-        //                lbImagePreview.style.display = 'block';
-        //            } else {
-        //                console.error('Lõi lb.');
-        //            }
-        //        } else {
-        //            console.error('Looii anh ' + id + ' tim  de');
-        //        }
-        //    }
-        //    reader.readAsDataURL(event.target.files[0]);
-        //}
-
-
-        //function previewImage(event, id) {
-        //    var reader = new FileReader();
-        //    var productId = id.split('_')[1]; // Trích xuất ProductImageId từ id
-
-        //    reader.onload = function () {
-        //        var output = document.getElementById('newImagePreview_' + id);
-        //        if (output) {
-        //            output.src = reader.result;
-        //            output.style.display = 'block';
-
-        //            var labelAnhCu = document.getElementById('lbAnhCu_' + id);
-        //            var muiTen = document.getElementById('muiTen_' + id);
-        //            var lbImagePreview = document.getElementById('lbImagePreview_' + id);
-        //            if (labelAnhCu && muiTen && lbImagePreview) {
-        //                labelAnhCu.style.display = 'block';
-        //                muiTen.style.display = 'block';
-        //                lbImagePreview.style.display = 'block';
-        //            } else {
-        //                console.error('Lõi lb.');
-        //            }
-        //        } else {
-        //            console.error('Looii anh ' + id + ' tim  de');
-        //        }
-        //    }
-
-        //    reader.readAsDataURL(event.target.files[0]);
-
-        //    // Gán productId vào một trường ẩn trong biểu mẫu
-        //    var productIdInput = document.getElementById('productId');
-        //    if (productIdInput) {
-        //        productIdInput.value = productId;
-        //    } else {
-        //        console.error('Không tìm thấy trường productId trong biểu mẫu.');
-        //    }
-        //}
 
 
         function validateForm() {
@@ -355,47 +285,10 @@
             } else {
                 $('#Capacity').removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
             }
-            //if (isNaN(demoPrice) || isNaN(demoOriginalPrice)) {
-            //    Swal.fire({
-            //        icon: "error",
-            //        title: "Lỗi",
-            //        text: "Vui lòng điền đầy đủ giá sản phẩm.",
-            //    });
-            //    return false;
-            //} else {
-            //    $('#Price').removeClass('is-invalid');
-            //    $('#PriceSale').removeClass('is-invalid');
-            //    $('#OrigianlPrice').removeClass('is-invalid');
-            //}
+          
 
-            //if (demoPrice < demoOriginalPrice) {
-            //    Swal.fire({
-            //        icon: "error",
-            //        title: "Lỗi",
-            //        text: "Giá bán không được lớn hơn giá nhập.",
-            //    });
-            //    isValid = false;
-            //} else {
-            //    $('#Price').removeClass('is-invalid');
-               
-            //    $('#OrigianlPrice').removeClass('is-invalid');
-            //}
-            //if ( demoPriceSale < demoOriginalPrice) {
-            //    Swal.fire({
-            //        icon: "error",
-            //        title: "Lỗi",
-            //        text: "Giá bán khuyến mãi không được lớn hơn giá nhập.",
-            //    });
-            //    isValid = false;
-            //} else {
-                
-            //    $('#PriceSale').removeClass('is-invalid');
-            //    $('#OrigianlPrice').removeClass('is-invalid');
-            //}
 
-           
 
-           
             $('.row:first-child input[type="text"], .row:first-child textarea').each(function () {
                 if (!$(this).val().trim()) {
                     $(this).addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi

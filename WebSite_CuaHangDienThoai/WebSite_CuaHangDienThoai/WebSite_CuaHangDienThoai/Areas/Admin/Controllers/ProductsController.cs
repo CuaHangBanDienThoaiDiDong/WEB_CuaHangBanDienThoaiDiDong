@@ -392,7 +392,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                         {
                             ProductsId = model.ProductsId,
                             Image = imageData,
-                            IsDefault = false 
+                            IsDefault = true 
                         };
                         db.tb_ProductImage.Add(newProductImage);
                     }

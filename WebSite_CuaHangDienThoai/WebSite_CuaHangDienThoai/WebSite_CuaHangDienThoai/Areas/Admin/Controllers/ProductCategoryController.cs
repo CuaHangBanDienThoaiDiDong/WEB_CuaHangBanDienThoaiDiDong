@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Vml;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -195,6 +196,10 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                         imageData = binaryReader.ReadBytes(newImage.ContentLength);
                     }
                     model.Icon = imageData;
+                }
+                else 
+                {
+                    model.Icon = model.Icon;
                 }
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();

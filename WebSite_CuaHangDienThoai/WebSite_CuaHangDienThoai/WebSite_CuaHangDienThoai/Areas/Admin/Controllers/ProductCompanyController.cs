@@ -31,17 +31,28 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 }
                 else
                 {
-                    IEnumerable<tb_ProductCompany> items = db.tb_ProductCompany.OrderByDescending(x => x.ProductCompanyId);
-                    var pageSize = 10;
-                    if (page == null)
+                    var items = db.tb_ProductCompany.OrderByDescending(x => x.ProductCompanyId).ToList();
+
+                    if (items != null)
                     {
-                        page = 1;
+                        int pageSize = 10;
+                        int pageNumber = (page ?? 1);
+
+                        var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+
+                        var products = db.tb_ProductCompany.ToList();
+
+                        ViewBag.Count = products.Count;
+                        ViewBag.PageSize = pageSize;
+                        ViewBag.Page = page;
+                        return View(items.ToPagedList(pageNumber, pageSize));
+
                     }
-                    var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-                    items = items.ToPagedList(pageIndex, pageSize);
-                    ViewBag.PageSize = pageSize;
-                    ViewBag.Page = page;
-                    return View(items);
+                    else
+                    {
+                        ViewBag.txt = "Không tồn tại sản phẩm";
+                        return View();
+                    }
                 }
              }
 

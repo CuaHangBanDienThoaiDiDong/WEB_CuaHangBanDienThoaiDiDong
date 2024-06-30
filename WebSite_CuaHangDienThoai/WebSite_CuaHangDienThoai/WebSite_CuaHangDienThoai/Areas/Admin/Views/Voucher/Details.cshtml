@@ -21,7 +21,12 @@
     </ul>
 }
 
-
+<style>
+    .inline-item {
+        display: inline-block;
+        margin-right: 10px; /* Khoảng cách giữa các phần tử */
+    }
+</style>
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -59,17 +64,17 @@
                     <h3 class="text-center">@Model.Title</h3>
                 </div>
                 <div class="card-body">
-                    <span><b>Tiêu đề:</b> <span>@Model.Title</span> <b style="margin-left:10px">Mã voucher:</b> <span>@Model.Code</span></span>
+                    <h4> <span class="inline-item"><label class="text-danger">Tiêu đề:</label> @Model.Title</span></h4>
                     <br />
                     <span>
-                        <b>Ngày bắt đầu chương trình:</b>     @if (Model.UsedDate.HasValue)
+                        <label class="text-danger">Ngày bắt đầu chương trình:</label>     @if (Model.UsedDate.HasValue)
                         {
                             @Model.UsedDate.Value.ToString("dd/MM/yyyy HH:mm")
                         }
                     </span>
                     <br />
                     <span>
-                        <b>Ngày kết thúc chương trình:</b>
+                        <label class="text-danger">Ngày kết thúc chương trình:</label>
                         @if (Model.ModifiedDate.HasValue)
                         {
                             @Model.ModifiedDate.Value.ToString("dd/MM/yyyy HH:mm")
@@ -77,7 +82,7 @@
                     </span>
                     <br />
                     <span>
-                        <b>Phần trăm giảm đơn hàng</b>
+                        <label class="text-danger">Phần trăm giảm đơn hàng</label>
                         @Model.PercentPriceReduction %
                     </span>
 

@@ -124,7 +124,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                             .FirstOrDefault();
                 if (functionTitle != null) 
                 {
-                    if (checkStaff.FunctionId == 2 || checkStaff.FunctionId==1 || functionTitle.Contains("Quản Trị Viên") || functionTitle.Contains("Quản Lý"))
+                    if (checkStaff.FunctionId == 2 || checkStaff.FunctionId==1 )
                     {
                         Session["user"] = checkStaff;
                         return View();
@@ -283,7 +283,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                             .FirstOrDefault();
                 if (functionTitle != null)
                 {
-                    if (checkStaff.FunctionId == 2 || checkStaff.FunctionId == 1 || functionTitle.Contains("Quản Trị Viên") || functionTitle.Contains("Quản Lý"))
+                    if (checkStaff.FunctionId == 2 || checkStaff.FunctionId == 1)
                     {
                         if (id > 0)
                         {
@@ -326,6 +326,14 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                             .Where(func => func.FunctionId == checkStaff.FunctionId)
                                             .Select(func => func.TitLe)
                                             .FirstOrDefault();
+
+                var role = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
+                if (role == null)
+                {
+                    return RedirectToAction("NonRole", "HomePage");
+                }
+
+
                 if (functionTitle != null)
                 {
                     if (checkStaff.FunctionId == 2 || checkStaff.FunctionId == 1 )
@@ -335,6 +343,13 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                             if (id > 0)
                             {
                                 var item = db.tb_Staff.Find(id);
+                                var function=db.tb_Function.Find(item.FunctionId);
+
+                                if (item == null|| function==null) 
+                                {
+                                    ViewBag.error="Lỗi hệ thống";
+                                    return View();
+                                }
                                 var viewModel = new EditStaffViewModel
                                 {
                                     Id = item.StaffId,
@@ -360,6 +375,9 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                 };
                                 ViewBag.ChucNang = new SelectList(db.tb_Function.ToList(), "FunctionId", "TitLe");
                                 ViewBag.Store = new SelectList(db.tb_Store.ToList(), "StoreId", "Location");
+                                ViewBag.TitleFunction= function.TitLe.Trim();   
+
+
                                 return View(viewModel);
                             }
                             return View();
