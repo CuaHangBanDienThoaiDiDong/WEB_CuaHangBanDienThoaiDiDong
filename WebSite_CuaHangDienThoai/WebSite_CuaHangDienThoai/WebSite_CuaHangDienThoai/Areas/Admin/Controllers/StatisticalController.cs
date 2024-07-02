@@ -69,31 +69,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult StatisticalByMon()
-        {
-            if (Session["user"] == null)
-            {
-                return RedirectToAction("DangNhap", "Account");
-            }
-            else
-            {
-
-                tb_Staff nvSession = (tb_Staff)Session["user"];
-                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1));
-                if (item == null)
-                {
-
-                    return RedirectToAction("NonRole", "HomePage");
-                }
-                else
-                {
-                    ViewBag.Date = DateTime.Now.Month.ToString("D2");
-
-                    return View();
-                }
-
-            }
-        }
+        
         public ActionResult StatisticalByYear()
         {
             if (Session["user"] == null)
@@ -192,7 +168,31 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
 
 
         //thong ke theo tháng
+        public ActionResult StatisticalByMon()
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
 
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1));
+                if (item == null)
+                {
+
+                    return RedirectToAction("NonRole", "HomePage");
+                }
+                else
+                {
+                    ViewBag.Date = DateTime.Now.Month.ToString("D2");
+
+                    return View();
+                }
+
+            }
+        }
         [HttpGet]
         public ActionResult GetStatisticalByMon(string fromDate, string toDate)
         {

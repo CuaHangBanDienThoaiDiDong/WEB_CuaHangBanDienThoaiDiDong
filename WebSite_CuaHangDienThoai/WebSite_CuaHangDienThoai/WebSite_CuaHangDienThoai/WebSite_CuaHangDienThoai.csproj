@@ -4103,6 +4103,7 @@
     <Content Include="Areas\Admin\Views\Mess\Paritial_Left.cshtml" />
     <Content Include="Areas\Admin\Views\Mess\StaffMess.cshtml" />
     <Content Include="Areas\Admin\Views\Mess\Partail_MessForLayOut.cshtml" />
+    <Content Include="Areas\Admin\Views\WareHouseImport\SuggestProductListProduct.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
