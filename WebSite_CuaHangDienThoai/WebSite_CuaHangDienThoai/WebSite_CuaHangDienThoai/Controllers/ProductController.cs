@@ -201,7 +201,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     var itemProductDetail = db.tb_ProductDetail.FirstOrDefault(r => r.ProductsId == id);
                     if (itemProductDetail != null)
                     {
-                        //ViewBag.DungLuong = itemProductDetail.Capacity;
+                      
                         return View(itemProductDetail);
                     }
                 }

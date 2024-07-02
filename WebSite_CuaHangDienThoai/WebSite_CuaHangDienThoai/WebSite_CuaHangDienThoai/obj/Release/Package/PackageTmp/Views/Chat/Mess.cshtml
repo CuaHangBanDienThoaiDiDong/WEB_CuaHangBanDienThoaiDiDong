@@ -3,7 +3,7 @@
     ViewBag.Title = "Tin nhắn";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
-
+<link href="~/Content/Loading.css" rel="stylesheet" />
 <link href="~/Content/Css/Client/chat.css" rel="stylesheet" />
 <br />
 <br />
@@ -25,8 +25,8 @@
                             </div>
                         </div>
                     </div>
-                    <div id="loadContenMess" data-id="@Model.CustomerId">
-                        <!-- Messages will be loaded here -->
+                    @*<div class="loading-spinner" id="loadingSpinner" style="display: none;"></div>*@
+                    <div id="loadContenMess" data-id="@Model.CustomerId" style="overflow-y: auto; max-height: 600px; scroll-behavior: smooth;">
                     </div>
                     <div class="flex-grow-0 py-3 px-4 border-top">
                         <div class="input-group">
@@ -39,33 +39,24 @@
         </div>
     </div>
 </main>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.signalr/2.4.2/jquery.signalr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    var shouldScrollToBottom = true; // Biến để xác định xem có nên cuộn xuống dưới cùng hay không
+    var customerId = '@Model.CustomerId';
+    var sendingMessage = false; // Biến để kiểm tra xem có đang gửi tin nhắn hay không
+
 
     function loadPartialContent(id) {
+       
+        $('#loadingSpinner').show();
         $.ajax({
-            url: '/Chat/Partial_ContentMess/' + id, // Đường dẫn tới action Partial_ContentMess trong controller Chat
+            url: '/Chat/Partial_ContentMess/' + id,
             type: 'GET',
-            data: { id: id }, // Truyền id qua query string
+            data: { id: id },
             success: function (result) {
-                // Lưu vị trí cuộn hiện tại
-                var currentScrollPosition = $('#loadContenMess').scrollTop();
-                var scrollHeight = $('#loadContenMess')[0].scrollHeight;
-                var clientHeight = $('#loadContenMess').outerHeight();
-
-                // Nạp nội dung nhận được vào div có id="loadContenMess"
                 $('#loadContenMess').html(result);
-
-                // Nếu đang ở cuối cùng hoặc người dùng đang xem tin nhắn cũ, cuộn đến vị trí hiện tại
-                if (shouldScrollToBottom) {
-                    var newScrollPosition = scrollHeight - clientHeight;
-                    $('#loadContenMess').scrollTop(newScrollPosition);
-                } else {
-                    $('#loadContenMess').scrollTop(currentScrollPosition); // Giữ nguyên vị trí cuộn
-                }
+                scrollToBottom(); // Cuộn xuống dưới cùng sau khi tải tin nhắn mới
             },
             error: function (xhr, status, error) {
                 console.error(error);
@@ -73,7 +64,6 @@
         });
     }
 
-    // Hàm cuộn xuống dưới cùng
     function scrollToBottom() {
         var chatMessages = document.getElementById("loadContenMess");
         if (chatMessages) {
@@ -81,58 +71,74 @@
         }
     }
 
-    // Cập nhật customerId từ Razor View (nếu cần thiết)
-    var customerId = @Model.CustomerId;
-
-    // Tải nội dung tin nhắn khi tài liệu đã sẵn sàng và sau mỗi 2 giây
     $(document).ready(function () {
+        loadPartialContent(customerId);
+
         setInterval(function () {
             loadPartialContent(customerId);
-        }, 2000);
+        }, 1000);
 
-        // Xử lý sự kiện scroll để xác định xem có nên cuộn xuống dưới cùng hay không
-        $('#loadContenMess').on('scroll', function () {
-            var scrollHeight = $(this)[0].scrollHeight;
-            var clientHeight = $(this).outerHeight();
-            var scrollPosition = $(this).scrollTop();
+        window.onload = function () {
+            scrollToBottom();
+        };
 
-            // Nếu người dùng đang xem tin nhắn cũ, không tự động cuộn xuống dưới cùng
-            shouldScrollToBottom = scrollPosition + clientHeight >= scrollHeight;
+        $('.btnSendMess').click(function () {
+            if (sendingMessage) {
+                return; // Nếu đang gửi tin nhắn thì không làm gì cả
+            }
+
+            var content = $('#ContentMess').val();
+
+            // Kiểm tra và gửi tin nhắn
+            if (!customerId) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Hết hàng...",
+                    text: "Khách hàng không hợp lệ"
+                });
+
+                setTimeout(function () {
+                    window.location.href = '/dang-nhap'; // Chuyển hướng đến trang đăng nhập
+                }, 2000);
+
+                return;
+            }
+
+            if (!content) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi...",
+                    text: "Nội dung tin nhắn không được để trống"
+                });
+                return;
+            }
+
+            // Đánh dấu đang gửi tin nhắn
+            sendingMessage = true;
+            $('#loadingSpinner').show(); // Hiển thị biểu tượng loading
+
+            // Gửi tin nhắn
+            sendMessage(customerId, content);
         });
-
-        // Cuộn xuống dưới cùng khi tải lần đầu
-        scrollToBottom();
     });
 
-    // Xử lý sự kiện click nút gửi tin nhắn
-    $('.btnSendMess').click(function () {
-        var content = $('#ContentMess').val();
-
-        // Kiểm tra và gửi tin nhắn
-        if (!customerId) {
-            Swal.fire({
-                icon: "error",
-                title: "Hết hàng...",
-                text: "Khách hàng không hợp lệ"
-            });
-
-            setTimeout(function () {
-                window.location.href = '/dang-nhap'; // Chuyển hướng đến trang đăng nhập
-            }, 2000);
-
-            return;
-        }
-
-        if (!content) {
-            Swal.fire({
-                icon: "error",
-                title: "Lỗi...",
-                text: "Nội dung tin nhắn không được để trống"
-            });
-            return;
-        }
-
-        // Gửi tin nhắn
-        sendMessage(customerId, content);
-    });
+    function sendMessage(customerId, content) {
+        $.ajax({
+            url: '/Chat/SentMess',
+            type: 'POST',
+            data: { id: customerId, content: content },
+            success: function (response) {
+                console.log('Tin nhắn đã được gửi đi.');
+                loadPartialContent(customerId);
+                $('#ContentMess').val('');
+                sendingMessage = false;
+                $('#loadingSpinner').hide(); // Ẩn biểu tượng loading
+            },
+            error: function (xhr, status, error) {
+                console.error('Đã xảy ra lỗi khi gửi tin nhắn:', error);
+                sendingMessage = false;
+                $('#loadingSpinner').hide(); // Ẩn biểu tượng loading
+            }
+        });
+    }
 </script>

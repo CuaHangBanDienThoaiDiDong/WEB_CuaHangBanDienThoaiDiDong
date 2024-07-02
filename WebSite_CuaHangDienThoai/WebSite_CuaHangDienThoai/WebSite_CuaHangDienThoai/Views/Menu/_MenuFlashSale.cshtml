@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
+﻿﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
 <style>
     .border-danger {
         border: 10px solid red; /* Đặt kích thước của border */
@@ -9,8 +9,9 @@
         width: 100%; /* Kích thước của hình ảnh bằng kích thước của phần tử cha */
         height: auto; /* Đảm bảo tỷ lệ khung hình bị giữ nguyên */
     }
+
     .border-danger p {
-    color :red;
+        color: red;
     }
 
 
@@ -45,7 +46,6 @@
         #product:hover h5 {
             color: red;
         }
-
 </style>
 
 
@@ -53,13 +53,16 @@
 
 @if (Model != null)
 {
-   
-    <div class="border border-danger  nen"style="background-color: #920101; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px ">
+
+    <div class="border border-danger  nen" style="background-color: #920101; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px ">
         <div class="best_sellers ">
             <div class="container">
                 <div class="row pb-0">
                     <img src="~/images/Frame-2-1200x120.jpg" />
-                    <img src="~/images/gif/Macdinh-1.gif" class="w-100"/>
+                    <a href="/voucher">
+                        <img src="~/images/gif/Macdinh-1.gif" class="w-100" />
+                    </a>
+                   
                 </div>
                 <div class="row">
                     @*<div class="col-1 "></div>*@
@@ -70,24 +73,29 @@
                                 <!-- Slide 1 -->
 
 
-                              @foreach(var item in Model)
+                                @foreach (var item in Model)
                                 {
-                                    var img = "";
+                                    byte[] img = null;
                                     var checkImg = item.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault);
                                     if (checkImg != null)
                                     {
                                         img = checkImg.Image;
                                     }
+                                    string imgSrc = "";
+                                    if (img != null && img.Length > 0)
+                                    {
+                                        string base64String = Convert.ToBase64String(img);
+                                        imgSrc = $"data:image;base64,{base64String}";
+                                    }
 
 
-
-@*<img src="~/images/background/Frame-knockout-desktop-226x500.jpg" class="h-100"/>*@
+                                    @*<img src="~/images/background/Frame-knockout-desktop-226x500.jpg" class="h-100"/>*@
 
                                     <div class="owl-item product_slider_item bg-white ml-1 mr-1" style="background-image: url('~/images/background/Frame-knockout-desktop-226x500.jpg'); ">
                                         <div class="product-item" id="product">
                                             <div class="product discount">
                                                 <div class="product_image mb-1">
-                                                    <img src="@img" alt="@item.tb_Products.Title" id="imgProducts" class="pt-2">
+                                                    <img src="@imgSrc" alt="@item.tb_Products.Title" id="imgProducts" class="pt-2">
                                                 </div>
                                                 <div class="favorite favorite_left"></div>
                                                 <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
@@ -129,11 +137,11 @@
                     <div class="col-4">
                         <a href="/ProductCategory/Detail/@ViewBag.ProductCatgory" class="btn btn-light w-100 h-100 text-center ">
                             <small>
-                                Xem thêm Điện Thoại 
+                                Xem thêm Điện Thoại
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="ml-1 mb-1 bi bi-caret-right align-items-center" viewBox="0 0 16 16">
                                     <path d="M6 12.796V3.204L11.481 8zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753" />
                                 </svg>
-                            
+
                             </small>
                         </a>
                     </div>

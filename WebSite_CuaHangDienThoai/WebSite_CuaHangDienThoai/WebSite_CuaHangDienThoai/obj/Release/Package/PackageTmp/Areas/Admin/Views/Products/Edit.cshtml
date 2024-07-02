@@ -180,7 +180,37 @@
                                                                 i++;
                                                             }
                                                         }
+                                                        else
+                                                        {
+                                                            <tr>
+                                                               
 
+                                                                <td class="text-center" style="width: 30%;">
+                                                                  
+
+                                                                    <div class=" form-group text-center " id="muiTen" style="display: none ;justify-content: center; align-items: center; height: 100px; margin-top: 50%">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" style="color:greenyellow" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                                                            <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708" />
+                                                                            <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708" />
+                                                                        </svg>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="text-center" style="width: 30%;">
+
+                                                                    <div class="form-group text-center newImage">
+                                                                        <label class="" id="lbImagePreview" style="display: none ">Ảnh mới:</label>
+                                                                        <img id="newImagePreview" src="#" alt="New Image Preview" style="display:none;width:50%;height:50%; " />
+                                                                    </div>
+                                                                    <div class="form-group text-center">
+                                                                        <label for="exampleInputFile">Thay đổi </label>
+                                                                        <input type="file" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)" />
+
+                                                                    </div>
+
+                                                                </td>
+
+                                                            </tr>
+                                                        }
                                                     </tbody>
                                                 </table>
                                                 <input type="hidden" id="tCurrentId" value="0" />

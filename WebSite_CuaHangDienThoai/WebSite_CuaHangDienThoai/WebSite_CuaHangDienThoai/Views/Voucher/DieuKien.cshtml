@@ -1,0 +1,142 @@
+﻿@model WebSite_CuaHangDienThoai.Models.tb_Voucher
+@{
+    ViewBag.Title = "Điều kiện Voucher";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<style>
+
+
+    .text-free-ship {
+        margin: 10px;
+        font-family: 'Arial', sans-serif;
+        font-style: italic;
+        text-align: center;
+        font-size: 22px;
+    }
+
+    .discount-text {
+        font-size: 20px;
+    }
+
+    .min-order-text {
+        font-size: 15px;
+    }
+
+    .save-button {
+        color: rgba(38,170,153,255);
+        padding: 5px 10px;
+        cursor: pointer;
+        border: 2px solid rgba(38,170,153,255);
+        border-radius: 10px;
+    }
+</style>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<div class="row">
+    <div class="col-3">
+
+    </div>
+    <div class="col-6 ">
+        <div class="card">
+            <div class="card-header">
+                <div class="freeship-banner m-1">
+                    <div class="row">
+                        <!-- Phần FREE SHIP -->
+                        <div class="col-md-4 d-flex align-items-center" style="background-color: rgba(38,170,153,255)">
+                            <div class="text-white text-free-ship">
+                                <span class="text-danger">LTD</span>
+                                <span>MiniStore</span>
+                                <br />
+                                <b style="font-size: 18px;">Tất cả hình thức thanh toán</b>
+                            </div>
+                        </div>
+
+                        <!-- Phần thông tin giảm giá và nút Lưu -->
+                        <div class="col-md-8 bg-white">
+                            <div class="row justify-content-end align-items-center" style="margin-left:-190px">
+                                <div class="col-md-9" style="margin-top: 30px;">
+                                    <h3 class="discount-text">@Model.Title</h3>
+                                   
+                                    <span class="min-order-text">Đơn Tối Thiểu ₫0</span>
+                                    <br />
+                                    <span class="min-order-text">Giảm tối đa <span class="text-danger">@Model.PercentPriceReduction %</span> /Đơn hàng</span>
+                                    <br />
+                                    @if (ViewBag.TimeLeft != null)
+                                    {
+                                        var timeLeft = (TimeSpan)ViewBag.TimeLeft;
+                                        <span>Thời gian còn lại: @timeLeft.Days ngày, @timeLeft.Hours giờ, @timeLeft.Minutes phút, @timeLeft.Seconds giây</span>
+                                    }
+                                    else
+                                    {
+                                        <p>Không có thông tin thời gian còn lại</p>
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <b>Hạn sử dụng mã</b>
+                        <ul>
+                            <li class="d-inline-flex flex-column justify-content-center align-items-center ">
+                                <span>Bắt đầu : @(Model.UsedDate.HasValue ? Model.UsedDate.Value.ToString("dd/MM/yyyy HH:mm:ss") : "No Date")</span>
+                            </li>
+                            <li class="d-inline-flex flex-column justify-content-center align-items-center ">
+                                <span>- Kết thúc : @(Model.ModifiedDate.HasValue ? Model.UsedDate.Value.ToString("dd/MM/yyyy HH:mm:ss") : "No Date")</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-12 pt-2">
+                        <b>Ưu đãi</b>
+                        <br />
+                        <a href="/trang-chu">Mua sắm ngay tại đây</a>
+                    </div>
+                    <div class="col-12 pt-2">
+                        <b>Thanh Toán</b>
+                        <br />
+
+                        <span>
+                            Tất cả các hình thức thanh toán
+                        </span>
+                    </div>
+                    <div class="col-12 pt-2">
+                        <b>Chi tiết</b>
+                        <br />
+                        <span>
+                            Sử dụng mã giảm phí vận chuyển (tối đa <span class="text-danger">@Model.PercentPriceReduction %</span> /Đơn hàng) cho đơn hàng từ 0Đ và thỏa điều kiện ưu đãi khi mua hàng trên <span class="text-danger">LTD</span>MiniStore.
+                        </span>
+                        <br />
+                        <span>
+                            Đơn vị vận chuyển khả dụng: Nhanh, Hàng Cồng Kềnh và Quốc Tế.
+                        </span>
+                        <br />
+                        <span>
+                            Chỉ áp dụng cho một số người bán tham gia chương trình <span class="text-danger">LTD</span>MiniStore.
+                        </span>
+                        <br />
+                        <span>
+                            Mã chỉ được hoàn theo quy định của <span class="text-danger">LTD</span>MiniStore.
+                            Số lượt sử dụng có hạn, chương trình và mã có thể kết thúc khi hết lượt ưu đãi hoặc khi hết hạn ưu đãi, tuỳ điều kiện nào đến trước.
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+
+    </div>
+</div>
+
+
+

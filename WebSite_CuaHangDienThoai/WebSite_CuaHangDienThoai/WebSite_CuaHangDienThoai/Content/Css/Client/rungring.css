@@ -1,0 +1,34 @@
+﻿@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(0);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.voucher {
+    position: fixed;
+    bottom: 190px;
+    right: 10px;
+    animation: shake 2.5s ease-in-out infinite; /* Tăng thời gian từ 0.5s lên 1s để làm chậm hiệu ứng */
+}
+
+    /* Đảm bảo hình ảnh không bị thay đổi kích thước */
+    .voucher img {
+        display: block;
+      
+    }

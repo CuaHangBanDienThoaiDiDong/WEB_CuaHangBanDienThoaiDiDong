@@ -4,7 +4,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 <link href="~/Content/Css/Addmin/Mess.css" rel="stylesheet" />
-
+<link href="~/Content/Loading.css" rel="stylesheet" />
 @section naviheader{
     <!-- Left navbar links -->
     <ul class="navbar-nav">
@@ -44,133 +44,283 @@
         <div class="card">
             <div class="row g-0">
                 <div class="col-12 col-lg-5 col-xl-3 border-right">
-                    @*@Html.Action("Partail_AllMess", "Mess")*@
 
-                    @if (Model != null)
-                    {
-                        <div class="px-4 d-none d-md-block">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-grow-1">
-                                    <input type="text" class="form-control my-3" placeholder="Tìm kiếm...">
-                                </div>
+                    <div class="px-4 d-none d-md-block">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <input type="text" class="form-control my-3" placeholder="Tìm kiếm...">
                             </div>
                         </div>
-                        <div id="loadMess">
-                            @foreach (var item in Model)
-                            {
-                                var messCustomer = item.tb_CustomerMessageDetail.FirstOrDefault(x => x.MessageId == item.MessageId);
-                                if (messCustomer != null)
-                                {
-                                    <a href="#" class="list-group-item list-group-item-action border-0 show-messages" data-detailid="@item.MessageId">
-                                        <div class="badge bg-success float-right">5</div>
-                                        <div class="d-flex align-items-start">
-                                            @if (messCustomer.tb_Customer.Image != null)
-                                            {
-                                                <img src="data:image;base64,@Convert.ToBase64String(messCustomer.tb_Customer.Image)" alt="@messCustomer.tb_Customer.CustomerName" class="rounded-circle mr-1" width="40" height="40">
-                                            }
-                                            else
-                                            {
-                                                <img src="~/images/Logo/LogoWebpng.png" class="rounded-circle mr-1" alt="@messCustomer.tb_Customer.CustomerName" width="40" height="40">
-                                            }
-                                            <div class="flex-grow-1 ml-3">
-                                                @messCustomer.tb_Customer.CustomerName
-                                            </div>
-                                        </div>
-                                        <hr />
-                                    </a>
-                                }
-                            }
-
-                        </div>
+                    </div>
 
 
-
-
-                    }
-                    else
-                    {
-                        <p class="text-danger">Không tồn tại bảng ghi !!!</p>
-                    }
+                    <div id="MessLeft" style="">
+                        @Html.Action("Paritial_Left", "Mess")
+                    </div>
 
 
                     <hr class="d-block d-lg-none mt-1 mb-0">
                 </div>
                 <div class="col-12 col-lg-7 col-xl-9">
-                    <div >
-                        <p id="chatMessages" >Loading...</p>
-                    </div>
-                   
 
-                          
+                    <div class="py-2 px-4 border-bottom d-none d-lg-block">
+                        <div class="d-flex align-items-center py-1">
+                            <div class="position-relative">
 
-                      
-                    
-                    @*<div class="flex-grow-0 py-3 px-4 border-top">
-                        <div class="input-group">
+                                <img src="~/images/Logo/logoWEnMew.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+                            </div>
+                            <div class="flex-grow-1 pl-3">
+                                <strong>
+                                    <a href="/trang-chu" style="color: red; font-family: Poppins-Regular; ">LTD<span style="color: black; font-family: Poppins-Regular; ">MiniStore</span></a>
+                                </strong>
 
-                            <textarea class="form-control" id="ContentMess" placeholder="Nội dung tin nhắn"></textarea>
-                            <button class="btn btn-primary  btnsend"id="sendMessageBtn" data-MessId="@item">Gửi</button>
+                                <div class="text-muted small"><em>Kênh hỗ trợ tư vấn </em></div>
+                            </div>
                         </div>
-                    </div>*@
+                    </div>
 
+
+
+                    <div id="loadContenMess" style="overflow-y: auto; max-height: 600px; scroll-behavior: smooth;">
+                        <div class="loading-spinner" id="loadingSpinner" style="display: none;"></div>
+                        <div class="text-center">
+                            <h2>
+                                <a href="/trang-chu" style="color: red; ">LTD<span style="color: black; font-family: Poppins-Regular; ">MiniStore</span></a>
+                            </h2>
+
+                            <div class="text-muted ">Kênh hỗ trợ tư vấn </div>
+                        </div>
+                    </div>
+                    <div class="flex-grow-0 py-3 px-4 border-top" id="ContentMessBorder" style="display:none">
+                        <div class="input-group">
+                            <textarea class="form-control" id="ContentMess" placeholder="Nội dung tin nhắn"></textarea>
+                            <button class="btn btn-primary btnsend" id="sendMessageBtn">Gửi</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
 @section scripts {
     <script>
-        $(document).ready(function () {
-            // Function to load messages for a specific detailId
-            function loadMessage(detailId) {
-                $.ajax({
-                    url: '/admin/Mess/GetChatMessages',
-                    type: 'GET',
-                    data: { messageId: detailId },
-                    success: function (response) {
-                        $('#chatMessages').html(response);
-                    },
-                    error: function () {
-                        alert('Có lỗi xảy ra khi tải tin nhắn.');
-                    }
-                });
+        var sendingMessage = false;
+        var currentDetailId = null;
+        var messageInterval; // Khai báo biến messageInterval global
+        var loadingMessages = false;
+        var messageLoading = false;
+
+        function scrollToBottom() {
+            var chatMessages = document.getElementById("loadContenMess");
+            if (chatMessages) {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        function loadMessage(detailId) {
+            if (messageLoading) {
+                return;
             }
 
-            function sendMessage() {
-                var message = $('#ContentMess').val(); 
-                var messageId = $('#sendMessageBtn').data('messid'); 
+            messageLoading = true;
+            $('#loadingSpinner').show(); // Hiển thị biểu tượng loading
 
+            $.ajax({
+                url: '/admin/Mess/GetChatMessages',
+                type: 'GET',
+                data: { messageId: detailId },
+                success: function (response) {
+                    $('#loadContenMess').html(response);
+                    scrollToBottom();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading messages:', error);
+                },
+                complete: function () {
+                    messageLoading = false;
+                    $('#loadingSpinner').hide(); // Ẩn biểu tượng loading
+                }
+            });
+        }
+
+        function sendMessage(messageId, message) {
+            // Kiểm tra xem message có phải là chuỗi rỗng hoặc chỉ chứa khoảng trắng không
+            if (message && message.trim() !== "") {
                 $.ajax({
                     url: '/admin/Mess/SendMessage',
                     type: 'POST',
-                    data: { MessageId: messageId, Content: message }, 
+                    data: { MessageId: messageId, Content: message },
                     success: function (response) {
-                        $('#ContentMess').val(''); 
-                        scrollToBottom();
+                        if (response.success) {
+                            $('#ContentMess').val(''); // Xóa nội dung tin nhắn sau khi gửi thành công
+                            loadMessage(currentDetailId); // Tải lại tin nhắn
+                            scrollToBottom(); // Cuộn xuống dưới cùng
+
+                            IsRead(messageId);
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 1500,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
+
+                            Toast.fire({
+                                icon: "success",
+                                title: "Gửi phản hồi thành công"
+                            });
+                        } else {
+
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 1500,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
+
+                            Toast.fire({
+                                icon: "error",
+                                title: "Có lỗi xảy ra khi gửi tin nhắn"
+                            });
+
+                        }
                     },
-                    error: function () {
-                        alert('Có lỗi xảy ra khi gửi tin nhắn.');
+                    error: function (xhr, status, error) {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 1500,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+
+                        Toast.fire({
+                            icon: "error",
+                            title: "Có lỗi xảy ra khi gửi tin nhắn"
+                        });
                     }
                 });
+            } else {
+                
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "error",
+                    title: "Vui lòng điền nội dung"
+                });
             }
-            function scrollToBottom() {
-                var chatMessages = document.getElementById('chatMessagesContent');
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-           
-            $(document).on('click', '.show-messages', function (e) {
-                e.preventDefault(); 
-                var detailId = $(this).data('detailid'); 
-                loadMessage(detailId); 
+        }
+
+
+        function IsRead(messageId) {
+            $.ajax({
+                url: '/admin/Mess/IsRead',
+                type: 'POST',
+                data: { MessageId: messageId },
+                success: function (response) {
+                    LoadMessageLefft(); // Có thể là LoadMessageLeft?
+                },
+                error: function (xhr, status, error) {
+                    console.error('Có lỗi xảy ra khi gửi tin nhắn:', error);
+                    alert('load tin nhắn left.');
+                }
+            });
+        }
+
+        function LoadMessageLefft() {
+            $.ajax({
+                url: '/admin/Mess/Paritial_Left',
+                type: 'POST',
+                success: function (response) {
+                    $('#MessLeft').html(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Có lỗi xảy ra khi gửi tin nhắn:', error);
+                    alert('load tin nhắn left.');
+                }
+            });
+        }
+
+        function debounce(func, wait) {
+            var timeout;
+            return function () {
+                var context = this, args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(function () {
+                    func.apply(context, args);
+                }, wait);
+            };
+        }
+
+        $(document).ready(function () {
+            setInterval(function () {
+                LoadMessageLefft();
+            }, 5000); // Tăng khoảng thời gian lên 5000ms (5 giây)
+
+            $(document).on('click', '.show-messages', debounce(function (e) {
+                e.preventDefault();
+
+                if (loadingMessages) {
+                    return;
+                }
+
+                loadingMessages = true;
+                var detailId = $(this).data('detailid');
+                currentDetailId = detailId;
+
+                // Dừng interval hiện tại nếu có
+                if (messageInterval) {
+                    clearInterval(messageInterval);
+                }
+
+                loadMessage(detailId);
+                IsRead(detailId);
+                $('#ContentMessBorder').show();
+                $('#sendMessageBtn').attr('data-messid', detailId);
+
+                messageInterval = setInterval(function () {
+                    loadMessage(currentDetailId);
+                }, 3000); // Tăng khoảng thời gian lên 3000ms (3 giây)
+
+                scrollToBottom();
+
+                setTimeout(function () {
+                    loadingMessages = false;
+                }, 1100);
+            }, 300)); // Thêm debounce với thời gian chờ 300ms
+
+            $(document).on('click', '#sendMessageBtn', function () {
+                var message = $('#ContentMess').val();
+                var messageId = $(this).data('messid');
+                sendMessage(messageId, message);
             });
 
-            
-            $(document).on('click', '#sendMessageBtn', function () {
-                var message = $(this).closest('.input-group').find('textarea').val(); // Lấy nội dung tin nhắn từ textarea trong cùng
-                var messageId = $(this).data('messid'); // Lấy MessageId từ data attribute của button
-
-                sendMessage(messageId, message); // Gọi hàm sendMessage và truyền các tham số cần thiết
+            // Dừng interval khi rời khỏi trang
+            $(window).on('beforeunload', function () {
+                clearInterval(messageInterval);
             });
         });
     </script>

@@ -1,4 +1,5 @@
-﻿using PagedList;
+﻿using Microsoft.Ajax.Utilities;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -105,58 +106,74 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Add(tb_Voucher model, Admin_TokenVoucher req)
         {
-            var code = new { Success = false, Code = -1, Url = "" };
-            if (req.Title != null)
-            {
-                var title = db.tb_ProductCompany.FirstOrDefault(r => r.Title == req.Title);
-                if (title == null)
-                {
-                    if (model.Title != null)
-                    {
-                        string randomString = GenerateRandomString(3);
-                        tb_Staff nvSession = (tb_Staff)Session["user"];
-                        var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
-                        model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
-                        model.Code = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Title.Trim());
-                        model.Title = req.Title.Trim();
-                        model.CreatedDate = req.UsedDate;
-                        model.ModifiedDate = Convert.ToDateTime(req.ModifiedDate);
-                        model.UsedDate = Convert.ToDateTime(req.UsedDate);
-                        db.tb_Voucher.Add(model);
-                        db.SaveChanges();
 
-                        var result = AddVoucherDetails(model, req);
-                        if (result)
+            using (var dbContextTransaction = db.Database.BeginTransaction()) 
+            {
+                try 
+                {
+                  
+                  
+                    if (req.Title != null)
+                    {
+                        var title = db.tb_ProductCompany.FirstOrDefault(r => r.Title == req.Title);
+                        if (title == null)
                         {
-                            code = new { Success = true, Code = 1, Url = "" };
+                            if (model.Title != null)
+                            {
+                                string randomString = GenerateRandomString(3);
+                                tb_Staff nvSession = (tb_Staff)Session["user"];
+                                var checkStaff = db.tb_Staff.SingleOrDefault(row => row.Code == nvSession.Code);
+                                model.CreatedBy = checkStaff.NameStaff + "-" + checkStaff.Code;
+                                model.Code = WebSite_CuaHangDienThoai.Models.Common.Filter.FilterChar(req.Title.Trim());
+                                model.Title = req.Title.Trim();
+                                model.CreatedDate = req.UsedDate;
+                                model.ModifiedDate = Convert.ToDateTime(req.ModifiedDate);
+                                model.UsedDate = Convert.ToDateTime(req.UsedDate);
+                                db.tb_Voucher.Add(model);
+                                db.SaveChanges();
+                                dbContextTransaction.Commit();
+                                var result = AddVoucherDetails(model, req);
+                                if (result)
+                                {
+                                    return Json(new { Success = true, Code = 1});
+                                }
+                                else
+                                {
+                                    // Rollback the voucher creation
+                                    db.tb_Voucher.Remove(model);
+                                    db.SaveChanges();
+                                    ViewBag.txt = "Có lỗi xảy ra khi lưu voucher details. Vui lòng thử lại sau.";
+                                    return View();
+                                }
+                            }
+                            else
+                            {
+                                ViewBag.txt = "Vui lòng nhập thông tin";
+                                return View();
+                            }
                         }
                         else
                         {
-                            // Rollback the voucher creation
-                            db.tb_Voucher.Remove(model);
-                            db.SaveChanges();
-                            ViewBag.txt = "Có lỗi xảy ra khi lưu voucher details. Vui lòng thử lại sau.";
-                            return View();
+                            return Json(new { Success = false, Code = -3});
+                           
                         }
                     }
                     else
                     {
-                        ViewBag.txt = "Vui lòng nhập thông tin";
-                        return View();
+                        return Json(new { Success = false, Code = -2});
+                       
                     }
+                    
+                  
                 }
-                else
+                catch (Exception ex)
                 {
-                    // Tên đã tồn tại
-                    code = new { Success = false, Code = -3, Url = "" };
+                    dbContextTransaction.Rollback();
+                    return Json(new { Success = false , Code=-99});
                 }
             }
-            else
-            {
-                // Vui lòng điền tên tiêu đề
-                code = new { Success = false, Code = -2, Url = "" };
-            }
-            return Json(code);
+
+           
         }
 
         private bool AddVoucherDetails(tb_Voucher model, Admin_TokenVoucher req)

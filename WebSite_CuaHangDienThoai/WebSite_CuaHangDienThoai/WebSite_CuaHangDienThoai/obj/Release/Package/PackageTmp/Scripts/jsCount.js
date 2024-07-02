@@ -2,10 +2,11 @@
 $(document).ready(function () {
     /* ShowCount();*/
     ShowCountOrderNew();
+    ShowCountMess();
     setInterval(function () {
-        ShowCountOrderNew();
-       
-    }, 10);
+        ShowCountOrderNew(); ShowCountMess();
+        DropMessitemsLayOut();
+    }, 3000);
   
 });
 function LoadIndex(page) {
@@ -38,6 +39,42 @@ function ShowCountOrderNew() {
         },
         error: function (xhr, status, error) {
             console.error("Lỗi khi gọi AJAX: ", error);
+        }
+    });
+}
+
+
+function ShowCountMess() {
+    $.ajax({
+        url: '/Admin/Mess/CountMessNonRead',
+        type: 'GET',
+        success: function (rs) {
+            if (rs && typeof rs.Count !== 'undefined') {
+               
+                $('.MessNonRead_items').html(rs.Count);
+              
+            } else {
+                console.error("Phản hồi không có thuộc tính Count.");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Lỗi khi gọi AJAX: ", error);
+        }
+    });
+}
+
+
+function DropMessitemsLayOut() {
+    $.ajax({
+        url: '/Admin/Mess/Partail_MessForLayOut', 
+        type: 'GET',
+        success: function (data) {
+          
+            $('.dropdown_mess_item').html(data);
+        },
+        error: function (xhr, status, error) {
+            console.error("Có lỗi xảy ra khi tải tin nhắn:", error);
+            // Bạn có thể thêm thông báo lỗi hoặc xử lý lỗi ở đây nếu cần
         }
     });
 }

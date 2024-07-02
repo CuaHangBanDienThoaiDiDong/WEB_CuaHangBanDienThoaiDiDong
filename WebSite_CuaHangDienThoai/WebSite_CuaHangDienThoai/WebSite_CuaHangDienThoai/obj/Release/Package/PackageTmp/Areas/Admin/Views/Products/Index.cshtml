@@ -37,7 +37,27 @@
         </div>
     </div><!-- /.container-fluid -->
 </section>
+<style>
+    .copy-container {
+        position: relative;
+        display: inline-block;
+    }
 
+    .copy-button {
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 2px 5px;
+        cursor: pointer;
+    }
+
+    .copy-container:hover .copy-button {
+        display: inline-block;
+    }
+</style>
 
 <section class="content">
 
@@ -46,7 +66,11 @@
         <div class="card-header">
             <h3 class="card-title">Danh sách @ViewBag.Title</h3>
             <br />
-            <span><label>Tổng số sản phẩm:</label> @ViewBag.Count</span>
+          
+            <span class="text-danger ">            <label class="text-dark">Tổng số dòng sản phẩm:</label> @ViewBag.Count</span>
+               
+           
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="toggle-container" style="display: flex; align-items: center; justify-content: space-around;">
@@ -153,7 +177,7 @@
                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
                         </svg>
                     </button>
-                    
+
                 </div>
                 <a href="/Them-dong-san-pham-moi" class="btn btn-primary text-center ms-2 d-flex align-items-center justify-content-between">
                     Thêm mới <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-dotted" viewBox="0 0 16 16">
@@ -162,7 +186,7 @@
                 </a>
             </div>
             <div class="d-flex align-items-center">
-                
+
             </div>
 
         </div>

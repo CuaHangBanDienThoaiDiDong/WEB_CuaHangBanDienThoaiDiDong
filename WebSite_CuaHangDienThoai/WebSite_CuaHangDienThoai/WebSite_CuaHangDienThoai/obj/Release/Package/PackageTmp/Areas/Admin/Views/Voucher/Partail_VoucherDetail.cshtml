@@ -9,23 +9,32 @@
     </div>
    
     <div class="card-body">
-        <div class="row">
+        <div class="row text-center">
             @if (ViewBag.Count != null)
             {
                 foreach (var item in Model)
                 {
-                    if (item.Status == true)
-                    {<div class="col-3 "style="margin-left: 5px; margin-right: 5px;">
+                    
+                    <div class="col-3 "style="margin-left: 5px; margin-right: 5px;">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-title">
-                                        Mã Vouvher : @item.Code | Trạng thái @if (item.Status == true)
+                                        Mã Vouvher : @item.Code
+                                        @if (item.Status == true)
                                         {
-                                            <span>   Đã dùng </span>
+
+                                            <br />
+                                            <h5 class="d-flex align-items-center">
+                                                Trạng thái:
+                                                <span class="ml-2" style="color: forestgreen">Đã dùng</span>
+                                            </h5>
+
+                                            <p> <label>Mã đơn hàng : </label> <a href="/admin/order/Detail/@item.OrderId" target="_blank">@item.tb_Order.Code</a></p>
                                         }
                                         else
                                         {
-                                            <span>   Còn hạng </span>
+                                            <h5 class="text-danger"> Còn hạng </h5>
+
                                         }
                                     </div>
                                 </div>
@@ -35,30 +44,9 @@
                             </div>
                         </div>
 
-                    }
-                    else
-                    {
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    Mã Vouvher : @item.Code | Trạng thái @if (item.Status == true)
-                                    {
-                                        <span>   Đã dùng </span>
-                                    }
-                                    else
-                                    {
-                                        <span>   Còn hạng </span>
-                                    }
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <p>Không tồn tại bảng ghi nào !!!</p>
-                            </div>
-                        </div>
-                    }
-
+                  
                 }
-            }
+             }               
             else
             {
                 <p class="text-danger">Không tồn tại bảng ghi nào !!!</p>

@@ -45,7 +45,15 @@
         </div>
         <div class="card-body">
             @using (Html.BeginForm("Edit", "ProductCategory", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {@Html.AntiForgeryToken() @Html.HiddenFor(model => model.ProductCategoryId) @Html.HiddenFor(model => model.Description) @Html.HiddenFor(model => model.CreatedBy) @Html.HiddenFor(model => model.CreatedDate) @Html.HiddenFor(model => model.Modifiedby) @Html.ValidationSummary(true, "", new { @class = "text-danger" }) <div class="row">
+            {@Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.ProductCategoryId)
+                @Html.HiddenFor(model => model.Description) 
+                @Html.HiddenFor(model => model.CreatedBy)
+                @Html.HiddenFor(model => model.CreatedDate)
+                @Html.HiddenFor(model => model.Icon)
+                @Html.HiddenFor(model => model.Modifiedby) 
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" }) 
+                <div class="row">
                 <div class="col-lg-3">
 
                     @if (Model.Icon != null)

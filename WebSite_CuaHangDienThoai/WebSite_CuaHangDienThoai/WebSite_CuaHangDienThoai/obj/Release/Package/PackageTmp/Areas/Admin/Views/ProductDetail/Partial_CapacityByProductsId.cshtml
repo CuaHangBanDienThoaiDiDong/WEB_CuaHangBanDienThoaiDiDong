@@ -26,24 +26,12 @@
                 {
 
                     var uniqueColors = item.Color.Distinct();
-                    var DungLuong = "";
+                    var DungLuong = item.DungLuong > 1999 ? "2 TB" :
+                                    item.DungLuong > 999 ? "1 TB" :
+                                    item.DungLuong + " GB";
 
-                    if (item.DungLuong > 999)
-                    {
-                         DungLuong = "1 Tb"; <br />
-                    }
-                    else if (item.DungLuong > 1999)
-                    {
-                         DungLuong = "2 Tb";
-                    }
-                    else
-                    {
-                         DungLuong = item.DungLuong + " Gb"; <br />
-                         
-                    }
-
-                    // Tạo nút đầu tiên và thiết lập class active cho nó
-                    <p>/@DungLuong</p>
+                    <p>@DungLuong</p>
+                    <hr />
                 }
 
 

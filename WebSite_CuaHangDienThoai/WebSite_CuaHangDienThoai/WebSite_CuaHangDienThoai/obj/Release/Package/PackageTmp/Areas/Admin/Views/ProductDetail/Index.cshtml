@@ -4,7 +4,27 @@
     ViewBag.Title = "Sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .copy-container {
+        position: relative;
+        display: inline-block;
+    }
 
+    .copy-button {
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 2px 5px;
+        cursor: pointer;
+    }
+
+    .copy-container:hover .copy-button {
+        display: inline-block;
+    }
+</style>
 @section naviheader{
     <!-- Left navbar links -->
     <ul class="navbar-nav">
@@ -42,9 +62,10 @@
     <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h3 class="card-title mb-0">Danh sách @ViewBag.Title</h3>
-            <div class="d-flex align-items-center flex-grow-1 mx-3 border-3 rounded-2" style="max-height: 40px; overflow: hidden;">
-                <div class="input-group pt-4 w-100  ">
-                    <input type="text" class="form-control" id="searchOrder" placeholder="Tìm kiếm sản phẩm">
+            <span class="text-danger ">            <label class="text-dark">Tổng số sản phẩm:</label> @ViewBag.Count</span>
+            <div class="d-flex align-items-center flex-grow-1  border  mx-3 border-3 rounded-2 " style="max-height: 50px; overflow: hidden;">
+                <div class="input-group pt-4 w-100">
+                    <input type="text" style="border:none;" class="form-control" id="searchOrder" placeholder="Tìm kiếm sản phẩm">
                     <button class="btn" type="button" id="clearInputOrderAll">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-octagon" viewBox="0 0 16 16">
                             <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1z" />
@@ -57,126 +78,153 @@
                 <a href="/admin/products/add" class="btn btn-primary">Thêm mới</a>
             </div>
         </div>
+        @if (ViewBag.error == null)
+        {
+            <div class="card-body" id="loadProduct">
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="text-center">
 
-        <div class="card-body"  id="loadProduct">
-            <table class="table table-hover">
-                <thead>
-                    <tr class="text-center">
-                        <th><input type="checkbox" id="SelectAll" /></th>
-                        <th>STT</th>
-                        <th>Hình ảnh</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Dòng sản phẩm</th>
-                        <th>Loại sản phẩm</th>
-                        <th>Hãng</th>
-                        <th>Ram/Dung Lượng  </th>
-                        <th>Màu</th>
-                        <th style="width:150px;"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model != null && Model.Any())
-                    {
-                        var i = Model.PageNumber * Model.PageSize - Model.PageSize + 1;
-                        foreach (var item in Model)
-                        {
-                            byte[] strImg = null;
-                            var CheckImage = item.tb_ProductDetailImage.SingleOrDefault(x => x.IsDefault == true);
-
-                            if (CheckImage != null)
-                            {
-                                strImg = CheckImage.Image;
-                            }
-
-                            string imgSrc = "";
-                            if (strImg != null && strImg.Length > 0)
-                            {
-                                string base64String = Convert.ToBase64String(strImg);
-                                imgSrc = $"data:image;base64,{base64String}";
-                            }
-                            <tr class="text-center" id="trow_@item.ProductsId">
-                                <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
-                                <td>@i</td>
-                                <td style="width:20%"><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" style="width:50%" /></td>
-                                <td><a href="/admin/Products/Detail/@item.ProductsId"> @item.Title</a></td>
-                                <td>@item.tb_Products.Title</td>
-                                <td>@item.tb_Products.tb_ProductCategory.Title</td>
-                                <td>@item.tb_Products.tb_ProductCompany.Title</td>
-                                <td>
-                                 
-                                    @if (item.Capacity >= 999)
-                                    {
-                                        <span>   @item.Ram/1Tb</span>
-                                    }
-                                    else if (item.Capacity == 2999)
-                                    {
-                                <span>   @item.Ram/2Tb</span>
-                                    }
-                                    else
-                                    {
-                                <span>   @item.Ram/@item.Capacity GB</span>
-                                    }
-                                </td>
-                                <td>@item.Color</td>
-                                <td>
-                                    <a href="/admin/ProductDetail/Detail/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-primary">Xem</a>
-                                    <a href="/admin/ProductDetail/Edit/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-primary">Sửa</a>
-                                </td>
-                            </tr>
-                            i++;
-                        }
-                    }
-                    else
-                    {
-                        <tr class="text-center text-danger">
-                            <td colspan="10">Không có dữ liệu</td>
+                            <th>STT</th>
+                            <th>Hình ảnh</th>
+                            <th style="max-width:100px">Tên sản phẩm</th>
+                            <th>Dòng sản phẩm</th>
+                            <th>Loại sản phẩm</th>
+                            <th>Hãng</th>
+                            <th>Ram/Dung Lượng  </th>
+                            <th>Màu</th>
+                            <th style="width:150px;"></th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-            <!-- Phân trang -->
-            @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })*@
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            var i = Model.PageNumber * Model.PageSize - Model.PageSize + 1;
+                            string displayAlias = null;
+                            string alias = null;
+                            foreach (var item in Model)
+                            {
+                                byte[] strImg = null;
+                                var CheckImage = item.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
 
-
-            @if (Model.PageCount > 1)
-            {
-                <div class="row">
-                    <div class="col-12 d-flex justify-content-center">
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination pagination-sm">
-                                <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
-                                    <a class="page-link" href="@Url.Action("Index", new { page = 1 })" aria-label="First">
-                                        <span aria-hidden="true">Đầu</span>
-                                    </a>
-                                </li>
-                                <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
-                                    <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                @for (int i = Model.PageNumber; i <= Model.PageNumber + 4 && i <= Model.PageCount; i++)
+                                if (CheckImage != null)
                                 {
-                                    <li class="page-item @(Model.PageNumber == i ? "active" : "")">
-                                        <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
-                                    </li>
+                                    strImg = CheckImage.Image;
                                 }
-                                <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
-                                    <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                                <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
-                                    <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount })" aria-label="Last">
-                                        <span aria-hidden="true">Cuối</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            }
 
-        </div>
+                                string imgSrc = "";
+                                if (strImg != null && strImg.Length > 0)
+                                {
+                                    string base64String = Convert.ToBase64String(strImg);
+                                    imgSrc = $"data:image;base64,{base64String}";
+                                }
+                                if (item.tb_Products.Alias != null)
+                                {
+                                    int maxLength = 7;
+                                    alias = item.tb_Products.Alias;
+                                    displayAlias = alias.Length > maxLength ? alias.Substring(0, maxLength) + "..." : alias;
+
+                                }
+                                <tr class="text-center" id="trow_@item.ProductsId">
+
+                                    <td>@i</td>
+                                    <td style="width:20%"><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" style="width:50%" /></td>
+                                    <td style="max-width:100px">
+
+
+                                        <div class="copy-container">
+
+
+                                            <p>@displayAlias</p>
+                                            <button class="copy-button btn btn-success" onclick="copyToClipboard('@alias')">Sao chép</button>
+                                        </div>
+
+
+                                    </td>
+                                    <td>
+                                        <a href="/admin/Products/Detail/@item.ProductsId">
+                                            @item.tb_Products.Title
+                                        </a>
+
+
+                                    </td>
+                                    <td>@item.tb_Products.tb_ProductCategory.Title</td>
+                                    <td>@item.tb_Products.tb_ProductCompany.Title</td>
+                                    <td>
+                                        @{
+                                            string capacityLabel = item.Capacity >= 999 ? (item.Capacity == 1999 ? "2TB" : "1TB") : $"{item.Capacity}GB";
+                                        }
+
+                                        <span>@item.Ram GB / @capacityLabel</span>
+
+
+                                    </td>
+                                    <td>@item.Color</td>
+                                    <td>
+                                        <a href="/admin/ProductDetail/Detail/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-primary">Xem</a>
+                                        <a href="/admin/ProductDetail/Edit/@item.ProductDetailId" data-id="@item.ProductsId" class="btn btn-sm btn-danger">Sửa</a>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr class="text-center text-danger">
+                                <td colspan="10">Không có dữ liệu</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <!-- Phân trang -->
+                @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })*@
+
+
+                @if (Model.PageCount > 1)
+                {
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination pagination-sm">
+                                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = 1 })" aria-label="First">
+                                            <span aria-hidden="true">Đầu</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    @for (int i = Model.PageNumber; i <= Model.PageNumber + 4 && i <= Model.PageCount; i++)
+                                    {
+                                        <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                                            <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                                        </li>
+                                    }
+                                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount })" aria-label="Last">
+                                            <span aria-hidden="true">Cuối</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        }
+        else
+        {
+    <p class="text-danger"> @ViewBag.error</p>
+        }
+
         <!-- /.card-body -->
         <div class="card-footer"></div>
         <!-- /.card-footer-->
@@ -218,6 +266,39 @@
         });
         function resetOrderAll() {
             $('#loadProduct').html(originalContent);
+        }
+
+        function copyToClipboard(text) {
+          
+            var tempTextarea = document.createElement("textarea");
+            tempTextarea.value = text;
+            document.body.appendChild(tempTextarea);
+
+           
+            tempTextarea.select();
+            tempTextarea.setSelectionRange(0, 99999); 
+
+            document.execCommand("copy");
+
+            
+            document.body.removeChild(tempTextarea);
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: "success",
+                title: "Đã sao chép mã "
+            });
         }
     </script>
 

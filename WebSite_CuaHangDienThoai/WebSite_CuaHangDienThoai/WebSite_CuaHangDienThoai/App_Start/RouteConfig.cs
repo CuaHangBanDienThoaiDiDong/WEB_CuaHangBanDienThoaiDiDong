@@ -9,8 +9,18 @@ namespace WebSite_CuaHangDienThoai
         {
             
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-
+            routes.MapRoute(
+             name: "Voucher",
+             url: "voucher",
+             defaults: new { controller = "Voucher", action = "Index", id = UrlParameter.Optional },
+             namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+         );
+            routes.MapRoute(
+             name: "DieuKien",
+             url: "dieu-kien-voucher/p{id}",
+             defaults: new { controller = "Voucher", action = "DieuKien", id = UrlParameter.Optional },
+             namespaces: new[] { "WebSite_CuaHangDienThoai.Controllers" }
+         );
             routes.MapRoute(
                name: "TinNhan",
                url: "tin-nhan/p{id}",

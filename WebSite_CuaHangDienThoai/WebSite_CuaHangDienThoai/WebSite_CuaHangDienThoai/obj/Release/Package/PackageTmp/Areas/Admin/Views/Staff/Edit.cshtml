@@ -19,9 +19,14 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="/admin" class="nav-link">Trang chủ</a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/products" class="nav-link">Nhân viên @Model.NameStaff</a>
-        </li>
+        @if (ViewBag.error == null)
+        {
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="/admin/products" class="nav-link">Nhân viên -@Model.NameStaff</a>
+                
+            </li>
+        }
+
         <li class="nav-item d-none d-sm-inline-block">
             <a href="#" class="nav-link">Cập nhật</a>
         </li>
@@ -46,173 +51,175 @@
 </section>
 
 <section class="content">
-    <div class="col-12">
-        <form id="editStaffForm" enctype="multipart/form-data">
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(model => model.Id)
-            @Html.HiddenFor(model => model.Password)
-            @Html.HiddenFor(model => model.DayofWork)
-            @Html.HiddenFor(model => model.CreatedDate)
-            @Html.HiddenFor(model => model.CreatedBy)
-            @Html.HiddenFor(model => model.Clock)
-            @Html.HiddenFor(model => model.Code)
-  
-            @Html.HiddenFor(model => model.Image, new { id = "currentImage" })
+
+    @if (ViewBag.error == null)
+    {<div class="col-12">
+            <form id="editStaffForm" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.Password)
+                @Html.HiddenFor(model => model.DayofWork)
+                @Html.HiddenFor(model => model.CreatedDate)
+                @Html.HiddenFor(model => model.CreatedBy)
+                @Html.HiddenFor(model => model.Clock)
+                @Html.HiddenFor(model => model.Code)
+
+                @Html.HiddenFor(model => model.Image, new { id = "currentImage" })
 
 
-            <div class="card">
-                @if (Model != null)
-                {
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-lg-4 order-lg-1 order-2"></div>
-                            <div class="col-lg-4 mt-n3 order-lg-2 order-1">
-                                <div class="mt-n5">
-                                    <div class="d-flex align-items-center justify-content-center mb-2 thaydoi">
-                                        <div class="linear-gradient d-flex align-items-center justify-content-center rounded-circle" style="width: 110px; height: 110px;">
-                                            <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden" style="width: 100px; height: 100px;">
-                                                @if (Model.Image != null)
-                                                {
-                                                    <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" alt="" class="w-100 h-100 old-img"  id="oldimg">
-                                                    <img id="newImagePreview" src="#" alt="New Image Preview" class="w-100 h-100 old-img" style="width: 100%; height: 100%; margin: auto; display: none; border-radius: 80px;" />
-                                                }
-                                                else
-                                                {
-                                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" id="oldimg" class="w-100 h-100 thaydoi">
-                                                    <img id="newImagePreview" src="#" alt="New Image Preview" class="w-100 h-100 old-img" style="width: 100%; height: 100%; margin: auto; display: none; border-radius: 80px;" />
-                                                }
+                <div class="card">
+                    @if (Model != null)
+                    {
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-lg-4 order-lg-1 order-2"></div>
+                                <div class="col-lg-4 mt-n3 order-lg-2 order-1">
+                                    <div class="mt-n5">
+                                        <div class="d-flex align-items-center justify-content-center mb-2 thaydoi">
+                                            <div class="linear-gradient d-flex align-items-center justify-content-center rounded-circle" style="width: 110px; height: 110px;">
+                                                <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden" style="width: 100px; height: 100px;">
+                                                    @if (Model.Image != null)
+                                                    {
+                                                        <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" alt="" class="w-100 h-100 old-img" id="oldimg">
+                                                        <img id="newImagePreview" src="#" alt="New Image Preview" class="w-100 h-100 old-img" style="width: 100%; height: 100%; margin: auto; display: none; border-radius: 80px;" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" id="oldimg" class="w-100 h-100 thaydoi">
+                                                        <img id="newImagePreview" src="#" alt="New Image Preview" class="w-100 h-100 old-img" style="width: 100%; height: 100%; margin: auto; display: none; border-radius: 80px;" />
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group text-center">
-                                        <input type="file" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)" />
-                                    </div>
-                                    <div class="text-center">
-                                        <h5 class="fs-5 mb-0 fw-semibold">@Model.NameStaff</h5>
+                                        <div class="form-group text-center">
+                                            <input type="file" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)" />
+                                        </div>
+                                        <div class="text-center">
+                                            <h5 class="fs-5 mb-0 fw-semibold">@Model.NameStaff</h5>
+
+                                            <p class="text-danger">@ViewBag.TitleFunction</p>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="col-lg-4 order-last"></div>
                             </div>
-                            <div class="col-lg-4 order-last"></div>
                         </div>
-                    </div>
-                    <hr />
-                    <div class="loadDataList">
-                        <div class="card border-1 rounded-1">
-                            <div class="card-header">
-                                <h5>Hồ Sơ Nhân Viên</h5>
-                                <small>Quản lý thông tin hồ sơ để bảo mật tài khoản</small>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-inline">
-                                                    <label class="control-label mr-2">Số điện thoại</label>
-                                                    <div class="col-md-6">
-                                                        @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control, col-10", id = "PhoneNumber", type = "number", pattern = "[0-9]" })
-                                                        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-inline col-md-12">
-                                                    <label class="control-label mr-2">Họ tên nhân viên:</label>
-                                                    @Html.TextBoxFor(model => model.NameStaff, new { @class = "form-control , col-10", id = "NameStaff" })
-                                                    @Html.ValidationMessageFor(model => model.NameStaff, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-inline">
-                                                    <label class="control-label mr-2">Email nhân viên :</label>
-                                                    <div class="col-md-6">
-                                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control, col-10", id = "Email" })
-                                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-inline col-md-12">
-                                                    <label class="control-label mr-2">Ngày sinh nhân viên :</label>
-                                                    @Html.TextBoxFor(model => model.Birthday, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control, col-10", type = "datetime-local", id = "birthdayInput" })
-                                                    @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-inline">
-                                                    <label class="control-label mr-2">Địa chỉ nhân viên :</label>
-                                                    <div class="col-md-6">
-                                                        @Html.TextBoxFor(model => model.Location, new { @class = "form-control, col-10", id = "Location" })
-                                                        @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-inline ">
-                                                    <label class="control-label mr-2">Căn cước công dân :</label>
-                                                    @Html.TextBoxFor(model => model.CitizenIdentificationCard, new { @class = "form-control, col-10", id = "CitizenIdentificationCard", type = "text", pattern = "[0-9]" })
-                                                    @Html.ValidationMessageFor(model => model.CitizenIdentificationCard, "", new { @class = "text-danger" })
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-inline">
-                                                    <label class="control-label mr-2">Lương nhân viên :</label>
-                                                    <input type="text" name="demoPriceSale" id="demoPriceSale" value="@Model.Wage" class="form-control auto">
-                                                    @Html.HiddenFor(x => x.Wage, new { @class = "form-control, col-10", @placeholder = "Lương nhân viên" })
-                                                    @Html.ValidationMessageFor(x => x.Wage, null, new { @class = "text-danger" })
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-inline col-md-12">
-                                                    <label class="control-label mr-2">Giới tính :</label>
-                                                    <select class="form-control" id="drTypePayment" name="Sex">
+                        <hr />
+                        <div class="loadDataList">
+                            <div class="card border-1 rounded-1">
+                                <div class="card-header">
+                                    <h5>Hồ Sơ Nhân Viên</h5>
+                                    <small>Quản lý thông tin hồ sơ để bảo mật tài khoản</small>
+                                </div>
+                                <div class="card-body">
 
-                                                        <option value="Nam" id="nam">Nam</option>
-                                                        <option value="Nữ" id="nu">Nữ</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-inline">
-                                                    <label class="control-label mr-2">Chức vụ :</label>
-                                                    @Html.DropDownListFor(x => x.FunctionId, ViewBag.ChucNang as SelectList, "-Chọn danh mục chức năng-", new { @class = "form-control , col-10", @placeholder = "Chức Năng Nhân Viên", id = "FunctionId" })
-                                                    @Html.ValidationMessageFor(x => x.FunctionId, null, new { @class = "text-danger" })
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-inline col-md-12">
-                                                    <label class="control-label mr-2">Cửa hàng:</label>
-                                                    @Html.DropDownListFor(x => x.StoreId, ViewBag.Store as SelectList, "-Chọn cửa hàng-", new { @class = "form-control, col-10", @placeholder = "Cửa hàng làm việc", id = "StoreId" })
-                                                    @Html.ValidationMessageFor(x => x.StoreId, null, new { @class = "text-danger" })
-                                                </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-10">
+                                            <div class="form-group text-center">
+                                                <label for="NameStaff">Họ tên nhân viên:</label>
+                                                @Html.TextBoxFor(model => model.NameStaff, new { @class = "form-control", id = "NameStaff" })
+                                                @Html.ValidationMessageFor(model => model.NameStaff, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="Email">Email nhân viên :</label>
+                                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", id = "Email" })
+                                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="birthdayInput">Ngày sinh nhân viên :</label>
+                                                @Html.TextBoxFor(model => model.Birthday, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local", id = "birthdayInput" })
+                                                @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="Location">Địa chỉ nhân viên :</label>
+                                                @Html.TextBoxFor(model => model.Location, new { @class = "form-control", id = "Location" })
+                                                @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="CitizenIdentificationCard">Căn cước công dân :</label>
+                                                @Html.TextBoxFor(model => model.CitizenIdentificationCard, new { @class = "form-control", id = "CitizenIdentificationCard", type = "text", pattern = "[0-9]" })
+                                                @Html.ValidationMessageFor(model => model.CitizenIdentificationCard, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="demoPriceSale">Lương nhân viên :</label>
+                                                <input type="text" name="demoPriceSale" id="demoPriceSale" value="@Model.Wage" class="form-control">
+                                                @Html.HiddenFor(x => x.Wage, new { @class = "form-control", @placeholder = "Lương nhân viên" })
+                                                @Html.ValidationMessageFor(x => x.Wage, null, new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="PhoneNumber">Số điện thoại</label>
+                                                @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", id = "PhoneNumber", type = "number", pattern = "[0-9]" })
+                                                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10" style="display:none;">
+                                        <div class="form-group">
+                                            <label for="StoreId">Cửa hàng:</label>
+                                            @Html.DropDownListFor(x => x.StoreId, ViewBag.Store as SelectList, "-Chọn cửa hàng-", new { @class = "form-control", id = "StoreId" })
+                                            @Html.ValidationMessageFor(x => x.StoreId, null, new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 ">
+                                            <div class="form-group ">
+                                                <label for="FunctionId">Chức vụ :</label>
+                                                @Html.DropDownListFor(x => x.FunctionId, ViewBag.ChucNang as SelectList, "-Chọn danh mục chức năng-", new { @class = "form-control", id = "FunctionId" })
+                                                @Html.ValidationMessageFor(x => x.FunctionId, null, new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="drTypePayment">Giới tính :</label>
+                                                <select class="form-control" id="drTypePayment" name="Sex">
+                                                    <option value="Nam" id="nam">Nam</option>
+                                                    <option value="Nữ" id="nu">Nữ</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
-                            </div>
-                            <div class="card-footer">
-                                <div class="col-md-12 text-end mt-3">
-                                    <div class="form-group text-center">
-                                        <div class="col-md-offset-2 col-md-10 text-center">
+                                <div class="card-footer">
+                                    <div class="col-md-12 text-end mt-3">
+                                        <div class="form-group text-center">
                                             <button type="button" class="btn btn-success col-md-10" onclick="submitForm()">Lưu</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                }
-            </div>
-        </form>
-    </div>
+
+                    }
+                </div>
+            </form>
+        </div>
+
+    }
+else 
+    {
+        <p class="text-danger">Không tìm thấy bảng ghi nào !!!</p>
+    }
+
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -225,16 +232,16 @@
         var errorMessage = "";
 
         // Lấy giá trị các trường
-        var phoneNumber = $('#PhoneNumber').val();
-        var nameStaff = $('#NameStaff').val();
-        var email = $('#Email').val();
-        var birthday = $('#birthdayInput').val();
-        var location = $('#Location').val();
-        var citizenId = $('#CitizenIdentificationCard').val();
-        var wage = $('#demoPriceSale').val();
-        var sex = $('#drTypePayment').val();
-        var functionId = $('#FunctionId').val();
-        var storeId = $('#StoreId').val();
+        var phoneNumber = $('#PhoneNumber').val().trim();
+        var nameStaff = $('#NameStaff').val().trim();
+        var email = $('#Email').val().trim();
+        var birthday = $('#birthdayInput').val().trim();
+        var location = $('#Location').val().trim();
+        var citizenId = $('#CitizenIdentificationCard').val().trim();
+        var wage = $('#demoPriceSale').val().trim();
+        var sex = $('#drTypePayment').val().trim();
+        var functionId = $('#FunctionId').val().trim();
+        var storeId = $('#StoreId').val().trim();
 
         // Kiểm tra từng trường
         if (!phoneNumber) {
@@ -275,7 +282,7 @@
         if (!citizenId) {
             isValid = false;
             errorMessage += "Căn cước công dân không được để trống.\n";
-        } else if (!citizenId.length <= 12 && citizenId.length > 11) {
+        } else if (citizenId.length !== 12 ) {
             isValid = false;
             errorMessage += "Căn cước công dân lỗi định dạng 12 ký tự.\n";
         }

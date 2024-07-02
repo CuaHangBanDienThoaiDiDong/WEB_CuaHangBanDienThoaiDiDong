@@ -13,7 +13,7 @@
     <link href="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.css" rel="stylesheet" />
     <link href="~/Content/assets/styles/main_styles.css" rel="stylesheet" />
     <link href="~/Content/assets/styles/responsive.css" rel="stylesheet" />
-
+    <link href="~/Content/Css/Client/rungring.css" rel="stylesheet" />
 
     @*====================Start Bootstrap Banner====================*@
 
@@ -347,7 +347,10 @@
                                                             </svg>
                                                             Trao đổi
                                                         </a>
-
+                                                        <a href="/voucher" style="color: black; width: 100%;">
+                                                          
+                                                           Voucher
+                                                        </a>
                                                     </small>
                                                 </li>
                                             </ul>
@@ -527,26 +530,31 @@
 
         <div class="bg-sg" style="display:none"></div>
         @RenderBody()
+        <a href="/voucher" style="color: black; width: 100%;">
+            <div class="voucher" style="position: fixed; bottom: 190px; right: 10px;">
+                <img src="~/images/icon/giftvoucher.png" />
+            </div>
+        </a>
         @if (Session["Client"] != null)
         {
             int idKhach = (int)Session["CustomerId"];
             var imgBase64 = Session["img"] as string;
             <a href="/tin-nhan/p@(idKhach)" style="color: black; width: 100%;">
-                <div class="mess" style="position: fixed; bottom: 70px; right: 10px;">
+                <div class="mess" style="position: fixed; bottom: 130px; right: 10px;  border: solid 1px gray; border-radius: 25px; ">
                     <span id="quamess" style="position: absolute; top: -10px; left: -5px; background-color: red; color: white; padding:4px; border-radius: 40%;"><small id="unreadMessagesCount"></small></span>
-
+                  
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="color: azure;" fill="currentColor" class="bi bi-chat-right-text-fill" viewBox="0 0 16 16">
                         <path d="M16 2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h9.586a1 1 0 0 1 .707.293l2.853 2.853a.5.5 0 0 0 .854-.353zM3.5 3h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1 0-1m0 2.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1 0-1m0 2.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1" />
                     </svg>
                 </div>
             </a>
-      
+
 
         }
 
 
 
-        </div>
+    </div>
 
     <footer class="footer pt-5">
         <div class="container">
@@ -570,7 +578,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="footer_nav_container">
-                                <div class="cr"> Thực hiện bởi <a href="/http://giathuan.somee.com/">Huỳnh Gia Thuận</a> &amp;<a href="/http://giathuan.somee.com/">Ngô Hoài Nhựt Duy</a> sinh viên <a href="https://huit.edu.vn/">TRƯỜNG ĐẠI HỌC CÔNG THƯƠNG TP.HỒ CHÍ MINH </a></div>
+                                <div class="cr"> Thực hiện bởi <a href="http://giathuan.somee.com/" target="_blank">Huỳnh Gia Thuận</a> sinh viên <a href="https://huit.edu.vn/">TRƯỜNG ĐẠI HỌC CÔNG THƯƠNG TP.HỒ CHÍ MINH </a></div>
                             </div>
                         </div>
                     </div>

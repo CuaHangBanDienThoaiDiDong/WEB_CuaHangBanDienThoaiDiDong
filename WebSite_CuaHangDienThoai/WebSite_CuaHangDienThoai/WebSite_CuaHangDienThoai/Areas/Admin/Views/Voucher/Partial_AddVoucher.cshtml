@@ -1,6 +1,5 @@
-﻿
+﻿@model WebSite_CuaHangDienThoai.Models.Admin_TokenVoucher
 
-@model WebSite_CuaHangDienThoai.Models.Admin_TokenVoucher
 @using (Ajax.BeginForm("Add", "Voucher", new AjaxOptions
 {
     HttpMethod = "POST",
@@ -10,102 +9,23 @@
     OnBegin = "OnBeginCO"
 }, new { @Id = "myForm" }))
 {
+
+
     <script>
 
-       
-
-        function OnBeginCO() {
-            $('#btnRegister').attr("disabled", "disabled");
-        }
-
-
-
-        function OnSuccessCO(res) {
-            if (res.Success) {
-                if (res.Code == 1) {
-
-
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
-                        }
-                    });
-
-                    Toast.fire({
-                        icon: "success",
-                        title: "Thêm voucher thành công"
-                    });
-                    location.href = "/admin/Voucher/index";
-
-                } else {
-                }
-            }
-            else {
-                if (res.Code == -2) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Không thể bỏ trống...",
-                        text: "Vui lòng điền tên tiêu đề",
-                        /* footer: '<a href="#">Why do I have this issue?</a>'*/
-                    });
-
-                }
-                if (res.Code == -3) {
-                    Swal.fire({
-                        icon: "warning",
-                        title: "Danh mục đã tồn tại...",
-                        text: "Tên đã tồn tại",
-                        /*footer: '<a href="#">Bạn có muốn cập nhật lại số lượng?</a>'*/
-                    });
-                }
-                if (res.Code == -4) {
-                    Swal.fire({
-                        icon: "question",
-                        title: "Không tìm thấy ảnh...",
-                        text: "Chọn ảnh đại diện ",
-                        /*  footer: '<a href="#">Why do I have this issue?</a>'*/
-                    });
-
-                }
-
-            }
-
-        }
-        $(document).ready(function () {
-            $('#myForm').submit(function (event) {
-                event.preventDefault(); // Ngăn chặn hành động mặc định của form
-                if (validateForm()) {
-                    var formData = $(this).serialize(); // Lấy dữ liệu từ biểu mẫu
-                    $.ajax({
-                        url: '/Voucher/Add',
-                        type: 'POST',
-                        data: formData,
-                        success: function (res) {
-                            OnSuccessCO(res); // Gọi hàm xử lý phản hồi
-                        },
-                        error: function (xhr, status, error) {
-                            console.error(xhr.responseText);
-                        }
-                    });
-                }
-            });
-        });
         function validateForm() {
+
             var title = $('#Title').val().trim();
             var quantity = $('#Quantity').val().trim();
             var percentPriceReduction = $('#PercentPriceReduction').val().trim();
-            var usedDate = new Date($('#UsedDate').val().trim()); // Chuyển đổi giá trị ngày thành đối tượng Date
-            var modifiedDate = new Date($('#ModifiedDate').val().trim()); // Chuyển đổi giá trị ngày thành đối tượng Date
-            var currentDate = new Date(); // Lấy ngày hiện tại
+            var usedDateStr = $('#UsedDate').val().trim();
+            var modifiedDateStr = $('#ModifiedDate').val().trim();
+
+            var usedDate = new Date(usedDateStr);
+            var modifiedDate = new Date(modifiedDateStr);
+            var currentDate = new Date();
             var errors = [];
 
-            // Kiểm tra từng ô nhập và đánh dấu ô nhập không hợp lệ nếu rỗng
             if (!title) {
                 errors.push('Tiêu đề không được để trống.');
                 $('#Title').addClass('is-invalid');
@@ -130,14 +50,17 @@
                 $('#PercentPriceReduction').removeClass('is-invalid');
             }
 
-            if (!usedDate || usedDate < currentDate) {
+            if (isNaN(usedDate.getTime())) {
+                errors.push('Ngày bắt đầu chương trình Voucher không được để trống.');
+                $('#UsedDate').addClass('is-invalid');
+            } else if (usedDate < currentDate) {
                 errors.push('Ngày bắt đầu chương trình Voucher không được nhỏ hơn ngày hiện tại.');
                 $('#UsedDate').addClass('is-invalid');
             } else {
                 $('#UsedDate').removeClass('is-invalid');
             }
 
-            if (!modifiedDate) {
+            if (isNaN(modifiedDate.getTime())) {
                 errors.push('Ngày kết thúc không được để trống.');
                 $('#ModifiedDate').addClass('is-invalid');
             } else if (modifiedDate <= usedDate) {
@@ -147,25 +70,107 @@
                 $('#ModifiedDate').removeClass('is-invalid');
             }
 
-            // Hiển thị thông báo nếu có ô nhập rỗng
             if (errors.length > 0) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Lỗi',
                     html: errors.join('<br>'),
                 });
-                return false;
+                return  false; // Sửa lỗi ở đây
             }
 
             return true;
         }
 
+        $(document).ready(function () {
+         
 
+            $('#myForm').submit(function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của form
+                if (validateForm()) {
+                    var formData = $(this).serialize(); // Lấy dữ liệu từ biểu mẫu
+                    $.ajax({
+                        url: '/Admin/Voucher/Add',
+                        type: 'POST',
+                        data: formData,
+                        success: function (res) {
+                            OnSuccessCO(res); // Gọi hàm xử lý phản hồi
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
 
+        });
 
+       
 
+        function OnBeginCO() {
+            $('#btnRegister').attr("disabled", "disabled");
+        }
+
+        function OnSuccessCO(res) {
+            if (res.Success) {
+                if (res.Code == 1) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "success",
+                        title: "Thêm voucher thành công"
+                    });
+                    location.href = "/admin/Voucher/index";
+                }
+            } else {
+                if (res.Code == -2) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Không thể bỏ trống...",
+                        text: "Vui lòng điền đủ thông tin",
+                    });
+                }
+                if (res.Code == -3) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi dữ liệu...",
+                        text: "Tên đã tồn tại",
+                    });
+                }
+                if (res.Code == -4) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Không thành công...",
+                        text: "Không tìm thấy ảnh",
+                    });
+                }
+                if (res.Code == -5) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Không thành công...",
+                        text: "Thêm không thành công",
+                    });
+                }
+                if (res.Code == -99) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Không thành công...",
+                        text: "Lỗi trong quá trình thêm",
+                    });
+                }
+            }
+        }
     </script>
-
 
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -176,158 +181,73 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12 ">
-                    @using (Html.BeginForm("Add", "ProductCompany", FormMethod.Post, new { }))
+                    @using (Html.BeginForm("Add", "Voucher", FormMethod.Post, new { }))
                     {
-
                         <div class="card">
-
                             <div class="card-body">
                                 <div class="tab-content">
                                     <div class="active tab-pane" id="activity">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Tiêu đề Voucher</label>
-
                                             <input type="text" name="Title" id="Title" required class="form-control" autocomplete="off" placeholder="Tiêu đề Voucher" />
-                                            @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
                                             @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
                                         </div>
-
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <label for="exampleInputEmail1">Số lượng Voucher</label>
-
                                                     <input type="number" name="Quantity" id="Quantity" required class="form-control" autocomplete="off" placeholder="Số lượng Voucher" />
-                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
                                                     @Html.ValidationMessageFor(x => x.Quantity, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-6">
                                                     <label for="exampleInputEmail1">Phần trăm giá giảm</label>
-
-                                                    <input type="number" name="PercentPriceReduction" id="PercentPriceReduction" required class="form-control" autocomplete="off" placeholder="Số lượng Voucher" />
-                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
-                                                    @Html.ValidationMessageFor(x => x.Quantity, null, new { @class = "text-danger" })
+                                                    <input type="number" name="PercentPriceReduction" id="PercentPriceReduction" required class="form-control" autocomplete="off" placeholder="Phần trăm giảm giá" />
+                                                    @Html.ValidationMessageFor(x => x.PercentPriceReduction, null, new { @class = "text-danger" })
                                                 </div>
                                             </div>
-
                                         </div>
-
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <label for="exampleInputEmail1">Ngày bắt đầu Voucher</label>
-
                                                     <input type="datetime-local" name="UsedDate" id="UsedDate" required class="form-control" autocomplete="off" />
-
-                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
-                                                    @Html.ValidationMessageFor(x => x.Quantity, null, new { @class = "text-danger" })
+                                                    @Html.ValidationMessageFor(x => x.UsedDate, null, new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-6">
                                                     <label for="exampleInputEmail1">Ngày kết thúc Voucher</label>
-
-                                                    <input type="datetime-local" name="ModifiedDate" id="ModifiedDate" required class="form-control" autocomplete="off"  />
-                                                    @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
-                                                    @Html.ValidationMessageFor(x => x.Quantity, null, new { @class = "text-danger" })
+                                                    <input type="datetime-local" name="ModifiedDate" id="ModifiedDate" required class="form-control" autocomplete="off" />
+                                                    @Html.ValidationMessageFor(x => x.ModifiedDate, null, new { @class = "text-danger" })
                                                 </div>
                                             </div>
-
-
                                         </div>
                                     </div>
-
                                 </div>
-                                <!-- /.tab-content -->
-                            </div><!-- /.card-body -->
+                            </div>
                             <div class="form-group">
-
                                 <div class="row">
                                     <div class="col-2"></div>
                                     <div class="col-8 text-center">
-                                        <button type="button" onclick="if(validateForm()) $('#myForm').submit();" class="btn btn-success col-8">
-                                            
-                                                <h5>
-                                                    Thêm mới  @*<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-ticket-perforated-fill" viewBox="0 0 16 16">
-                                                        <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zm4-1v1h1v-1zm1 3v-1H4v1zm7 0v-1h-1v1zm-1-2h1v-1h-1zm-6 3H4v1h1zm7 1v-1h-1v1zm-7 1H4v1h1zm7 1v-1h-1v1zm-8 1v1h1v-1zm7 1h1v-1h-1z" />
-                                                    </svg>*@
-                                                </h5>
-                                               
-                                           
-                                        </button>
+                                        <div class="form-group">
+                                            <button type="button" onclick="if(validateForm()) $('#myForm').submit();" class="btn btn-success col-8">Thêm mới</button>
+                                        </div>
 
 
                                     </div>
                                     <div class="col-2"></div>
                                 </div>
-
-
-
-                                @*<button type="submit" class="btn btn-success" data-id="">Thêm mới</button>*@
-
                             </div>
-                        </div> <!-- /.card -->
+                        </div>
                     }
                 </div>
             </div>
         </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-
-        </div>
-        <!-- /.card-footer-->
+        <div class="card-footer"></div>
     </div>
-
-
-
-
-
-
 }
-<script>
 
-    var usedDateValue = document.getElementById('UsedDate').value;
 
-    // Khởi tạo đối tượng Admin_TokenVoucher
-    var adminTokenVoucher = {
-        UsedDate: usedDateValue
-    };
-    function OnFailure(rs) {
-        if (!rs.Success) {
-            $('#show_success').html("Bạn mua hàng thất bại! Xin vui lòng thử lại");
-        }
-    }
-    $(document).ready(function () {
-        $('#myForm').validate({
-            rules: {
-                'Title': {
-                    required: true
-                },
-                'Quantity': {
-                    required: true
-                },
-                'Address': {
-                    required: true
-                },
-                'PercentPriceReduction': {
-                    required: true,
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-                },
-                'UsedDate': {
-                    required: true,
 
-                },
-                'ModifiedDate': {
-                    required: true,
-
-                }
-            },
-            messages: {
-                'Title': 'Bạn khổng để trống trường này',
-                'Quantity': 'Bạn khổng để trống trường này',
-                'PercentPriceReduction': 'Bạn khổng để trống trường này',
-                'Email': 'Email chưa hợp lệ',
-                'UsedDate': 'Email chưa hợp lệ',
-                'ModifiedDate': 'Email chưa hợp lệ'
-            }
-        });
-    });
-</script>

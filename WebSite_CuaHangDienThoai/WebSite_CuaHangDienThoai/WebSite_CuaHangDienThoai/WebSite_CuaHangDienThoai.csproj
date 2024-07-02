@@ -3419,6 +3419,7 @@
     <Content Include="Content\Css\Client\Profile.css" />
     <Content Include="Content\Css\Client\P_CheckOut.css" />
     <Content Include="Content\Css\Client\RegisterClient.css" />
+    <Content Include="Content\Css\Client\rungring.css" />
     <Content Include="Content\Css\Client\TrangThaiDonHang.css" />
     <Content Include="Content\icon\icofont\css\icofont.css" />
     <Content Include="Content\icon\icofont\fonts\icofont.svg" />
@@ -3447,7 +3448,10 @@
     <Content Include="images\banner-for-product.png" />
     <Content Include="images\banner-image.png" />
     <Content Include="images\banner\1200x100-1200x100-4.jpg" />
+    <Content Include="images\banner\1200x150-1199x150-1.png" />
     <Content Include="images\banner\bg-olgr-min-562x204.png" />
+    <Content Include="images\banner\DMXBannerFlashsale.gif" />
+    <Content Include="images\banner\flashSale.png" />
     <Content Include="images\banner\Frame-2-1200x120.jpg" />
     <Content Include="images\banner\Frame427320037--1--min-120x120.gif" />
     <Content Include="images\banner\iphone-15-pro-max-tu-nhien-4.jpg" />
@@ -3466,11 +3470,14 @@
     <Content Include="images\desk11-50x50-1-50x50-1-50x50.png" />
     <Content Include="images\Frame-2-1200x120.jpg" />
     <Content Include="images\gif\dmx-hotsale-desk-1200x120-_1_.jpg" />
+    <Content Include="images\gif\DMXBannerFlashsale.gif" />
     <Content Include="images\gif\Macdinh-1.gif" />
     <Content Include="images\goiy-1.png" />
     <Content Include="images\icon-laptop-gaming-desk-50x50-50x50-50x50-1.png" />
+    <Content Include="images\icon\giftvoucher.png" />
     <Content Include="images\icon\goiy-1_1.jpg" />
     <Content Include="images\icon\TUiNE.jpg" />
+    <Content Include="images\icon\vouche.png" />
     <Content Include="images\imgMe\Duy.png" />
     <Content Include="images\imgMe\z5542694752820_8ee9f2791074d8da4b569c6d814a891b.jpg" />
     <Content Include="images\Logo\50x50-1-100x100-1.png" />
@@ -4284,6 +4291,7 @@
     <Compile Include="Controllers\ProvincesVNController.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
+    <Compile Include="Controllers\VoucherController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -4577,6 +4585,9 @@
     <Content Include="Views\Chat\Mess.cshtml" />
     <Content Include="Views\Chat\Partial_ContentMess.cshtml" />
     <Content Include="Views\Home\LienHe.cshtml" />
+    <Content Include="Views\Voucher\Index.cshtml" />
+    <Content Include="Views\Voucher\Partial_VoucherDetail.cshtml" />
+    <Content Include="Views\Voucher\DieuKien.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
