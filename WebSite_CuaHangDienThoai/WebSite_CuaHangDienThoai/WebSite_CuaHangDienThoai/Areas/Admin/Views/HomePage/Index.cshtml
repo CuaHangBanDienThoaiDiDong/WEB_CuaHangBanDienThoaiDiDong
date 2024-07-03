@@ -48,6 +48,7 @@
                         <!-- card1 start -->
                         <div class="col-md-6 col-xl-3">
                             <div class="card widget-card-1">
+                                
                                 @Html.Action("WareHouseImportExportToday", "HomePage")
                             </div>
                         </div>
@@ -55,15 +56,30 @@
                         <!-- card1 start -->
                         <div class="col-md-6 col-xl-3">
                             <div class="card widget-card-1">
-                                @Html.Action("GetOrderExportDay", "HomePage")
+
+                                <div class="card-block-small">
+                                    <i class="icofont icofont-social-twitter bg-c-yellow card1-icon"></i>
+                                    <span class="text-c-yellow f-w-600">Tin nhắn phản hổi </span>
+
+                                    <h4 class="MessNonRead_items"></h4>
+                                    <div>
+                                        <span class="f-left m-t-10 text-muted">
+                                            <i class="text-c-yellow f-16 icofont icofont-refresh m-r-10"></i>Chưa trả lời
+                                        </span>
+                                    </div>
+
+
+                                </div>
+
+                              
                             </div>
                         </div>
                         <!-- card1 end -->
                         <!-- Statestics Start -->
-                        <!--<div class="col-md-12 col-xl-8">
+                        <div class="col-md-12 col-xl-8">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Statestics</h5>
+                                    <h5>Thống kê</h5>
                                     <div class="card-header-left ">
                                     </div>
                                     <div class="card-header-right">
@@ -80,75 +96,79 @@
                                     <div id="statestics-chart" style="height:517px;"></div>
                                 </div>
                             </div>
-                        </div>-->
+                        </div>
 
-
-
-                        @*<div class="col-md-12 col-xl-4">
+                       
+                        <div class="col-md-12 col-xl-4">
                             <div class="card fb-card">
                                 <div class="card-header">
-                                    <i class="icofont icofont-social-facebook"></i>
+                                    @*<i class="icofont icofont-social-facebook"></i>*@
                                     <div class="d-inline-block">
-                                        <h5>facebook</h5>
-                                        <span>blog page timeline</span>
+                                        <h5>Đơn hàng </h5>
+                                        <span>@ViewBag.Date</span>
                                     </div>
                                 </div>
                                 <div class="card-block text-center">
                                     <div class="row">
                                         <div class="col-6 b-r-default">
-                                            <h2>23</h2>
-                                            <p class="text-muted">Active</p>
+                                            <h2 class="orderNew_items"></h2>
+                                            <p class="text-muted">Đơn mới</p>
+
                                         </div>
                                         <div class="col-6">
-                                            <h2>23</h2>
-                                            <p class="text-muted">Comment</p>
+                                            <h2 class="   orderNew_items"></h2>
+                                            <p class="text-muted">Đã xuất</p>
+                                            @*<h5>Hóa đơn</h5>
+
+        <div class="row">
+            <div class="col-12  text-center">
+                <h2 class="sellerToday_items"></h2>
+                <p class="text-muted">Hóa đơn</p>
+            </div>
+
+        </div>*@
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="card dribble-card">
                                 <div class="card-header">
-                                    <i class="icofont icofont-social-dribbble"></i>
+                                   
                                     <div class="d-inline-block">
-                                        <h5>dribble</h5>
-                                        <span>Product page analysis</span>
+                                        <h5>Hóa đơn</h5>
+                                        <span>@ViewBag.Date</span>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 b-r-default text-center">
+                                        <h2 class="sellerToday_items">0</h2>
+                                        <p class="text-muted">Hóa đơn bán cửa hàng</p>
+                                    </div>
+                                    <div class="col-6">
+                                     
                                     </div>
                                 </div>
-                                <div class="card-block text-center">
-                                    <div class="row">
-                                        <div class="col-6 b-r-default">
-                                            <h2>23</h2>
-                                            <p class="text-muted">Live</p>
-                                        </div>
-                                        <div class="col-6">
-                                            <h2>23</h2>
-                                            <p class="text-muted">Message</p>
-                                        </div>
-                                    </div>
-                                </div>
+                               
                             </div>
                             <div class="card twitter-card">
                                 <div class="card-header">
-                                    <i class="icofont icofont-social-twitter"></i>
+                                   
+
                                     <div class="d-inline-block">
-                                        <h5>twitter</h5>
-                                        <span>current new timeline</span>
+                                        <h5>Chức vụ</h5>
+                                        <span>Số lượng chức vụ cửa hàng</span>
                                     </div>
+
                                 </div>
                                 <div class="card-block text-center">
-                                    <div class="row">
-                                        <div class="col-6 b-r-default">
-                                            <h2>25</h2>
-                                            <p class="text-muted">new tweet</p>
-                                        </div>
-                                        <div class="col-6">
-                                            <h2>450+</h2>
-                                            <p class="text-muted">Follower</p>
-                                        </div>
-                                    </div>
+
+
+                                    @Html.Action("CountFunction", "HomePage")
+                                    
                                 </div>
                             </div>
-                        </div>*@
+                        </div>
 
                         <!-- Email Sent End -->
                         <!-- Data widget start -->

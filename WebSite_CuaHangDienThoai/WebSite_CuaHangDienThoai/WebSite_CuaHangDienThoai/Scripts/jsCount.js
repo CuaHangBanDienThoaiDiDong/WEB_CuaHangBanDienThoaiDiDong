@@ -6,6 +6,8 @@ $(document).ready(function () {
     setInterval(function () {
         ShowCountOrderNew(); ShowCountMess();
         DropMessitemsLayOut();
+        ShowCountExportOrderTodate();
+        ShowCountSellerToday();
     }, 3000);
   
 });
@@ -42,7 +44,42 @@ function ShowCountOrderNew() {
         }
     });
 }
+function ShowCountExportOrderTodate() {
+    $.ajax({
+        url: '/Admin/HomePage/WareHouseImportExportToday',
+        type: 'GET',
+        success: function (rs) {
+            if (rs && typeof rs.Count !== 'undefined') {
+                
+                $('.orderNew_items').html(rs.Count);
+               
+            } else {
+                console.error("Phản hồi không có thuộc tính Count.");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Lỗi khi gọi AJAX: ", error);
+        }
+    });
+}
+function ShowCountSellerToday() {
+    $.ajax({
+        url: '/Admin/HomePage/CountSellerToday',
+        type: 'GET',
+        success: function (rs) {
+            if (rs && typeof rs.Count !== 'undefined') {
 
+                $('.sellerToday_items').html(rs.Count);
+
+            } else {
+                console.error("Phản hồi không có thuộc tính Count.");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Lỗi khi gọi AJAX: ", error);
+        }
+    });
+}
 
 function ShowCountMess() {
     $.ajax({

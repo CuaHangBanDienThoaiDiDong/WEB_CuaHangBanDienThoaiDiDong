@@ -28,6 +28,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 }
                 else
                 {
+                    ViewBag.Date = DateTime.Today;
                     var items = db.tb_Staff.OrderByDescending(x => x.Code).ToList();
                     return View(items);
                 }
@@ -81,6 +82,30 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
 
+        public ActionResult CountFunction() 
+        {
+                var function=db.tb_Function.Count();
+           
+                ViewBag.Count=function;
+                return PartialView( );
+
+            
+            
+
+        }
+
+
+        public ActionResult ShowCountOrderNew()
+        {
+
+            var ordernew = db.tb_Order.Count(x => x.Confirm ==  false);
+           
+
+                return Json(new { Count = ordernew }, JsonRequestBehavior.AllowGet);
+           
+
+           
+        }
         public ActionResult GetOrderExportDay()
         {
             // Lấy ngày hôm nay
@@ -92,17 +117,32 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 .Where(o => o.CreatedDate >= startDate && o.CreatedDate < endDate)
                 .ToList();
 
-            if (orders != null && orders.Count > 0)
-            {
+           
                 ViewBag.Date = selectedDate;
                 ViewBag.Count = orders.Count;
-                return PartialView();
-            }
-            else
+                return Json(new { Count = orders }, JsonRequestBehavior.AllowGet);
+           
+        }
+        public ActionResult CountSellerToday()
+        {
+            // Lấy ngày hôm nay
+            DateTime selectedDate = DateTime.Today;
+            DateTime startDate = selectedDate.Date;
+            DateTime endDate = startDate.AddDays(1);
+
+            var SellerToDay = db.tb_Seller
+                .Where(o => o.CreatedDate >= startDate && o.CreatedDate < endDate)
+                .ToList();
+
+            if (SellerToDay != null)
             {
-                return PartialView();
+                return Json(new { Count = SellerToDay }, JsonRequestBehavior.AllowGet);
+
+            }
+            else 
+            {
+                return Json(new { Count = 0 }, JsonRequestBehavior.AllowGet);
             }
         }
-
     }
 }

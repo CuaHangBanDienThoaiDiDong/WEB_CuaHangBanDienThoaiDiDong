@@ -4109,6 +4109,7 @@
     <Content Include="Areas\Admin\Views\Statistical\StatisticalProductsByOrrder.cshtml" />
     <Content Include="Areas\Admin\Views\Statistical\StatisticalProductsAll.cshtml" />
     <Content Include="Areas\Admin\Views\Statistical\Partial_GetTopProductsSoldByMonth.cshtml" />
+    <Content Include="Areas\Admin\Views\HomePage\CountFunction.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
