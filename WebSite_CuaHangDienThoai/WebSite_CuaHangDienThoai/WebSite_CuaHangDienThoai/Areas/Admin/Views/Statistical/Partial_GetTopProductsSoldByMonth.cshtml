@@ -1,0 +1,143 @@
+﻿
+<div class="col-md-12">
+    <div class="chart">
+        <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+    </div>
+</div>
+<div class="col-md-12">
+    <button id="exportExcel" class="btn btn-primary">Xuất ra Excel</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tên sản phẩm</th>
+                <th>Dung lượng</th>
+                <th>Màu</th>
+                <th>Số lượng bán</th>
+                <th>Doanh thu</th>
+                <th>Đầu tư</th>
+                <th>Lợi nhuận</th>
+            </tr>
+        </thead>
+        <tbody class="loadStatisticalByMon">
+            <!-- Dữ liệu sẽ được chèn vào đây -->
+        </tbody>
+    </table>
+</div>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="~/Content/clients/plugins/chart.js/Chart.min.js"></script>
+    <script src="~/Content/assets/plugins/moment/moment.min.js"></script>
+    <script>
+        $(function () {
+            loadChartData();
+        });
+
+        function loadChartData() {
+                  var month = @ViewBag.Month; // Lấy giá trị năm từ ViewBag
+            $.ajax({
+                url: '/Admin/Statistical/GetTopProductsSoldByMonth',
+                type: 'GET',
+                data: { month: month },
+                success: function (rs) {
+                    if (rs && rs.Data) {
+                        var arrProductTitles = []; // Danh sách tên sản phẩm
+                        var arrQuantitySold = []; // Danh sách số lượng bán ra
+                        var arrDoanhThu = []; // Danh sách doanh thu
+
+                        $.each(rs.Data, function (i, item) {
+                            arrProductTitles.push(item.ProductTitle); // Sử dụng tên sản phẩm
+                            arrQuantitySold.push(item.TotalQuantitySold); // Số lượng bán ra
+                            arrDoanhThu.push(item.TotalRevenue); // Doanh thu
+                        });
+
+                        // Dữ liệu cho biểu đồ
+                        var areaChartData = {
+                            labels: arrProductTitles, // Gán tên sản phẩm làm nhãn trục x
+                            datasets: [
+                                {
+                                    label: 'Số lượng bán ra',
+                                    backgroundColor: 'rgba(255, 99, 132, 0.2)', // Màu nền của thanh số lượng bán ra
+                                    borderColor: 'rgba(255, 99, 132, 1)', // Màu viền của thanh số lượng bán ra
+                                    data: arrQuantitySold, // Dữ liệu cho số lượng bán ra
+                                    type: 'bar' // Đảm bảo đây là kiểu 'bar'
+                                }
+                            ]
+                        };
+
+                        var barChartCanvas = $('#barChart').get(0).getContext('2d');
+                        var barChartOptions = {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                x: {
+                                    stacked: false, // Không xếp chồng các dữ liệu trên trục x
+                                    title: {
+                                        display: true,
+                                        text: 'Tên sản phẩm'
+                                    }
+                                },
+                                y: {
+                                    stacked: false, // Không xếp chồng các dữ liệu trên trục y
+                                    title: {
+                                        display: true,
+                                        text: 'Giá trị'
+                                    },
+                                    ticks: {
+                                        beginAtZero: true // Bắt đầu từ giá trị 0 trên trục y
+                                    }
+                                }
+                            }
+                        };
+
+                        new Chart(barChartCanvas, {
+                            type: 'bar',
+                            data: areaChartData,
+                            options: barChartOptions
+                        });
+
+                        // Tải dữ liệu vào bảng
+                        loadTableData(rs.Data);
+                    } else {
+                        console.error("Dữ liệu không hợp lệ.");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Lỗi khi tải dữ liệu: ", error);
+                }
+            });
+        }
+
+        function loadTableData(data) {
+            var strHtml = "";
+            $.each(data, function (i, item) {
+                strHtml += "<tr>";
+                strHtml += "<td>" + (i + 1) + "</td>";
+                strHtml += "<td>" + item.ProductTitle + "</td>";
+                strHtml += "<td>" + item.Capacity + "</td>";
+                strHtml += "<td>" + item.Color + "</td>";
+                strHtml += "<td>" + item.TotalQuantitySold + "</td>";
+                strHtml += "<td>" + formatNumber(item.TotalRevenue, 2) + ' đ' + "</td>";
+                strHtml += "<td>" + formatNumber(item.TienGoc, 2) + ' đ' + "</td>";
+                strHtml += "<td>" + formatNumber(item.TotalProfit, 2) + ' đ' + "</td>";
+                strHtml += "</tr>";
+            });
+            $('.loadStatisticalByMon').html(strHtml);
+        }
+
+        function formatNumber(value, SoSauDauPhay) {
+            var GT = 0;
+            if (!isNaN(value)) {
+                GT = parseFloat(value);
+            }
+            return GT.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: SoSauDauPhay });
+        }
+
+        document.getElementById('exportExcel').addEventListener('click', function () {
+            var wb = XLSX.utils.table_to_book(document.querySelector('.table'), { sheet: "Sheet1" });
+            XLSX.writeFile(wb, 'ThongKeSanPham.xlsx');
+        });
+    </script>
+

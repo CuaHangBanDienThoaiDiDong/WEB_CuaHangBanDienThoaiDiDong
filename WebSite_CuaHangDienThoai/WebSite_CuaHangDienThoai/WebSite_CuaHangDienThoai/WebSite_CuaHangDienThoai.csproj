@@ -4104,6 +4104,11 @@
     <Content Include="Areas\Admin\Views\Mess\StaffMess.cshtml" />
     <Content Include="Areas\Admin\Views\Mess\Partail_MessForLayOut.cshtml" />
     <Content Include="Areas\Admin\Views\WareHouseImport\SuggestProductListProduct.cshtml" />
+    <Content Include="Areas\Admin\Views\Statistical\StatisticalByMonNew.cshtml" />
+    <Content Include="Areas\Admin\Views\Statistical\Partial_StatisticalByMon.cshtml" />
+    <Content Include="Areas\Admin\Views\Statistical\StatisticalProductsByOrrder.cshtml" />
+    <Content Include="Areas\Admin\Views\Statistical\StatisticalProductsAll.cshtml" />
+    <Content Include="Areas\Admin\Views\Statistical\Partial_GetTopProductsSoldByMonth.cshtml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\giathuan1711-001-site1 - FTP2.pubxml" />
