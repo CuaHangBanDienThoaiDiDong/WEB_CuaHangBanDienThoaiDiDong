@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -21,6 +22,10 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             {
 
                 tb_Staff nvSession = (tb_Staff)Session["user"];
+                if (nvSession == null)
+                {
+                    return RedirectToAction("DangNhap", "Account");
+                }
                 var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
                 if (item == null)
                 {
@@ -28,7 +33,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 }
                 else
                 {
-                    ViewBag.Date = DateTime.Today;
+                    ViewBag.Date = DateTime.Today.Date;
                     var items = db.tb_Staff.OrderByDescending(x => x.Code).ToList();
                     return View(items);
                 }
@@ -82,15 +87,15 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
         }
 
-        public ActionResult CountFunction() 
+        public ActionResult CountFunction()
         {
-                var function=db.tb_Function.Count();
-           
-                ViewBag.Count=function;
-                return PartialView( );
+            var function = db.tb_Function.Count();
 
-            
-            
+            ViewBag.Count = function;
+            return PartialView();
+
+
+
 
         }
 
@@ -98,13 +103,13 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         public ActionResult ShowCountOrderNew()
         {
 
-            var ordernew = db.tb_Order.Count(x => x.Confirm ==  false);
-           
+            var ordernew = db.tb_Order.Count(x => x.Confirm == false);
 
-                return Json(new { Count = ordernew }, JsonRequestBehavior.AllowGet);
-           
 
-           
+            return Json(new { Count = ordernew }, JsonRequestBehavior.AllowGet);
+
+
+
         }
         public ActionResult GetOrderExportDay()
         {
@@ -117,11 +122,11 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                 .Where(o => o.CreatedDate >= startDate && o.CreatedDate < endDate)
                 .ToList();
 
-           
-                ViewBag.Date = selectedDate;
-                ViewBag.Count = orders.Count;
-                return Json(new { Count = orders }, JsonRequestBehavior.AllowGet);
-           
+
+            ViewBag.Date = selectedDate;
+            ViewBag.Count = orders.Count;
+            return Json(new { Count = orders }, JsonRequestBehavior.AllowGet);
+
         }
         public ActionResult CountSellerToday()
         {
@@ -130,19 +135,164 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             DateTime startDate = selectedDate.Date;
             DateTime endDate = startDate.AddDays(1);
 
+            // Lấy danh sách Seller của ngày hôm nay
             var SellerToDay = db.tb_Seller
                 .Where(o => o.CreatedDate >= startDate && o.CreatedDate < endDate)
                 .ToList();
 
-            if (SellerToDay != null)
+           
+            int sellerCount = SellerToDay.Count;
+
+         
+            return Json(new { Count = sellerCount }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        //Thong Ke 
+        public ActionResult Partial_ThongKe()
+        {
+
+            return PartialView();
+        }
+
+
+        //start tabs thong ke theo ngay
+        public ActionResult Partial_TabStatisticalByDay()
+        {
+            if (Session["user"] == null)
             {
-                return Json(new { Count = SellerToDay }, JsonRequestBehavior.AllowGet);
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1));
+                if (item == null)
+                {
+
+                    return RedirectToAction("NonRole", "HomePage");
+                }
+                else
+                {
+                    ViewBag.Date = DateTime.Now.ToString("dd/MM/yyyy");
+                    return View();
+                }
 
             }
-            else 
+        }
+
+        //End tabs thong ke theo ngay
+
+
+        //start tabs thong ke theo tháng
+
+
+        public ActionResult Partial_TabStatisticalByMon()
+        {
+            if (Session["user"] == null)
             {
-                return Json(new { Count = 0 }, JsonRequestBehavior.AllowGet);
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
+                if (item == null)
+                {
+                    var uniqueMonth = (from order in db.tb_Order
+                                       select order.CreatedDate.Month).Distinct();
+                    SelectList yearList = new SelectList(uniqueMonth);
+
+                    // Đặt SelectList vào ViewBag để truyền sang view
+                    ViewBag.UniqueYears = yearList;
+                    return View("NonRole");
+                }
+                else
+                {
+                    var uniqueMonth = (from order in db.tb_Order
+                                       select order.CreatedDate.Month).Distinct();
+                    SelectList MonthList = new SelectList(uniqueMonth);
+
+                    // Đặt SelectList vào ViewBag để truyền sang view
+                    ViewBag.UniqueMonth = MonthList;
+
+                    ViewBag.SelectedMonth = ""; //
+                    ViewBag.Month = DateTime.Now.Month.ToString();
+                    return PartialView();
+                }
             }
         }
+
+
+        public ActionResult Partial_StatisticalByMonAll()
+        {
+
+            return PartialView();
+        }
+        public ActionResult Partial_StatisticalByMon(int month)
+        {
+            ViewBag.Month = month;
+            return PartialView();
+        }
+
+
+
+        //End tabs thong ke theo tháng
+        //Start tabs thong ke theo Năm
+
+        public ActionResult Partial_TabStatisticalByYear()
+        {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("DangNhap", "Account");
+            }
+            else
+            {
+                tb_Staff nvSession = (tb_Staff)Session["user"];
+                var item = db.tb_Role.SingleOrDefault(row => row.StaffId == nvSession.StaffId && (row.FunctionId == 1 || row.FunctionId == 2));
+                if (item == null)
+                {
+                    var uniqueYears = (from order in db.tb_Order
+                                       select order.CreatedDate.Year).Distinct();
+                    SelectList yearList = new SelectList(uniqueYears);
+
+                    // Đặt SelectList vào ViewBag để truyền sang view
+                    ViewBag.UniqueYears = yearList;
+                    return View("NonRole");
+                }
+                else
+                {
+                    var uniqueYears = (from order in db.tb_Order
+                                       select order.CreatedDate.Year).Distinct();
+                    SelectList yearList = new SelectList(uniqueYears);
+
+                    // Đặt SelectList vào ViewBag để truyền sang view
+                    ViewBag.UniqueYears = yearList;
+
+                    // Đặt SelectedYear mặc định nếu cần thiết
+                    ViewBag.SelectedYear = ""; //
+                    ViewBag.Year = DateTime.Now.Year.ToString();
+                    return PartialView();
+                }
+            }
+        }
+
+        public ActionResult Partial_StatisticalByYear(int year)
+        {
+            ViewBag.Year = year;
+            return PartialView();
+        }
+
+
+        //End tabs thong ke theo Năm
+
+
+
+        //EndThong Ke 
+
+
+
     }
 }

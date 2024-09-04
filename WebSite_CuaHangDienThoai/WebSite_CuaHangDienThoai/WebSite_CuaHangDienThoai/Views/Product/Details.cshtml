@@ -94,28 +94,6 @@
 
         <div class="container single_product_container">
 
-
-            @*<div class="row">
-                    <div class="col-lg-9">
-
-                    </div>
-                    <div class="col-md-3">
-
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                Địa chỉ còn hàng
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li>
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <input type="text" placeholder="Chọn quận huyện" />
-                                </li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>*@
             <hr />
             <div class="row">
                 <div class="col-lg-7">
@@ -228,8 +206,7 @@
                         <div class="row border rounded-3 related acc needbuy p-3 d-flex align-items-center" style="display: flex; flex-wrap: wrap; background-color:white">
                             <div class="related__ttl">
                                 <span><b>Sản phẩm gợi ý @Model.tb_Products.Title @Capacity</b></span>
-                                <p> @Model.tb_Products.Alias</p>
-                                <p>@alias</p>
+                             
                             </div>
                             <div>
                                 @Html.Action("Partial_SanPhamGoiY", "Product")
@@ -254,6 +231,7 @@
                         <div class="row">
                             <h3 style="color:white  ;">@Model.tb_Products.Title @Capacity</h3>
                           
+                            @*<p>@alias</p>*@
                         </div>
 
 

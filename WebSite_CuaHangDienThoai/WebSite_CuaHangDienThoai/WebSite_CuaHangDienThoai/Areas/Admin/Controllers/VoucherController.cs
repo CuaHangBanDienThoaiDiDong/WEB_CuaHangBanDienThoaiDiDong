@@ -438,6 +438,9 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                                     }
                                 }
 
+                               
+
+
                                 var voucherDetailsToDelete = db.tb_VoucherDetail.Where(x => x.Status == false && x.OrderId == null && x.VoucherId == viewModel.VoucherId).ToList();
                                 if (voucherDetailsToDelete.Any())
                                 {

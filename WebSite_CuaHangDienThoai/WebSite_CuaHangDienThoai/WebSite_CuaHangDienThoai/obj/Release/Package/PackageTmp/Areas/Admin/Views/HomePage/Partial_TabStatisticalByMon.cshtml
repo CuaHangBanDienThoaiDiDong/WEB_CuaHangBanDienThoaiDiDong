@@ -1,0 +1,74 @@
+﻿
+
+
+
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Biểu đồ thống kê doanh thu theo tháng</h3>
+            @Html.DropDownList("Chọn năm", (SelectList)ViewBag.UniqueMonth, "Tất cả", new { id = "Chose_month" })
+
+
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="loadStatisticalByMon">
+                        <p>Loading...</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="~/Content/clients/plugins/chart.js/Chart.min.js"></script>
+    <script src="~/Content/assets/plugins/moment/moment.min.js"></script>
+    <script>
+
+        function LoadMothNow() {
+            $.ajax({
+                url: '/Admin/HomePage/Partial_StatisticalByMonAll', // Loại bỏ khoảng trắng ở đây
+                type: 'GET',
+
+                success: function (data) {
+                    $('.loadStatisticalByMon').html(data);
+                },
+                error: function () {
+                    alert("Đã xảy ra lỗi khi tải dữ liệu!");
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            LoadMothNow();
+            $('#Chose_month').change(function () {
+
+                var year = $(this).val();
+                if (year !== "") {
+                    $.ajax({
+                        url: '/Admin/HomePage/Partial_StatisticalByMon', // Loại bỏ khoảng trắng ở đây
+                        type: 'GET',
+                        data: { month: year },
+                        success: function (data) {
+                            $('.loadStatisticalByMon').html(data);
+                        },
+                        error: function () {
+                            alert("Đã xảy ra lỗi khi tải dữ liệu!");
+                        }
+                    });
+                }
+                else {
+                    LoadMothNow();
+                }
+
+            });
+        });
+
+
+
+    </script>
+
+

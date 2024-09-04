@@ -1,0 +1,152 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
+<style>
+    .copy-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .copy-button {
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 2px 5px;
+        cursor: pointer;
+    }
+
+    .copy-container:hover .copy-button {
+        display: inline-block;
+    }
+</style>
+@if (Model != null)
+{
+    <div style="overflow-x:auto;">
+        <!-- Bảng chứa thead -->
+        <table class="table table-hover">
+            <thead>
+                <tr  class="text-center">
+
+                    <th style="width: 20%;">Hình ảnh</th>
+                    <th style="width: 20%;">Dòng sản phẩm</th>
+                    <th style="width: 15%;">Tồn kho</th>
+                    <th style="width: 10%;">Loại sản phẩm</th>
+                    <th style="width: 10%;">Hãng</th>
+                    <th style="width: 10%;">Ram/Dung Lượng  </th>
+                    <th style="width: 15%;">Màu</th>
+                    <th style="width: 10%;"></th>
+                </tr>
+            </thead>
+        </table>
+
+        <!-- Div chứa tbody với cuộn dọc -->
+        <div style="max-height: 580px; overflow-y: auto;">
+            <table class="table table-hover">
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        string displayAlias = null;
+                        string alias = null;
+
+                        foreach (var item in Model)
+                        {
+
+                            if (item.tb_Products.Alias != null)
+                            {
+                                int maxLength = 7;
+                                alias = item.tb_Products.Alias;
+                                displayAlias = alias.Length > maxLength ? alias.Substring(0, maxLength) + "..." : alias;
+
+                            }
+
+                            byte[] strImg = null;
+                            var CheckImage = item.tb_ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
+                            var quantityWareHouse = item.tb_WarehouseDetail.SingleOrDefault(x => x.ProductDetailId == item.ProductDetailId);
+                            if (CheckImage != null)
+                            {
+                                strImg = CheckImage.Image;
+                            }
+
+                            string imgSrc = "";
+                            if (strImg != null && strImg.Length > 0)
+                            {
+                                string base64String = Convert.ToBase64String(strImg);
+                                imgSrc = $"data:image;base64,{base64String}";
+                            }
+                            <tr class="text-center" id="trow_@item.ProductsId">
+
+
+                                <td style="width:20%"><img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" style="width:50%" /></td>
+
+                                <td style="width:20%">
+                                    <a href="/chi-tiet/@item.tb_Products.Alias-p@(item.ProductsId)" target="_blank">
+                                        @item.tb_Products.Title
+                                        <br />
+
+                                    </a>
+                                    <div class="copy-container text-center">
+
+
+                                        <p>@displayAlias</p>
+                                        <button class="copy-button btn btn-success" onclick="copyToClipboard('@alias')">Sao chép</button>
+                                    </div>
+                                </td>
+                                <td style="width:15%">
+                                    @if (quantityWareHouse != null)
+                                    {
+                                        <span> @quantityWareHouse.QuanTity</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger">Hết hàng  </span>
+                                    }
+                                </td>
+                                <td style="width:10%">@item.tb_Products.tb_ProductCategory.Title</td>
+                                <td style="width:10%">
+
+                                    @item.tb_Products.tb_ProductCompany.Title
+                                </td>
+                                <td style="width:10%">
+                                    <span>
+                                        @if (item.Capacity >= 999)
+                                        {
+                                            <span>1Tb</span>
+                                        }
+                                        else if (item.Capacity == 2999)
+                                        {
+                                            <span>2Tb</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@item.Capacity</span>
+                                        }
+
+                                    </span>
+                                </td>
+                                <td style="width:15%"><p>@item.Color</p></td>
+
+                                <td style="width: 10%;">
+                                    <button class="red_button btn-success add_to_cart_button border-0 btn-0 btnAddList" data-id="@item.ProductDetailId">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-plus-fill" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m6.5-11a.5.5 0 0 0-1 0V6H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V7H10a.5.5 0 0 0 0-1H8.5z" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+
+
+
+                           
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <p class="text-danger">Không tìm thấy bảng ghi nào !!!</p>
+}

@@ -719,7 +719,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                         string filePath = Path.Combine(folderPath, fileName);
 
                         // Chuyển đổi HTML sang Word
-                        string logoPath = Server.MapPath("~/images/Logo/logoWEnMew.png");
+                        string logoPath = Server.MapPath("~/images/Logo/LogoWebpng.png");
 
                         ConvertHTMLToWord(htmlContent, filePath, logoPath, seller.Code);
 

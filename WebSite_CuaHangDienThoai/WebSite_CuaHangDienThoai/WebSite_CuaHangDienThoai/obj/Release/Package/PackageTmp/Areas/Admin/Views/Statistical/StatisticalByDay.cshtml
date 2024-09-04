@@ -27,8 +27,8 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><label>Thống kê danh thu</label><span class="text-danger">@ViewBag.Date</span></h3>
 
+            <h5 class="text-danger "> <label class="text-dark">Thống kê doanh thu đến ngày:</label> @ViewBag.Date</h5>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
@@ -40,12 +40,17 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <div class="chart">
                         <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-12">
+                    <button id="exportExcel" class="btn d-flex align-items-center" style="background-color: gray; color: white">
+                        <span style=" display:inline-block">
+                            <img src="~/images/icon/Excel.png" alt="Excel Icon" class="me-2" /> Xuất ra Excel
+                        </span>
+                    </button>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -54,6 +59,7 @@
                                 <th>Doanh thu</th>
                                 <th>Đầu tư</th>
                                 <th>Lợi nhuận</th>
+                                <th>Số đơn hàng</th>
                             </tr>
                         </thead>
                         <tbody id="load_data"></tbody>
@@ -62,9 +68,6 @@
             </div>
         </div>
         <!-- /.card-body -->
-        <div class="card-footer">
-            Footer
-        </div>
         <!-- /.card-footer-->
     </div>
     <!-- /.card -->
@@ -72,6 +75,7 @@
 </section>
 
 @section scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="~/Content/clients/plugins/chart.js/Chart.min.js"></script>
     <script src="~/Content/assets/plugins/moment/moment.min.js"></script>
     <script>
@@ -161,6 +165,7 @@
                 strHtml += "<td>" + formatNumber(item.DoanhThu, 2) + ' đ' + "</td>";
                 strHtml += "<td>" + formatNumber(item.TienGoc, 2) + ' đ' + "</td>";
                 strHtml += "<td>" + formatNumber(item.LoiNhuan, 2) + ' đ' + "</td>";
+                strHtml += "<td>" + formatNumber(item.SoLuongDonHang) + "</td>";
                 strHtml += "</tr>";
             });
             $('#load_data').html(strHtml);
@@ -174,6 +179,13 @@
             }
             return GT.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: SoSauDauPhay });
         }
+
+
+
+        document.getElementById('exportExcel').addEventListener('click', function () {
+            var wb = XLSX.utils.table_to_book(document.querySelector('.table'), { sheet: "Sheet1" });
+            XLSX.writeFile(wb, 'ThongKeDenNgay"@ViewBag.Date".xlsx');
+        });
     </script>
 }
 

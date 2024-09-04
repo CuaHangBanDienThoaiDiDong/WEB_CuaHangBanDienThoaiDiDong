@@ -35,7 +35,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
             }
 
             // Lấy tất cả các danh mục
-            var allCategories = db.tb_ProductCategory.ToList();
+            var allCategories = db.tb_ProductCategory.Where(x=>x.IsActive==true).ToList();
 
             // Lấy các danh mục "Tai nghe", "Cáp sạc", "Ốp lưng"
             var accessoryCategories = db.tb_ProductCategory

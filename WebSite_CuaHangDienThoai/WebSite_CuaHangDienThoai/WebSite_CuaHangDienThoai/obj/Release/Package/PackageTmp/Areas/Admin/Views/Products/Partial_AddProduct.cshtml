@@ -29,11 +29,12 @@
             var loaiPin = document.getElementById('LoaiPin').value.trim();
             var congNghePin = document.getElementById('CongNghePin').value.trim();
             var hoTroSac = document.getElementById('HoTroSac').value.trim();
+            var DungLuongPin = document.getElementById('DungLuongPin').value.trim();
 
             // Kiểm tra các ô input để đảm bảo đã nhập đầy đủ thông tin
             if (title === '' || heDieuHanh === '' || tocDoCPU === '' || mangDiDong === '' || sim === '' ||
                 wifi === '' || gps === '' || bluetooth === '' || congKetNoi === '' || jackTaiNghe === '' ||
-                loaiPin === '' || hoTroSac === '' || congNghePin === '') {
+                loaiPin === '' || hoTroSac === '' || congNghePin === '' || DungLuongPin<=0) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Lỗi...',
@@ -482,7 +483,7 @@
                                                     <label for="exampleInputEmail1">Dung lượng Pin</label>
                                                     <input type="number" name="DungLuongPin" id="DungLuongPin" required class="form-control" autocomplete="off" placeholder="- Dung lượng Pin -" />
                                                     @*@Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm" })*@
-                                                    @Html.ValidationMessageFor(x => x.DungLuongPin, null, new { @class = "text-danger" })
+                                                    @Html.ValidationMessageFor(x => x.DungLuongPin, null, new { @class = "text-danger",id= "DungLuongPin" })
                                                 </div>
                                             </div>
                                         </div>

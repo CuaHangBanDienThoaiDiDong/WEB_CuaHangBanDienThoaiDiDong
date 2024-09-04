@@ -4,7 +4,6 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-
 @section naviheader{
     <!-- Left navbar links -->
     <ul class="navbar-nav">
@@ -15,14 +14,13 @@
             <a href="/admin/Homepage" class="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/news" class="nav-link">chức năng</a>
+            <a href="/admin/news" class="nav-link">Chức năng</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
             <a href="#" class="nav-link">Cập nhật</a>
         </li>
     </ul>
 }
-
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -33,79 +31,95 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">chức năng</a></li>
-                    <li class="breadcrumb-item active">Cập nhập</li>
+                    <li class="breadcrumb-item"><a href="#">Chức năng</a></li>
+                    <li class="breadcrumb-item active">Cập nhật</li>
                 </ol>
             </div>
         </div>
     </div><!-- /.container-fluid -->
 </section>
 
-
 <section class="content">
-
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Thông tin Cập nhật</h3>
+            <h3 class="card-title">Thông tin cập nhật</h3>
         </div>
         <div class="card-body">
             <div class="bs-stepper-content">
-                @using (Html.BeginForm())
+                @using (Html.BeginForm("Edit", "Function", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
 
-                <div class="form-horizontal">
-                    
-                    <hr />
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    @Html.HiddenFor(model => model.FunctionId)
+                    <div class="form-horizontal">
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.FunctionId)
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.CreatedDate)
 
-                    <div class="form-group">
-                        <h4>Tên chức năng</h4>
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.TitLe, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.TitLe, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <h4>Tên chức năng</h4>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.TitLe, new { htmlAttributes = new { @class = "form-control", id = "TitLe" } })
+                                @Html.ValidationMessageFor(model => model.TitLe, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <h4>Tạo bởi</h4>
+                            <div class="col-md-10">
+                                @Model.CreatedBy
+                            </div>
+                        </div>
+                        <div class="form-group" style="display:none">
+                            @Html.LabelFor(model => model.CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.CreatedDate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12 text-center">
+                                <input type="submit" value="Lưu" class="btn btn-success" />
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <h4>Tạo bởi</h4>
-                        
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="form-group" style="display:none">
-                        @Html.LabelFor(model => model.CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.CreatedDate, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-
-
-
-                    <div class="form-group">
-                        <div class="col-md-12 text-center">
-                            <input type="submit" value="Lưu" class="btn btn-success" />
-                        </div>
-                    </div>
-
-                    
-                </div>
-            }
-
-
+                }
             </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-
+            <!-- /.card-body -->
+            <div class="card-footer">
+            </div>
+            <!-- /.card-footer-->
         </div>
-        <!-- /.card-footer-->
-    </div>
-    <!-- /.card -->
-
+        <!-- /.card -->
 </section>
 
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            function validateForm() {
+                var isValid = true;
+                var titleField = $('#TitLe');
+                if (!titleField.val().trim()) {
+                    titleField.addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    titleField.removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+                return isValid;
+            }
+
+            $('form').submit(function () {
+                if (!validateForm()) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi...",
+                        text: "Vui lòng nhập đầy đủ thông tin",
+                    });
+                    return false; // Ngăn không cho form submit nếu thông tin không hợp lệ
+                }
+            });
+        });
+    </script>
+}

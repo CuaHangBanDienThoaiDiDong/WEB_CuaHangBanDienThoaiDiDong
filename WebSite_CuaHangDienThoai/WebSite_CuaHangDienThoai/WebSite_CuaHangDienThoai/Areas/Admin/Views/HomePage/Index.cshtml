@@ -80,6 +80,13 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h5>Thống kê</h5>
+                                    <ul class="nav nav-pills">
+                                        <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Ngày</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#infor" data-toggle="tab">Tháng</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Năm</a></li>
+
+
+                                    </ul>
                                     <div class="card-header-left ">
                                     </div>
                                     <div class="card-header-right">
@@ -93,7 +100,38 @@
                                     </div>
                                 </div>
                                 <div class="card-block">
-                                    <div id="statestics-chart" style="height:517px;"></div>
+                                    <div id="" style="height:auto;">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="tab-content">
+                                                    <div class="active tab-pane" id="activity">
+                                                        @Html.Action("Partial_TabStatisticalByDay", "HomePage")
+
+                                                    </div>
+                                                    <!-- /.tab-pane -->
+
+                                                    <div class="tab-pane" id="infor">
+
+                                                        <div class="row">
+                                                            
+                                                            @Html.Action("Partial_TabStatisticalByMon", "HomePage")
+                                                        </div>
+
+                                                    </div>
+
+                                                    <!-- /.tab-pane infor -->
+                                                    <div class="tab-pane" id="timeline">
+                                                        @Html.Action("Partial_TabStatisticalByYear", "HomePage")
+                                                    </div>
+                                                    <!-- /.tab-pane -->
+                                                </div>
+                                                <!-- /.tab-content -->
+                                            </div><!-- /.card-body -->
+
+                                        </div> <!-- /.card -->
+
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -118,38 +156,33 @@
                                         <div class="col-6">
                                             <h2 class="   orderNew_items"></h2>
                                             <p class="text-muted">Đã xuất</p>
-                                            @*<h5>Hóa đơn</h5>
-
-        <div class="row">
-            <div class="col-12  text-center">
-                <h2 class="sellerToday_items"></h2>
-                <p class="text-muted">Hóa đơn</p>
-            </div>
-
-        </div>*@
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="card dribble-card">
                                 <div class="card-header">
-                                   
+
                                     <div class="d-inline-block">
                                         <h5>Hóa đơn</h5>
                                         <span>@ViewBag.Date</span>
                                     </div>
 
                                 </div>
-                                <div class="row">
-                                    <div class="col-6 b-r-default text-center">
-                                        <h2 class="sellerToday_items">0</h2>
-                                        <p class="text-muted">Hóa đơn bán cửa hàng</p>
-                                    </div>
-                                    <div class="col-6">
-                                     
+
+                                <div class="card-block text-center">
+                                    <div class="row">
+                                        <div class="col-6 b-r-default">
+                                            <h2 class="sellerToday_items">0</h2>
+                                            <p class="text-muted">Hóa đơn bán cửa hàng</p>
+
+                                        </div>
+                                        <div class="col-6">
+                                          
+                                        </div>
                                     </div>
                                 </div>
-                               
+
                             </div>
                             <div class="card twitter-card">
                                 <div class="card-header">

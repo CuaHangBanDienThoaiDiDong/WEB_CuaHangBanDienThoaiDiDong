@@ -1,56 +1,65 @@
 ﻿@model List<WebSite_CuaHangDienThoai.Models.Admin_ChatMessageViewModel>
 
-<!--<div class="py-2 px-4 border-bottom d-none d-lg-block">
-    <div class="d-flex align-items-center py-1">
-        <div class="position-relative">
-            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-        </div>
-        <div class="flex-grow-1 pl-3">
-            if (Model != null && Model.Any())
-            {-->
-                @*var name = Model.FirstOrDefault()?.Customer.CustomerName;
-                <strong>@name</strong>*@
-            <!--}-->
-            @*<div class="text-muted small"><em>Typing...</em></div>*@
-        <!--</div>
-    </div>
-</div>-->
+<div class="chat-messages-container" id="loadContenMessGet">
+    @if (Model != null && Model.Any())
+    {
+        bool hasStaffMessages = Model.Any(m => m.StaffId.HasValue);
+        bool hasCustomerMessages = Model.Any(m => m.CustomerId.HasValue);
 
-<div class="chat-messages-container " id="loadContenMessGet">
-   
-        @if (Model != null && Model.Any())
+        if (hasStaffMessages || hasCustomerMessages)
         {
-          
-                foreach (var message in Model)
-                {
-                    <div class="chat-message @(message.StaffId.HasValue ? "chat-message-right" : "chat-message-left") pb-4">
-                        <div>
-                            <img src="data:image;base64,@(message.StaffId.HasValue ? Convert.ToBase64String(message.Staff.Image) : Convert.ToBase64String(message.Customer.Image))" class="rounded-circle mr-1" alt="User" width="40" height="40">
-                            <div class="text-muted small text-nowrap mt-2">@message.Timestamp.ToString("h:mm tt")</div>
-                        </div>
-                        <div class="flex-shrink-1 bg-light rounded py-2 px-3 @(message.StaffId.HasValue ? "mr-3" : "ml-3")">
-                            <div class="font-weight-bold mb-1">@((message.StaffId.HasValue ? "Bạn" : message.Customer.CustomerName))</div>
-                            @message.MessageContent
-                        </div>
+            foreach (var message in Model)
+            {
+                <div class="chat-message @(message.StaffId.HasValue ? "chat-message-right" : "chat-message-left") pt-5 pb-4">
+                    <div>
+                        @{
+                            var imageSrc = "";
+                            if (message.CustomerId.HasValue)
+                            {
+                                imageSrc = message.Customer?.Image != null
+                                    ? $"data:image;base64,{Convert.ToBase64String(message.Customer.Image)}"
+                                    : Url.Content("~/images/Logo/logoWEnMew.png");
+                            }
+                            else
+                            {
+                                imageSrc = message.Staff?.Image != null
+                                    ? $"data:image;base64,{Convert.ToBase64String(message.Staff.Image)}"
+                                    : Url.Content("~/images/Logo/logoWEnMew.png");
+                            }
+                        }
+                        <img src="@imageSrc" class="rounded-circle mr-1" alt="User" width="40" height="40">
+                        <div class="text-muted small text-nowrap mt-2">@message.Timestamp.ToString("h:mm tt")</div>
                     </div>
-                }
-          
+                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 @(message.StaffId.HasValue ? "mr-3" : "ml-3")">
+                        <div class="font-weight-bold mb-1">@((message.StaffId.HasValue ? "Bạn" : message.Customer.CustomerName))</div>
+                        @message.MessageContent
+                    </div>
+                </div>
+            }
         }
         else
         {
-            <div>Không có tin nhắn</div>
+            <div class="chat-message-left pt-5 pb-4">
+                <div>
+                    <img src="~/images/Logo/logoWEnMew.png" class="rounded-circle mr-1" alt="LTDMiniStore" width="40" height="40">
+                </div>
+                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                    <div class="font-weight-bold mb-1"><span class="text-danger">LTD</span>MiniStore</div>
+                    Không có tin nhắn từ khách hàng hoặc nhân viên.
+                </div>
+            </div>
         }
-   
-</div>
-
-@if (ViewBag.Messid != null)
-{
-    @*<div class="flex-grow-0 py-3 px-4 border-top">
-        <div class="input-group">
-            <textarea class="form-control" id="ContentMess" placeholder="Nội dung tin nhắn"></textarea>
-            <button class="btn btn-primary btnsend" id="sendMessageBtn" data-MessId="@ViewBag.Messid">Gửi</button>
+    }
+    else
+    {
+        <div class="chat-message-left pt-5 pb-4">
+            <div>
+                <img src="~/images/Logo/logoWEnMew.png" class="rounded-circle mr-1" alt="LTDMiniStore" width="40" height="40">
+            </div>
+            <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                <div class="font-weight-bold mb-1"><span class="text-danger">LTD</span>MiniStore</div>
+                Chưa có tin nhắn nào từ khách hàng hoặc nhân viên.
+            </div>
         </div>
-    </div>*@
-}
-
-
+    }
+</div>

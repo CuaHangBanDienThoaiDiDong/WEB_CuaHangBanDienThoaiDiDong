@@ -241,13 +241,14 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             if (!string.IsNullOrEmpty(search))
             {
                 var customer = db.tb_Customer
-              .FirstOrDefault(c => c.PhoneNumber.Contains(search) || c.CustomerName.Contains(search));
+                    .FirstOrDefault(c => c.PhoneNumber.Contains(search) || c.CustomerName.Contains(search));
 
                 SellerCart cart = (SellerCart)Session["SellerCart"];
-                if (cart.Items.Count > 0)
+                if (cart != null && cart.Items != null && cart.Items.Count > 0)
                 {
-                    ViewBag.Data=cart.Items;
+                    ViewBag.Data = cart.Items;
                 }
+
                 if (customer != null)
                 {
                     return PartialView(new List<tb_Customer> { customer });
@@ -259,7 +260,6 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
             else
             {
-
                 return PartialView();
             }
         }

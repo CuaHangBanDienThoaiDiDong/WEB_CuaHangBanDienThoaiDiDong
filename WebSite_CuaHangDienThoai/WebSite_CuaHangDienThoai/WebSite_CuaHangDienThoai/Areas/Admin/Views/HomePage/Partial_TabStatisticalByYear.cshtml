@@ -1,0 +1,47 @@
+﻿
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Biểu đồ thống kê doanh thu theo năm</h3>
+            @Html.DropDownList("Chọn năm", (SelectList)ViewBag.UniqueYears, "Chọn năm", new { id = "Chose_year" })
+
+
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="loadStatisticalByYear"></div>
+                    @*<div class="chart">
+                            <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="~/Content/clients/plugins/chart.js/Chart.min.js"></script>
+    <script src="~/Content/assets/plugins/moment/moment.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#Chose_year').change(function () {
+                var year = $(this).val();
+                $.ajax({
+                    url: '/Admin/HomePage/Partial_StatisticalByYear', // Loại bỏ khoảng trắng ở đây
+                    type: 'GET',
+                    data: { year: year },
+                    success: function (data) {
+                        $('.loadStatisticalByYear').html(data);
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi khi tải dữ liệu!");
+                    }
+                });
+            });
+        });
+
+
+   
+    </script>
+

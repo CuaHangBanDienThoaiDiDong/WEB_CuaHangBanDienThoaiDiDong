@@ -2,8 +2,8 @@
 
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Thống kê danh thu tháng <span class="text-danger">@ViewBag.Month</span></h3>
-
+  
+        <h5 class="text-danger "> <label class="text-dark">Thống kê danh thu tháng:</label> @ViewBag.Month</h5>
         <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                 <i class="fas fa-minus"></i>
@@ -15,32 +15,34 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="chart">
-                    <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    <canvas id="barChart_MonSelect" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-12">
+                <button id="exportExcel" class="btn d-flex align-items-center" style="background-color: gray; color: white">
+                    <span style=" display:inline-block">
+                        <img src="~/images/icon/Excel.png" alt="Excel Icon" class="me-2" /> Xuất ra Excel
+                    </span>
+                </button>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Tháng</th>
+                            <th>Tháng/Năm</th>
                             <th>Doanh thu</th>
                             <th>Đầu tư</th>
                             <th>Lợi nhuận</th>
+                            <th>Số đơn hàng</th>
                         </tr>
                     </thead>
-                    <tbody id="load_data"></tbody>
+                    <tbody id="load_data_MonSelect"></tbody>
                 </table>
             </div>
         </div>
     </div>
-    <!-- /.card-body -->
-    <div class="card-footer">
 
-    </div>
-    <!-- /.card-footer-->
 </div>
 
 
@@ -48,6 +50,8 @@
 
 
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <script src="~/Content/clients/plugins/chart.js/Chart.min.js"></script>
 <script src="~/Content/assets/plugins/moment/moment.min.js"></script>
@@ -127,7 +131,7 @@
                 ]
             };
 
-            var barChartCanvas = $('#barChart').get(0).getContext('2d');
+            var barChartCanvas = $('#barChart_MonSelect').get(0).getContext('2d');
             var barChart = new Chart(barChartCanvas, {
                 type: 'bar',
                 data: barChartData,
@@ -139,15 +143,16 @@
             });
 
             // Cập nhật dữ liệu cho bảng
-            var tableBody = $('#load_data');
+            var tableBody = $('#load_data_MonSelect');
             tableBody.empty();
             $.each(data, function (i, item) {
                 var row = '<tr>' +
                     '<td>' + (i + 1) + '</td>' +
-                    '<td>' + item.Month + '</td>' +
+                    '<td>' + item.Month+'/'+item.Year+ '</td>' +
                     '<td>' + formatNumber(item.DoanhThu, 2) + ' đ' + '</td>' +
                     '<td>' + formatNumber(item.TienGoc, 2) + ' đ' + '</td>' +
                     '<td>' + formatNumber(item.LoiNhuan, 2) + ' đ' + '</td>' +
+                    '<td>' + formatNumber(item.OrderCount) +  '</td>' +
                     //'<td>' + item.DoanhThu + ' đ' + '</td>' +
                     //'<td>' + item.TienGoc+ ' đ' + '</td>' +
                     //'<td>' + formatNumber(item.LoiNhuan, 2) + ' đ' + '</td>' +
@@ -168,6 +173,10 @@
         $(document).ready(function () {
             loadMonthlyStatistical();
         });
+    document.getElementById('exportExcel').addEventListener('click', function () {
+        var wb = XLSX.utils.table_to_book(document.querySelector('.table'), { sheet: "Sheet1" });
+        XLSX.writeFile(wb, 'ThongKeThang"@ViewBag.Month".xlsx');
+    });
 </script>
 
 

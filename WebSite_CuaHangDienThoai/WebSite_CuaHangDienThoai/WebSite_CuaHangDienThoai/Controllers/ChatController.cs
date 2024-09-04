@@ -9,6 +9,8 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using WebSite_CuaHangDienThoai.Models;
 using Microsoft.AspNet.SignalR;
+using DocumentFormat.OpenXml.Office.Word;
+
 namespace WebSite_CuaHangDienThoai.Controllers
 {
     public class ChatController : Controller
@@ -45,9 +47,6 @@ namespace WebSite_CuaHangDienThoai.Controllers
         }
 
 
-       
-
-
         public ActionResult Partial_ContentMess(int id)
         {
             try
@@ -64,64 +63,94 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                // Lấy tin nhắn của khách hàng
-                var customerMessages = (
-                    from cmd in db.tb_CustomerMessageDetail
-                    join m in db.tb_Message on cmd.MessageId equals m.MessageId
-                    join c in db.tb_Customer on cmd.CustomerId equals c.CustomerId
-                    where cmd.CustomerId == id
-                    select new ChatMessageViewModel
-                    {
-                        DetailId = cmd.DetailId,
-                        MessageId = cmd.MessageId,
-                        CustomerId = cmd.CustomerId,
-                        StaffId = null,
-                        MessageContent = cmd.Content,
-                        Timestamp = cmd.Timestamp,
-                        IsRead = cmd.IsRead,
-                        CustomerName = c.CustomerName,
-                        CustomerImage = c.Image
-                    }
-                ).ToList();
+                var checkContentMessCustomer = db.tb_CustomerMessageDetail
+                    .Where(x => x.CustomerId == id)
+                    .ToList();
 
-                // Lấy tin nhắn của nhân viên gửi cho khách hàng tương ứng
-                var staffMessages = (
-                    from smd in db.tb_StaffMessageDetail
-                    join m in db.tb_Message on smd.MessageId equals m.MessageId
-                    join s in db.tb_Staff on smd.StaffId equals s.StaffId
-                    where db.tb_CustomerMessageDetail.Any(cmd => cmd.CustomerId == id && cmd.MessageId == smd.MessageId)
-                    select new ChatMessageViewModel
-                    {
-                        DetailIdMessStaff = smd.DetailId,
-                        MessageId = smd.MessageId,
-                        CustomerId = null,
-                        StaffId = smd.StaffId,
-                        MessageContent = smd.Content,
-                        Timestamp = smd.Timestamp, 
-                        IsRead = smd.IsRead,
-                        StaffName = s.NameStaff,
-                        StaffImage = s.Image
-                    }
-                ).ToList();
-
-                // Kết hợp và sắp xếp tất cả các tin nhắn theo thời gian gửi
-                var allMessages = customerMessages.Concat(staffMessages).OrderBy(m => m.Timestamp);
-
-                // Đánh dấu các tin nhắn chưa đọc là đã đọc
-                foreach (var message in staffMessages.Where(m => m.IsRead == false ))
+                // Kiểm tra xem danh sách có rỗng không
+                if (!checkContentMessCustomer.Any())
                 {
-                    message.IsRead = true;
-                    var messageDetail = db.tb_StaffMessageDetail.Find(message.DetailIdMessStaff);
-                    if (messageDetail != null)
+                    ViewBag.contentMess = null;
+                    return PartialView();
+                }
+                else
+                {
+                    var customerMessages = (
+                        from cmd in db.tb_CustomerMessageDetail
+                        join m in db.tb_Message on cmd.MessageId equals m.MessageId
+                        join c in db.tb_Customer on cmd.CustomerId equals c.CustomerId
+                        where cmd.CustomerId == id
+                        select new ChatMessageViewModel
+                        {
+                            DetailId = cmd.DetailId,
+                            MessageId = cmd.MessageId,
+                            CustomerId = cmd.CustomerId,
+                            StaffId = null,
+                            MessageContent = cmd.Content,
+                            Timestamp = cmd.Timestamp,
+                            IsRead = cmd.IsRead,
+                            Customer = db.tb_Customer.FirstOrDefault(x => x.CustomerId == c.CustomerId)
+                        }
+                    ).ToList();
+
+                    if (customerMessages == null)
                     {
-                        messageDetail.IsRead = true;
+                        return PartialView();
+                    }
+                    else
+                    {
+                        var staffMessages = (
+                            from smd in db.tb_StaffMessageDetail
+                            join m in db.tb_Message on smd.MessageId equals m.MessageId
+                            join s in db.tb_Staff on smd.StaffId equals s.StaffId
+                            where db.tb_CustomerMessageDetail.Any(cmd => cmd.CustomerId == id && cmd.MessageId == smd.MessageId)
+                            select new ChatMessageViewModel
+                            {
+                                DetailIdMessStaff = smd.DetailId,
+                                MessageId = smd.MessageId,
+                                CustomerId = null,
+                                StaffId = smd.StaffId,
+                                MessageContent = smd.Content,
+                                Timestamp = smd.Timestamp,
+                                IsRead = smd.IsRead,
+                                Staff = db.tb_Staff.FirstOrDefault(x => x.StaffId == s.StaffId)
+                            }
+                        ).ToList();
+
+                        if (staffMessages.Count == 0)
+                        {
+                            ViewBag.contentMessStaff = "";
+                            var allMessages = customerMessages.OrderBy(m => m.Timestamp).ToList();
+                            ViewBag.contentMess = customerMessages;
+                            return PartialView(allMessages);
+                        }
+                        else
+                        {
+                            var allMessages = customerMessages.Concat(staffMessages).OrderBy(m => m.Timestamp).ToList();
+                            if (allMessages != null)
+                            {
+                                foreach (var message in staffMessages.Where(m => m.IsRead == false))
+                                {
+                                    message.IsRead = true;
+                                    var messageDetail = db.tb_StaffMessageDetail.Find(message.DetailIdMessStaff);
+                                    if (messageDetail != null)
+                                    {
+                                        messageDetail.IsRead = true;
+                                    }
+                                }
+                                db.SaveChanges();
+                                ViewBag.contentMess = customerMessages;
+                                ViewBag.contentMessStaff = staffMessages;
+                                return PartialView(allMessages);
+                            }
+                            else
+                            {
+                                ViewBag.contentMess = "";
+                                return PartialView();
+                            }
+                        }
                     }
                 }
-
-                // Lưu thay đổi vào cơ sở dữ liệu
-                db.SaveChanges();
-
-                return PartialView(allMessages.ToList());
             }
             catch (Exception ex)
             {
@@ -129,6 +158,117 @@ namespace WebSite_CuaHangDienThoai.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
+
+
+        //public ActionResult Partial_ContentMess(int id)
+        //{
+        //    try
+        //    {
+        //        // Kiểm tra xem người dùng đã đăng nhập chưa
+        //        if (Session["CustomerId"] == null)
+        //        {
+        //            return RedirectToAction("Login", "Account");
+        //        }
+
+        //        // Kiểm tra xem id khách hàng có hợp lệ không
+        //        if (id < 0)
+        //        {
+        //            return RedirectToAction("Login", "Account");
+        //        }
+
+        //        var checkContentMessCustomer = db.tb_CustomerMessageDetail
+        //           .Where(x => x.CustomerId == id)
+        //           .ToList();
+
+        //        // Kiểm tra xem danh sách có rỗng không
+        //        if (!checkContentMessCustomer.Any())
+        //        {
+        //            ViewBag.contentMess = null;
+        //            return PartialView();
+        //        }
+        //        else 
+        //        {
+        //            var customerMessages = (
+        //           from cmd in db.tb_CustomerMessageDetail
+        //           join m in db.tb_Message on cmd.MessageId equals m.MessageId
+        //           join c in db.tb_Customer on cmd.CustomerId equals c.CustomerId
+        //           where cmd.CustomerId == id
+        //           select new ChatMessageViewModel
+        //           {
+        //               DetailId = cmd.DetailId,
+        //               MessageId = cmd.MessageId,
+        //               CustomerId = cmd.CustomerId,
+        //               StaffId = null,
+        //               MessageContent = cmd.Content,
+        //               Timestamp = cmd.Timestamp,
+        //               IsRead = cmd.IsRead,
+        //               Customer = db.tb_Customer.FirstOrDefault(x => x.CustomerId == c.CustomerId)
+        //           }
+        //       ).ToList();
+
+        //            if (customerMessages == null)
+        //            {
+
+        //                return PartialView();
+        //            }
+        //            else
+        //            {
+        //                var staffMessages = (
+        //               from smd in db.tb_StaffMessageDetail
+        //               join m in db.tb_Message on smd.MessageId equals m.MessageId
+        //               join s in db.tb_Staff on smd.StaffId equals s.StaffId
+        //               where db.tb_CustomerMessageDetail.Any(cmd => cmd.CustomerId == id && cmd.MessageId == smd.MessageId)
+        //               select new ChatMessageViewModel
+        //               {
+        //                   DetailIdMessStaff = smd.DetailId,
+        //                   MessageId = smd.MessageId,
+        //                   CustomerId = null,
+        //                   StaffId = smd.StaffId,
+        //                   MessageContent = smd.Content,
+        //                   Timestamp = smd.Timestamp,
+        //                   IsRead = smd.IsRead,
+        //                   Staff = db.tb_Staff.FirstOrDefault(x => x.StaffId == s.StaffId)
+        //               }
+        //              ).ToList();
+
+
+        //                var allMessages = customerMessages.Concat(staffMessages).OrderBy(m => m.Timestamp);
+
+
+        //                if (allMessages != null)
+        //                {
+        //                    foreach (var message in staffMessages.Where(m => m.IsRead == false))
+        //                    {
+        //                        message.IsRead = true;
+        //                        var messageDetail = db.tb_StaffMessageDetail.Find(message.DetailIdMessStaff);
+        //                        if (messageDetail != null)
+        //                        {
+        //                            messageDetail.IsRead = true;
+        //                        }
+        //                    }
+        //                    db.SaveChanges();
+        //                    ViewBag.contentMess = customerMessages;
+        //                    return PartialView(allMessages.ToList());
+        //                }
+        //                else
+        //                {
+
+        //                    ViewBag.contentMess = "";
+        //                    return PartialView();
+        //                }
+
+
+        //            }
+        //        }
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log lỗi nếu cần
+        //        return RedirectToAction("Index", "Error");
+        //    }
+        //}
 
         [HttpPost]
         public JsonResult SentMess(int id, string content)

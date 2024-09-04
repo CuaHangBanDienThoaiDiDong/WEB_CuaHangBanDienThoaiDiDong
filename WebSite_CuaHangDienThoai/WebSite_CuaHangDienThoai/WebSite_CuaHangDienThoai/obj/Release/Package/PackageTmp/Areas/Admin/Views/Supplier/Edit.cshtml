@@ -77,22 +77,23 @@
                                     <div class="active tab-pane" id="activity">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Tên nhà cung cấp</label>
-                                            @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @placeholder = "Tên nhà cung cấp" })
+                                            @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @placeholder = "Tên nhà cung cấp", id = "Name" })
                                             @Html.ValidationMessageFor(x => x.Name, null, new { @class = "text-danger" })
                                         </div>
 
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Địa chỉ nhà cung cấp</label>
-                                            @Html.TextBoxFor(x => x.Location, new { @class = "form-control", @placeholder = "Địa chỉ nhà cung cấp" })
+                                            @Html.TextBoxFor(x => x.Location, new { @class = "form-control", @placeholder = "Địa chỉ nhà cung cấp", id = "Location" })
                                             @Html.ValidationMessageFor(x => x.Location, null, new { @class = "text-danger" })
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Thông tin liên hệ nhà cung cấp</label>
-                                            @Html.TextBoxFor(x => x.Phone, new { @class = "form-control", @placeholder = "Thông tin liên hệ nhà cung cấp", @type = "number" })
+                                            @Html.TextBoxFor(x => x.Phone, new { @class = "form-control", @placeholder = "Thông tin liên hệ nhà cung cấp", @type = "text", id = "Phone", @pattern = "[0-9]*" })
                                             @Html.ValidationMessageFor(x => x.Phone, null, new { @class = "text-danger" })
+
                                         </div>
 
-                                       
+
 
                                     </div>
 
@@ -155,4 +156,58 @@
 
 
     </script>
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            function validateForm() {
+                var isValid = true;
+                var Phoneld = $('#Phone');
+                var Locationld = $('#Location');
+                var Nameld = $('#Name');
+
+                if (!Phoneld.val().trim()) {
+                    Phoneld.addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else if (Phoneld.val().length !== 10) { // Sửa chỗ này
+                    Phoneld.addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    Phoneld.removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+
+                if (!Locationld.val().trim()) {
+                    Locationld.addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    Locationld.removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+
+                if (!Nameld.val().trim()) {
+                    Nameld.addClass('is-invalid'); // Thêm class is-invalid để highlight trường lỗi
+                    isValid = false;
+                } else {
+                    Nameld.removeClass('is-invalid'); // Xóa class is-invalid nếu trường không lỗi
+                }
+
+                return isValid;
+            }
+
+            $('form').submit(function () {
+                if (!validateForm()) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi...",
+                        text: "Vui lòng nhập đầy đủ thông tin",
+                    });
+                    return false; // Ngăn không cho form submit nếu thông tin không hợp lệ
+                }
+            });
+        });
+    </script>
+
+
+
 }

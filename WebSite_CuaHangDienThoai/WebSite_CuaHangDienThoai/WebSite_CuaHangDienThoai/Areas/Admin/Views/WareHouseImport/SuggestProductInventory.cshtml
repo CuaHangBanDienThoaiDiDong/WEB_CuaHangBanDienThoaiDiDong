@@ -1,0 +1,160 @@
+﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.tb_ProductDetail>
+<div style="overflow-x:auto;">
+    <b>Số lượng <span class="text-danger">@ViewBag.Count</span> tìm theo <span class="text-danger">@ViewBag.Content</span> </b>
+    <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+        <thead>
+            <tr class="text-center">
+                <th>STT</th>
+                <th>Hình ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Màu</th>
+                <th>Số lượng</th>
+                <th>Loại sản phẩm</th>
+                <th>Hãng</th>
+                <th>Dung lượng</th>
+                <th>Tác vụ</th>
+            </tr>
+        </thead>
+    </table>
+
+
+    <div style="max-height: 580px; overflow-y: auto;">
+        @if (ViewBag.txt == null)
+        {
+            <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        string displayAlias = null;
+                        string alias = null;
+
+                        foreach (var item in Model)
+                        {
+                            if (item.tb_Products.Alias != null)
+                            {
+                                int maxLength = 7;
+                                alias = item.tb_Products.Alias;
+                                displayAlias = alias.Length > maxLength ? alias.Substring(0, maxLength) + "..." : alias;
+
+                            }
+
+                            //var checkQuantity = item.tb_ImportWarehouse.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId);
+
+                            var Capacity = "";
+                            if (item.Capacity > 999)
+                            {
+                                Capacity = "1Tb";
+                            }
+                            else if (item.Capacity > 1999)
+                            {
+                                Capacity = "2 Tb";
+                            }
+                            else
+                            {
+                                Capacity = item.Capacity + "Gb";
+                            }
+                            byte[] strImg = null;
+                            var CheckImage = item.tb_Products.tb_ProductImage.SingleOrDefault(x => x.IsDefault == true);
+
+                            if (CheckImage != null)
+                            {
+                                strImg = CheckImage.Image;
+                            }
+
+                            string imgSrc = "";
+                            if (strImg != null && strImg.Length > 0)
+                            {
+                                string base64String = Convert.ToBase64String(strImg);
+                                imgSrc = $"data:image;base64,{base64String}";
+                            }
+
+
+
+                            <tr class="text-center opacity-100 " id="trow_@item.ProductsId">
+                                <td><input type="checkbox" class="cbkItem" value="@item.ProductsId" /></td>
+
+                                <td>
+                                    <img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" />
+                                </td>
+                                <td>
+                                    <a href="/admin/Products/Detail/@item.ProductsId" style="color:black"> @item.tb_Products.Title</a>
+                                    <br />
+                                    <div class="copy-container text-center">
+
+
+                                        <p>@displayAlias</p>
+                                        <button class="copy-button btn btn-success" onclick="copyToClipboard('@alias')">Sao chép</button>
+                                    </div>
+                                </td>
+                                <td>
+                                    @item.Color
+                                </td>
+                                <td>
+                                    @Html.Action("Partial_QuantityProductDtail", "WareHouseImport", new { id = item.ProductDetailId })
+                                </td>
+                                <td>@item.tb_Products.tb_ProductCategory.Title</td>
+                                <td>
+                                    @item.tb_Products.tb_ProductCompany.Title
+                                </td>
+                                <td>
+                                    @Capacity
+                                </td>
+
+
+                                <td>
+                                    <a href="/admin/Products/Detail/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Xem</a>
+                                    <a href="/admin/Products/Edit/@item.ProductsId" data-id="@item.ProductsId" class="btn btn-sm btn-primary ">Sửa</a>
+                                </td>
+                            </tr>
+
+
+
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">Không có bản ghi nào!!!</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+
+</div>
+
+<script>
+    function copyToClipboard(text) {
+
+        var tempTextarea = document.createElement("textarea");
+        tempTextarea.value = text;
+        document.body.appendChild(tempTextarea);
+
+
+        tempTextarea.select();
+        tempTextarea.setSelectionRange(0, 99999);
+
+        document.execCommand("copy");
+        document.body.removeChild(tempTextarea);
+
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        Toast.fire({
+            icon: "success",
+            title: "Đã sao chép mã "
+        });
+    }
+</script>

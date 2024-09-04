@@ -25,7 +25,7 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Biểu đồ thống kê doanh thu theo tháng</h3>
-            @Html.DropDownList("Chọn năm", (SelectList)ViewBag.UniqueMonth, "Hiện tại", new { id = "Chose_month" })
+            @Html.DropDownList("Chọn năm", (SelectList)ViewBag.UniqueMonth, "Tất cả", new { id = "Chose_month" })
 
 
         </div>
@@ -36,7 +36,7 @@
                     <div class="loadStatisticalByMon">
                         <p>Loading...</p>
                     </div>
-                  
+
                 </div>
             </div>
         </div>
@@ -44,29 +44,29 @@
 </section>
 
 @section scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="~/Content/clients/plugins/chart.js/Chart.min.js"></script>
     <script src="~/Content/assets/plugins/moment/moment.min.js"></script>
     <script>
-        function LoadMothNow()
-        {
+
+        function LoadMothNow() {
             $.ajax({
-                url: '/Admin/Statistical/StatisticalByMon', // Loại bỏ khoảng trắng ở đây
+                url: '/Admin/Statistical/Partial_StatisticalByMonAll', // Loại bỏ khoảng trắng ở đây
                 type: 'GET',
-               
+
                 success: function (data) {
                     $('.loadStatisticalByMon').html(data);
                 },
                 error: function () {
                     alert("Đã xảy ra lỗi khi tải dữ liệu!");
                 }
-            });   
+            });
         }
-
 
         $(document).ready(function () {
             LoadMothNow();
             $('#Chose_month').change(function () {
-               
+
                 var year = $(this).val();
                 if (year !== "") {
                     $.ajax({
@@ -82,14 +82,14 @@
                     });
                 }
                 else {
-                    LoadMothNow();      
+                    LoadMothNow();
                 }
-              
+
             });
         });
 
 
-       
+
     </script>
 }
 

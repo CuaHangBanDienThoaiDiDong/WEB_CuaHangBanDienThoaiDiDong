@@ -14,27 +14,12 @@
     <script>
 
         function validateForm() {
-            var title = document.getElementById('Title').value.trim();
-            var productCategory = document.getElementById('ProductCategoryId').value.trim();
-            var productCompany = document.getElementById('ProductCompanyId').value.trim();
-            var heDieuHanh = document.getElementById('HeDieuHanh').value.trim();
-            var cpu = document.getElementById('CPU').value.trim();
-            var tocDoCPU = document.getElementById('TocDoCPU').value.trim();
-            var gpu = document.getElementById('GPU').value.trim();
-            var mangDiDong = document.getElementById('MangDiDong').value.trim();
-            var bluetooth = document.getElementById('Bluetooth').value.trim();
-            var sim = document.getElementById('SIM').value.trim();
-            var wifi = document.getElementById('Wifi').value.trim();
-            var gps = document.getElementById('GPS').value.trim();
-            var congKetNoi = document.getElementById('CongKetNoi').value.trim();
-            var jackTaiNghe = document.getElementById('JackTaiNghe').value.trim();
-            var loaiPin = document.getElementById('LoaiPin').value.trim();
-            var congNghePin = document.getElementById('CongNghePin').value.trim();
-            var hoTroSac = document.getElementById('HoTroSac').value.trim();
+            var Name = document.getElementById('Name').value.trim();
+            var Phone = document.getElementById('Phone').value.trim();
+            var LocationId = document.getElementById('Location').value.trim();
+          
 
-            if (title === '' || heDieuHanh === '' || tocDoCPU === '' || mangDiDong === '' || sim === '' ||
-                wifi === '' || gps === '' || bluetooth === '' || congKetNoi === '' || jackTaiNghe === '' ||
-                loaiPin === '' || hoTroSac === '' || congNghePin === '') {
+            if (Name === '' || Phone === '' || LocationId === '' |) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Lỗi...',
@@ -220,7 +205,7 @@
                                             <div class="col-6">
                                                 <label for="exampleInputEmail1">Số điện thoại nhà cung cấp</label>
 
-                                                <input type="number" name="Phone" id="Phone" required class="form-control" autocomplete="off" placeholder="Số điên thọai..." />
+                                                <input type="number" pattern = "[0-9]*" name="Phone" id="Phone" required class="form-control" autocomplete="off" placeholder="Số điên thọai..." />
                                                 <span id="titleError" class="error-message">Vui lòng nhập tên địa chỉ cửa hàng.</span>
                                                 @Html.ValidationMessageFor(x => x.Phone, null, new { @class = "text-danger" })
                                             </div>

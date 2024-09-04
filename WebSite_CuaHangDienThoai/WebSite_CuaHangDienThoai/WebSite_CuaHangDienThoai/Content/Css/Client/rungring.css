@@ -24,7 +24,7 @@
     position: fixed;
     bottom: 190px;
     right: 10px;
-    animation: shake 2.5s ease-in-out infinite; /* Tăng thời gian từ 0.5s lên 1s để làm chậm hiệu ứng */
+    animation: shake 5.5s ease-in-out infinite; /* Tăng thời gian từ 0.5s lên 1s để làm chậm hiệu ứng */
 }
 
     /* Đảm bảo hình ảnh không bị thay đổi kích thước */

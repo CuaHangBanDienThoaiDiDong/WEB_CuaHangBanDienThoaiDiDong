@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewBag.Title = "Thông kê theo tháng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thống kê doanh thu theo tháng</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/he-thong-LTD">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Thống kê doanh thu theo tháng</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Biểu đồ thống kê doanh thu theo tháng</h3>
+            @Html.DropDownList("Chọn năm", (SelectList)ViewBag.UniqueMonth, "Tất cả", new { id = "Chose_month" })
+
+
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="loadStatisticalByMon">
+                        <p>Loading...</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="~/Content/clients/plugins/chart.js/Chart.min.js"></script>
+    <script src="~/Content/assets/plugins/moment/moment.min.js"></script>
+    <script>
+
+        function LoadMothNow() {
+            $.ajax({
+                url: '/Admin/Statistical/Partial_StatisticalByMonAll', // Loại bỏ khoảng trắng ở đây
+                type: 'GET',
+
+                success: function (data) {
+                    $('.loadStatisticalByMon').html(data);
+                },
+                error: function () {
+                    alert("Đã xảy ra lỗi khi tải dữ liệu!");
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            LoadMothNow();
+            $('#Chose_month').change(function () {
+
+                var year = $(this).val();
+                if (year !== "") {
+                    $.ajax({
+                        url: '/Admin/Statistical/Partial_StatisticalByMon', // Loại bỏ khoảng trắng ở đây
+                        type: 'GET',
+                        data: { month: year },
+                        success: function (data) {
+                            $('.loadStatisticalByMon').html(data);
+                        },
+                        error: function () {
+                            alert("Đã xảy ra lỗi khi tải dữ liệu!");
+                        }
+                    });
+                }
+                else {
+                    LoadMothNow();
+                }
+
+            });
+        });
+
+
+
+    </script>
+}
+

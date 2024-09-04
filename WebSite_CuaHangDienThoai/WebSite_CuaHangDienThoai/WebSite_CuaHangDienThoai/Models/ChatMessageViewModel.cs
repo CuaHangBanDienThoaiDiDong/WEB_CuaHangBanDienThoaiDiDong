@@ -18,9 +18,7 @@ namespace WebSite_CuaHangDienThoai.Models
         public bool? IsRead { get; set; }
         public string StaffMessageContent { get; set; }
         public DateTime? StaffMessageTimestamp { get; set; }
-        public string CustomerName { get; set; } // Tên khách hàng
-        public string StaffName { get; set; } // Tên nhân viên
-        public byte[] CustomerImage { get; set; } // Ảnh khách hàng
-        public byte[] StaffImage { get; set; } // Ảnh nhân viên
+        public tb_Customer Customer { get; set; }
+        public tb_Staff Staff { get; set; }
     }
 }

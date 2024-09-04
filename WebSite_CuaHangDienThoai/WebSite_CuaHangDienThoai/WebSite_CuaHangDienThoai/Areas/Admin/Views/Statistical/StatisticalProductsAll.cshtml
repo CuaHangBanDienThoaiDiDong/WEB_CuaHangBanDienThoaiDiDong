@@ -5,7 +5,13 @@
     </div>
 </div>
 <div class="col-md-12">
-    <button id="exportExcel" class="btn btn-primary">Xuất ra Excel</button>
+    <button id="exportExcel" class="btn d-flex align-items-center" style="background-color: gray; color: white">
+        <span style=" display:inline-block">
+            <img src="~/images/icon/Excel.png" alt="Excel Icon" class="me-2" /> Xuất ra Excel
+        </span>
+
+    </button>
+
     <table class="table">
         <thead>
             <tr>
@@ -136,6 +142,6 @@
 
         document.getElementById('exportExcel').addEventListener('click', function () {
             var wb = XLSX.utils.table_to_book(document.querySelector('.table'), { sheet: "Sheet1" });
-            XLSX.writeFile(wb, 'ThongKeSanPham.xlsx');
+            XLSX.writeFile(wb, 'SanPhamBanChayLTD.xlsx');
         });
     </script>

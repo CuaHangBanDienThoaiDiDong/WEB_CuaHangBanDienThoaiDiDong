@@ -135,11 +135,11 @@
         var modifiedDate = document.querySelector("[name='ModifiedDate']").value;
         var currentDate = new Date().toISOString().slice(0, 16); // Get current date and time in yyyy-MM-ddTHH:mm format
 
-        if (usedDate && usedDate < currentDate) {
+        if (usedDate.val().trim()!=null) {
             Swal.fire({
                 icon: "error",
                 title: "Ngày chọn không hợp lý...",
-                text: "Ngày bắt đầu không được trước ngày hôm nay"
+                text: "Không để trống"
                 /* footer: '<a href="#">Why do I have this issue?</a>'*/
             });
             return false;

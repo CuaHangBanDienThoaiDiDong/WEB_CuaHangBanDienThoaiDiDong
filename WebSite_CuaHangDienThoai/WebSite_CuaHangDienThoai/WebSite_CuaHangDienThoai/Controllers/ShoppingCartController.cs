@@ -832,6 +832,40 @@ namespace WebSite_CuaHangDienThoai.Controllers
             db.tb_Order.Remove(itemOrder);
             db.SaveChanges();
         }
+        //private void DeleteOrderAndOrderDetails(tb_Order itemOrder)
+        //{
+        //    try
+        //    {
+        //        // Lấy các chi tiết đơn hàng liên quan đến đơn hàng này
+        //        var orderDetails = db.tb_OrderDetail.Where(od => od.OrderId == itemOrder.OrderId).ToList();
+
+        //        if (orderDetails == null || !orderDetails.Any())
+        //        {
+        //            Console.WriteLine($"Không tìm thấy chi tiết đơn hàng nào cho OrderId: {itemOrder.OrderId}");
+        //        }
+        //        else
+        //        {
+        //            // Xóa từng chi tiết đơn hàng
+        //            foreach (var orderDetail in orderDetails)
+        //            {
+        //                db.tb_OrderDetail.Remove(orderDetail);
+        //                Console.WriteLine($"Đã xóa OrderDetail với Id: {orderDetail.Id}");
+        //            }
+        //        }
+
+        //        // Xóa đơn hàng
+        //        db.tb_Order.Remove(itemOrder);
+        //        Console.WriteLine($"Đã xóa Order với OrderId: {itemOrder.OrderId}");
+
+        //        // Lưu các thay đổi vào cơ sở dữ liệu
+        //        db.SaveChanges();
+        //        Console.WriteLine("Các thay đổi đã được lưu thành công vào cơ sở dữ liệu.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Đã xảy ra lỗi: {ex.Message}");
+        //    }
+        //}
 
         private List<ShoppingCartItem> ProcessCartItems(ShoppingCart cart, int customerId)
         {

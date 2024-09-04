@@ -636,6 +636,8 @@ namespace WebSite_CuaHangDienThoai.Controllers
             return View();
         }
 
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Register(tb_Customer _khachhang)
@@ -657,7 +659,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                     db.SaveChanges();
                     return RedirectToAction("Login", "Account");
                 }
-                else 
+                else
                 {
                     if (checkmail == null)
                     {
@@ -676,7 +678,8 @@ namespace WebSite_CuaHangDienThoai.Controllers
                         else
                         {
 
-
+                            ModelState.AddModelError("", "Số điện thoại đã tồn tại");
+                            return View(_khachhang);
                         }
                     }
                     else
@@ -686,7 +689,7 @@ namespace WebSite_CuaHangDienThoai.Controllers
                         return View(_khachhang);
                     }
                 }
-               
+
             }
 
             // Trả về view với dữ liệu đang nhập và thông báo lỗi nếu dữ liệu không hợp lệ

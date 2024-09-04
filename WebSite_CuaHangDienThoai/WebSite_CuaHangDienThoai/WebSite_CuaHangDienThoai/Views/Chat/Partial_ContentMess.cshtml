@@ -1,17 +1,94 @@
 ﻿@model IEnumerable<WebSite_CuaHangDienThoai.Models.ChatMessageViewModel>
 
 <div class="chat-messages-container">
-    @foreach (var message in Model)
+    @if (ViewBag.contentMess != null)
     {
-        <div class="chat-message @(message.CustomerId.HasValue ? "chat-message-right" : "chat-message-left") pb-4">
-            <div>
-                <img src="data:image;base64,@(message.CustomerId.HasValue ? Convert.ToBase64String(message.CustomerImage) : Convert.ToBase64String(message.StaffImage))" class="rounded-circle mr-1" alt="User" width="40" height="40">
-                <div class="text-muted small text-nowrap mt-2">@message.Timestamp.ToString("h:mm tt")</div>
-            </div>
-            <div class="flex-shrink-1 bg-light rounded py-2 px-3 @(message.CustomerId.HasValue ? "mr-3" : "ml-3")">
-                <div class="font-weight-bold mb-1" style="font-weight: bold;">@((message.CustomerId.HasValue ? "Bạn" : message.StaffName))</div>
+        if (ViewBag.contentMessStaff != null)
+        {
+            bool hasStaffMessages = false;
 
-                @message.MessageContent
+            if (!hasStaffMessages)
+            {
+                <div class="chat-message-left pt-5 pb-4">
+                    <div>
+                        <img src="~/images/Logo/logoWEnMew.png" class="rounded-circle mr-1" alt="LTDMiniStore" width="40" height="40">
+                    </div>
+                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                        <div class="font-weight-bold mb-1"><span class="text-danger">LTD</span>MiniStore</div>
+                        Xin chào, bạn cần hỗ trợ gì!
+                    </div>
+                </div>
+            }
+
+            foreach (var message in Model)
+            {
+                if (!message.CustomerId.HasValue)
+                {
+                    hasStaffMessages = true;
+                }
+
+                <div class="chat-message @(message.CustomerId.HasValue ? "chat-message-right" : "chat-message-left") pt-5 pb-4">
+                    <div class="">
+                        @{
+                            var imageSrc = "";
+                            if (message.CustomerId.HasValue)
+                            {
+                                imageSrc = message.Customer?.Image != null
+                                    ? $"data:image;base64,{Convert.ToBase64String(message.Customer.Image)}"
+                                    : Url.Content("~/images/Logo/logoWEnMew.png");
+                            }
+                            else
+                            {
+                                imageSrc = message.Staff?.Image != null
+                                    ? $"data:image;base64,{Convert.ToBase64String(message.Staff.Image)}"
+                                    : Url.Content("~/images/Logo/logoWEnMew.png");
+                            }
+                        }
+                        <img src="@imageSrc" class="rounded-circle mr-1" alt="User" width="40" height="40">
+                        <div class="text-muted small text-nowrap mt-2">@message.Timestamp.ToString("h:mm tt")</div>
+                    </div>
+                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 @(message.CustomerId.HasValue ? "mr-3" : "ml-3")">
+                        <div class="font-weight-bold mb-1" style="font-weight: bold;">@((message.CustomerId.HasValue ? "Bạn" : message.Staff.NameStaff))</div>
+                        @message.MessageContent
+                    </div>
+                </div>
+            }
+
+            if (!hasStaffMessages)
+            {
+                <div class="chat-message-left pt-5 pb-4">
+                    <div>
+                        <img src="~/images/Logo/logoWEnMew.png" class="rounded-circle mr-1" alt="LTDMiniStore" width="40" height="40">
+                    </div>
+                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                        <div class="font-weight-bold mb-1"><span class="text-danger">LTD</span>MiniStore</div>
+                        Tin nhắn sẽ được nhân viên phản hồi .Trân trọng ,cảm ơn quý khách !
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="chat-message-left pt-5 pb-4">
+                <div>
+                    <img src="~/images/Logo/logoWEnMew.png" class="rounded-circle mr-1" alt="LTDMiniStore" width="40" height="40">
+                </div>
+                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                    <div class="font-weight-bold mb-1"><span class="text-danger">LTD</span>MiniStore</div>
+                    Tin nhắn sẽ được nhân viên phản hồi
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="chat-message-left pt-5 pb-4">
+            <div>
+                <img src="~/images/Logo/logoWEnMew.png" class="rounded-circle mr-1" alt="LTDMiniStore" width="40" height="40">
+            </div>
+            <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                <div class="font-weight-bold mb-1"><span class="text-danger">LTD</span>MiniStore</div>
+                Xin chào, bạn cần hỗ trợ gì!
             </div>
         </div>
     }

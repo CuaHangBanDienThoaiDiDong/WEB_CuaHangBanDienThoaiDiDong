@@ -6,12 +6,13 @@
         <!-- Bảng chứa thead -->
         <table class="table table-hover">
             <thead>
-                <tr>
-                    <th style="width: 5%;">STT</th>
-                    <th style="width: 15%;">Hình ảnh</th>
-                    <th style="width: 40%;">Tên sản phẩm</th>
+                <tr class="text-center">
+                   
+                    <th style="width: 20%;">Hình ảnh</th>
+                    <th style="width: 30%;">Sản phẩm</th>
                     <th style="width: 20%;">Loại sản phẩm</th>
-                    <th style="width: 20%;"></th>
+                    <th style="width: 20%;">Tồn kho</th>
+                    <th style="width: 10%;"></th>
                 </tr>
             </thead>
         </table>
@@ -22,6 +23,8 @@
                 <tbody>
                     @if (Model.Any())
                     {
+                        string displayAlias = null;
+                        string alias = null;
                         var i = 1;
                         foreach (var item in Model)
                         {
@@ -38,7 +41,7 @@
                             Capacity = index != -1 ? dungLuongOptions[index] : item.Capacity + " Gb";
 
                             var CheckImage = item.tb_Products.tb_ProductImage.SingleOrDefault(x => x.IsDefault == true);
-
+                            var quantityWareHouse = item.tb_WarehouseDetail.SingleOrDefault(x => x.ProductDetailId == item.ProductDetailId);
                             if (CheckImage != null)
                             {
                                 strImg = CheckImage.Image;
@@ -50,24 +53,41 @@
                                 string base64String = Convert.ToBase64String(strImg);
                                 imgSrc = $"data:image;base64,{base64String}";
                             }
+                            if (item.tb_Products.Title != null)
+                            {
+                                int maxLength = 12;
+                                alias = item.tb_Products.Title;
+                                displayAlias = alias.Length > maxLength ? alias.Substring(0, maxLength) + "..." : alias;
 
+                            }
                             <tr class="text-center opacity-100" id="trow_@item.ProductsId">
-                                <td style="width: 5%;">@i</td>
-                                <td style="width: 15%;">
+
+                                <td style="width: 20%;">
                                     <img class="imgproduct" data-id="@item.ProductsId" src="@imgSrc" width="50" />
                                 </td>
-                                <td style="width: 40%;">
+                                <td style="width: 30%;">
                                     <a href="/chi-tiet/@item.tb_Products.Alias-p@(item.ProductsId)" target="_blank">
 
                                         <span class="text-danger">
-                                            @item.tb_Products.Title
+                                            @displayAlias
                                         </span>
                                         <br /> @item.Color/@Capacity
                                     </a>
 
                                 </td>
+
                                 <td style="width: 20%;">@item.tb_Products.tb_ProductCategory.Title</td>
                                 <td style="width: 20%;">
+                                    @if (quantityWareHouse != null)
+                                    {
+                                        <span> @quantityWareHouse.QuanTity</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger">Hết hàng  </span>
+                                    }
+                                </td>
+                                <td style="width: 10%;">
                                     <button class="red_button btn-success add_to_cart_button border-0 btn-0 btnAddList" data-id="@item.ProductDetailId">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-plus-fill" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m6.5-11a.5.5 0 0 0-1 0V6H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V7H10a.5.5 0 0 0 0-1H8.5z" />
@@ -76,7 +96,7 @@
                                 </td>
                             </tr>
 
-                            i++;
+                          
                         }
                     }
                     else

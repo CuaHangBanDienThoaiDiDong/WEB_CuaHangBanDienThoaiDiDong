@@ -296,6 +296,14 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             }
 
         }
+        public ActionResult Partail_Detail(int id)
+        {
+            var item = db.tb_Order.Find(id);
+            ViewBag.Code = item.Code;
+            return View(item);
+
+        }
+
 
 
         public ActionResult Detail_SanPham(int id)

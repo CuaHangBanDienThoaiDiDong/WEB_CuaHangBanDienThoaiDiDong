@@ -5,6 +5,7 @@
 }
 <link href="~/Content/Loading.css" rel="stylesheet" />
 <link href="~/Content/Css/Client/chat.css" rel="stylesheet" />
+<link href="~/Content/Css/Addmin/Mess.css" rel="stylesheet" />
 <br />
 <br />
 <br />
@@ -26,11 +27,17 @@
                         </div>
                     </div>
                     @*<div class="loading-spinner" id="loadingSpinner" style="display: none;"></div>*@
-                    <div id="loadContenMess" data-id="@Model.CustomerId" style="overflow-y: auto; max-height: 600px; scroll-behavior: smooth;">
+                    <div id="loadContenMess" data-id="@Model.CustomerId" style="overflow-y: auto; min-height: 600px; max-height: 600px; scroll-behavior: smooth;">
+                    </div>
+
+                    <div id="loadingSpinner" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
                     </div>
                     <div class="flex-grow-0 py-3 px-4 border-top">
                         <div class="input-group">
-                            <textarea class="form-control" id="ContentMess" placeholder="Nội dung hỏi"></textarea>
+                            <textarea class="form-control" id="ContentMess" placeholder="Nhập nội dung"></textarea>
                             <button class="btn btn-primary btnSendMess" data-id="@Model.CustomerId">Gửi</button>
                         </div>
                     </div>
@@ -48,13 +55,14 @@
 
 
     function loadPartialContent(id) {
-       
-        $('#loadingSpinner').show();
+     
+   
         $.ajax({
             url: '/Chat/Partial_ContentMess/' + id,
             type: 'GET',
             data: { id: id },
             success: function (result) {
+                $('#loadingSpinner').hide();
                 $('#loadContenMess').html(result);
                 scrollToBottom(); // Cuộn xuống dưới cùng sau khi tải tin nhắn mới
             },
@@ -71,16 +79,71 @@
         }
     }
 
+    //$(document).ready(function () {
+    //    loadPartialContent(customerId);
+
+    //    setInterval(function () {
+    //        loadPartialContent(customerId);
+    //    }, 1000);
+
+    //    window.onload = function () {
+    //        scrollToBottom();
+    //    };
+
+    //    $('.btnSendMess').click(function () {
+    //        if (sendingMessage) {
+    //            return; // Nếu đang gửi tin nhắn thì không làm gì cả
+    //        }
+
+    //        var content = $('#ContentMess').val();
+
+    //        // Kiểm tra và gửi tin nhắn
+    //        if (!customerId) {
+    //            Swal.fire({
+    //                icon: "error",
+    //                title: "Hết hàng...",
+    //                text: "Khách hàng không hợp lệ"
+    //            });
+
+    //            setTimeout(function () {
+    //                window.location.href = '/dang-nhap'; // Chuyển hướng đến trang đăng nhập
+    //            }, 2000);
+
+    //            return;
+    //        }
+
+    //        if (!content) {
+    //            Swal.fire({
+    //                icon: "error",
+    //                title: "Lỗi...",
+    //                text: "Nội dung tin nhắn không được để trống"
+    //            });
+    //            return;
+    //        }
+
+    //        // Đánh dấu đang gửi tin nhắn
+    //        sendingMessage = true;
+    //        $('#loadingSpinner').show(); // Hiển thị biểu tượng loading
+
+    //        // Gửi tin nhắn
+    //        sendMessage(customerId, content);
+    //    });
+    //});
     $(document).ready(function () {
+        // Tải nội dung ban đầu
         loadPartialContent(customerId);
 
-        setInterval(function () {
-            loadPartialContent(customerId);
-        }, 1000);
+        // Thiết lập thời gian để kiểm tra và tải lại nội dung nếu có thay đổi
+        var lastMessageTimestamp = new Date().getTime();
 
-        window.onload = function () {
+        setInterval(function () {
+            loadPartialContent(customerId, lastMessageTimestamp);
+        }, 5000); // Ví dụ: kiểm tra mỗi 5 giây
+
+        // Đảm bảo cuộn xuống dưới cùng khi tải trang
+        $(window).on('load', function () {
             scrollToBottom();
-        };
+        });
 
         $('.btnSendMess').click(function () {
             if (sendingMessage) {
@@ -121,7 +184,6 @@
             sendMessage(customerId, content);
         });
     });
-
     function sendMessage(customerId, content) {
         $.ajax({
             url: '/Chat/SentMess',

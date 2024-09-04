@@ -113,13 +113,10 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             return PartialView();
         }
         [HttpGet]
-        public JsonResult GetYearlyStatistical(int selectedYear)
+        public ActionResult GetYearlyStatistical(int selectedYear)
         {
-            // Lấy tất cả các đơn hàng
             var allOrders = db.tb_Order.ToList();
-            // Lấy tất cả các chi tiết đơn hàng
             var allOrderDetails = db.tb_OrderDetail.ToList();
-            // Lấy tất cả các chi tiết sản phẩm
             var allProductDetails = db.tb_ProductDetail.ToList();
 
             // Log số lượng bản ghi để kiểm tra
@@ -133,72 +130,140 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                             where a.typeOrder == false && a.CreatedDate.Year == selectedYear
                             select new
                             {
-                                a.CreatedDate.Year,
-                                a.Quantity,
-                                a.TotalAmount,
-                                c.OrigianlPrice
+                                Year = a.CreatedDate.Year,
+                                Quantity = b.Quantity,
+                                TotalAmount = a.TotalAmount,
+                                OriginalPrice = c.OrigianlPrice,
+                                Cost = b.Quantity * c.OrigianlPrice,
+                                Code = a.Code,
+                                OrderId = a.OrderId
                             };
 
-
             System.Diagnostics.Debug.WriteLine("Filtered Sales Data: " + salesData.Count());
+            foreach (var item in salesData)
+            {
+                System.Diagnostics.Debug.WriteLine($"Year: {item.Year}, Quantity: {item.Quantity}, TotalAmount: {item.TotalAmount}, OriginalPrice: {item.OriginalPrice}, Cost: {item.Cost}, Code: {item.Code}");
+            }
 
-            var result = salesData.AsEnumerable()
-                                  .GroupBy(x => x.Year)
-                                  .Select(x => new
-                                  {
-                                      Year = x.Key,
+            // Nhóm theo Year và Code để tính toán tổng
+            var groupedData = salesData.AsEnumerable()
+                                       .GroupBy(x => new { x.Year, x.Code })
+                                       .Select(g => new
+                                       {
+                                           Year = g.Key.Year,
+                                           TotalAmount = g.FirstOrDefault()?.TotalAmount ?? 0,
+                                           TotalCost = g.Sum(x => x.Cost),
+                                           OrderCount = g.Select(x => x.OrderId).Distinct().Count()
+                                       })
+                                       .ToList();
 
-                                      TotalRevenue = x.Average(a => a.TotalAmount),
-                                      TotalCost = x.Average(y => y.Quantity * y.OrigianlPrice)
+            // Nhóm lại theo Year để tính toán tổng doanh thu, chi phí và số lượng đơn hàng
+            var result = groupedData.GroupBy(x => x.Year)
+                                    .Select(g => new
+                                    {
+                                        Year = g.Key,
+                                        TotalRevenue = g.Sum(x => x.TotalAmount),  // Tổng doanh thu cho năm
+                                        TotalCost = g.Sum(x => x.TotalCost),      // Tổng chi phí cho năm
+                                        OrderCount = g.Sum(x => x.OrderCount)     // Tổng số lượng đơn hàng cho năm
+                                    })
+                                    .Select(x => new
+                                    {
+                                        x.Year,
+                                        DoanhThu = x.TotalRevenue,
+                                        LoiNhuan = x.TotalRevenue - x.TotalCost,
+                                        TienGoc = x.TotalCost,
+                                        OrderCount = x.OrderCount
+                                    }).ToList();
 
-                                  })
-                                  .Select(x => new
-                                  {
-                                      x.Year,
-                                      DoanhThu = x.TotalRevenue,
-                                      LoiNhuan = x.TotalRevenue - x.TotalCost,
-                                      TienGoc = x.TotalCost
-                                  }).ToList();
+            foreach (var item in result)
+            {
+                System.Diagnostics.Debug.WriteLine($"Year: {item.Year}, DoanhThu: {item.DoanhThu}, LoiNhuan: {item.LoiNhuan}, TienGoc: {item.TienGoc}");
+            }
 
-
-            System.Diagnostics.Debug.WriteLine("Result: " + Newtonsoft.Json.JsonConvert.SerializeObject(result));
             return Json(new { Data = result }, JsonRequestBehavior.AllowGet);
         }
+
+
         // End THống kê theo năm
 
 
 
         //thong ke theo ngay
 
+        //[HttpGet]
+        //public ActionResult GetStatisticalByDay(string fromDate, string toDate)
+        //{
+
+
+        //    var loinhuan = from a in db.tb_Order
+        //                   join b in db.tb_OrderDetail
+        //                   on a.OrderId equals b.OrderId
+        //                   join c in db.tb_ProductDetail
+        //                   on b.ProductDetailId equals c.ProductDetailId
+
+        //                   where (a.typeOrder == false)
+        //                   select new
+        //                   {
+        //                       CreatedDate = a.CreatedDate,
+        //                       Quantity = b.Quantity,
+        //                       Price = a.TotalAmount,
+        //                       OriginalPrice = c.OrigianlPrice,
+        //                       OrderId = a.OrderId
+
+        //                   };
+
+
+
+
+        //    if (!string.IsNullOrEmpty(fromDate))
+        //    {
+        //        DateTime startDate = DateTime.ParseExact(fromDate, "dd/MM/yyyy", null);
+        //        loinhuan = loinhuan.Where(x => x.CreatedDate >= startDate);
+        //    }
+        //    if (!string.IsNullOrEmpty(toDate))
+        //    {
+        //        DateTime endDate = DateTime.ParseExact(toDate, "dd/MM/yyyy", null);
+        //        loinhuan = loinhuan.Where(x => x.CreatedDate < endDate);
+        //    }
+
+        //    var result = loinhuan.GroupBy(x => DbFunctions.TruncateTime(x.CreatedDate)).Select(x => new
+        //    {
+        //        Date = x.Key.Value,
+        //        TotalBuy = x.Average(y => y.Quantity * y.OriginalPrice),
+        //        TotalSell = x.Average(y => y.Price),
+
+        //    }).Select(x => new
+        //    {
+        //        Date = x.Date,
+        //        DoanhThu = x.TotalSell,
+        //        LoiNhuan = x.TotalSell - x.TotalBuy,
+        //        TienGoc = x.TotalBuy
+        //    });
+        //    return Json(new { Data = result }, JsonRequestBehavior.AllowGet);
+        //}
+
         [HttpGet]
         public ActionResult GetStatisticalByDay(string fromDate, string toDate)
         {
-
-
             var loinhuan = from a in db.tb_Order
-                           join b in db.tb_OrderDetail
-                           on a.OrderId equals b.OrderId
-                           join c in db.tb_ProductDetail
-                           on b.ProductDetailId equals c.ProductDetailId
-
-                           where (a.typeOrder == false)
+                           join b in db.tb_OrderDetail on a.OrderId equals b.OrderId
+                           join c in db.tb_ProductDetail on b.ProductDetailId equals c.ProductDetailId
+                           where a.typeOrder == false
                            select new
                            {
                                CreatedDate = a.CreatedDate,
                                Quantity = b.Quantity,
                                Price = a.TotalAmount,
-                               OriginalPrice = c.OrigianlPrice
-
+                               OriginalPrice = c.OrigianlPrice,
+                               OrderId = a.OrderId
                            };
-
-
-
 
             if (!string.IsNullOrEmpty(fromDate))
             {
                 DateTime startDate = DateTime.ParseExact(fromDate, "dd/MM/yyyy", null);
                 loinhuan = loinhuan.Where(x => x.CreatedDate >= startDate);
             }
+
             if (!string.IsNullOrEmpty(toDate))
             {
                 DateTime endDate = DateTime.ParseExact(toDate, "dd/MM/yyyy", null);
@@ -208,18 +273,20 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
             var result = loinhuan.GroupBy(x => DbFunctions.TruncateTime(x.CreatedDate)).Select(x => new
             {
                 Date = x.Key.Value,
-                TotalBuy = x.Average(y => y.Quantity * y.OriginalPrice),
-                TotalSell = x.Average(y => y.Price),
+                TotalBuy = x.Sum(y => y.Quantity * y.OriginalPrice),
+                TotalSell = x.Sum(y => y.Price),
+                OrderCount = x.Select(y => y.OrderId).Distinct().Count()
             }).Select(x => new
             {
                 Date = x.Date,
                 DoanhThu = x.TotalSell,
                 LoiNhuan = x.TotalSell - x.TotalBuy,
-                TienGoc = x.TotalBuy
+                TienGoc = x.TotalBuy,
+                SoLuongDonHang = x.OrderCount
             });
+
             return Json(new { Data = result }, JsonRequestBehavior.AllowGet);
         }
-
 
 
         //thong ke theo tháng
@@ -295,64 +362,128 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
         }
 
 
-
-
-        [HttpGet]
-        public ActionResult GetStatisticalByMon(string fromDate, string toDate)
+        public ActionResult Partial_StatisticalByMonAll()
         {
-            var loinhuan = from a in db.tb_Order
-                           join b in db.tb_OrderDetail on a.OrderId equals b.OrderId
-                           join c in db.tb_ProductDetail on b.ProductDetailId equals c.ProductDetailId
+           
+            return PartialView();
+        }
+        [HttpGet]
+        public ActionResult GetStatisticalByMon()
+        {
+            var allOrders = db.tb_Order.ToList();
+            var allOrderDetails = db.tb_OrderDetail.ToList();
+            var allProductDetails = db.tb_ProductDetail.ToList();
 
-                           where (a.typeOrder == false)
-                           select new
-                           {
-                               CreatedDate = a.CreatedDate,
-                               Quantity = b.Quantity,
-                               Price = a.TotalAmount,
-                               OriginalPrice = c.OrigianlPrice
-                           };
+            // Log số lượng bản ghi để kiểm tra
+            System.Diagnostics.Debug.WriteLine("Total Orders: " + allOrders.Count);
+            System.Diagnostics.Debug.WriteLine("Total Order Details: " + allOrderDetails.Count);
+            System.Diagnostics.Debug.WriteLine("Total Product Details: " + allProductDetails.Count);
 
-            if (!string.IsNullOrEmpty(fromDate))
+            var salesData = from a in db.tb_Order
+                            join b in db.tb_OrderDetail on a.OrderId equals b.OrderId
+                            join c in db.tb_ProductDetail on b.ProductDetailId equals c.ProductDetailId
+                            where a.typeOrder == false
+                            select new
+                            {
+                                Month = a.CreatedDate.Month,
+                                Year = a.CreatedDate.Year,
+                                Quantity = b.Quantity,
+                                TotalAmount = a.TotalAmount,
+                                OriginalPrice = c.OrigianlPrice,
+                                Cost = b.Quantity * c.OrigianlPrice,
+                                Code = a.Code,
+                                OrderId = a.OrderId
+                            };
+
+            System.Diagnostics.Debug.WriteLine("Filtered Sales Data: " + salesData.Count());
+            foreach (var item in salesData)
             {
-                DateTime startDate = DateTime.ParseExact(fromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                loinhuan = loinhuan.Where(x => x.CreatedDate >= startDate);
-            }
-            if (!string.IsNullOrEmpty(toDate))
-            {
-                DateTime endDate = DateTime.ParseExact(toDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                loinhuan = loinhuan.Where(x => x.CreatedDate < endDate.AddDays(1));
+                System.Diagnostics.Debug.WriteLine($"Year: {item.Year}, Month: {item.Month}, Quantity: {item.Quantity}, TotalAmount: {item.TotalAmount}, OriginalPrice: {item.OriginalPrice}, Cost: {item.Cost}, Code: {item.Code}");
             }
 
-            var result = loinhuan.GroupBy(x => new { x.CreatedDate.Year, x.CreatedDate.Month })
-                .Select(x => new
-                {
-                    Year = x.Key.Year,
-                    Month = x.Key.Month,
-                    TotalBuy = x.Average(y => y.Quantity * y.OriginalPrice),
-                    TotalSell = x.Average(y => y.Price),
-                })
-                .Select(x => new
-                {
-                    Year = x.Year,
-                    Month = x.Month,
-                    DoanhThu = x.TotalSell,
-                    LoiNhuan = x.TotalSell - x.TotalBuy,
-                    TienGoc = x.TotalBuy
-                });
+            // Nhóm theo tháng và năm, sau đó tính toán tổng
+            var groupedData = salesData.AsEnumerable()
+                                       .GroupBy(x => new { x.Year, x.Month, x.Code })
+                                       .Select(g => new
+                                       {
+                                           Year = g.Key.Year,
+                                           Month = g.Key.Month,
+                                           TotalAmount = g.FirstOrDefault()?.TotalAmount ?? 0,
+                                           TotalCost = g.Sum(x => x.Cost),
+                                           OrderId = g.FirstOrDefault()?.OrderId ?? 0
+                                       })
+                                       .ToList();
+
+            var result = groupedData.GroupBy(x => new { x.Year, x.Month })
+                                    .Select(g => new
+                                    {
+                                        Year = g.Key.Year,
+                                        Month = g.Key.Month,
+                                        TotalRevenue = g.Sum(x => x.TotalAmount),
+                                        TotalCost = g.Sum(x => x.TotalCost),
+                                        OrderCount = g.Select(x => x.OrderId).Distinct().Count()
+                                    })
+                                    .Select(x => new
+                                    {
+                                        x.Year,
+                                        x.Month,
+                                        DoanhThu = x.TotalRevenue,
+                                        LoiNhuan = x.TotalRevenue - x.TotalCost,
+                                        TienGoc = x.TotalCost,
+                                        OrderCount = x.OrderCount
+                                    }).ToList();
+
+            foreach (var item in result)
+            {
+                System.Diagnostics.Debug.WriteLine($"Year: {item.Year}, Month: {item.Month}, DoanhThu: {item.DoanhThu}, LoiNhuan: {item.LoiNhuan}, TienGoc: {item.TienGoc}");
+            }
 
             return Json(new { Data = result }, JsonRequestBehavior.AllowGet);
-
         }
+
+
+
+
+        //[HttpGet]
+        //public ActionResult GetStatisticalByMon()
+        //{
+        //    var loinhuan = from a in db.tb_Order
+        //                   join b in db.tb_OrderDetail on a.OrderId equals b.OrderId
+        //                   join c in db.tb_ProductDetail on b.ProductDetailId equals c.ProductDetailId
+        //                   where a.typeOrder == false
+        //                   select new
+        //                   {
+        //                       CreatedDate = a.CreatedDate,
+        //                       Quantity = b.Quantity,
+        //                       Price = a.TotalAmount,
+        //                       OriginalPrice = c.OrigianlPrice
+        //                   };
+
+        //    var result = loinhuan.GroupBy(x => new { x.CreatedDate.Year, x.CreatedDate.Month })
+        //        .Select(g => new
+        //        {
+        //            Year = g.Key.Year,
+        //            Month = g.Key.Month,
+        //            TotalBuy = g.Sum(y => y.Quantity * y.OriginalPrice),  // Tổng giá gốc cho mỗi tháng
+        //            TotalSell = g.Sum(y => y.Price),                      // Tổng giá bán cho mỗi tháng
+        //        })
+        //        .Select(x => new
+        //        {
+        //            Year = x.Year,
+        //            Month = x.Month,
+        //            DoanhThu = x.TotalSell,
+        //            LoiNhuan = x.TotalSell - x.TotalBuy,
+        //            TienGoc = x.TotalBuy
+        //        });
+
+        //    return Json(new { Data = result }, JsonRequestBehavior.AllowGet);
+        //}
 
         [HttpGet]
         public ActionResult GetStatisticalByMonSelect(int month)
         {
-
             var allOrders = db.tb_Order.ToList();
-            // Lấy tất cả các chi tiết đơn hàng
             var allOrderDetails = db.tb_OrderDetail.ToList();
-            // Lấy tất cả các chi tiết sản phẩm
             var allProductDetails = db.tb_ProductDetail.ToList();
 
             // Log số lượng bản ghi để kiểm tra
@@ -366,38 +497,65 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                             where a.typeOrder == false && a.CreatedDate.Month == month
                             select new
                             {
-                                a.CreatedDate.Month,
-                                a.Quantity,
-                                a.TotalAmount,
-                                c.OrigianlPrice
+                                Year = a.CreatedDate.Year,
+                                Month = a.CreatedDate.Month,
+                                Quantity = b.Quantity,
+                                TotalAmount = a.TotalAmount,
+                                OriginalPrice = c.OrigianlPrice,
+                                Cost = b.Quantity * c.OrigianlPrice,
+                                Code = a.Code,
+                                OrderId = a.OrderId
                             };
 
-
             System.Diagnostics.Debug.WriteLine("Filtered Sales Data: " + salesData.Count());
+            foreach (var item in salesData)
+            {
+                System.Diagnostics.Debug.WriteLine($"Year: {item.Year}, Month: {item.Month}, Quantity: {item.Quantity}, TotalAmount: {item.TotalAmount}, OriginalPrice: {item.OriginalPrice}, Cost: {item.Cost}, Code: {item.Code}");
+            }
 
-            var result = salesData.AsEnumerable()
-                                  .GroupBy(x => x.Month)
-                                  .Select(x => new
-                                  {
-                                      Month = x.Key,
+            // Nhóm theo Year, Month, và Code để tính toán tổng
+            var groupedData = salesData.AsEnumerable()
+                                       .GroupBy(x => new { x.Year, x.Month, x.Code })
+                                       .Select(g => new
+                                       {
+                                           Year = g.Key.Year,
+                                           Month = g.Key.Month,
+                                           TotalAmount = g.FirstOrDefault()?.TotalAmount ?? 0,
+                                           TotalCost = g.Sum(x => x.Cost),
+                                           OrderId = g.FirstOrDefault()?.OrderId ?? 0
+                                       })
+                                       .ToList();
 
-                                      TotalRevenue = x.Sum(a => a.TotalAmount),
-                                      TotalCost = x.Sum(y => y.Quantity * y.OrigianlPrice)
+            // Nhóm lại theo Year và Month để tính toán tổng doanh thu, chi phí, và số lượng đơn hàng
+            var result = groupedData.GroupBy(x => new { x.Year, x.Month })
+                                    .Select(g => new
+                                    {
+                                        Year = g.Key.Year,
+                                        Month = g.Key.Month,
+                                        TotalRevenue = g.Sum(x => x.TotalAmount),
+                                        TotalCost = g.Sum(x => x.TotalCost),
+                                        OrderCount = g.Select(x => x.OrderId).Distinct().Count()
+                                    })
+                                    .Select(x => new
+                                    {
+                                        x.Year,
+                                        x.Month,
+                                        DoanhThu = x.TotalRevenue,
+                                        LoiNhuan = x.TotalRevenue - x.TotalCost,
+                                        TienGoc = x.TotalCost,
+                                        OrderCount = x.OrderCount
+                                    }).ToList();
 
-                                  })
-                                  .Select(x => new
-                                  {
-                                      x.Month,
-                                      DoanhThu = x.TotalRevenue,
-                                      LoiNhuan = x.TotalRevenue - x.TotalCost,
-                                      TienGoc = x.TotalCost
-                                  }).ToList();
+            foreach (var item in result)
+            {
+                System.Diagnostics.Debug.WriteLine($"Year: {item.Year}, Month: {item.Month}, DoanhThu: {item.DoanhThu}, LoiNhuan: {item.LoiNhuan}, TienGoc: {item.TienGoc}");
+            }
 
-
-            System.Diagnostics.Debug.WriteLine("Result: " + Newtonsoft.Json.JsonConvert.SerializeObject(result));
             return Json(new { Data = result }, JsonRequestBehavior.AllowGet);
-
         }
+
+
+
 
         //End thống kê  theo tháng
 
@@ -502,7 +660,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     Color = g.Key.Color,
                     Ram = g.Key.Ram,
                     Capacity = g.Key.Capacity,
-                    TotalQuantitySold = g.Sum(od => od.OrderDetail.Quantity),
+                    TotalQuantitySold = g.Max(od => od.OrderDetail.Quantity),
 
                     // Tính TotalRevenue với điều kiện PriceSale > 0
                     TotalRevenue = g.Average(od => od.OrderDetail.Quantity *
@@ -574,7 +732,7 @@ namespace WebSite_CuaHangDienThoai.Areas.Admin.Controllers
                     Color = g.Key.Color,
                     Ram = g.Key.Ram,
                     Capacity = g.Key.Capacity,
-                    TotalQuantitySold = g.Average(od => od.OrderDetail.Quantity),
+                    TotalQuantitySold = g.Max(od => od.OrderDetail.Quantity),
 
                     // Tính TotalRevenue với điều kiện PriceSale > 0
                     TotalRevenue = g.Average(od => od.OrderDetail.Quantity *

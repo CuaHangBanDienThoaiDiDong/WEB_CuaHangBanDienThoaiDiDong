@@ -184,20 +184,18 @@
                                 if (rs.Code == 1) {
                                     LoadListProCheckOut();
                                     LoadListPriceCheckOut();
-                                    // Sử dụng SweetAlert2 để hiển thị thông báo ở góc trên bên trái
                                     Swal.fire({
-                                        toast: true,
-                                        position: 'top-start', // Hiển thị ở góc trên bên trái
-                                        icon: 'success',
-                                        title: 'Xóa thành công',
+                                        position: "top-end",
+                                        icon: "success",
+                                        title: "Xóa thành công",
                                         showConfirmButton: false,
-                                        timer: 1500,
-                                        timerProgressBar: true,
-                                        didOpen: (toast) => {
-                                            toast.addEventListener('mouseenter', Swal.stopTimer);
-                                            toast.addEventListener('mouseleave', Swal.resumeTimer);
+                                        timer: 1100,
+                                        customClass: {
+                                            container: 'swal2-container-custom',
+                                            popup: 'swal2-popup-custom'
                                         }
                                     });
+                                  
                                 }
                             }
                         },

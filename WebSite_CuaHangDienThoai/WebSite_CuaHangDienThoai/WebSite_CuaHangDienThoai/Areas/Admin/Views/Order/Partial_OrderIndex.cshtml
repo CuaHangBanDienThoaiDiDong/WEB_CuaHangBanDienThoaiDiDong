@@ -1,6 +1,84 @@
 ﻿@model PagedList.PagedList<WebSite_CuaHangDienThoai.Models.tb_Order>
 @using PagedList.Mvc;
 
+<style>
+    .bg-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        z-index: 1000;
+    }
+
+    #popupView {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        display: none;
+        z-index: 9999;
+    }
+
+    .bg-overlay-edit {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        z-index: 3000;
+    }
+
+    #popupViewEdit {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        display: none;
+        width: auto;
+        z-index: 9999;
+    }
+
+    #notification-container {
+        position: relative;
+        z-index: 9999;
+        display: inline-block;
+        width: 200px;
+        padding: 10px;
+        right: 20px;
+        top: 20px;
+    }
+</style>
+
+
+<div class="bg-overlay" id="overlay"></div>
+<div id="popupView">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-tools">
+                <div class="btn btnCloseViewPhieuNhaphang">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                        <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="loadDataPhieuNhaphang">
+                <p id="popupContent">Loading...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="card mb-4">
     <div class="card-header">
         <h4>
@@ -33,7 +111,7 @@
         </div>
 
     </div>
-  
+
     <div class="card-body p-0" id="loadDataOrder">
         <!-- Billing history table-->
         <div class="table-responsive table-billing-history">
@@ -82,7 +160,8 @@
                                 <td class="text-center">Đơn hàng mới  </td>
                                 <td class="text-center">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                                 <td>
-                                    <a href="/admin/order/Detail/@item.OrderId" class="btn btn-sm btn-success">Xem</a>
+                                    @*<a href="/admin/order/Detail/@item.OrderId" class="btn btn-sm btn-success">Xem</a>*@
+                                    <button class="btn btn-sm btn-success   btnViewPhieuNhap" data-id="@item.OrderId">Xem</button>
                                     <a href="#" class="btn btn-sm btn-danger btnCapNhat" data-id="@item.OrderId">Cập nhật</a>
                                 </td>
 
@@ -138,7 +217,50 @@
             </div>
         </div>
     </div>
+</div>
+  
     <script>
+
+
+        $(document).ready(function () {
+            // Xử lý sự kiện khi nút "Cập nhật" được nhấn
+            $('.btnViewPhieuNhap').click(function () {
+                // Lấy ID của phiếu nhập từ thuộc tính data-id
+                var importWarehouseId = $(this).data('id');
+
+                // Hiển thị popup
+                $('#overlay').fadeIn();
+                $('#popupView').fadeIn();
+                
+                // Load dữ liệu cho popup, ví dụ AJAX
+                $.ajax({
+                    url: '/admin/Order/Partail_Detail/' + importWarehouseId,
+                    type: 'GET',
+                    success: function (data) {
+                        $('#popupContent').html(data);
+                    },
+                    error: function () {
+                        $('#popupContent').text('Đã xảy ra lỗi khi tải dữ liệu!');
+                    }
+                });
+            });
+            var bg = $(".bg-overlay");
+            bg.on('click', function () {
+                $('#overlay').fadeOut();
+                $('#popupView').fadeOut();
+            });
+            // Xử lý sự kiện khi nút đóng popup được nhấn
+            $('.btnCloseViewPhieuNhaphang').click(function () {
+                // Ẩn popup
+                $('#overlay').fadeOut();
+                $('#popupView').fadeOut();
+            });
+        });
+
+
+
+
+
         $(document).ready(function () {
             originalContent = $('#loadDataOrder').html();
             $('#clearInputOrderAll').click(function () {
@@ -187,6 +309,6 @@
             $('#loadDataOrder').html(originalContent);
         }
 
-        
-        
+
+
     </script>

@@ -23,7 +23,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Danh sách dòng sản phẩm</h1>
+                <h1>Danh sách kho hàng tồn</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -34,15 +34,46 @@
         </div>
     </div><!-- /.container-fluid -->
 </section>
+<style>
+    .copy-container {
+        position: relative;
+        display: inline-block;
+    }
 
+    .copy-button {
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 2px 5px;
+        cursor: pointer;
+    }
+
+    .copy-container:hover .copy-button {
+        display: inline-block;
+    }
+</style>
 <section class="content">
 
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Danh sách @ViewBag.Title</h3>
+            <div class="d-flex align-items-center justify-content-between flex-grow-1 mx-3 col-12" style="max-height: 60px; overflow: hidden;">
+                <div class="d-flex align-items-center w-100 col-11" style="border:solid 2px gray ; border-radius:10px;">
+                    <input type="text" style="border:none; height: 100%;" class="form-control" id="searchOrder" placeholder="Tìm kiếm sản phẩm">
+                    <button class="btn" type="button" id="clearInputOrderAll" style="height: 100%;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-octagon" viewBox="0 0 16 16">
+                            <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1z" />
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                        </svg>
+                    </button>
 
-          
+                </div>
+            </div>
+
         </div>
         <div class="card-body">
 
@@ -55,34 +86,81 @@
     <!-- /.card -->
 
 </section>
+@section scripts{
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script>
+        function LoadIndex(page) {
+            $.ajax({
+                url: '/Admin/ProductDetail/Partial_ListProductDetail',
+                type: 'GET',
+                data: { page: page },
+                success: function (rs) {
+                    $('#loaddata').html(rs);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+        $(document).ready(function () {
+            $("#clearinputCustomer").click(function () {
+                $("#searchCustomer").val("");
+                $("#loadDataCustomer").html('<div class="row"><div class="col-md-6"><b class="card-text" style="color:red">Khách hàng:</b></div></div>');
+            });
 
-<script>
-    function LoadIndex(page) {
-        $.ajax({
-            url: '/admin/ProductDetail/Partial_ListProductDetail',
-            type: 'GET',
-            data: { page: page },
-            success: function (rs) {
-                $('#loaddata').html(rs);
-            },
-            error: function (error) {
-                console.log(error);
-            }
+            LoadIndex(1)
+
+            $(document).on('click', '.pagination a', function (e) {
+                e.preventDefault();
+                var page = $(this).attr('data-page');
+                LoadIndex(page);
+            });
+
+
+
+
+            $('#clearInputOrderAll').click(function () {
+                $("#searchOrder").val(""); // Xóa nội dung trong ô tìm kiếm
+                var page = $(this).attr('data-page');
+                LoadIndex(page);
+            });
+
+            $('#searchOrder').on('input', function () {
+                var keyword = $(this).val().trim();
+                if (keyword.length > 5) {
+                
+                    $.ajax({
+                        url: '/Admin/WareHouseImport/SuggestProductListProduct',
+                        type: 'GET',
+                        data: { search: keyword },
+                        success: function (response) {
+                            $('#loaddata').html(response);
+                        },
+                        error: function () {
+                            // Xử lý lỗi nếu có
+                            console.log('Đã xảy ra lỗi khi tải dữ liệu.');
+                        }
+                    });
+                } else {
+                    $("#searchOrder").val(""); // Xóa nội dung trong ô tìm kiếm
+                    var page = $(this).attr('data-page');
+                    LoadIndex(page);
+                }
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
         });
-    }
-    $(document).ready(function () {
-        $("#clearinputCustomer").click(function () {
-            $("#searchCustomer").val("");
-            $("#loadDataCustomer").html('<div class="row"><div class="col-md-6"><b class="card-text" style="color:red">Khách hàng:</b></div></div>');
-        });
 
-        LoadIndex(1)
-
-        $(document).on('click', '.pagination a', function (e) {
-            e.preventDefault();
-            var page = $(this).attr('data-page');
-            LoadIndex(page);
-        });
-    });
-
-</script>
+    </script>
+}
